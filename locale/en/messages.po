@@ -1,0 +1,20 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language: \n"
+"Language-Team: \n"
+"Content-Type: \n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#: pages/examples.js:14
+msgid "Connect Wallet"
+msgstr "Connect Wallet"
+
+#: sections/DemoSection.js:4
+msgid "demo-section"
+msgstr "demo-section"
