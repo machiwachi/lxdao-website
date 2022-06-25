@@ -28,7 +28,7 @@ const SignupFormWrapper = styled.div`
     cursor: pointer;
 
     &:hover {
-      background-color: #64cceb;
+      background-color: rgba(0, 0, 0, 0.8);
     }
   }
 
@@ -42,7 +42,6 @@ const SectionMailchimp = () => {
     <Box
       display="flex"
       paddingY="96px"
-      paddingX="80px"
       justifyContent="space-between"
       gap="64px"
       backgroundColor="#F9FAFB"

@@ -1,46 +1,50 @@
+import React from 'react';
 import { t } from '@lingui/macro';
-import { Box, Typography } from '@mui/material';
-import { Parallax } from 'react-scroll-parallax';
+import { Box } from '@mui/material';
 import styled from 'styled-components';
 
 import formatAddress from '@/utils/utility';
 import Container from '@/components/Container';
+import Button from '@/components/Button';
 
-const NFTContainer = styled.div`
+const CardWrapper = styled.div`
+  background-color: ${(props) => props.bgColor};
+  color: #ffffff;
+  width: 384px;
   display: flex;
-  gap: 24px;
-  margin-bottom: 50px;
 `;
 
-const MessageWrapper = styled.div`
+const CardContentContainer = styled.div`
+  background-color: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  padding: 24px;
+  margin: 24px;
   display: flex;
   flex-direction: column;
+  flex: 1;
   justify-content: space-between;
-  min-width: 300px;
-  border: 1px solid #cccccc;
-  padding: 10px;
-  border-radius: 8px;
+  gap: 24px;
 `;
 
-const MessageContent = styled.p`
+const CardContent = styled.p`
   margin: 0;
+  font-size: 18px;
+  line-height: 24px;
 `;
 
-const MessageInfoWrapper = styled.p`
+const CardInfoWrapper = styled.p`
   margin: 0;
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   gap: 12px;
 `;
 
-const MessageDate = styled.span`
-  color: #a0aec0;
-  font-size: 14px;
+const CardDate = styled.span`
+  font-size: 16px;
 `;
 
-const MessageAddress = styled.span`
-  color: #a0aec0;
-  font-size: 14px;
+const CardAddress = styled.span`
+  font-size: 16px;
 `;
 
 const web3in2032Data = [
@@ -49,70 +53,52 @@ const web3in2032Data = [
       'ETH 2.0 finally released, now we can use it to build your own decentralized applications.',
     createTime: '2032-10-05',
     createAddress: '0x86DBe1f56dC3053b26522de1B38289E39AFCF884',
+    color: '#64CCEB',
   },
   {
     content: 'ETH 2.0 finally rns.',
     createTime: '2032-10-05',
     createAddress: '0x86DBe1f56dC3053b26522de1B38289E39AFCF884',
+    color: '#305FE8',
   },
   {
     content: 'ETH 2.0 finally released, now we can use it to build cations.',
     createTime: '2032-10-05',
     createAddress: '0x86DBe1f56dC3053b26522de1B38289E39AFCF884',
-  },
-  {
-    content: 'ETH 2.0 finally rns.',
-    createTime: '2032-10-05',
-    createAddress: '0x86DBe1f56dC3053b26522de1B38289E39AFCF884',
-  },
-  {
-    content: 'ETH 2.0 finto build your own decentralized applications.',
-    createTime: '2032-10-05',
-    createAddress: '0x86DBe1f56dC3053b26522de1B38289E39AFCF884',
-  },
-  {
-    content: 'ETH 2.0 finally rns.',
-    createTime: '2032-10-05',
-    createAddress: '0x86DBe1f56dC3053b26522de1B38289E39AFCF884',
-  },
-  {
-    content: 'ETH 2.0 finally released, now we can use it to build cations.',
-    createTime: '2032-10-05',
-    createAddress: '0x86DBe1f56dC3053b26522de1B38289E39AFCF884',
+    color: '#0F39D9',
   },
 ];
 
-const NFTMessage = ({ data }) => {
-  return (
-    <MessageWrapper>
-      <MessageContent>{data.content}</MessageContent>
-      <MessageInfoWrapper>
-        <MessageDate>{data.createTime}</MessageDate>
-        <MessageAddress>{formatAddress(data.createAddress)}</MessageAddress>
-      </MessageInfoWrapper>
-    </MessageWrapper>
-  );
-};
+// eslint-disable-next-line react/prop-types
+const NFTCard = ({ data }) => (
+  <CardWrapper bgColor={data.color}>
+    <CardContentContainer>
+      <CardContent>{data.content}</CardContent>
+      <CardInfoWrapper>
+        <CardDate>{data.createTime}</CardDate>
+        <CardAddress>{formatAddress(data.createAddress)}</CardAddress>
+      </CardInfoWrapper>
+    </CardContentContainer>
+  </CardWrapper>
+);
 
-export default function SectionWeb3in2032({ id, bgcolor }) {
-  return (
-    <Container title={t`lxdao-web3in2032-title`}>
-      <Box marginY="48px">
-        <Parallax translateX={[-100, 100]}>
-          <Box display="flex" marginBottom="50px" gap="12px">
-            {web3in2032Data.map((data) => {
-              return <NFTMessage data={data} />;
-            })}
-          </Box>
-        </Parallax>
-        <Parallax translateX={[0, -100]}>
-          <Box display="flex" gap="12px">
-            {web3in2032Data.map((data) => {
-              return <NFTMessage data={data} />;
-            })}
-          </Box>
-        </Parallax>
+const SectionWeb3in2032 = () => (
+  <Container title={t`lxdao-web3in2032-title`}>
+    <Box
+      marginBottom="48px"
+      display="flex"
+      flexDirection="column"
+      gap="32px"
+      alignItems="center"
+    >
+      <Box display="flex" gap="32px">
+        {web3in2032Data.map((data, index) => {
+          return <NFTCard data={data} key={index} />;
+        })}
       </Box>
-    </Container>
-  );
-}
+      <Button>Imagine my Web3 day in 2032</Button>
+    </Box>
+  </Container>
+);
+
+export default SectionWeb3in2032;
