@@ -1,12 +1,12 @@
 import { activatei18n } from '../i18n';
 import { useCallback, useState } from 'react';
-import LanguageIcon from '@mui/icons-material/Language';
 import Badge from '@mui/material/Badge';
 import Box from '@mui/material/Box';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
 import { Typography } from '@mui/material';
+import TranslateIcon from '@mui/icons-material/Translate';
 
 const Language = () => {
   const localeLang = localStorage.getItem('locale');
@@ -46,11 +46,7 @@ const Language = () => {
           onClick={handleClick}
         >
           <Box display="flex">
-            <LanguageIcon
-              sx={{
-                fontSize: '1.5rem',
-              }}
-            />
+            <TranslateIcon />
             <Typography marginLeft={0.5}>
               {lang === 'zh' ? '简体中文' : 'English'}
             </Typography>

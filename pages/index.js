@@ -2,7 +2,15 @@ import React from 'react';
 import Head from 'next/head';
 import { t } from '@lingui/macro';
 
-import DemoSection from '../sections/DemoSection';
+import Layout from '@/components/Layout';
+import Header from '@/components/Header';
+import SectionVision from '@/sections/SectionVision';
+import SectionWeb3in2032 from '@/sections/SectionWeb3in2032';
+import SectionMission from '@/sections/SectionMission';
+import SectionVideo from '@/sections/SectionVideo';
+import SectionProjects from '@/sections/SectionProjects';
+import SectionFinancing from '@/sections/SectionFinancing';
+import SectionMailchimp from '@/sections/SectionMailchimp';
 
 export default function Home() {
   return (
@@ -50,7 +58,16 @@ export default function Home() {
           }}
         />
       </Head>
-      <DemoSection />
+      <Layout>
+        <Header />
+        <SectionVision />
+        <SectionWeb3in2032 />
+        <SectionMission />
+        <SectionVideo />
+        <SectionProjects />
+        <SectionFinancing />
+        <SectionMailchimp />
+      </Layout>
     </div>
   );
 }

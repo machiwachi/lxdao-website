@@ -1,0 +1,50 @@
+@font-face {
+  font-family: 'Avenir';
+  font-display: swap;
+  src: url('../public/fonts/AvenirLTComBlack.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Avenir roman';
+  font-display: swap;
+  font-weight: 400;
+  src: url('../public/fonts/Avenir-Roman.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Avenir medium';
+  font-display: swap;
+  font-weight: 500;
+  src: url('../public/fonts/Avenir-Medium.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Avenir heavy';
+  font-display: swap;
+  font-weight: 800;
+  src: url('../public/fonts/Avenir-Heavy.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Trade Gothic';
+  font-display: swap;
+  font-weight: 700;
+  src: url('../public/fonts/TradeGothicLTComBdCn20.woff2') format('woff2');
+}
+
+body {
+  color: #333333;
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+div {
+  font-family: 'Avenir roman' !important;
+}
