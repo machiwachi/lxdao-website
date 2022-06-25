@@ -21,8 +21,8 @@ const SectionProjects = () => (
         borderRadius="16px"
         alignItems="center"
         width="384px"
-        cursor="pointer"
         padding="0 24px 32px 24px"
+        sx={{ cursor: 'pointer' }}
         onClick={() => {
           window.open('https://gclx.xyz/', '_blank');
         }}
@@ -52,8 +52,8 @@ const SectionProjects = () => (
         borderRadius="16px"
         alignItems="center"
         width="384px"
-        cursor="pointer"
         padding="0 24px 32px 24px"
+        sx={{ cursor: 'pointer' }}
         onClick={() => {
           window.open('https://myfirstnft.info/', '_blank');
         }}
