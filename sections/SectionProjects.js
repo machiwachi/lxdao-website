@@ -36,7 +36,7 @@ const SectionProjects = () => (
         >
           GuoChanLiangXin
         </Typography>
-        <Typography fontSize="16px" lineHeight="24px" color="#667085">
+        <Typography fontSize="16px" lineHeight="24px">
           中国人不骗中国人！国产良心 NFT
           是专为中国人打造的一个存在于以太坊区块链上的由代码随机生成 1000
           个国产良心 NFT。国产良心 NFT
@@ -67,7 +67,7 @@ const SectionProjects = () => (
         >
           My First NFT
         </Typography>
-        <Typography fontSize="16px" lineHeight="24px" color="#667085">
+        <Typography fontSize="16px" lineHeight="24px">
           MyFirstNFT is a non-profit instructional project for Web3 newbies. Get
           a FREE NFT while learning about Web3, underlying values of NFT, and
           security principles.

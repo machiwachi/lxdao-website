@@ -1,23 +1,75 @@
 import React from 'react';
-import { t } from '@lingui/macro';
 import Mailchimp from 'react-mailchimp-form';
+import styled from 'styled-components';
+import { Box, Typography } from '@mui/material';
 
-import Container from '@/components/Container';
+const SignupFormWrapper = styled.div`
+  & input,
+  & button {
+    font-size: 16px;
+    line-height: 24px;
+  }
 
-export default function SectionMailchimp({ id, bgcolor }) {
+  & input {
+    width: 360px;
+    height: 24px;
+    padding: 12px 14px;
+    margin-right: 16px;
+  }
+
+  & button {
+    background-color: #000000;
+    padding: 12px 20px;
+    outline: none;
+    border: none;
+    border-radius: 8px;
+    color: #ffffff;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #64cceb;
+    }
+  }
+
+  & .msg-alert > p {
+    color: #00fb8c !important;
+  }
+`;
+
+const SectionMailchimp = () => {
   return (
-    <Container>
-      <Mailchimp
-        action="https://lxdao.us12.list-manage.com/subscribe/post?u=4e96be73f764bc67c7f964f51&amp;id=eaa29be54b"
-        fields={[
-          {
-            name: 'EMAIL',
-            placeholder: 'Email',
-            type: 'email',
-            required: true,
-          },
-        ]}
-      />
-    </Container>
+    <Box
+      display="flex"
+      paddingY="96px"
+      paddingX="102px"
+      justifyContent="center"
+      gap="64px"
+      backgroundColor="#F9FAFB"
+      width="100%"
+    >
+      <Box display="flex" flexDirection="column">
+        <Typography variant="h4" marginBottom="20px">
+          Sign up for our newsletter
+        </Typography>
+        <Typography fontSize="20px" lineHeight="30px">
+          Be the first to know about release and industry news and insights.
+        </Typography>
+      </Box>
+      <SignupFormWrapper>
+        <Mailchimp
+          action="https://lxdao.us12.list-manage.com/subscribe/post?u=4e96be73f764bc67c7f964f51&amp;id=eaa29be54b"
+          fields={[
+            {
+              name: 'EMAIL',
+              placeholder: 'Email',
+              type: 'email',
+              required: true,
+            },
+          ]}
+        />
+      </SignupFormWrapper>
+    </Box>
   );
-}
+};
+
+export default SectionMailchimp;
