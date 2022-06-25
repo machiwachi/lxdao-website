@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { i18n } from '@lingui/core';
 import { I18nProvider } from '@lingui/react';
-import { ParallaxProvider } from 'react-scroll-parallax';
 
 import getTheme from '@/common/theme';
 import { activatei18n } from '../i18n';
@@ -22,9 +21,7 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <I18nProvider i18n={i18n}>
-      <ParallaxProvider>
         <Component {...pageProps} />
-      </ParallaxProvider>
     </I18nProvider>
   );
 }
