@@ -1,6 +1,5 @@
 import React from 'react';
 import Head from 'next/head';
-import { t } from '@lingui/macro';
 
 import Layout from '@/components/Layout';
 import Header from '@/components/Header';
@@ -11,6 +10,7 @@ import SectionVideo from '@/sections/SectionVideo';
 import SectionProjects from '@/sections/SectionProjects';
 import SectionFinancing from '@/sections/SectionFinancing';
 import SectionMailchimp from '@/sections/SectionMailchimp';
+import Footer from '@/components/Footer';
 
 export default function Home() {
   return (
@@ -67,6 +67,7 @@ export default function Home() {
         <SectionProjects />
         <SectionFinancing />
         <SectionMailchimp />
+        <Footer />
       </Layout>
     </div>
   );

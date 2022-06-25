@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Box, Typography } from '@mui/material';
 
 const SignupFormWrapper = styled.div`
+  margin-right: 80px;
   & input,
   & button {
     font-size: 16px;
@@ -41,13 +42,13 @@ const SectionMailchimp = () => {
     <Box
       display="flex"
       paddingY="96px"
-      paddingX="102px"
-      justifyContent="center"
+      paddingX="80px"
+      justifyContent="space-between"
       gap="64px"
       backgroundColor="#F9FAFB"
       width="100%"
     >
-      <Box display="flex" flexDirection="column">
+      <Box display="flex" flexDirection="column" marginLeft="80px">
         <Typography variant="h4" marginBottom="20px">
           Sign up for our newsletter
         </Typography>
