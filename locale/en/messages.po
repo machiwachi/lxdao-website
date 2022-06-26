@@ -25,7 +25,7 @@ msgstr "demo-section"
 
 #: sections/SectionFinancing.js:6
 msgid "lxdao-financing-title"
-msgstr "Financing"
+msgstr "Invest in LXDAO"
 
 #: sections/SectionVideo.js:6
 msgid "lxdao-intro-video-title"
@@ -33,7 +33,7 @@ msgstr "Introduction"
 
 #: sections/SectionMission.js:6
 msgid "lxdao-mission-title"
-msgstr "Mission"
+msgstr "LXDAO Mission"
 
 #: sections/SectionProjects.js:6
 msgid "lxdao-projects-title"

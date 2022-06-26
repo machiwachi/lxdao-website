@@ -9,6 +9,7 @@ const Container = ({ title, children }) => {
       alignItems="center"
       width="100%"
       overflow="hidden"
+      marginBottom="100px"
     >
       <Typography variant="h4" marginBottom="64px">
         {title}
