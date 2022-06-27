@@ -3,11 +3,11 @@ import Head from 'next/head';
 
 import Layout from '@/components/Layout';
 import Header from '@/components/Header';
-import SectionVision from '@/sections/SectionVision';
+import SectionHero from '@/sections/SectionHero';
 import SectionWeb3in2032 from '@/sections/SectionWeb3in2032';
 import SectionMission from '@/sections/SectionMission';
-import SectionVideo from '@/sections/SectionVideo';
 import SectionProjects from '@/sections/SectionProjects';
+import SectionCoreTeam from '@/sections/SectionCoreTeam';
 import SectionFinancing from '@/sections/SectionFinancing';
 import SectionMailchimp from '@/sections/SectionMailchimp';
 import Footer from '@/components/Footer';
@@ -60,11 +60,11 @@ export default function Home() {
       </Head>
       <Layout>
         <Header />
-        <SectionVision />
-        <SectionWeb3in2032 />
+        <SectionHero />
         <SectionMission />
-        <SectionVideo />
+        <SectionWeb3in2032 />
         <SectionProjects />
+        <SectionCoreTeam />
         <SectionFinancing />
         <SectionMailchimp />
         <Footer />

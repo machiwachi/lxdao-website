@@ -2,6 +2,8 @@ import React from 'react';
 import { Box, Typography } from '@mui/material';
 import { t } from '@lingui/macro';
 
+import { scrollToSection } from '@/utils/utility';
+
 const Header = () => (
   <Box
     display="flex"
@@ -11,9 +13,14 @@ const Header = () => (
     height="80px"
     borderBottom="1px solid #F2F4F7"
   >
-    <Box display="flex" marginLeft="80px">
+    <Box display="flex" marginLeft="80px" alignItems="center">
       <Box width="32px" component={'img'} src={'/icons/logo.svg'} />
       <Typography variant="h5" paddingLeft="10px">{t`LXDAO`}</Typography>
+      <Box display="flex" gap="24px" marginLeft="54px">
+        <Typography sx={{ cursor: 'pointer' }}>Projects</Typography>
+        <Typography>Core Team</Typography>
+        <Typography>Invest</Typography>
+      </Box>
     </Box>
     <Box marginRight="80px">
       <Typography

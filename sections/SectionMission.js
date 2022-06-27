@@ -1,41 +1,21 @@
 import React from 'react';
-import { t } from '@lingui/macro';
 import { Box, Typography } from '@mui/material';
 
-import Container from '@/components/Container';
-
 const SectionMission = () => (
-  <Container title={t`lxdao-mission-title`}>
-    <Box
-      marginX="80px"
-      marginY="100px"
-      backgroundColor="#F9FAFB"
-      padding="24px"
-      borderRadius="8px"
-    >
-      <Typography fontSize="30px" lineHeight="50px" textAlign="center">
-        Bringing together buidlers to buidl and maintain &quot;LX&quot; projects
-        for Web3,
-      </Typography>
-      <Typography fontSize="30px" lineHeight="50px" textAlign="center">
-        in a sustainable manner.
-      </Typography>
-    </Box>
-    <Box
-      marginX="80px"
-      marginY="80px"
-      backgroundColor="#F9FAFB"
-      padding="24px"
-      borderRadius="8px"
-    >
-      <Typography fontSize="30px" lineHeight="50px" textAlign="center">
-        LXDAO is mainly made by Web Developers, Designers, PMs, etc.
-      </Typography>
-      <Typography fontSize="30px" lineHeight="50px" textAlign="center">
-        We like and are good at building high-quality Web Projects.
-      </Typography>
-    </Box>
-  </Container>
+  <Box
+    backgroundColor="#F9FAFB"
+    paddingY="96px"
+    paddingX="80px"
+    textAlign="center"
+  >
+    <Typography marginBottom="48px" fontSize="20px">
+      Our Vision & Consensus
+    </Typography>
+    <Typography variant="h3">
+      The technologies, concepts and ideas of Web3 will be used by a billion
+      people in a decade.
+    </Typography>
+  </Box>
 );
 
 export default SectionMission;
