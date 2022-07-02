@@ -24,7 +24,7 @@ const coreTeamData = [
     name: 'Yootou',
     title: 'Senior Web Developer, 13yrs',
     description: 'Ex-Alibaba, FullStack, PM',
-    avatarUrl: '',
+    avatarUrl: '/images/yootou.png',
   },
   {
     name: 'Muxin',
@@ -61,9 +61,14 @@ const TeamMemberCard = ({ data }) => (
 );
 
 const SectionCoreTeam = () => (
-  <Box paddingY="96px" paddingX="80px" textAlign="center">
+  <Box
+    paddingY={{ md: '96px', xs: 8 }}
+    paddingX={{ md: 10, xs: 6 }}
+    textAlign="center"
+    id="CoreTeam-Section"
+  >
     <Typography variant="h4">LXDAO Foundation Core Team</Typography>
-    <Typography fontSize="20px" marginTop="16px">
+    <Typography fontSize="20px" marginTop={2}>
       We’re buidling our SBT-based membership system, and will onboard more.
     </Typography>
     <Box marginTop="96px">

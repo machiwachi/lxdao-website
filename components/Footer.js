@@ -6,11 +6,12 @@ const Footer = () => (
   <Box width="100%" height="112px" backgroundColor="#F9FAFB">
     <Box
       display="flex"
-      justifyContent="space-between"
+      flexDirection={{ md: 'row', xs: 'column' }}
+      justifyContent={{ md: 'space-between', xs: 'center' }}
+      gap={{ md: 0, xs: '20px' }}
       alignItems="center"
       borderTop="1px solid #F2F4F7"
-      marginLeft="80px"
-      marginRight="80px"
+      marginX={{ md: 10, xs: 6 }}
       height="100%"
     >
       <Box display="flex">

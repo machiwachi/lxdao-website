@@ -51,6 +51,7 @@ const NFTCard = ({ data }) => (
     justifyContent="space-between"
     textAlign="left"
     gap="32px"
+    width="100%"
   >
     <Box>
       <Typography fontSize="14px" marginBottom="5px">
@@ -69,15 +70,20 @@ const NFTCard = ({ data }) => (
 
 const SectionWeb3in2032 = () => {
   return (
-    <Box paddingY="96px" paddingX="80px" textAlign="center">
+    <Box
+      paddingY={{ md: '96px', xs: 8 }}
+      paddingX={{ md: 10, xs: 6 }}
+      textAlign="center"
+      maxWidth="1200px"
+    >
       <Typography variant="h4">
         What a day in the Web3 life look like in 2032?
       </Typography>
-      <Typography fontSize="20px" marginTop="16px">
+      <Typography fontSize="20px" marginTop={2}>
         Here are some messages from community shows what a day in the Web3 life.
       </Typography>
 
-      <Box display="flex" flexWrap="wrap" marginTop="60px">
+      <Box display="flex" flexWrap="wrap" marginTop={{ md: 8, xs: 4 }}>
         <Grid
           container
           spacing={{ xs: 2, md: 3 }}
@@ -85,14 +91,19 @@ const SectionWeb3in2032 = () => {
         >
           {web3in2032Data.map((data, index) => {
             return (
-              <Grid item xs={2} sm={4} md={4} key={index}>
+              <Grid display="flex" item xs={4} sm={4} md={4} key={index}>
                 <NFTCard data={data} key={index} />
               </Grid>
             );
           })}
         </Grid>
       </Box>
-      <Box marginTop="60px" display="flex" justifyContent="center" gap="12px">
+      <Box
+        marginTop={{ md: 8, xs: 4 }}
+        display="flex"
+        justifyContent="center"
+        gap={2}
+      >
         <Button variant="outlined">View More</Button>
         <Button>Post your life in 2032</Button>
       </Box>

@@ -2,17 +2,27 @@ import React from 'react';
 import { Box, Typography } from '@mui/material';
 
 const SectionProjects = () => (
-  <Box paddingY="96px" paddingX="80px" textAlign="center">
+  <Box
+    paddingY={{ md: '96px', xs: 8 }}
+    paddingX={{ md: 10, xs: 6 }}
+    textAlign="center"
+    id="Projects-Section"
+  >
     <Typography variant="h4">Projects</Typography>
-    <Typography fontSize="20px" marginTop="16px">
+    <Typography fontSize="20px" marginTop={2}>
       We buidl good, valuable, and useful things.
     </Typography>
-    <Box display="flex" gap="64px" marginTop="48px">
+    <Box
+      display="flex"
+      flexDirection={{ md: 'row', xs: 'column' }}
+      gap={{ md: 8, xs: 4 }}
+      alignItems={{ md: 'stretch', xs: 'center' }}
+      marginTop={6}
+    >
       <Box
         display="flex"
         flexDirection="column"
-        alignItems="center"
-        width="425px"
+        width={{ md: '320px', xs: '100%' }}
         border="1px solid #000000"
         sx={{ cursor: 'pointer' }}
         onClick={() => {
@@ -49,8 +59,7 @@ const SectionProjects = () => (
       <Box
         display="flex"
         flexDirection="column"
-        alignItems="center"
-        width="425px"
+        width={{ md: '320px', xs: '100%' }}
         border="1px solid #000000"
         sx={{ cursor: 'pointer' }}
         onClick={() => {
@@ -70,7 +79,7 @@ const SectionProjects = () => (
             fontSize="20px"
             lineHeight="30px"
             color="#101828"
-            marginBottom="8px"
+            marginBottom={1}
           >
             My First NFT
           </Typography>

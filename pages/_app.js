@@ -1,6 +1,7 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { i18n } from '@lingui/core';
 import { I18nProvider } from '@lingui/react';
+import { ThemeProvider } from '@mui/material/styles';
 
 import getTheme from '@/common/theme';
 import { activatei18n } from '../i18n';
@@ -20,9 +21,11 @@ function MyApp({ Component, pageProps }) {
   }, []);
 
   return (
-    <I18nProvider i18n={i18n}>
+    <ThemeProvider theme={getTheme('light')}>
+      <I18nProvider i18n={i18n}>
         <Component {...pageProps} />
-    </I18nProvider>
+      </I18nProvider>
+    </ThemeProvider>
   );
 }
 

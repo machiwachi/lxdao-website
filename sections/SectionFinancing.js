@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import { Box, Typography, Dialog } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import LinearProgress, {
   linearProgressClasses,
 } from '@mui/material/LinearProgress';
@@ -27,9 +28,14 @@ const SectionFinancing = () => {
   };
 
   return (
-    <Box paddingY="96px" paddingX="80px" textAlign="center">
+    <Box
+      paddingY={{ md: '96px', xs: 8 }}
+      paddingX={{ md: 10, xs: 6 }}
+      textAlign="center"
+      id="Invest-Section"
+    >
       <Typography variant="h4">Invest LXDAO</Typography>
-      <Typography fontSize="20px" marginTop="16px">
+      <Typography fontSize="20px" marginTop={2}>
         We accept Pre-Seed Funding at the moment. This fund will be used to get
         LXDAO up and running, and help the community buidl some valuable Web3
         projects.
@@ -42,13 +48,13 @@ const SectionFinancing = () => {
         border="1px solid #EAECF0"
         boxShadow="0px 1px 3px rgba(16, 24, 40, 0.1), 0px 1px 2px rgba(16, 24, 40, 0.06)"
         borderRadius="8px"
-        width="50%"
+        width={{ md: '50%', xs: '100%' }}
       >
         <Box
-          padding="24px"
+          padding={3}
           display="flex"
           flexDirection="column"
-          gap="32px"
+          gap={4}
           width="100%"
           alignItems="flex-start"
           boxSizing="border-box"
@@ -64,7 +70,7 @@ const SectionFinancing = () => {
                 fontSize="18px"
                 lineHeight="28px"
                 color="#101828"
-                marginBottom="5px"
+                marginBottom={1}
               >
                 Pre-Seed Funding
               </Typography>
@@ -74,7 +80,7 @@ const SectionFinancing = () => {
             </Box>
             <Typography variant="h5">1K - 50K USDC / Person</Typography>
           </Box>
-          <Box textAlign="left">
+          <Box textAlign="left" width="100%">
             <Typography
               fontSize="14px"
               color="#101828"
@@ -86,7 +92,7 @@ const SectionFinancing = () => {
             <BorderLinearProgress variant="determinate" value={50} />
           </Box>
         </Box>
-        <Box borderTop="1px solid #EAECF0" width="100%" paddingY="16px">
+        <Box borderTop="1px solid #EAECF0" width="100%" paddingY={2}>
           <Typography
             textAlign="right"
             marginRight="20px"
@@ -106,7 +112,14 @@ const SectionFinancing = () => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        sdfasdf
+        <Box width="320px" padding={3} display="flex" flexDirection="column">
+          <Box textAlign="right">
+            <CloseIcon onClick={handleClose} />
+          </Box>
+          <Box>
+            <Typography>contact with Muxin</Typography>
+          </Box>
+        </Box>
       </Dialog>
     </Box>
   );
