@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box } from '@mui/material';
 
+// eslint-disable-next-line react/prop-types
 const Button = ({ variant, children }) => (
   <Box
     backgroundColor={variant === 'outlined' ? '#ffffff' : '#000000'}

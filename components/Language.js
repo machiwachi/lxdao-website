@@ -1,6 +1,6 @@
+import React from 'react';
 import { activatei18n } from '../i18n';
 import { useCallback, useState } from 'react';
-import Badge from '@mui/material/Badge';
 import Box from '@mui/material/Box';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -22,7 +22,7 @@ const Language = () => {
     setAnchorEl(event.target);
   };
 
-  const handleClose = (value) => {
+  const handleClose = () => {
     setAnchorEl(null);
   };
 

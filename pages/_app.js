@@ -8,6 +8,7 @@ import { activatei18n } from '../i18n';
 
 import '@/common/global.css';
 
+// eslint-disable-next-line react/prop-types
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
     // const localeLang = localStorage.getItem('locale');
