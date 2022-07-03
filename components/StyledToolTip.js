@@ -11,5 +11,11 @@ const useStyles = makeStyles({
 
 export default function StyledToolTip(props) {
   const classes = useStyles();
-  return <Tooltip classes={{ tooltip: classes.tooltip }} {...props} />;
+  return (
+    <Tooltip
+      enterTouchDelay={0}
+      classes={{ tooltip: classes.tooltip }}
+      {...props}
+    />
+  );
 }

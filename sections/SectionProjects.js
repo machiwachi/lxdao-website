@@ -1,12 +1,14 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 
+import Container from '@/components/Container';
+
 const SectionProjects = () => (
-  <Box
+  <Container
     paddingY={{ md: '96px', xs: 8 }}
-    paddingX={{ md: 10, xs: 6 }}
     textAlign="center"
     id="Projects-Section"
+    maxWidth
   >
     <Typography variant="h4">Previous Projects</Typography>
     <Typography fontSize="20px" marginTop={2}>
@@ -18,27 +20,42 @@ const SectionProjects = () => (
       gap={{ md: 8, xs: 4 }}
       alignItems={{ md: 'stretch', xs: 'center' }}
       marginTop={6}
+      justifyContent="center"
     >
       <Box
         display="flex"
         flexDirection="column"
         width={{ md: '320px', xs: '100%' }}
-        border="1px solid #000000"
+        border="2px solid #000000"
+        boxShadow="0 3px 6px 0 rgb(140 152 164 / 25%)"
+        borderRadius="8px"
+        overflow="hidden"
         sx={{ cursor: 'pointer' }}
         onClick={() => {
           window.open('https://gclx.xyz/', '_blank');
         }}
       >
-        <Box component="img" width="100%" src="/images/gclx-banner.png"></Box>
-        <Box padding="0 24px 24px 24px">
+        <Box
+          width="100%"
+          height="120px"
+          sx={{
+            backgroundImage: 'url("/images/gclx-banner.png")',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+          }}
+        />
+        <Box padding="0 24px 24px 24px" boxSizing="border-box">
           <Box
             component="img"
             position="relative"
             bottom="27px"
             width="45px"
             src="/images/gclx-logo.png"
+            padding={1}
             sx={{
-              border: '1px solid #000',
+              borderRadius: '50%',
+              boxShadow: '0 3px 6px 0 rgb(140 152 164 / 25%)',
             }}
           ></Box>
           <Typography
@@ -50,12 +67,9 @@ const SectionProjects = () => (
             GuoChanLiangXin
           </Typography>
           <Typography fontSize="16px" lineHeight="24px">
-            中国人不骗中国人！国产良心 NFT
-            是专为中国人打造的一个存在于以太坊区块链上的由代码随机生成 1000
-            个国产良心 NFT。国产良心 NFT
-            的持有者将会获得一个头像，并且拥有扶持国产良心 NFT 的义务。For
-            English speakers, we do not provide an English version, please
-            consider learning Chinese or using Google Translate. Thanks.
+            GCLX NFT project is a Performance Art. It made by 1000 randomly
+            generated NFTs, sold for 0.01 ETH. Using funny content to tell
+            Chinese NFT players what NFTs truely are.
           </Typography>
         </Box>
       </Box>
@@ -63,20 +77,37 @@ const SectionProjects = () => (
         display="flex"
         flexDirection="column"
         width={{ md: '320px', xs: '100%' }}
-        border="1px solid #000000"
+        border="2px solid #000000"
+        boxShadow="0 3px 6px 0 rgb(140 152 164 / 25%)"
+        borderRadius="8px"
+        overflow="hidden"
         sx={{ cursor: 'pointer' }}
         onClick={() => {
           window.open('https://myfirstnft.info/', '_blank');
         }}
       >
-        <Box component="img" width="100%" src="/images/mfnft-banner.png"></Box>
-        <Box padding="0 24px 24px 24px">
+        <Box
+          width="100%"
+          height="120px"
+          sx={{
+            backgroundImage: 'url("/images/mfnft-banner.png")',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+          }}
+        />
+        <Box padding="0 24px 24px 24px" boxSizing="border-box">
           <Box
             component="img"
             position="relative"
             bottom="27px"
             width="45px"
             src="/images/mfnft-logo.png"
+            padding={1}
+            sx={{
+              borderRadius: '50%',
+              boxShadow: '0 3px 6px 0 rgb(140 152 164 / 25%)',
+            }}
           ></Box>
           <Typography
             fontSize="20px"
@@ -94,7 +125,7 @@ const SectionProjects = () => (
         </Box>
       </Box>
     </Box>
-  </Box>
+  </Container>
 );
 
 export default SectionProjects;

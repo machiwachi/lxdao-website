@@ -1,6 +1,8 @@
 import React from 'react';
 import { Grid, Box, Typography } from '@mui/material';
 
+import Container from '@/components/Container';
+
 const coreTeamData = [
   {
     name: 'Bruce Xu',
@@ -48,7 +50,7 @@ const coreTeamData = [
   {
     name: 'Mrzzz',
     title: 'Product Design / Operation',
-    description: 'Animation Pipeline Dev',
+    description: '3D Animation Artist, 4yrs',
     twitter: 'Bitzack_01',
     avatarUrl: '/images/mrzzz.jpg',
   },
@@ -84,11 +86,11 @@ const TeamMemberCard = ({ data }) => (
 );
 
 const SectionCoreTeam = () => (
-  <Box
+  <Container
     paddingY={{ md: '96px', xs: 8 }}
-    paddingX={{ md: 10, xs: 6 }}
     textAlign="center"
     id="CoreTeam-Section"
+    maxWidth
   >
     <Typography variant="h4">LXDAO Foundation Core Team</Typography>
     <Typography fontSize="20px" marginTop={2}>
@@ -109,7 +111,7 @@ const SectionCoreTeam = () => (
         })}
       </Grid>
     </Box>
-  </Box>
+  </Container>
 );
 
 export default SectionCoreTeam;

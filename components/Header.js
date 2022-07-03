@@ -9,6 +9,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 
 import { scrollToSection } from '@/utils/utility';
+import Container from './Container';
 
 const Header = () => {
   const [openMenu, setOpenMenu] = useState(false);
@@ -61,9 +62,9 @@ const Header = () => {
         </ListItem>
       </List>
       <Divider />
-      <List>
+      <List sx={{ padding: 0 }}>
         <ListItem disablePadding>
-          <ListItemButton>
+          <ListItemButton sx={{ gap: 2 }}>
             <Typography
               target="_blank"
               component="a"
@@ -72,10 +73,6 @@ const Header = () => {
             >
               <Box width="32px" component={'img'} src={'/icons/twitter.svg'} />
             </Typography>
-          </ListItemButton>
-        </ListItem>
-        <ListItem disablePadding>
-          <ListItemButton>
             <Typography
               target="_blank"
               component="a"
@@ -91,15 +88,14 @@ const Header = () => {
   );
 
   return (
-    <Box
+    <Container
       display="flex"
       justifyContent="space-between"
       alignItems="center"
-      width="100%"
       height={{ md: '80px', xs: '64px' }}
       borderBottom="1px solid #F2F4F7"
     >
-      <Box display="flex" marginLeft={{ md: 10, xs: 6 }} alignItems="center">
+      <Box display="flex" alignItems="center">
         <Box width="32px" component={'img'} src={'/icons/logo.svg'} />
         <Typography variant="h5" paddingLeft="10px">{t`LXDAO`}</Typography>
         <Box gap="24px" marginLeft={7} display={{ md: 'flex', xs: 'none' }}>
@@ -129,7 +125,7 @@ const Header = () => {
           </Typography>
         </Box>
       </Box>
-      <Box marginRight={10} display={{ md: 'block', xs: 'none' }}>
+      <Box display={{ md: 'block', xs: 'none' }}>
         <Typography
           target="_blank"
           component="a"
@@ -151,7 +147,6 @@ const Header = () => {
       </Box>
       <MenuIcon
         sx={{
-          marginRight: 6,
           display: { md: 'none', xs: 'block' },
           cursor: 'pointer',
         }}
@@ -165,7 +160,7 @@ const Header = () => {
       >
         {list()}
       </SwipeableDrawer>
-    </Box>
+    </Container>
   );
 };
 

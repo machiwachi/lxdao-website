@@ -2,8 +2,7 @@
 import React from 'react';
 import { Grid, Box, Typography } from '@mui/material';
 
-import { formatAddress } from '@/utils/utility';
-import Button from '@/components/Button';
+import Container from '@/components/Container';
 
 const web3in2032Data = [
   {
@@ -73,12 +72,7 @@ const NFTCard = ({ data }) => (
 
 const SectionWeb3in2032 = () => {
   return (
-    <Box
-      paddingY={{ md: '96px', xs: 8 }}
-      paddingX={{ md: 10, xs: 6 }}
-      textAlign="center"
-      maxWidth="1200px"
-    >
+    <Container paddingY={{ md: '96px', xs: 8 }} textAlign="center" maxWidth>
       <Typography variant="h4">
         What a day in the Web3 life look like in 2032?
       </Typography>
@@ -115,7 +109,7 @@ const SectionWeb3in2032 = () => {
         The future of Web3 should be colorful, free, and exciting. We're going
         to buidl projects to make it happen.
       </Typography>
-    </Box>
+    </Container>
   );
 };
 

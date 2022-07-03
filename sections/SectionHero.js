@@ -1,20 +1,21 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
-import StyledToolTip from '../components/StyledToolTip';
+import StyledToolTip from '@/components/StyledToolTip';
+import Container from '@/components/Container';
 
 const SectionHero = () => {
   return (
-    <Box
-      minHeight="calc(100vh - 81px)"
+    <Container
+      height="calc(100vh - 81px)"
+      minHeight={{ md: '800px', xs: '660px' }}
       display="flex"
-      paddingY={8}
-      paddingX={{ md: 10, xs: 6 }}
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
       textAlign="center"
+      maxWidth
     >
-      <Typography variant="h3" marginBottom="20px">
+      <Typography variant="h3" lineHeight="1.5em" marginBottom="20px">
         LXDAO is an{' '}
         <StyledToolTip
           placement="top"
@@ -25,9 +26,10 @@ const SectionHero = () => {
                 boxShadow: 4,
                 padding: '4px 16px',
                 borderRadius: 2,
+                color: '#101828',
               }}
             >
-              <Typography variant="h6">Research and Development</Typography>
+              <Typography variant="body1">Research and Development</Typography>
             </Box>
           }
         >
@@ -41,7 +43,7 @@ const SectionHero = () => {
             R&amp;D
           </span>
         </StyledToolTip>
-        -focused DAO in Web3.
+        -focused DAO in Web3
       </Typography>
       <Typography
         marginBottom={6}
@@ -94,7 +96,7 @@ const SectionHero = () => {
           allowFullScreen={true}
         ></iframe>
       </Box>
-    </Box>
+    </Container>
   );
 };
 

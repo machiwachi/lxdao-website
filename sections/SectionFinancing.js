@@ -13,6 +13,8 @@ import LinearProgress, {
   linearProgressClasses,
 } from '@mui/material/LinearProgress';
 
+import Container from '@/components/Container';
+
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
   borderRadius: 5,
@@ -35,11 +37,11 @@ const SectionFinancing = () => {
   };
 
   return (
-    <Box
+    <Container
       paddingY={{ md: '96px', xs: 8 }}
-      paddingX={{ md: 10, xs: 6 }}
       textAlign="center"
       id="Invest-Section"
+      maxWidth
     >
       <Typography variant="h4">Invest LXDAO</Typography>
       <Typography fontSize="20px" marginTop={2}>
@@ -122,7 +124,11 @@ const SectionFinancing = () => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <Box width="320px" display="flex" flexDirection="column">
+        <Box
+          width={{ md: '320px', xs: '100%' }}
+          display="flex"
+          flexDirection="column"
+        >
           <Box
             sx={{
               cursor: 'pointer',
@@ -134,7 +140,7 @@ const SectionFinancing = () => {
             <CloseIcon onClick={handleClose} />
           </Box>
           <DialogTitle>Contact Muxin</DialogTitle>
-          <DialogContent>
+          <DialogContent sx={{ padding: '0 48px 20px 24px' }}>
             <Typography>
               By Twitter DM:{' '}
               <Link
@@ -150,7 +156,7 @@ const SectionFinancing = () => {
           </DialogContent>
         </Box>
       </Dialog>
-    </Box>
+    </Container>
   );
 };
 

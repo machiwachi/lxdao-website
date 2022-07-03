@@ -4,13 +4,9 @@ import styled from 'styled-components';
 import { Box, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
+import Container from '@/components/Container';
+
 const SignupFormWrapper = styled.div`
-  margin: 0 48px;
-
-  ${(props) => props.theme.breakpoints.up('md')} {
-    margin-right: 80px;
-  }
-
   & input,
   & button {
     font-size: 16px;
@@ -55,40 +51,38 @@ const SignupFormWrapper = styled.div`
 const SectionMailchimp = () => {
   const theme = useTheme();
   return (
-    <Box
-      display="flex"
-      flexDirection={{ md: 'row', xs: 'column' }}
-      paddingY={{ md: '96px', xs: 8 }}
-      justifyContent={{ md: 'space-between', xs: 'center' }}
-      gap={{ md: 8, xs: 4 }}
-      backgroundColor="#F9FAFB"
-      width="100%"
-    >
-      <Box
+    <Box backgroundColor="#F9FAFB" width="100%">
+      <Container
         display="flex"
-        flexDirection="column"
-        margin={{ md: '0 0 0 80px', xs: '0 48px' }}
+        flexDirection={{ md: 'row', xs: 'column' }}
+        paddingY={{ md: '96px', xs: 8 }}
+        justifyContent={{ md: 'space-between', xs: 'center' }}
+        gap={{ md: 8, xs: 4 }}
+        margin="0 auto"
+        maxWidth
       >
-        <Typography variant="h4" marginBottom="20px">
-          Sign up for our newsletter
-        </Typography>
-        <Typography fontSize="20px" lineHeight="30px">
-          Get LXDAO latest news and updates.
-        </Typography>
-      </Box>
-      <SignupFormWrapper theme={theme}>
-        <Mailchimp
-          action="https://lxdao.us12.list-manage.com/subscribe/post?u=4e96be73f764bc67c7f964f51&amp;id=eaa29be54b"
-          fields={[
-            {
-              name: 'EMAIL',
-              placeholder: 'Email',
-              type: 'email',
-              required: true,
-            },
-          ]}
-        />
-      </SignupFormWrapper>
+        <Box display="flex" flexDirection="column">
+          <Typography variant="h4" marginBottom="20px">
+            Sign up for our newsletter
+          </Typography>
+          <Typography fontSize="20px" lineHeight="30px">
+            Get LXDAO latest news and updates.
+          </Typography>
+        </Box>
+        <SignupFormWrapper theme={theme}>
+          <Mailchimp
+            action="https://lxdao.us12.list-manage.com/subscribe/post?u=4e96be73f764bc67c7f964f51&amp;id=eaa29be54b"
+            fields={[
+              {
+                name: 'EMAIL',
+                placeholder: 'Email',
+                type: 'email',
+                required: true,
+              },
+            ]}
+          />
+        </SignupFormWrapper>
+      </Container>
     </Box>
   );
 };
