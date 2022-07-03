@@ -46,8 +46,8 @@ const SectionFinancing = () => {
       <Typography variant="h4">Invest LXDAO</Typography>
       <Typography fontSize="20px" marginTop={2}>
         We accept Pre-Seed Funding at the moment. <br />
-        This fund will be used to get LXDAO up and running, and help the
-        community buidl some valuable Web3 projects.
+        This fund will be used to get LXDAO up and running, and buidl some
+        valuable Web3 projects.
       </Typography>
       <Box
         display="flex"
