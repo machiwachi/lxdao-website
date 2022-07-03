@@ -28,8 +28,8 @@ export default function Home() {
           content="width=device-width, initial-scale=1, shrink-to-fit=no"
         />
         <title>
-          LXDAO - Bringing together buidlers to buidl and maintain "LX" projects
-          for Web3, in a sustainable manner.
+          LXDAO - Bringing together buidlers to buidl and maintain
+          &quot;LX&quot; projects for Web3, in a sustainable manner.
         </title>
         <meta
           name="description"
