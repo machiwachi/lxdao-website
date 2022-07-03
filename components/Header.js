@@ -27,7 +27,6 @@ const Header = () => {
 
   const list = () => (
     <Box
-      sx="auto"
       role="presentation"
       onClick={toggleDrawer(false)}
       onKeyDown={toggleDrawer(false)}
@@ -48,7 +47,7 @@ const Header = () => {
               scrollToSection('CoreTeam-Section');
             }}
           >
-            <Typography>Core Team</Typography>
+            <Typography sx={{ cursor: 'pointer' }}>Core Team</Typography>
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
@@ -57,7 +56,7 @@ const Header = () => {
               scrollToSection('Invest-Section');
             }}
           >
-            <Typography>Invest</Typography>
+            <Typography sx={{ cursor: 'pointer' }}>Invest LXDAO</Typography>
           </ListItemButton>
         </ListItem>
       </List>
@@ -80,7 +79,7 @@ const Header = () => {
             <Typography
               target="_blank"
               component="a"
-              href="https://discord.gg/UBAmmtBs"
+              href="https://discord.lxdao.io"
               color="primary"
             >
               <Box width="32px" component={'img'} src={'/icons/discord.svg'} />
@@ -113,6 +112,7 @@ const Header = () => {
             Projects
           </Typography>
           <Typography
+            sx={{ cursor: 'pointer' }}
             onClick={() => {
               scrollToSection('CoreTeam-Section');
             }}
@@ -120,11 +120,12 @@ const Header = () => {
             Core Team
           </Typography>
           <Typography
+            sx={{ cursor: 'pointer' }}
             onClick={() => {
               scrollToSection('Invest-Section');
             }}
           >
-            Invest
+            Invest LXDAO
           </Typography>
         </Box>
       </Box>

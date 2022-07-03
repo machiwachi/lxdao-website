@@ -4,39 +4,53 @@ import { Grid, Box, Typography } from '@mui/material';
 const coreTeamData = [
   {
     name: 'Bruce Xu',
-    title: 'Senior Web Developer, 9yrs',
-    description: 'Ex-Alibaba, FullStack, PM',
+    title: 'PM / FullStack Developer',
+    description: 'Ex-Alibaba, FullStack, 9yrs',
+    twitter: 'brucexu_eth',
     avatarUrl: '/images/bruce.jpeg',
   },
   {
+    name: 'Yootou',
+    title: 'PM / FullStack Developer',
+    description: 'Ex-Alibaba, FullStack, 13yrs',
+    twitter: '0xYootou',
+    avatarUrl: '/images/yootou.png',
+  },
+  {
     name: 'Kuncle',
-    title: 'Data infra lead, 8yrs',
-    description: 'Ex-Alibaba, BigData',
+    title: 'Big Data Developer',
+    description: 'Ex-Alibaba, Data Infra, 8yrs',
+    twitter: 'KingsUncle1',
     avatarUrl: '/images/kuncle.jpeg',
   },
   {
     name: 'Satoshi Natsu',
-    title: 'Entrepreneur',
-    description: 'Business/legal support',
+    title: 'Business / Legal support',
+    description: 'Entrepreneur',
+    twitter: 'satoshi_natsu',
     avatarUrl: '/images/satoshi.jpeg',
   },
-  {
-    name: 'Yootou',
-    title: 'Senior Web Developer, 13yrs',
-    description: 'Ex-Alibaba, FullStack, PM',
-    avatarUrl: '/images/yootou.png',
-  },
+
   {
     name: 'Muxin',
-    title: 'Senior Web Developer, 7yrs',
-    description: 'Ex-Alibaba, FrontEnd',
+    title: 'FrontEnd / Assistant',
+    description: 'Ex-Alibaba, FrontEnd, 7yrs',
+    twitter: 'muxin_eth',
     avatarUrl: '/images/muxin.jpeg',
   },
   {
-    name: 'Designer',
-    title: 'Good at UI/UX design',
-    description: '',
-    avatarUrl: '/images/designer.png',
+    name: 'Teng Wang',
+    title: 'Designer',
+    description: 'UI/UX Designer, 7yrs',
+    twitter: 'goodtombetter',
+    avatarUrl: '/images/wang.png',
+  },
+  {
+    name: 'Mrzzz',
+    title: 'Product Design / Operation',
+    description: 'Animation Pipeline Dev',
+    twitter: 'Bitzack_01',
+    avatarUrl: '/images/mrzzz.jpg',
   },
 ];
 
@@ -50,13 +64,22 @@ const TeamMemberCard = ({ data }) => (
         style={{ borderRadius: '50%' }}
       />
     </Box>
-    <Typography fontSize="18px" lineHeight="28px" color="#101828">
+    <Typography variant="h6" lineHeight="28px" color="#101828">
       {data.name}
     </Typography>
-    <Typography marginBottom="8px" color="#305FE8">
+    <Typography marginTop={1} color="#305FE8">
       {data.title}
     </Typography>
     <Typography>{data.description}</Typography>
+    <Typography
+      marginTop="4px"
+      target="_blank"
+      component="a"
+      href={'https://twitter.com/' + data.twitter}
+      color="primary"
+    >
+      <Box width="32px" component={'img'} src={'/icons/twitter.svg'} />
+    </Typography>
   </Box>
 );
 

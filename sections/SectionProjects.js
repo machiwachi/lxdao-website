@@ -8,7 +8,7 @@ const SectionProjects = () => (
     textAlign="center"
     id="Projects-Section"
   >
-    <Typography variant="h4">Projects</Typography>
+    <Typography variant="h4">Previous Projects</Typography>
     <Typography fontSize="20px" marginTop={2}>
       We buidl good, valuable, and useful things.
     </Typography>
@@ -37,6 +37,9 @@ const SectionProjects = () => (
             bottom="27px"
             width="45px"
             src="/images/gclx-logo.png"
+            sx={{
+              border: '1px solid #000',
+            }}
           ></Box>
           <Typography
             fontSize="20px"

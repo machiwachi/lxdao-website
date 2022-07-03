@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
-import { Box, Typography, Dialog } from '@mui/material';
+import {
+  Box,
+  Typography,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  Link,
+} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import LinearProgress, {
   linearProgressClasses,
@@ -36,9 +43,9 @@ const SectionFinancing = () => {
     >
       <Typography variant="h4">Invest LXDAO</Typography>
       <Typography fontSize="20px" marginTop={2}>
-        We accept Pre-Seed Funding at the moment. This fund will be used to get
-        LXDAO up and running, and help the community buidl some valuable Web3
-        projects.
+        We accept Pre-Seed Funding at the moment. <br />
+        This fund will be used to get LXDAO up and running, and help the
+        community buidl some valuable Web3 projects.
       </Typography>
       <Box
         display="flex"
@@ -75,7 +82,7 @@ const SectionFinancing = () => {
                 Pre-Seed Funding
               </Typography>
               <Typography fontSize="14px">
-                Target at 200K USDC = 15% shares.
+                Target at 200K USDC = 15%.
               </Typography>
             </Box>
             <Typography variant="h5">1K - 50K USDC / Person</Typography>
@@ -87,9 +94,12 @@ const SectionFinancing = () => {
               fontWeight="800"
               marginBottom="12px"
             >
-              100K / 200K
+              115K / 200K
             </Typography>
-            <BorderLinearProgress variant="determinate" value={50} />
+            <BorderLinearProgress
+              variant="determinate"
+              value={(115 / 200) * 100}
+            />
           </Box>
         </Box>
         <Box borderTop="1px solid #EAECF0" width="100%" paddingY={2}>
@@ -112,13 +122,32 @@ const SectionFinancing = () => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <Box width="320px" padding={3} display="flex" flexDirection="column">
-          <Box textAlign="right">
+        <Box width="320px" display="flex" flexDirection="column">
+          <Box
+            sx={{
+              cursor: 'pointer',
+            }}
+            position="absolute"
+            top="16px"
+            right="16px"
+          >
             <CloseIcon onClick={handleClose} />
           </Box>
-          <Box>
-            <Typography>contact with Muxin</Typography>
-          </Box>
+          <DialogTitle>Contact Muxin</DialogTitle>
+          <DialogContent>
+            <Typography>
+              By Twitter DM:{' '}
+              <Link
+                href={`https://twitter.com/muxin_eth`}
+                target="_blank"
+                color={'inherit'}
+              >
+                @muxin_eth
+              </Link>
+            </Typography>
+            <Typography>By Email: muxin@lxdao.io</Typography>
+            <Typography>By Discord: muxin.eth#1619</Typography>
+          </DialogContent>
         </Box>
       </Dialog>
     </Box>

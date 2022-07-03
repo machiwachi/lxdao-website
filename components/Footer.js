@@ -19,7 +19,7 @@ const Footer = () => (
         <Typography variant="h5" paddingLeft="10px">{t`LXDAO`}</Typography>
       </Box>
       <Box>
-        <Typography>© 2022 Made by LXDAO</Typography>
+        <Typography>© 2022 Buidl in LXDAO</Typography>
       </Box>
     </Box>
   </Box>

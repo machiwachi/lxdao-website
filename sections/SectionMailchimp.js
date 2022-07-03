@@ -73,7 +73,7 @@ const SectionMailchimp = () => {
           Sign up for our newsletter
         </Typography>
         <Typography fontSize="20px" lineHeight="30px">
-          Be the first to know about release and industry news and insights.
+          Get LXDAO latest news and updates.
         </Typography>
       </Box>
       <SignupFormWrapper theme={theme}>
