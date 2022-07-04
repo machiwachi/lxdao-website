@@ -138,7 +138,7 @@ const Header = () => {
         <Typography
           target="_blank"
           component="a"
-          href="https://discord.gg/UBAmmtBs"
+          href="https://discord.lxdao.io"
           color="primary"
           marginRight={2}
         >
