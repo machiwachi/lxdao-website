@@ -41,7 +41,7 @@ const SectionProjects = () => (
             backgroundRepeat: 'no-repeat',
           }}
         />
-        <Box padding="0 24px 24px 24px" boxSizing="border-box">
+        <Box padding="0 24px" boxSizing="border-box">
           <Box
             component="img"
             position="relative"
@@ -97,7 +97,7 @@ const SectionProjects = () => (
             backgroundRepeat: 'no-repeat',
           }}
         />
-        <Box padding="0 24px 24px 24px" boxSizing="border-box">
+        <Box padding="0 24px" boxSizing="border-box">
           <Box
             component="img"
             position="relative"
