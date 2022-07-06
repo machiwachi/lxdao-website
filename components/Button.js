@@ -2,7 +2,7 @@ import React from 'react';
 import { Box } from '@mui/material';
 
 // eslint-disable-next-line react/prop-types
-const Button = ({ variant, children }) => (
+const Button = ({ variant, children, ...rest }) => (
   <Box
     backgroundColor={variant === 'outlined' ? '#ffffff' : '#000000'}
     padding="12px 20px"
@@ -17,6 +17,7 @@ const Button = ({ variant, children }) => (
           variant === 'outlined' ? 'rgba(0, 0, 0, 0.05)' : 'rgba(0, 0, 0, 0.8)',
       },
     }}
+    {...rest}
   >
     {children}
   </Box>

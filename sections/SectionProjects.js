@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Typography } from '@mui/material';
 
 import Container from '@/components/Container';
+import Button from '@/components/Button';
 
 const SectionProjects = () => (
   <Container
@@ -25,15 +26,10 @@ const SectionProjects = () => (
       <Box
         display="flex"
         flexDirection="column"
-        width={{ md: '320px', xs: '100%' }}
-        border="2px solid #000000"
-        boxShadow="0 3px 6px 0 rgb(140 152 164 / 25%)"
-        borderRadius="8px"
+        width={{ md: '376px', xs: '100%' }}
+        boxShadow="0px 4px 10px 3px rgba(0, 0, 0, 0.04)"
+        borderRadius="13px"
         overflow="hidden"
-        sx={{ cursor: 'pointer' }}
-        onClick={() => {
-          window.open('https://gclx.xyz/', '_blank');
-        }}
       >
         <Box
           width="100%"
@@ -50,7 +46,7 @@ const SectionProjects = () => (
             component="img"
             position="relative"
             bottom="27px"
-            width="45px"
+            width="80px"
             src="/images/gclx-logo.png"
             padding={1}
             sx={{
@@ -59,32 +55,37 @@ const SectionProjects = () => (
             }}
           ></Box>
           <Typography
-            fontSize="20px"
+            fontSize="18px"
             lineHeight="30px"
             color="#101828"
-            marginBottom="8px"
+            marginBottom={3}
           >
             GuoChanLiangXin
           </Typography>
-          <Typography fontSize="16px" lineHeight="24px">
+          <Typography fontSize="16px" lineHeight="28px" textAlign="left">
             GCLX NFT project is a Performance Art. It made by 1000 randomly
             generated NFTs, sold for 0.01 ETH. Using funny content to tell
             Chinese NFT players what NFTs truely are.
           </Typography>
+          <Button
+            marginY="40px"
+            marginX="auto"
+            width="150px"
+            onClick={() => {
+              window.location.href = 'https://gclx.xyz/';
+            }}
+          >
+            More
+          </Button>
         </Box>
       </Box>
       <Box
         display="flex"
         flexDirection="column"
-        width={{ md: '320px', xs: '100%' }}
-        border="2px solid #000000"
-        boxShadow="0 3px 6px 0 rgb(140 152 164 / 25%)"
-        borderRadius="8px"
+        width={{ md: '376px', xs: '100%' }}
+        boxShadow="0px 4px 10px 3px rgba(0, 0, 0, 0.04)"
+        borderRadius="13px"
         overflow="hidden"
-        sx={{ cursor: 'pointer' }}
-        onClick={() => {
-          window.open('https://myfirstnft.info/', '_blank');
-        }}
       >
         <Box
           width="100%"
@@ -101,7 +102,7 @@ const SectionProjects = () => (
             component="img"
             position="relative"
             bottom="27px"
-            width="45px"
+            width="80px"
             src="/images/mfnft-logo.png"
             padding={1}
             sx={{
@@ -110,18 +111,28 @@ const SectionProjects = () => (
             }}
           ></Box>
           <Typography
-            fontSize="20px"
+            fontSize="18px"
             lineHeight="30px"
             color="#101828"
-            marginBottom={1}
+            marginBottom={3}
           >
             My First NFT
           </Typography>
-          <Typography fontSize="16px" lineHeight="24px">
+          <Typography fontSize="16px" lineHeight="28px" textAlign="left">
             MyFirstNFT is a non-profit instructional project for Web3 newbies.
             Get a FREE NFT while learning about Web3, underlying values of NFT,
             and security principles.
           </Typography>
+          <Button
+            marginY="40px"
+            marginX="auto"
+            width="150px"
+            onClick={() => {
+              window.location.href = 'https://myfirstnft.info/';
+            }}
+          >
+            More
+          </Button>
         </Box>
       </Box>
     </Box>

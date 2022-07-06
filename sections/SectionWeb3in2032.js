@@ -45,10 +45,9 @@ const web3in2032Data = [
 
 const NFTCard = ({ data }) => (
   <Box
-    padding="16px"
-    borderRadius="8px"
-    boxShadow="0 3px 6px 0 rgb(140 152 164 / 25%)"
-    border="2px solid #000000"
+    padding="16px 20px"
+    borderRadius="13px"
+    boxShadow="0px 4px 10px 3px rgba(0, 0, 0, 0.04)"
     display="flex"
     flexDirection="column"
     justifyContent="space-between"
@@ -57,7 +56,7 @@ const NFTCard = ({ data }) => (
     width="100%"
   >
     <Box>
-      <Typography fontSize="14px" marginBottom="5px">
+      <Typography fontSize="14px" marginBottom="10px">
         {data.createTime}
       </Typography>
       <Typography color="#101828">{data.content}</Typography>
