@@ -72,7 +72,7 @@ const SectionProjects = () => (
             marginX="auto"
             width="150px"
             onClick={() => {
-              window.location.href = 'https://gclx.xyz/';
+              window.open('https://gclx.xyz/', '_blank');
             }}
           >
             More
@@ -128,7 +128,7 @@ const SectionProjects = () => (
             marginX="auto"
             width="150px"
             onClick={() => {
-              window.location.href = 'https://myfirstnft.info/';
+              window.open('https://myfirstnft.info/', '_blank');
             }}
           >
             More
