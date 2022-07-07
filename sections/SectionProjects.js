@@ -1,7 +1,8 @@
 import React from 'react';
-import { Box, Typography, Grid, Card, Link } from '@mui/material';
+import { Box, Typography, Grid, Card } from '@mui/material';
 
 import Container from '@/components/Container';
+import Button from '@/components/Button';
 
 const works = [
   {
@@ -78,7 +79,7 @@ const SectionProjects = () => (
                 sx={{
                   position: 'relative',
                   borderRadius: 4,
-                  paddingBottom: '120px',
+                  paddingBottom: 16,
                 }}
               >
                 <Box>
@@ -96,39 +97,20 @@ const SectionProjects = () => (
                 <Typography className="work-item-title">
                   {work.title}
                 </Typography>
-                <Typography margin={2} marginTop={3} color="#666f85" sx={{}}>
+                <Typography margin={2} marginTop={4} color="#666f85" sx={{}}>
                   {work.description}
                 </Typography>
-                <Link
-                  sx={{
-                    width: '120px',
-                    height: '38px',
-                    background: '#000000',
-                    borderRadius: '26px',
-                    color: '#ffffff',
-                    display: 'block',
-                    textAlign: 'center',
-                    lineHeight: '38px',
-                    fontStyle: 'normal',
-                    fontWeight: '400',
-                    fontSize: '16px',
-                    margin: '0 auto',
-                    marginTop: '20px',
-                    position: 'absolute',
-                    bottom: '40px',
-                    left: '50%',
-                    marginLeft: '-60px',
-                    ':hover': {
-                      textDecoration: 'none',
-                    },
+                <Button
+                  width="150px"
+                  position="absolute"
+                  bottom="40px"
+                  left="calc(50% - 92px)"
+                  onClick={() => {
+                    window.open(work.url, '_blank');
                   }}
-                  href={work.url}
-                  target="_blank"
-                  className="work-item-link"
-                  rel="noreferrer"
                 >
                   More
-                </Link>
+                </Button>
               </Card>
             </Grid>
           );
