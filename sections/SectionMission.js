@@ -15,7 +15,7 @@ const SectionMission = () => (
         Our Vision & Consensus
       </Typography>
       <Typography variant="h4">
-        The technologies, concepts and ideas of Web3 will be used by a billion
+        The technologies, concepts, and ideas of Web3 will be used by a billion
         people in a decade.
       </Typography>
     </Container>
