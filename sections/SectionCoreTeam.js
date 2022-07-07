@@ -48,11 +48,18 @@ const coreTeamData = [
     avatarUrl: '/images/wang.png',
   },
   {
-    name: 'Mrzzz',
+    name: 'Marcus',
     title: 'Product Design / Operation',
     description: '3D Animation Artist, 4yrs',
     twitter: 'Bitzack_01',
     avatarUrl: '/images/mrzzz.jpg',
+  },
+  {
+    name: 'DaoDAO',
+    title: 'PM / Designer',
+    description: 'Product Design, 13yrs',
+    twitter: 'daodao',
+    avatarUrl: '/images/daodao.jpeg',
   },
 ];
 

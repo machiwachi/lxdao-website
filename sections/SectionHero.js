@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Link } from '@mui/material';
 import StyledToolTip from '@/components/StyledToolTip';
 import Container from '@/components/Container';
 
@@ -95,6 +95,17 @@ const SectionHero = () => {
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen={true}
         ></iframe>
+      </Box>
+      <Box marginTop={2}>
+        <Typography variant="body2">
+          <Link
+            href={`https://lxdao.sharepoint.com/:b:/s/LXDAO140/EXLusoCCqI5HuNMFHnLcEvwBELE_s3RZtQAA4USQfPDl2w?e=aA0YsC`}
+            target="_blank"
+            color={'inherit'}
+          >
+            (Download the latest PDF Pitch Deck)
+          </Link>
+        </Typography>
       </Box>
     </Container>
   );

@@ -18,7 +18,6 @@ export default function Home() {
     <div>
       <Head>
         <meta charSet="utf-8" />
-        {/* <link rel="icon" href="/favicon.png" /> */}
         <link
           rel="stylesheet"
           href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -27,6 +26,7 @@ export default function Home() {
           name="viewport"
           content="width=device-width, initial-scale=1, shrink-to-fit=no"
         />
+        <link rel="icon" href="/icons/favicon.png" />
         <title>
           LXDAO - Bringing together buidlers to buidl and maintain
           &quot;LX&quot; projects for Web3, in a sustainable manner.
