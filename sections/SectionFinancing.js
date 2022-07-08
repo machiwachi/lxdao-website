@@ -96,11 +96,11 @@ const SectionFinancing = () => {
               fontWeight="800"
               marginBottom="12px"
             >
-              118K / 200K
+              168K / 200K
             </Typography>
             <BorderLinearProgress
               variant="determinate"
-              value={(118 / 200) * 100}
+              value={(168 / 200) * 100}
             />
           </Box>
         </Box>
