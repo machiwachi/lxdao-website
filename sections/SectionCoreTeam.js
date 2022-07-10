@@ -61,6 +61,12 @@ const coreTeamData = [
     twitter: 'daodao',
     avatarUrl: '/images/daodao.jpeg',
   },
+  {
+    name: 'Kahn Yuan',
+    title: 'PM / FullStack Developer',
+    description: 'Ex-Bybit, Mobile Dev, 12yrs',
+    avatarUrl: '/images/kahn.jpg',
+  },
 ];
 
 const TeamMemberCard = ({ data }) => (
@@ -80,15 +86,17 @@ const TeamMemberCard = ({ data }) => (
       {data.title}
     </Typography>
     <Typography>{data.description}</Typography>
-    <Typography
-      marginTop="4px"
-      target="_blank"
-      component="a"
-      href={'https://twitter.com/' + data.twitter}
-      color="primary"
-    >
-      <Box width="32px" component={'img'} src={'/icons/twitter.svg'} />
-    </Typography>
+    {data.twitter && (
+      <Typography
+        marginTop="4px"
+        target="_blank"
+        component="a"
+        href={'https://twitter.com/' + data.twitter}
+        color="primary"
+      >
+        <Box width="32px" component={'img'} src={'/icons/twitter.svg'} />
+      </Typography>
+    )}
   </Box>
 );
 
