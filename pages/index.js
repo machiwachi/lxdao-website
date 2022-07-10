@@ -9,7 +9,7 @@ import SectionWeb3in2032 from '@/sections/SectionWeb3in2032';
 import SectionMission from '@/sections/SectionMission';
 import SectionProjects from '@/sections/SectionProjects';
 import SectionCoreTeam from '@/sections/SectionCoreTeam';
-import SectionFinancing from '@/sections/SectionFinancing';
+// import SectionFinancing from '@/sections/SectionFinancing';
 import SectionMailchimp from '@/sections/SectionMailchimp';
 import Footer from '@/components/Footer';
 
@@ -73,7 +73,6 @@ Our mission: Bringing together buidlers to buidl and maintain LX projects for We
         <SectionWeb3in2032 />
         <SectionProjects />
         <SectionCoreTeam />
-        <SectionFinancing />
         <SectionMailchimp />
         <Footer />
       </Layout>

@@ -115,14 +115,14 @@ const Header = () => {
           >
             Core Team
           </Typography>
-          <Typography
+          {/* <Typography
             sx={{ cursor: 'pointer' }}
             onClick={() => {
               scrollToSection('Invest-Section');
             }}
           >
             Invest LXDAO
-          </Typography>
+          </Typography> */}
         </Box>
       </Box>
       <Box display={{ md: 'block', xs: 'none' }}>
