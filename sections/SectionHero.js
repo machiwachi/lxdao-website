@@ -89,7 +89,7 @@ const SectionHero = () => {
         <iframe
           width="100%"
           height="100%"
-          src="https://www.youtube.com/embed/TDkWZNSs9NU"
+          src="https://www.youtube.com/embed/LIbl-UtP7zw"
           title="YouTube video player"
           frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -99,7 +99,7 @@ const SectionHero = () => {
       <Box marginTop={2}>
         <Typography variant="body2">
           <Link
-            href={`https://lxdao.sharepoint.com/:b:/s/LXDAO140/EXLusoCCqI5HuNMFHnLcEvwBELE_s3RZtQAA4USQfPDl2w?e=aA0YsC`}
+            href={`https://lxdao.sharepoint.com/:b:/s/LXDAO140/ETQ8Yu6mR79GhhXOgdy_HDgBYP9BE_-I-AJINHkPWL70AQ?e=S8bf2n`}
             target="_blank"
             color={'inherit'}
           >
