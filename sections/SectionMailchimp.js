@@ -59,7 +59,7 @@ const SectionMailchimp = () => {
         justifyContent={{ md: 'space-between', xs: 'center' }}
         gap={{ md: 8, xs: 4 }}
         margin="0 auto"
-        maxWidth
+        maxWidth="1200px"
       >
         <Box display="flex" flexDirection="column">
           <Typography variant="h4" marginBottom="20px">

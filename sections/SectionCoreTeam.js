@@ -105,7 +105,7 @@ const SectionCoreTeam = () => (
     paddingY={{ md: '96px', xs: 8 }}
     textAlign="center"
     id="CoreTeam-Section"
-    maxWidth
+    maxWidth="1200px"
   >
     <Typography variant="h4">LXDAO Foundation Core Team</Typography>
     <Typography fontSize="20px" marginTop={2}>

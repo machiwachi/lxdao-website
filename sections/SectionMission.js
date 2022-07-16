@@ -8,7 +8,7 @@ const SectionMission = () => (
     <Container
       paddingY={{ md: '96px', xs: 8 }}
       textAlign="center"
-      maxWidth
+      maxWidth="1200px"
       margin="0 auto"
     >
       <Typography marginBottom={{ md: 6, xs: 4 }} fontSize="20px">

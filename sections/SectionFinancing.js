@@ -1,39 +1,143 @@
-import React, { useState } from 'react';
-import { styled } from '@mui/material/styles';
+import React from 'react';
+import styled from 'styled-components';
+import Mailchimp from 'react-mailchimp-form';
+import { makeStyles } from '@mui/styles';
+import { useTheme } from '@mui/material/styles';
 import {
-  Box,
   Typography,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  Link,
+  Stepper,
+  Step,
+  StepLabel,
+  StepContent,
 } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-import LinearProgress, {
-  linearProgressClasses,
-} from '@mui/material/LinearProgress';
 
 import Container from '@/components/Container';
 
-const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
-  height: 10,
-  borderRadius: 5,
-  width: '100%',
-  [`&.${linearProgressClasses.colorPrimary}`]: {
-    backgroundColor:
-      theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
+const SignupFormWrapper = styled.div`
+  margin-top: 20px;
+
+  & form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex-wrap: wrap;
+
+    ${(props) => props.theme.breakpoints.up('sm')} {
+      flex-direction: row;
+      justify-content: start;
+    }
+  }
+
+  & input,
+  & button {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  & input {
+    width: 240px;
+    height: 24px;
+    padding: 12px 14px;
+    margin-right: 16px;
+    border-radius: 8px;
+    border: 1px solid #d0d5dd;
+
+    ${(props) => props.theme.breakpoints.up('sm')} {
+      width: 360px;
+    }
+  }
+
+  & button {
+    background-color: #000000;
+    padding: 12px 20px;
+    outline: none;
+    border: none;
+    border-radius: 8px;
+    color: #ffffff;
+    cursor: pointer;
+    margin-top: 12px;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+
+    ${(props) => props.theme.breakpoints.up('sm')} {
+      margin-top: 0;
+    }
+  }
+
+  & .msg-alert > p {
+    color: #00fb8c !important;
+  }
+`;
+
+const ActiveStepCircle = styled.div`
+  background-image: linear-gradient(#236adf, #64cceb);
+`;
+
+const UnStartedStepCircle = styled.div`
+  background-color: #d9d9d9;
+`;
+
+const steps = [
+  {
+    label: 'Initial Funding 10th July 2022',
+    description: `We have raised 200,000 USDC from our community, friends, and buidlers who share our vision,and the funds will be used for getting LXDAO up and running, and Web3 projects development.`,
+    highlightDescription: 'All funds are from individuals, no VCs.',
   },
-  [`& .${linearProgressClasses.bar}`]: {
-    borderRadius: 5,
-    backgroundColor: theme.palette.mode === 'light' ? '#305FE8' : '#308fe8',
+  {
+    label: 'Next Round Funding',
+    description:
+      'Please provide your email address if you are interested in learning more about our upcoming round of funding. We will get in touch with you as soon as there are any significant changes to our product or when funding becomes available.',
+    emailCollector: true,
   },
-}));
+];
 
 const SectionFinancing = () => {
-  const [openDialog, setOpenDialog] = useState(false);
+  const useStyles = makeStyles(() => ({
+    root: {
+      '& .MuiStepLabel-root': {
+        padding: '12px 0',
+      },
+      '& .MuiStepLabel-label': {
+        color: '#000000',
+        fontSize: '20px',
+        lineHeight: '32px',
+        fontWeight: '600',
+      },
+      '& .MuiStepContent-root': {
+        marginLeft: '19px',
+        paddingLeft: '58px',
+      },
+      '& .MuiStepConnector-root': {
+        marginLeft: '19px',
+      },
+      '& .step-circle': {
+        width: '38px',
+        height: '38px',
+        borderRadius: '50%',
+        color: '#ffffff',
+        fontSize: '20px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: '30px',
+      },
+    },
+  }));
 
-  const handleClose = () => {
-    setOpenDialog(false);
+  const styles = useStyles();
+  const theme = useTheme();
+
+  const iconStep = {
+    1: ActiveStepCircle,
+    2: UnStartedStepCircle,
+  };
+
+  const StepIconComponent = (props) => {
+    const Icon = iconStep[props.icon];
+
+    return <Icon className="step-circle">{props.icon}</Icon>;
   };
 
   return (
@@ -41,121 +145,58 @@ const SectionFinancing = () => {
       paddingY={{ md: '96px', xs: 8 }}
       textAlign="center"
       id="Invest-Section"
-      maxWidth
+      maxWidth="800px"
     >
-      <Typography variant="h4">Invest LXDAO</Typography>
-      <Typography fontSize="20px" marginTop={2}>
-        We accept Pre-Seed Funding at the moment. <br />
-        This fund will be used to get LXDAO up and running, and buidl some
-        valuable Web3 projects.
+      <Typography variant="h3" marginBottom={12}>
+        Invest LXDAO
       </Typography>
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        margin="50px auto"
-        border="1px solid #EAECF0"
-        boxShadow="0px 1px 3px rgba(16, 24, 40, 0.1), 0px 1px 2px rgba(16, 24, 40, 0.06)"
-        borderRadius="8px"
-        width={{ md: '50%', xs: '100%' }}
-      >
-        <Box
-          padding={3}
-          display="flex"
-          flexDirection="column"
-          gap={4}
-          width="100%"
-          alignItems="flex-start"
-          boxSizing="border-box"
-        >
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="space-between"
-            width="100%"
-          >
-            <Box textAlign="left">
+      <Stepper activeStep={1} orientation="vertical" className={styles.root}>
+        {steps.map((step, index) => (
+          <Step key={step.label} active={index === 0 || index === 1}>
+            <StepLabel StepIconComponent={StepIconComponent}>
+              {step.label}
+            </StepLabel>
+            <StepContent>
               <Typography
-                fontSize="18px"
-                lineHeight="28px"
-                color="#101828"
-                marginBottom={1}
+                textAlign="left"
+                color="#667085"
+                fontSize="20px"
+                lineHeight="32px"
+                fontWeight="400"
               >
-                Pre-Seed Funding
+                {step.description}
               </Typography>
-              <Typography fontSize="14px">
-                Target at 200K USDC = 15%.
-              </Typography>
-            </Box>
-            <Typography variant="h5">1K - 50K USDC / Person</Typography>
-          </Box>
-          <Box textAlign="left" width="100%">
-            <Typography
-              fontSize="14px"
-              color="#101828"
-              fontWeight="800"
-              marginBottom="12px"
-            >
-              168K / 200K
-            </Typography>
-            <BorderLinearProgress
-              variant="determinate"
-              value={(168 / 200) * 100}
-            />
-          </Box>
-        </Box>
-        <Box borderTop="1px solid #EAECF0" width="100%" paddingY={2}>
-          <Typography
-            textAlign="right"
-            marginRight="20px"
-            color="#305FE8"
-            sx={{ cursor: 'pointer' }}
-            onClick={() => {
-              setOpenDialog(true);
-            }}
-          >
-            I would like to invest LXDAO
-          </Typography>
-        </Box>
-      </Box>
-      <Dialog
-        open={openDialog}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <Box
-          width={{ md: '320px', xs: '100%' }}
-          display="flex"
-          flexDirection="column"
-        >
-          <Box
-            sx={{
-              cursor: 'pointer',
-            }}
-            position="absolute"
-            top="16px"
-            right="16px"
-          >
-            <CloseIcon onClick={handleClose} />
-          </Box>
-          <DialogTitle>Contact Muxin</DialogTitle>
-          <DialogContent sx={{ padding: '0 48px 20px 24px' }}>
-            <Typography>
-              By Twitter DM:{' '}
-              <Link
-                href={`https://twitter.com/muxin_eth`}
-                target="_blank"
-                color={'inherit'}
-              >
-                @muxin_eth
-              </Link>
-            </Typography>
-            <Typography>By Email: muxin@lxdao.io</Typography>
-            <Typography>By Discord: muxin.eth#1619</Typography>
-          </DialogContent>
-        </Box>
-      </Dialog>
+              {step.highlightDescription && (
+                <Typography
+                  textAlign="left"
+                  color="#000000"
+                  fontSize="20px"
+                  lineHeight="32px"
+                  fontWeight="600"
+                  marginTop={3}
+                >
+                  {step.highlightDescription}
+                </Typography>
+              )}
+              {step.emailCollector && (
+                <SignupFormWrapper theme={theme}>
+                  <Mailchimp
+                    action="https://lxdao.us12.list-manage.com/subscribe/post?u=4e96be73f764bc67c7f964f51&amp;id=eaa29be54b"
+                    fields={[
+                      {
+                        name: 'EMAIL',
+                        placeholder: 'Email',
+                        type: 'email',
+                        required: true,
+                      },
+                    ]}
+                  />
+                </SignupFormWrapper>
+              )}
+            </StepContent>
+          </Step>
+        ))}
+      </Stepper>
     </Container>
   );
 };

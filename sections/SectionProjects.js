@@ -56,7 +56,7 @@ const SectionProjects = () => (
     paddingY={{ md: '96px', xs: 8 }}
     textAlign="center"
     id="Projects-Section"
-    maxWidth
+    maxWidth="1200px"
   >
     <Typography variant="h4">Previous Projects</Typography>
     <Typography fontSize="20px" marginTop={2}>

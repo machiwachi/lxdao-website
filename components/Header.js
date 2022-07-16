@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useRouter } from 'next/router';
 import { t } from '@lingui/macro';
 import { Box, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -13,6 +14,7 @@ import Container from './Container';
 
 const Header = () => {
   const [openMenu, setOpenMenu] = useState(false);
+  const router = useRouter();
 
   const toggleDrawer = (open) => (event) => {
     if (
@@ -96,8 +98,17 @@ const Header = () => {
       borderBottom="1px solid #F2F4F7"
     >
       <Box display="flex" alignItems="center">
-        <Box width="32px" component={'img'} src={'/icons/logo.svg'} />
-        <Typography variant="h5" paddingLeft="10px">{t`LXDAO`}</Typography>
+        <Box
+          onClick={() => {
+            router.push('/');
+          }}
+          sx={{ cursor: 'pointer' }}
+          display="flex"
+        >
+          <Box width="32px" component={'img'} src={'/icons/logo.svg'} />
+          <Typography variant="h5" paddingLeft="10px">{t`LXDAO`}</Typography>
+        </Box>
+
         <Box gap="24px" marginLeft={7} display={{ md: 'flex', xs: 'none' }}>
           <Typography
             sx={{ cursor: 'pointer' }}
@@ -115,14 +126,14 @@ const Header = () => {
           >
             Core Team
           </Typography>
-          {/* <Typography
+          <Typography
             sx={{ cursor: 'pointer' }}
             onClick={() => {
-              scrollToSection('Invest-Section');
+              router.push('/invest');
             }}
           >
             Invest LXDAO
-          </Typography> */}
+          </Typography>
         </Box>
       </Box>
       <Box display={{ md: 'block', xs: 'none' }}>
