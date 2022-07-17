@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
-import React from 'react';
+import React, { useEffect } from 'react';
 import Head from 'next/head';
-
+import { useRouter } from 'next/router';
 import Layout from '@/components/Layout';
 import Header from '@/components/Header';
 import SectionHero from '@/sections/SectionHero';
@@ -13,7 +13,18 @@ import SectionCoreTeam from '@/sections/SectionCoreTeam';
 import SectionMailchimp from '@/sections/SectionMailchimp';
 import Footer from '@/components/Footer';
 
+import { scrollToSection } from '@/utils/utility';
+
 export default function Home() {
+  const router = useRouter();
+  const scrollToSectionName = router?.query?.scrollToSection;
+
+  useEffect(() => {
+    if (scrollToSectionName) {
+      scrollToSection(scrollToSectionName);
+    }
+  }, []);
+
   return (
     <div>
       <Head>

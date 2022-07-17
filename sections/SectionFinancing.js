@@ -82,7 +82,7 @@ const UnStartedStepCircle = styled.div`
 const steps = [
   {
     label: 'Initial Funding 10th July 2022',
-    description: `We have raised 200,000 USDC from our community, friends, and buidlers who share our vision,and the funds will be used for getting LXDAO up and running, and Web3 projects development.`,
+    description: `We have raised 200,000 USDC from our community, friends, and buidlers who share our vision, and the funds will be used for getting LXDAO up and running, and Web3 projects development.`,
     highlightDescription: 'All funds are from individuals, no VCs.',
   },
   {

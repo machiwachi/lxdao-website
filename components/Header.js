@@ -15,6 +15,7 @@ import Container from './Container';
 const Header = () => {
   const [openMenu, setOpenMenu] = useState(false);
   const router = useRouter();
+  const route = router.route;
 
   const toggleDrawer = (open) => (event) => {
     if (
@@ -113,7 +114,14 @@ const Header = () => {
           <Typography
             sx={{ cursor: 'pointer' }}
             onClick={() => {
-              scrollToSection('Projects-Section');
+              if (route === '/') {
+                scrollToSection('Projects-Section');
+              } else {
+                router.push({
+                  pathname: '/',
+                  query: { scrollToSection: 'Projects-Section' },
+                });
+              }
             }}
           >
             Projects
@@ -121,7 +129,14 @@ const Header = () => {
           <Typography
             sx={{ cursor: 'pointer' }}
             onClick={() => {
-              scrollToSection('CoreTeam-Section');
+              if (route === '/') {
+                scrollToSection('CoreTeam-Section');
+              } else {
+                router.push({
+                  pathname: '/',
+                  query: { scrollToSection: 'CoreTeam-Section' },
+                });
+              }
             }}
           >
             Core Team
