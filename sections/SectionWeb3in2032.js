@@ -3,6 +3,7 @@ import React from 'react';
 import { Grid, Box, Typography } from '@mui/material';
 
 import Container from '@/components/Container';
+import Button from '@/components/Button';
 
 const web3in2032Data = [
   {
@@ -99,15 +100,28 @@ const SectionWeb3in2032 = () => {
           })}
         </Grid>
       </Box>
-      {/* <Box
+      <Box
         marginTop={{ md: 8, xs: 4 }}
         display="flex"
         justifyContent="center"
         gap={2}
       >
-        <Button variant="outlined">View More</Button>
-        <Button>Describe your life in 2032</Button>
-      </Box> */}
+        <Button
+          variant="outlined"
+          onClick={() => {
+            window.open('http://web3in2032.io/', '_blank');
+          }}
+        >
+          View More
+        </Button>
+        <Button
+          onClick={() => {
+            window.open('http://web3in2032.io/', '_blank');
+          }}
+        >
+          Describe your life in 2032
+        </Button>
+      </Box>
       <Typography variant="body1" marginTop={4}>
         The future of Web3 should be colorful, free, and exciting. We're going
         to buidl projects to make it happen.
