@@ -13,7 +13,7 @@ const SectionHero = () => {
       justifyContent="center"
       alignItems="center"
       textAlign="center"
-      maxWidth
+      maxWidth="1200px"
     >
       <Typography variant="h3" lineHeight="1.5em" marginBottom="20px">
         LXDAO is an{' '}

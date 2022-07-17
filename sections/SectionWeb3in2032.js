@@ -71,7 +71,11 @@ const NFTCard = ({ data }) => (
 
 const SectionWeb3in2032 = () => {
   return (
-    <Container paddingY={{ md: '96px', xs: 8 }} textAlign="center" maxWidth>
+    <Container
+      paddingY={{ md: '96px', xs: 8 }}
+      textAlign="center"
+      maxWidth="1200px"
+    >
       <Typography variant="h4">
         What a day in the Web3 life look like in 2032?
       </Typography>
