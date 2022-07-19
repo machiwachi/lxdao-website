@@ -67,6 +67,13 @@ const coreTeamData = [
     description: 'Ex-Bybit, Mobile Dev, 12yrs',
     avatarUrl: '/images/kahn.jpg',
   },
+  {
+    name: 'Super Lee',
+    title: 'PM / FrontEnd',
+    description: 'Ex-Alibaba, Ex-ByteDance, 13yrs',
+    twitter: 'besteric',
+    avatarUrl: '/images/super-lee.png',
+  },
 ];
 
 const TeamMemberCard = ({ data }) => (
