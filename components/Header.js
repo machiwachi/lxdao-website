@@ -114,14 +114,7 @@ const Header = () => {
           <Typography
             sx={{ cursor: 'pointer' }}
             onClick={() => {
-              if (route === '/') {
-                scrollToSection('Projects-Section');
-              } else {
-                router.push({
-                  pathname: '/',
-                  query: { scrollToSection: 'Projects-Section' },
-                });
-              }
+              router.push('/projects');
             }}
           >
             Projects
