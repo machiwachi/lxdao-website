@@ -26,7 +26,7 @@ const works = [
     logo: '/works/2-logo.png',
     title: 'GuoChanLiangXin',
     description:
-      'GCLX NFT project is a Performance Art. It made by 1000 randomly generated NFTs, sold for 0.01 ETH. Using funny content to tell Chinese NFT players what NFTs truly are.',
+      'GCLX NFT project is a Performance Art. It is made by 1000 randomly generated NFTs, sold for 0.01 ETH. Using funny content to tell Chinese NFT players what NFTs truly are.',
     url: 'https://gclx.xyz/',
   },
 ];
