@@ -57,6 +57,15 @@ const Header = () => {
         <ListItem disablePadding>
           <ListItemButton
             onClick={() => {
+              window.open('https://forum.lxdao.io/', '_blank');
+            }}
+          >
+            <Typography sx={{ cursor: 'pointer' }}>Forum</Typography>
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton
+            onClick={() => {
               scrollToSection('Invest-Section');
             }}
           >
@@ -133,6 +142,14 @@ const Header = () => {
             }}
           >
             Core Team
+          </Typography>
+          <Typography
+            sx={{ cursor: 'pointer' }}
+            onClick={() => {
+              window.open('https://forum.lxdao.io/', '_blank');
+            }}
+          >
+            Forum
           </Typography>
           <Typography
             sx={{ cursor: 'pointer' }}
