@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { t } from '@lingui/macro';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Link } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import List from '@mui/material/List';
@@ -147,7 +147,31 @@ const Header = () => {
               router.push('/invest');
             }}
           >
-            Invest LXDAO
+            Invest
+          </Typography>
+          <Typography>
+            <Link
+              href={`https://github.com/lxdao-official`}
+              target="_blank"
+              color={'inherit'}
+              sx={{
+                textDecoration: 'none',
+              }}
+            >
+              GitHub
+            </Link>
+          </Typography>
+          <Typography>
+            <Link
+              href={`https://forum.lxdao.io/`}
+              target="_blank"
+              color={'inherit'}
+              sx={{
+                textDecoration: 'none',
+              }}
+            >
+              Forum
+            </Link>
           </Typography>
         </Box>
       </Box>
