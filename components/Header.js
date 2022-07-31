@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { t } from '@lingui/macro';
-import { Box, Typography, Link } from '@mui/material';
+import { Box, Typography, Link, Menu, MenuItem } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
@@ -14,6 +15,8 @@ import Container from './Container';
 
 const Header = () => {
   const [openMenu, setOpenMenu] = useState(false);
+  const [community, setCommunity] = useState(null);
+  const [governance, setGovernance] = useState(null);
   const router = useRouter();
   const route = router.route;
 
@@ -27,6 +30,17 @@ const Header = () => {
     }
 
     setOpenMenu(open);
+  };
+
+  const handleMenuClick = (event, menu) => {
+    menu === 'community'
+      ? setCommunity(event.currentTarget)
+      : setGovernance(event.currentTarget);
+  };
+
+  const handleCommunityMenuClose = () => {
+    setCommunity(null);
+    setGovernance(null);
   };
 
   const list = () => (
@@ -173,61 +187,125 @@ const Header = () => {
           >
             Core Team
           </Typography>
-          <Typography>
-            <Link
-              href={`https://github.com/lxdao-official`}
-              target="_blank"
-              color={'inherit'}
-              sx={{
-                textDecoration: 'none',
+          <Typography sx={{ cursor: 'pointer' }}>
+            <span
+              style={{ float: 'left' }}
+              onMouseOver={(event) => {
+                handleMenuClick(event, 'community');
               }}
             >
-              GitHub
-            </Link>
+              Community
+            </span>
+            <KeyboardArrowDownIcon />
+            <Menu
+              id="community-menu"
+              anchorEl={community}
+              open={Boolean(community)}
+              onClose={() => {
+                handleCommunityMenuClose();
+              }}
+              MenuListProps={{ onMouseLeave: () => handleCommunityMenuClose() }}
+            >
+              <MenuItem
+                onClick={() => {
+                  handleCommunityMenuClose();
+                }}
+              >
+                <Link
+                  href={`https://forum.lxdao.io/`}
+                  target="_blank"
+                  color={'inherit'}
+                  sx={{
+                    textDecoration: 'none',
+                  }}
+                >
+                  Forum
+                </Link>
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  handleCommunityMenuClose();
+                }}
+              >
+                <Link
+                  href={`https://github.com/lxdao-official`}
+                  target="_blank"
+                  color={'inherit'}
+                  sx={{
+                    textDecoration: 'none',
+                  }}
+                >
+                  GitHub
+                </Link>
+              </MenuItem>
+            </Menu>
           </Typography>
           <Typography>
-            <Link
-              href={`https://forum.lxdao.io/`}
-              target="_blank"
-              color={'inherit'}
-              sx={{
-                textDecoration: 'none',
+            <span
+              style={{ float: 'left' }}
+              onMouseOver={(event) => {
+                handleMenuClick(event, 'governance');
               }}
             >
-              Forum
-            </Link>
-          </Typography>
-          <Typography>
-            <Link
-              href={`https://forum.lxdao.io/c/governance/weekly/11`}
-              target="_blank"
-              color={'inherit'}
-              sx={{
-                textDecoration: 'none',
+              Governance
+            </span>
+            <KeyboardArrowDownIcon />
+            <Menu
+              id="governance-menu"
+              anchorEl={governance}
+              open={Boolean(governance)}
+              onClose={() => {
+                handleCommunityMenuClose();
               }}
+              MenuListProps={{ onMouseLeave: () => handleCommunityMenuClose() }}
             >
-              Weekly
-            </Link>
-          </Typography>
-          <Typography>
-            <Link
-              href={`https://forum.lxdao.io/c/governance/monthly-ama/12`}
-              target="_blank"
-              color={'inherit'}
-              sx={{
-                textDecoration: 'none',
-              }}
-            >
-              AMA
-            </Link>
-          </Typography>
-          <Typography
-            sx={{ cursor: 'pointer' }}
-            onClick={() => {
-              router.push('/invest');
-            }}
-          >
-            Investment
+              <MenuItem
+                onClick={() => {
+                  handleCommunityMenuClose();
+                }}
+              >
+                <Link
+                  href={`https://forum.lxdao.io/c/governance/weekly/11`}
+                  target="_blank"
+                  color={'inherit'}
+                  sx={{
+                    textDecoration: 'none',
+                  }}
+                >
+                  Weekly
+                </Link>
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  handleCommunityMenuClose();
+                }}
+              >
+                <Link
+                  href={`https://forum.lxdao.io/c/governance/monthly-ama/12`}
+                  target="_blank"
+                  color={'inherit'}
+                  sx={{
+                    textDecoration: 'none',
+                  }}
+                >
+                  AMA
+                </Link>
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  handleCommunityMenuClose();
+                }}
+              >
+                <Typography
+                  sx={{ cursor: 'pointer' }}
+                  onClick={() => {
+                    router.push('/invest');
+                  }}
+                >
+                  Invest
+                </Typography>
+              </MenuItem>
+            </Menu>
           </Typography>
         </Box>
       </Box>
