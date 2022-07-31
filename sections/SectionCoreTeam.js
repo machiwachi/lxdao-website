@@ -68,7 +68,7 @@ const coreTeamData = [
     avatarUrl: '/images/kahn.jpg',
   },
   {
-    name: 'Super Lee',
+    name: 'Black3',
     title: 'PM / FrontEnd',
     description: 'Ex-Alibaba, Ex-ByteDance, 13yrs',
     twitter: 'besteric',
