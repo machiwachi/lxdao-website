@@ -57,6 +57,15 @@ const Header = () => {
         <ListItem disablePadding>
           <ListItemButton
             onClick={() => {
+              window.open('https://github.com/lxdao-official/', '_blank');
+            }}
+          >
+            <Typography sx={{ cursor: 'pointer' }}>GitHub</Typography>
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton
+            onClick={() => {
               window.open('https://forum.lxdao.io/', '_blank');
             }}
           >
@@ -66,10 +75,31 @@ const Header = () => {
         <ListItem disablePadding>
           <ListItemButton
             onClick={() => {
+              window.open('https://forum.lxdao.io/c/governance/10', '_blank');
+            }}
+          >
+            <Typography sx={{ cursor: 'pointer' }}>Weekly</Typography>
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton
+            onClick={() => {
+              window.open(
+                'https://forum.lxdao.io/c/governance/monthly-ama/12',
+                '_blank'
+              );
+            }}
+          >
+            <Typography sx={{ cursor: 'pointer' }}>AMA</Typography>
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton
+            onClick={() => {
               scrollToSection('Invest-Section');
             }}
           >
-            <Typography sx={{ cursor: 'pointer' }}>Invest LXDAO</Typography>
+            <Typography sx={{ cursor: 'pointer' }}>Invest</Typography>
           </ListItemButton>
         </ListItem>
       </List>
@@ -143,22 +173,6 @@ const Header = () => {
           >
             Core Team
           </Typography>
-          <Typography
-            sx={{ cursor: 'pointer' }}
-            onClick={() => {
-              window.open('https://forum.lxdao.io/', '_blank');
-            }}
-          >
-            Forum
-          </Typography>
-          <Typography
-            sx={{ cursor: 'pointer' }}
-            onClick={() => {
-              router.push('/invest');
-            }}
-          >
-            Investment
-          </Typography>
           <Typography>
             <Link
               href={`https://github.com/lxdao-official`}
@@ -185,15 +199,35 @@ const Header = () => {
           </Typography>
           <Typography>
             <Link
-              href={`https://www.figma.com/file/QeDaGHM1GxNTb1R6ma8tsw/LXDAO-Design-UI-Kit?node-id=59%3A4`}
+              href={`https://forum.lxdao.io/c/governance/weekly/11`}
               target="_blank"
               color={'inherit'}
               sx={{
                 textDecoration: 'none',
               }}
             >
-              Media kit
+              Weekly
             </Link>
+          </Typography>
+          <Typography>
+            <Link
+              href={`https://forum.lxdao.io/c/governance/monthly-ama/12`}
+              target="_blank"
+              color={'inherit'}
+              sx={{
+                textDecoration: 'none',
+              }}
+            >
+              AMA
+            </Link>
+          </Typography>
+          <Typography
+            sx={{ cursor: 'pointer' }}
+            onClick={() => {
+              router.push('/invest');
+            }}
+          >
+            Investment
           </Typography>
         </Box>
       </Box>
