@@ -147,7 +147,7 @@ const Header = () => {
               router.push('/invest');
             }}
           >
-            Invest
+            Investment
           </Typography>
           <Typography>
             <Link
@@ -171,6 +171,18 @@ const Header = () => {
               }}
             >
               Forum
+            </Link>
+          </Typography>
+          <Typography>
+            <Link
+              href={`https://www.figma.com/file/QeDaGHM1GxNTb1R6ma8tsw/LXDAO-Design-UI-Kit?node-id=59%3A4`}
+              target="_blank"
+              color={'inherit'}
+              sx={{
+                textDecoration: 'none',
+              }}
+            >
+              Media kit
             </Link>
           </Typography>
         </Box>
