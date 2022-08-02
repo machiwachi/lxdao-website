@@ -5,7 +5,7 @@ import { makeStyles } from '@mui/styles';
 import Container from '@/components/Container';
 import Button from '@/components/Button';
 
-const works = [
+export const works = [
   {
     banner: '/works/3.png',
     logo: '/works/3-logo.png',
@@ -155,6 +155,9 @@ const SectionProjects = () => {
                   borderRadius: 4,
                   paddingBottom: 4,
                   cursor: 'pointer',
+                }}
+                onClick={() => {
+                  router.push({ pathname: '/projectDetail', query: { id: index } });
                 }}
               >
                 <Box>
