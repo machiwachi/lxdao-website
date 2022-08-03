@@ -15,6 +15,7 @@ export const works = [
     description:
       'MyFirstNFT is a non-profit instructional project for Web3 newbies. Get a FREE NFT while learning about Web3, underlying values of NFT, and security principles.',
     url: 'https://myfirstnft.info/',
+    launchDate: '23th Feb 2022'
   },
   {
     banner: '/works/1.png',
@@ -25,6 +26,7 @@ export const works = [
     description:
       'https://Marry3.love is a dapp help you create Paired Soulbound Marriage Certificate Token, non-sell, non-transfer, forever on chain~~~',
     url: 'https://www.marry3.love/',
+    launchDate: '23th Feb 2022'
   },
   {
     banner: '/works/2.png',
@@ -35,6 +37,7 @@ export const works = [
     description:
       'GCLX NFT project is a Performance Art. It is made by 1000 randomly generated NFTs, sold for 0.01 ETH. Using funny content to tell Chinese NFT players what NFTs truly are.',
     url: 'https://gclx.xyz/',
+    launchDate: '23th Feb 2022'
   },
   {
     banner: '/works/4.png',
@@ -45,6 +48,7 @@ export const works = [
     description:
       'In 2032, there are a billion people live on Web3 everyday. This project documents something that will have happened on Web3 in 2032.',
     url: 'https://web3in2032.io/',
+    launchDate: '23th Feb 2022'
   },
 ];
 // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
