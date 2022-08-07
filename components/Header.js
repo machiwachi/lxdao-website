@@ -127,7 +127,7 @@ const Header = () => {
               href="https://twitter.com/LXDAO_Official"
               color="primary"
             >
-              <Box width="32px" component={'img'} src={'/icons/twitter.svg'} />
+              <Box width="18px" component={'img'} src={'/icons/twitter.svg'} />
             </Typography>
             <Typography
               target="_blank"
@@ -135,7 +135,7 @@ const Header = () => {
               href="https://discord.lxdao.io"
               color="primary"
             >
-              <Box width="32px" component={'img'} src={'/icons/discord.svg'} />
+              <Box width="18px" component={'img'} src={'/icons/discord.svg'} />
             </Typography>
           </ListItemButton>
         </ListItem>
@@ -309,24 +309,23 @@ const Header = () => {
           </Typography>
         </Box>
       </Box>
-      <Box display={{ md: 'block', xs: 'none' }}>
+      <Box display={{ md: 'flex', xs: 'none' }} alignItems="center">
         <Typography
           target="_blank"
           component="a"
           href="https://twitter.com/LXDAO_Official"
           color="primary"
-          marginRight={2}
+          marginRight={5}
         >
-          <Box width="50px" component={'img'} src={'/icons/twitter.svg'} />
+          <Box width="26px" component={'img'} src={'/icons/twitter.svg'} />
         </Typography>
         <Typography
           target="_blank"
           component="a"
           href="https://discord.lxdao.io"
           color="primary"
-          marginRight={2}
         >
-          <Box width="50px" component={'img'} src={'/icons/discord.svg'} />
+          <Box width="26px" component={'img'} src={'/icons/discord.svg'} />
         </Typography>
       </Box>
       <MenuIcon
