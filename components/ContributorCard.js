@@ -2,7 +2,6 @@ import React from 'react';
 import { Box, Typography } from '@mui/material';
 
 const contributorCard = ({ contributorInfo }) => {
-  console.log('contributorInfo: ', contributorInfo);
   if (!contributorInfo) return null;
   const { name, avatar, title, description, twitter } = contributorInfo;
   return (

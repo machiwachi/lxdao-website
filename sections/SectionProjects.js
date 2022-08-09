@@ -4,30 +4,10 @@ import { Box, Typography, Grid, Card, Chip } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
 import projects from '@/common/content/projects';
+import { shuffle } from '@/utils/utility';
 
 import Container from '@/components/Container';
 import Button from '@/components/Button';
-
-// https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
-function shuffle(array) {
-  let currentIndex = array.length,
-    randomIndex;
-
-  // While there remain elements to shuffle.
-  while (currentIndex != 0) {
-    // Pick a remaining element.
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex--;
-
-    // And swap it with the current element.
-    [array[currentIndex], array[randomIndex]] = [
-      array[randomIndex],
-      array[currentIndex],
-    ];
-  }
-
-  return array;
-}
 
 const CornerIcon = (props) => {
   const useStyles = makeStyles({
@@ -67,11 +47,22 @@ const CornerIcon = (props) => {
   );
 };
 
+const homepageProjects = (indexArray, projects) => {
+  return indexArray.map((index) => {
+    return projects[index];
+  });
+};
+
 const SectionProjects = () => {
   const router = useRouter();
   const route = router.route;
   const isHomepage = route === '/';
-  const projectArray = isHomepage ? shuffle(projects).slice(0, 3) : projects;
+  const IndexArray = [0, 1, 3, 4];
+  const homepageProjectIndexs = shuffle(IndexArray).slice(0, 3);
+
+  const projectArray = isHomepage
+    ? homepageProjects(homepageProjectIndexs, projects)
+    : projects;
 
   return (
     <Container
@@ -130,7 +121,13 @@ const SectionProjects = () => {
                   >
                     {project.title}
                   </Typography>
-                  <Typography marginTop={1}>
+                  <Box
+                    marginX="20px"
+                    display="flex"
+                    gap="5px"
+                    flexWrap="wrap"
+                    justifyContent="center"
+                  >
                     {project.type &&
                       project.type.map((type, index) => {
                         return (
@@ -140,7 +137,6 @@ const SectionProjects = () => {
                             label={type}
                             variant="outlined"
                             sx={{
-                              marginRight: '5px',
                               borderRadius: '4px',
                               borderColor: '#000000',
                               fontSize: '12px',
@@ -159,9 +155,9 @@ const SectionProjects = () => {
                         fontSize: '12px',
                       }}
                     />
-                  </Typography>
+                  </Box>
                   <Typography
-                    marginY={2}
+                    marginTop={1}
                     marginX={2.5}
                     color="#666f85"
                     textAlign="left"

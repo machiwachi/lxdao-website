@@ -5,7 +5,7 @@ const projects = [
     logoLarge: '/projects/gclx-logo-square.png',
     title: 'GuoChanLiangXin',
     status: 'LAUNCHED',
-    type: ['NFT'],
+    type: ['NFT', 'OPEN SOURCE'],
     description:
       'GCLX NFT project is a Performance Art. It is made by 1000 randomly generated NFTs, sold for 0.01 ETH. Using funny content to tell Chinese NFT players what NFTs truly are.',
     launchDate: '23th Feb 2022',
@@ -56,7 +56,7 @@ const projects = [
     logoLarge: '/projects/mfnft-logo-square.png',
     title: 'MyFirstNFT',
     status: 'LAUNCHED',
-    type: ['PUBLIC GOODS', 'NFT'],
+    type: ['PUBLIC GOODS', 'EDUCATIONAL', 'OPEN SOURCE', 'NFT'],
     description:
       'MyFirstNFT is a non-profit instructional project for Web3 newbies. Get a FREE NFT while learning about Web3, underlying values of NFT, and security principles.',
     launchDate: '15th May 2022',
@@ -64,7 +64,7 @@ const projects = [
       {
         name: 'Bruce Xu',
         avatar: '/images/bruce.jpeg',
-        title: 'Co-Founder',
+        title: 'Originator / Developer',
         description:
           'Web3 BUIDLER and BELIEVER! Creator of GuoChanLiangXin and MyFirstNFT. Member @theNextDAO. Core contributor @GCLX community.',
         twitter: 'https://twitter.com/brucexu_eth',
@@ -72,10 +72,16 @@ const projects = [
       {
         name: 'Muxin',
         avatar: '/images/muxin.jpeg',
-        title: 'Artist',
+        title: 'Artist / Developer',
         description:
           'Web3 BUIDLER. Artist of GuoChanLiangXin. Core Member @LXDAO. Member @theNextDAO. Core contributor @GCLX community.',
         twitter: 'https://twitter.com/muxin_eth',
+      },
+      {
+        name: 'Kahn Yuan',
+        avatar: '/images/kahn.jpg',
+        title: 'Developer',
+        description: 'Ex-Bybit, Mobile Dev, 12yrs',
       },
     ],
     links: [
@@ -175,7 +181,7 @@ const projects = [
     logoLarge: '/projects/marry3-logo-square.png',
     title: 'Marry3',
     status: 'LAUNCHED',
-    type: ['NFT', 'SBT'],
+    type: ['SBT', 'OPEN SOURCE', 'NFT'],
     description:
       'https://Marry3.love is a dapp help you create Paired Soulbound Marriage Certificate Token, non-sell, non-transfer, forever on chain~~~',
     launchDate: '7th Jun 2022',
@@ -206,7 +212,7 @@ const projects = [
       },
       {
         name: 'discord',
-        url: 'hhttps://discord.com/invite/eAN9TaAaSq',
+        url: 'https://discord.com/invite/eAN9TaAaSq',
       },
       {
         name: 'opensea',

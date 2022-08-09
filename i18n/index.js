@@ -11,6 +11,5 @@ i18n.loadLocaleData('zh', { plurals: zh });
 export async function activatei18n(locale) {
   const { messages } = await import(`../locale/${locale}/messages.js`);
   i18n.load(locale, messages);
-  console.log('i18n: ', i18n);
   i18n.activate(locale);
 }

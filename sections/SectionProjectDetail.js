@@ -71,7 +71,7 @@ const SectionProjectDetail = () => {
       minHeight="calc(100vh - 280px)"
     >
       <Grid container spacing={4}>
-        <Grid item xs={4}>
+        <Grid item xs={4} display={{ md: 'block', xs: 'none' }}>
           <Box
             width="100%"
             aspectRatio="1 / 1"
@@ -80,11 +80,18 @@ const SectionProjectDetail = () => {
             <img style={{ width: '100%' }} src={projectItem.logoLarge} />
           </Box>
         </Grid>
-        <Grid item xs={8} justify="flex-start">
+        <Grid item md={8} justify="flex-start">
           <Stack spacing={3.5}>
-            <Typography variant="h4" align="left">
-              {projectItem.title}
-            </Typography>
+            <Box
+              display={{ md: 'none', xs: 'flex' }}
+              alignItems="flex-end"
+              gap="12px"
+            >
+              <img style={{ width: '60px' }} src={projectItem.logoLarge} />
+              <Typography variant="h4" align="left">
+                {projectItem.title}
+              </Typography>
+            </Box>
             <Typography align="left">{projectItem.description}</Typography>
             <Typography align="left">
               {projectItem.type &&
