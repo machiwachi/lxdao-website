@@ -55,6 +55,16 @@ const getTheme = (mode) =>
             },
           },
         },
+        MuiMenu: {
+          styleOverrides: {
+            paper: {
+              width: '110px',
+            },
+            list: {
+              padding: 0,
+            },
+          },
+        },
       },
     })
   );
