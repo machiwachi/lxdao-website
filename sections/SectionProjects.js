@@ -57,7 +57,7 @@ const SectionProjects = () => {
   const router = useRouter();
   const route = router.route;
   const isHomepage = route === '/';
-  const IndexArray = [0, 1, 3, 4];
+  const IndexArray = [0, 1, 2, 4];
   const homepageProjectIndexs = shuffle(IndexArray).slice(0, 3);
 
   const projectArray = isHomepage

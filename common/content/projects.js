@@ -112,6 +112,59 @@ const projects = [
     ],
   },
   {
+    banner: '/projects/metapavo-banner.png',
+    logo: '/projects/metapavo-logo.png',
+    logoLarge: '/projects/metapavo-logo-square.png',
+    title: 'MetaPavo',
+    status: 'IN PROGRESS',
+    type: ['EXTENSION'],
+    description:
+      'MetaPavo is a product for fast indexing of Web3 information. It presents the complicated information in Web3 to users in an intuitive, fast and clear way through a special structural abstraction and presentation expression, helping users to efficiently absorb information , and make decisions.',
+    contributors: [
+      {
+        name: 'Yootou',
+        avatar: '/images/yootou.png',
+        title: 'Project Manager / Developer',
+        description: 'Fullstack developer / Web3 builder / I have a dream.',
+        twitter: 'https://twitter.com/0xYootou',
+      },
+      {
+        name: 'DaoDAO',
+        avatar: '/images/daodao.jpeg',
+        title: 'Project Designer',
+        description: 'Product Design, 13yrs.',
+        twitter: 'https://twitter.com/muxin_eth',
+      },
+      {
+        name: 'Kuncle',
+        avatar: '/images/kuncle.jpeg',
+        title: 'Big Data Developer',
+        description: 'Ex-Alibaba, Data Infra, 8yrs',
+        twitter: 'https://twitter.com/KingsUncle1',
+      },
+      {
+        name: 'Teng Wang',
+        avatar: '/images/wang.png',
+        title: 'UI/UX Designer',
+        description: 'UI/UX Designer, 7yrs',
+        twitter: 'https://twitter.com/goodtombetter',
+      },
+      {
+        name: 'Black3',
+        avatar: '/images/super-lee.png',
+        title: 'Developer',
+        description: 'Ex-Alibaba, Ex-ByteDance, 13yrs',
+        twitter: 'https://twitter.com/besteric',
+      },
+    ],
+    links: [
+      {
+        name: 'forum',
+        url: 'https://forum.lxdao.io/c/projects/002-metapavo/15',
+      },
+    ],
+  },
+  {
     banner: '/projects/2032-banner.png',
     logo: '/projects/2032-logo.png',
     logoLarge: '/projects/2032-logo-square.png',
@@ -225,59 +278,6 @@ const projects = [
       {
         name: 'forum',
         url: 'https://forum.lxdao.io/c/projects/004-marry3/16',
-      },
-    ],
-  },
-  {
-    banner: '/projects/metapavo-banner.png',
-    logo: '/projects/metapavo-logo.png',
-    logoLarge: '/projects/metapavo-logo-square.png',
-    title: 'MetaPavo',
-    status: 'IN PROGRESS',
-    type: ['EXTENSION'],
-    description:
-      'MetaPavo is a product for fast indexing of Web3 information. It presents the complicated information in Web3 to users in an intuitive, fast and clear way through a special structural abstraction and presentation expression, helping users to efficiently absorb information , and make decisions.',
-    contributors: [
-      {
-        name: 'Yootou',
-        avatar: '/images/yootou.png',
-        title: 'Project Manager / Developer',
-        description: 'Fullstack developer / Web3 builder / I have a dream.',
-        twitter: 'https://twitter.com/0xYootou',
-      },
-      {
-        name: 'DaoDAO',
-        avatar: '/images/daodao.jpeg',
-        title: 'Project Designer',
-        description: 'Product Design, 13yrs.',
-        twitter: 'https://twitter.com/muxin_eth',
-      },
-      {
-        name: 'Kuncle',
-        avatar: '/images/kuncle.jpeg',
-        title: 'Big Data Developer',
-        description: 'Ex-Alibaba, Data Infra, 8yrs',
-        twitter: 'https://twitter.com/KingsUncle1',
-      },
-      {
-        name: 'Teng Wang',
-        avatar: '/images/wang.png',
-        title: 'UI/UX Designer',
-        description: 'UI/UX Designer, 7yrs',
-        twitter: 'https://twitter.com/goodtombetter',
-      },
-      {
-        name: 'Black3',
-        avatar: '/images/super-lee.png',
-        title: 'Developer',
-        description: 'Ex-Alibaba, Ex-ByteDance, 13yrs',
-        twitter: 'https://twitter.com/besteric',
-      },
-    ],
-    links: [
-      {
-        name: 'forum',
-        url: 'https://forum.lxdao.io/c/projects/002-metapavo/15',
       },
     ],
   },

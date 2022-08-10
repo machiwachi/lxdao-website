@@ -194,16 +194,17 @@ const Header = () => {
           >
             Core Team
           </Typography>
-          <Typography sx={{ cursor: 'pointer' }}>
-            <span
-              style={{ float: 'left' }}
-              onMouseOver={(event) => {
+          <Box>
+            <Box
+              sx={{ cursor: 'pointer' }}
+              onClick={(event) => {
                 handleMenuClick(event, 'community');
               }}
+              id="community-menu-trigger"
             >
-              Community
-            </span>
-            <KeyboardArrowDownIcon />
+              <Typography style={{ float: 'left' }}>Community</Typography>
+              <KeyboardArrowDownIcon />
+            </Box>
             <Menu
               id="community-menu"
               anchorEl={community}
@@ -211,7 +212,7 @@ const Header = () => {
               onClose={() => {
                 handleCommunityMenuClose();
               }}
-              MenuListProps={{ onMouseLeave: () => handleCommunityMenuClose() }}
+              MenuListProps={{ 'aria-labelledby': 'community-menu-trigger' }}
             >
               <MenuItem
                 onClick={() => {
@@ -246,17 +247,18 @@ const Header = () => {
                 </Link>
               </MenuItem>
             </Menu>
-          </Typography>
-          <Typography>
-            <span
-              style={{ float: 'left' }}
-              onMouseOver={(event) => {
+          </Box>
+          <Box>
+            <Box
+              sx={{ cursor: 'pointer' }}
+              onClick={(event) => {
                 handleMenuClick(event, 'governance');
               }}
+              id="governance-menu-trigger"
             >
-              Governance
-            </span>
-            <KeyboardArrowDownIcon />
+              <Typography style={{ float: 'left' }}>Governance</Typography>
+              <KeyboardArrowDownIcon />
+            </Box>
             <Menu
               id="governance-menu"
               anchorEl={governance}
@@ -264,7 +266,7 @@ const Header = () => {
               onClose={() => {
                 handleCommunityMenuClose();
               }}
-              MenuListProps={{ onMouseLeave: () => handleCommunityMenuClose() }}
+              MenuListProps={{ 'aria-labelledby': 'governance-menu-trigger' }}
             >
               <MenuItem
                 onClick={() => {
@@ -313,7 +315,7 @@ const Header = () => {
                 </Typography>
               </MenuItem>
             </Menu>
-          </Typography>
+          </Box>
         </Box>
       </Box>
       <Box display={{ md: 'flex', xs: 'none' }} alignItems="center">

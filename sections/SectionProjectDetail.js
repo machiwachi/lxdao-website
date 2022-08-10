@@ -72,13 +72,13 @@ const SectionProjectDetail = () => {
     >
       <Grid container spacing={4}>
         <Grid item xs={4} display={{ md: 'block', xs: 'none' }}>
-          <Box
-            width="100%"
-            aspectRatio="1 / 1"
-            boxShadow="0px 4px 10px 3px rgba(0, 0, 0, 0.04)"
-          >
-            <img style={{ width: '100%' }} src={projectItem.logoLarge} />
-          </Box>
+          <img
+            style={{
+              width: '100%',
+              boxShadow: '0px 4px 10px 3px rgba(0, 0, 0, 0.04)',
+            }}
+            src={projectItem.logoLarge}
+          />
         </Grid>
         <Grid item md={8} justify="flex-start">
           <Stack spacing={3.5}>
@@ -87,13 +87,20 @@ const SectionProjectDetail = () => {
               alignItems="flex-end"
               gap="12px"
             >
-              <img style={{ width: '60px' }} src={projectItem.logoLarge} />
-              <Typography variant="h4" align="left">
+              <img style={{ width: '50px' }} src={projectItem.logoLarge} />
+              <Typography variant="h5" align="left">
                 {projectItem.title}
               </Typography>
             </Box>
+            <Typography
+              variant="h4"
+              align="left"
+              display={{ md: 'block', xs: 'none' }}
+            >
+              {projectItem.title}
+            </Typography>
             <Typography align="left">{projectItem.description}</Typography>
-            <Typography align="left">
+            <Box align="left" display="flex" gap="5px" flexWrap="wrap">
               {projectItem.type &&
                 projectItem.type.map((type, index) => {
                   return (
@@ -103,7 +110,6 @@ const SectionProjectDetail = () => {
                       label={type}
                       variant="outlined"
                       sx={{
-                        marginRight: '5px',
                         borderRadius: '4px',
                         borderColor: '#000000',
                         fontSize: '12px',
@@ -111,8 +117,8 @@ const SectionProjectDetail = () => {
                     />
                   );
                 })}
-            </Typography>
-            <Box display="flex" gap={5}>
+            </Box>
+            <Box display="flex" gap={4} flexWrap="wrap">
               {projectItem.links &&
                 projectItem.links.map((link, index) => {
                   return (
@@ -132,7 +138,7 @@ const SectionProjectDetail = () => {
                 })}
             </Box>
             <Box align="left">
-              <LabelText label="Creators" />
+              <LabelText label="Buidlers" />
               <Stack direction="row" spacing={2}>
                 {projectItem.contributors &&
                   projectItem.contributors.map((contributor, index) => {
@@ -168,14 +174,20 @@ const SectionProjectDetail = () => {
               {projectItem.launchDate && (
                 <Box align="left">
                   <LabelText label="Launch Date" />
-                  <Typography fontSize="20px" color="#000000">
+                  <Typography
+                    fontSize={{ md: '20px', xs: '18px' }}
+                    color="#000000"
+                  >
                     {projectItem.launchDate}
                   </Typography>
                 </Box>
               )}
               <Box align="left">
                 <LabelText label="Status" />
-                <Typography fontSize="20px" color="#000000">
+                <Typography
+                  fontSize={{ md: '20px', xs: '18px' }}
+                  color="#000000"
+                >
                   {projectItem.status}
                 </Typography>
               </Box>
