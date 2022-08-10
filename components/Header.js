@@ -144,6 +144,14 @@ const Header = () => {
             >
               <Box width="18px" component={'img'} src={'/icons/discord.svg'} />
             </Typography>
+            <Typography
+              target="_blank"
+              component="a"
+              href="https://t.me/LXDAO"
+              color="primary"
+            >
+              <Box width="18px" component={'img'} src={'/icons/telegram.svg'} />
+            </Typography>
           </ListItemButton>
         </ListItem>
       </List>
@@ -333,8 +341,17 @@ const Header = () => {
           component="a"
           href="https://discord.lxdao.io"
           color="primary"
+          marginRight={5}
         >
           <Box width="26px" component={'img'} src={'/icons/discord.svg'} />
+        </Typography>
+        <Typography
+          target="_blank"
+          component="a"
+          href="https://t.me/LXDAO"
+          color="primary"
+        >
+          <Box width="26px" component={'img'} src={'/icons/telegram.svg'} />
         </Typography>
       </Box>
       <MenuIcon
