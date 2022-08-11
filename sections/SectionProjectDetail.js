@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useRouter } from 'next/router';
 import {
   Box,
   Typography,
@@ -28,10 +27,8 @@ const useStyles = makeStyles({
   },
 });
 
-const SectionProjectDetail = () => {
-  const router = useRouter();
-  const route = router.route;
-  const projectItem = projects[router.query.id];
+const SectionProjectDetail = ({ projectId }) => {
+  const projectItem = projects.filter((project) => project.id === projectId)[0];
   if (!projectItem) return null;
 
   const [contributorData, setContributorData] = useState(

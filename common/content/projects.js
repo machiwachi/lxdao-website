@@ -1,5 +1,6 @@
 const projects = [
   {
+    id: '000',
     banner: '/projects/gclx-banner.png',
     logo: '/projects/gclx-logo.png',
     logoLarge: '/projects/gclx-logo-square.png',
@@ -51,6 +52,7 @@ const projects = [
     ],
   },
   {
+    id: '001',
     banner: '/projects/mfnft-banner.png',
     logo: '/projects/mfnft-logo.png',
     logoLarge: '/projects/mfnft-logo-square.png',
@@ -112,6 +114,7 @@ const projects = [
     ],
   },
   {
+    id: '002',
     banner: '/projects/metapavo-banner.png',
     logo: '/projects/metapavo-logo.png',
     logoLarge: '/projects/metapavo-logo-square.png',
@@ -165,6 +168,7 @@ const projects = [
     ],
   },
   {
+    id: '003',
     banner: '/projects/2032-banner.png',
     logo: '/projects/2032-logo.png',
     logoLarge: '/projects/2032-logo-square.png',
@@ -229,6 +233,7 @@ const projects = [
     ],
   },
   {
+    id: '004',
     banner: '/projects/marry3-banner.png',
     logo: '/projects/marry3-logo.png',
     logoLarge: '/projects/marry3-logo-square.png',

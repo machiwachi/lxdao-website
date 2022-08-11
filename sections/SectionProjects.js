@@ -24,9 +24,9 @@ const CornerIcon = (props) => {
         transformOrigin: 'bottom left',
       },
       position: 'absolute',
-      top: 26,
+      top: 30,
       bottom: 0,
-      left: 19,
+      left: 15,
       zIndex: 100,
       color: '#fff',
       fontSize: '14px',
@@ -98,8 +98,7 @@ const SectionProjects = () => {
                   }}
                   onClick={() => {
                     router.push({
-                      pathname: '/projectDetail',
-                      query: { id: index },
+                      pathname: `/projects/${project.id}`,
                     });
                   }}
                 >
@@ -114,7 +113,7 @@ const SectionProjects = () => {
                         marginTop: '-15%',
                       }}
                     />
-                    <CornerIcon index={`0${index}`} />
+                    <CornerIcon index={project.id} />
                   </Box>
                   <Typography
                     sx={{ marginBottom: '18px', fontFamily: 'Avenir medium' }}
