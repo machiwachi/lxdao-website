@@ -1,123 +1,193 @@
 import React from 'react';
-import { Box, Typography, Grid, Card } from '@mui/material';
+import { useRouter } from 'next/router';
+import { Box, Typography, Grid, Card, Chip } from '@mui/material';
+import { makeStyles } from '@mui/styles';
+
+import projects from '@/common/content/projects';
+import { shuffle } from '@/utils/utility';
 
 import Container from '@/components/Container';
 import Button from '@/components/Button';
 
-const works = [
-  {
-    banner: '/works/3.png',
-    logo: '/works/3-logo.png',
-    title: 'MyFirstNFT',
-    description:
-      'MyFirstNFT is a non-profit instructional project for Web3 newbies. Get a FREE NFT while learning about Web3, underlying values of NFT, and security principles.',
-    url: 'https://myfirstnft.info/',
-  },
-  {
-    banner: '/works/1.png',
-    logo: '/works/1-logo.png',
-    title: 'Marry3',
-    description:
-      'https://Marry3.love is a dapp help you create Paired Soulbound Marriage Certificate Token, non-sell, non-transfer, forever on chain~~~',
-    url: 'https://www.marry3.love/',
-  },
-  {
-    banner: '/works/2.png',
-    logo: '/works/2-logo.png',
-    title: 'GuoChanLiangXin',
-    description:
-      'GCLX NFT project is a Performance Art. It is made by 1000 randomly generated NFTs, sold for 0.01 ETH. Using funny content to tell Chinese NFT players what NFTs truly are.',
-    url: 'https://gclx.xyz/',
-  },
-];
-// https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
-function shuffle(array) {
-  let currentIndex = array.length,
-    randomIndex;
+const CornerIcon = (props) => {
+  const useStyles = makeStyles({
+    rect: {
+      position: 'absolute',
+      left: '-6px',
+      top: '-6px',
+    },
+    desc: {
+      '&::before': {
+        display: 'inline-block',
+        content: `"No.${props.index}"`,
+        transform: 'rotateZ(-45deg)',
+        transformOrigin: 'bottom left',
+      },
+      position: 'absolute',
+      top: 30,
+      bottom: 0,
+      left: 15,
+      zIndex: 100,
+      color: '#fff',
+      fontSize: '14px',
+    },
+  });
+  const classes = useStyles();
 
-  // While there remain elements to shuffle.
-  while (currentIndex != 0) {
-    // Pick a remaining element.
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex--;
+  return (
+    <>
+      <img
+        src="/projects/number-bg.png"
+        className={classes.rect}
+        width="75px"
+        height="75px"
+      />
+      <div className={classes.desc}></div>
+    </>
+  );
+};
 
-    // And swap it with the current element.
-    [array[currentIndex], array[randomIndex]] = [
-      array[randomIndex],
-      array[currentIndex],
-    ];
-  }
+const homepageProjects = (indexArray, projects) => {
+  return indexArray.map((index) => {
+    return projects[index];
+  });
+};
 
-  return array;
-}
+const SectionProjects = () => {
+  const router = useRouter();
+  const route = router.route;
+  const isHomepage = route === '/';
+  const IndexArray = [0, 1, 2, 4];
+  const homepageProjectIndexs = shuffle(IndexArray).slice(0, 3);
 
-const SectionProjects = () => (
-  <Container
-    paddingY={{ md: '96px', xs: 8 }}
-    textAlign="center"
-    id="Projects-Section"
-    maxWidth="1200px"
-  >
-    <Typography variant="h4">Previous Projects</Typography>
-    <Typography fontSize="20px" marginTop={2}>
-      We buidl good, valuable, and useful things.
-    </Typography>
-    <Box marginTop={6}>
-      <Grid container spacing={3} alignItems="stretch">
-        {shuffle(works).map((work, index) => {
-          return (
-            <Grid
-              key={index}
-              item
-              sm={6}
-              xs={12}
-              md={4}
-              display="flex"
-              alignItems="stretch"
-            >
-              <Card
-                sx={{
-                  position: 'relative',
-                  borderRadius: 4,
-                  paddingBottom: 16,
-                }}
+  const projectArray = isHomepage
+    ? homepageProjects(homepageProjectIndexs, projects)
+    : projects;
+
+  return (
+    <Container
+      paddingY={{ md: '96px', xs: 8 }}
+      textAlign="center"
+      id="Projects-Section"
+      maxWidth="1200px"
+    >
+      <Typography variant="h4">Projects</Typography>
+      <Typography fontSize="20px" marginTop={2}>
+        We buidl good, valuable, and useful things.
+      </Typography>
+      <Box marginTop={6}>
+        <Grid container spacing={3} alignItems="stretch">
+          {projectArray.map((project, index) => {
+            return (
+              <Grid
+                key={index}
+                item
+                sm={6}
+                xs={12}
+                md={4}
+                display="flex"
+                alignItems="stretch"
               >
-                <Box>
-                  <img style={{ width: '100%' }} src={work.banner} />
-                  <img
-                    src={work.logo}
-                    style={{
-                      width: '30%',
-                      height: '30%',
-                      marign: '0 auto',
-                      marginTop: '-15%',
-                    }}
-                  />
-                </Box>
-                <Typography className="work-item-title">
-                  {work.title}
-                </Typography>
-                <Typography margin={2} marginTop={4} color="#666f85" sx={{}}>
-                  {work.description}
-                </Typography>
-                <Button
-                  width="150px"
-                  position="absolute"
-                  bottom="40px"
-                  left="calc(50% - 92px)"
+                <Card
+                  sx={{
+                    position: 'relative',
+                    borderRadius: 4,
+                    paddingBottom: 4,
+                    cursor: 'pointer',
+                    overflow: 'visible',
+                  }}
                   onClick={() => {
-                    window.open(work.url, '_blank');
+                    router.push({
+                      pathname: `/projects/${project.id}`,
+                    });
                   }}
                 >
-                  More
-                </Button>
-              </Card>
-            </Grid>
-          );
-        })}
-      </Grid>
-    </Box>
-  </Container>
-);
+                  <Box>
+                    <img style={{ width: '100%' }} src={project.banner} />
+                    <img
+                      src={project.logo}
+                      style={{
+                        width: '30%',
+                        height: '30%',
+                        marign: '0 auto',
+                        marginTop: '-15%',
+                      }}
+                    />
+                    <CornerIcon index={project.id} />
+                  </Box>
+                  <Typography
+                    sx={{ marginBottom: '18px', fontFamily: 'Avenir medium' }}
+                  >
+                    {project.title}
+                  </Typography>
+                  <Box
+                    marginX="20px"
+                    display="flex"
+                    gap="5px"
+                    flexWrap="wrap"
+                    justifyContent="center"
+                  >
+                    {project.type &&
+                      project.type.map((type, index) => {
+                        return (
+                          <Chip
+                            key={index}
+                            size="small"
+                            label={type}
+                            variant="outlined"
+                            sx={{
+                              borderRadius: '4px',
+                              borderColor: '#000000',
+                              fontSize: '12px',
+                            }}
+                          />
+                        );
+                      })}
+                    <Chip
+                      size="small"
+                      label={project.status}
+                      variant="outlined"
+                      sx={{
+                        borderRadius: '4px',
+                        color: '#4DCC9E',
+                        borderColor: '#4DCC9E',
+                        fontSize: '12px',
+                      }}
+                    />
+                  </Box>
+                  <Typography
+                    marginTop={1}
+                    marginX={2.5}
+                    color="#666f85"
+                    textAlign="left"
+                  >
+                    {project.description}
+                  </Typography>
+                </Card>
+              </Grid>
+            );
+          })}
+        </Grid>
+      </Box>
+      {isHomepage ? (
+        <Box
+          marginTop={{ md: 8, xs: 4 }}
+          display="flex"
+          justifyContent="center"
+          gap={2}
+        >
+          <Button
+            variant="outlined"
+            onClick={() => {
+              router.push('/projects');
+            }}
+          >
+            View More
+          </Button>
+        </Box>
+      ) : null}
+    </Container>
+  );
+};
 
 export default SectionProjects;
