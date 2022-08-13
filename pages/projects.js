@@ -6,7 +6,7 @@ import Header from '@/components/Header';
 import SectionProjects from '@/sections/SectionProjects';
 import Footer from '@/components/Footer';
 
-export default function Home() {
+export default function Projects() {
   return (
     <div>
       <Layout>

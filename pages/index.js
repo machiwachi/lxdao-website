@@ -4,7 +4,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import Layout from '@/components/Layout';
 import Header from '@/components/Header';
-import SectionHero from '@/sections/SectionHero';
+import SectionHomepageHero from '@/sections/SectionHomepageHero';
 import SectionWeb3in2032 from '@/sections/SectionWeb3in2032';
 import SectionMission from '@/sections/SectionMission';
 import SectionProjects from '@/sections/SectionProjects';
@@ -83,7 +83,7 @@ Our mission: Bringing together buidlers to buidl and maintain LX projects for We
       </Head>
       <Layout>
         <Header />
-        <SectionHero />
+        <SectionHomepageHero />
         <SectionMission />
         <SectionWeb3in2032 />
         <SectionProjects />
