@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 
-const MemberTypeCard = ({ type, description, amount, selected }) => {
+const MemberTypeCard = ({ type, description, amount, selected, disabled }) => {
   const Avatar = ({ img }) => {
     return (
       <>
@@ -22,7 +22,7 @@ const MemberTypeCard = ({ type, description, amount, selected }) => {
             height={{ md: '50px', xs: '40px' }}
             borderRadius="100%"
             border="1px dashed #cccccc"
-            backgroundColor="#ffffff"
+            backgroundColor={`${disabled ? '#dbdcdc' : '#ffffff'}`}
             marginLeft={{ md: '-25px', xs: '-20px' }}
             sx={{ float: 'left' }}
           />
@@ -33,7 +33,7 @@ const MemberTypeCard = ({ type, description, amount, selected }) => {
 
   return (
     <Box
-      backgroundColor="#ffffff"
+      backgroundColor={`${disabled ? 'rgba(0, 0, 0, 0.12)' : '#ffffff'}`}
       display="flex"
       flexDirection="column"
       gap={3}
@@ -42,7 +42,7 @@ const MemberTypeCard = ({ type, description, amount, selected }) => {
       paddingY={4}
       border={selected ? '4px solid #101828' : 'none'}
       boxShadow="6px 6px 15px 5px rgba(0, 0, 0, 0.05)"
-      sx={{ cursor: 'pointer' }}
+      sx={{ cursor: `${disabled ? 'not-allowed' : 'pointer'}` }}
     >
       <Box display="flex" justifyContent="space-between">
         <Typography variant="h6" textAlign="left">

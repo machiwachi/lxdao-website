@@ -32,6 +32,7 @@ const SectionMemberType = () => (
           description="We are an ever growing international community of humans from a diversity of specializations. Coders, Engineers, Legal Experts, Designers, Writers, Testers, Activists - and more! Come one, come all!"
           selected={false}
           flex={1}
+          disabled={true}
         />
       </Box>
     </Container>
