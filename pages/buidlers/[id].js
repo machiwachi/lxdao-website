@@ -91,6 +91,17 @@ function Project(props) {
   );
 }
 
+function Links(props) {
+  const links = props.links;
+  return links.map((link, index) => {
+    return (
+      <Link marginRight={5} target="_blank" href={link.url} key={index}>
+        <Box width="18px" component={'img'} src={`/icons/${link.icon}.svg`} />
+      </Link>
+    );
+  });
+}
+
 function BuidlerDetails() {
   const [details, setDetails] = useState('buidlerCard');
 
@@ -122,50 +133,26 @@ function BuidlerDetails() {
             </Box>
             <Box>
               <Box borderRight="1px solid #D0D5DD">
-                <Link
-                  marginRight={5}
-                  target="_blank"
-                  href="https://twitter.com/LXDAO_Official"
-                >
-                  <Box
-                    width="18px"
-                    component={'img'}
-                    src={'/icons/website.svg'}
-                  />
-                </Link>
-                <Link
-                  marginRight={5}
-                  target="_blank"
-                  href="https://twitter.com/LXDAO_Official"
-                >
-                  <Box
-                    width="18px"
-                    component={'img'}
-                    src={'/icons/twitter.svg'}
-                  />
-                </Link>
-                <Link
-                  marginRight={5}
-                  target="_blank"
-                  href="https://twitter.com/LXDAO_Official"
-                >
-                  <Box
-                    width="18px"
-                    component={'img'}
-                    src={'/icons/discord.svg'}
-                  />
-                </Link>
-                <Link
-                  marginRight={5}
-                  target="_blank"
-                  href="https://twitter.com/LXDAO_Official"
-                >
-                  <Box
-                    width="18px"
-                    component={'img'}
-                    src={'/icons/ellipsis.svg'}
-                  />
-                </Link>
+                <Links
+                  links={[
+                    {
+                      url: 'https://twitter.com/LXDAO_Official',
+                      icon: 'website',
+                    },
+                    {
+                      url: 'https://twitter.com/LXDAO_Official',
+                      icon: 'twitter',
+                    },
+                    {
+                      url: 'https://twitter.com/LXDAO_Official',
+                      icon: 'discord',
+                    },
+                    {
+                      url: 'https://twitter.com/LXDAO_Official',
+                      icon: 'ellipsis',
+                    },
+                  ]}
+                />
               </Box>
               <Box>
                 {formatAddress('0x147b166fb4f1Aa9581D184596Dbabe2980ba4b14')}
