@@ -23,7 +23,6 @@ function MyApp({ Component, pageProps }) {
     // TODO: en by default for now
     activatei18n('en');
   }, []);
-
   return (
     <ThemeProvider theme={getTheme('light')}>
       <I18nProvider i18n={i18n}>
