@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import {
-  getDefaultWallets,
-  RainbowKitProvider,
-  ConnectButton,
-} from '@rainbow-me/rainbowkit';
+import React, { useEffect } from 'react';
+import { getDefaultWallets, ConnectButton } from '@rainbow-me/rainbowkit';
 import {
   chain,
   configureChains,
   createClient,
-  WagmiConfig,
   useAccount,
   useSignMessage,
 } from 'wagmi';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 import axios from 'axios';
+import {
+  setLocalStorage,
+  getLocalStorage,
+  removeLocalStorage,
+} from '@/utils/utility';
 
 import '@rainbow-me/rainbowkit/styles.css';
 
@@ -35,16 +35,16 @@ const wagmiClient = createClient({
 });
 
 const ConnectWalletButton = () => {
-  const { address, isConnected } = useAccount();
+  const { address, isConnected, isDisconnected } = useAccount();
   const { data, signMessage } = useSignMessage();
 
   useEffect(() => {
-    if (address) {
+    const currentAccessToken = getLocalStorage('accessToken');
+    if (address && !currentAccessToken) {
       axios
-        .get(`http://localhost:3001/buidler/nonce/${address}`)
+        .get(`${process.env.LXDAO_API_SYNC_URL}/buidler/nonce/${address}`)
         .then(({ data }) => {
           const signatureMessage = data?.data?.signature_message;
-          console.log('signatureMessage: ', signatureMessage);
           if (signatureMessage) {
             signMessage({
               message: signatureMessage,
@@ -55,27 +55,34 @@ const ConnectWalletButton = () => {
   }, [isConnected]);
 
   useEffect(() => {
-    if (data) {
+    const currentAccessToken = getLocalStorage('accessToken');
+    function signIn(signature) {
+      axios
+        .post(`${process.env.LXDAO_API_SYNC_URL}/auth/signin`, {
+          address: address,
+          signature: signature,
+        })
+        .then(({ data }) => {
+          const accessToken = data?.data?.access_token;
+          if (accessToken) {
+            setLocalStorage('accessToken', accessToken);
+          }
+        })
+        .catch((err) => {
+          console.log('err: ', err);
+        });
+    }
+    if (data && !currentAccessToken) {
       signIn(data);
     }
   }, [data]);
 
-  const signIn = (signature) => {
-    axios
-      .post(`http://localhost:3001/auth/signin`, {
-        address: address,
-        signature: signature,
-      })
-      .then(({ data }) => {
-        const accessToken = data?.data?.access_token;
-        if (accessToken) {
-          window.localStorage.setItem('accessToken', accessToken);
-        }
-      })
-      .catch((err) => {
-        console.log('err: ', err);
-      });
-  };
+  useEffect(() => {
+    const currentAccessToken = getLocalStorage('accessToken');
+    if (isDisconnected && currentAccessToken) {
+      removeLocalStorage('accessToken');
+    }
+  }, [isDisconnected]);
 
   return (
     <ConnectButton
