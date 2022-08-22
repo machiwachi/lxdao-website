@@ -12,7 +12,6 @@ import {
   DialogTitle,
   DialogContent,
 } from '@mui/material';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
 import CloseIcon from '@mui/icons-material/Close';
 import {
   Timeline,

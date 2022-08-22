@@ -2,19 +2,8 @@ import React from 'react';
 import { Box, Grid } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import Select from './Select';
+import skillNames from '../common/skills';
 
-const skillNames = [
-  'Design',
-  'Project Management',
-  'Product Management',
-  'FrontEnd',
-  'FullStack',
-  'BackEnd',
-  'Operation',
-  'Solidity',
-  'Blockchain',
-  'Others',
-];
 const skillLevels = ['Junior', 'Intermediate', 'Senior'];
 
 function filterSkills(skills, value) {
