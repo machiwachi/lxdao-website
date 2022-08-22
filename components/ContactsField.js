@@ -15,8 +15,9 @@ function ContactsField(props) {
         <Grid item xs={12}>
           <TextField
             fullWidth
-            label="Twitter"
+            label="Twitter Handle"
             value={value.twitter}
+            placeholder="@twitter"
             onChange={(event) => {
               update('twitter', event.target.value);
             }}
@@ -27,6 +28,7 @@ function ContactsField(props) {
             fullWidth
             label="GitHub"
             value={value.github}
+            placeholder="https://github.com/xxx"
             onChange={(event) => {
               update('github', event.target.value);
             }}
@@ -37,6 +39,7 @@ function ContactsField(props) {
             fullWidth
             label="Public Email"
             value={value.email}
+            placeholder="your@email.com"
             onChange={(event) => {
               update('email', event.target.value);
             }}
@@ -47,6 +50,7 @@ function ContactsField(props) {
             fullWidth
             label="Telegram"
             value={value.telegram}
+            placeholder="@telegram"
             onChange={(event) => {
               update('telegram', event.target.value);
             }}
@@ -67,6 +71,7 @@ function ContactsField(props) {
             fullWidth
             label="Discord"
             value={value.discord}
+            placeholder="yourDiscordID#xxxx"
             onChange={(event) => {
               update('discord', event.target.value);
             }}

@@ -117,7 +117,7 @@ function Links(props) {
 
 function BuidlerDetails() {
   const [details, setDetails] = useState('buidlerCard');
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
 
   return (
     <Container paddingY={10}>

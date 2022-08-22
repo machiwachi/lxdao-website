@@ -5,7 +5,9 @@ import {
   OutlinedInput,
   InputLabel,
   MenuItem,
+  ListItemText,
   FormControl,
+  Checkbox,
 } from '@mui/material';
 import Select from '@mui/material/Select';
 import { useTheme } from '@mui/material/styles';
@@ -57,7 +59,8 @@ function MultiSelect(props) {
             value={name}
             style={getStyles(name, ['DAO'], theme)}
           >
-            {name}
+            <Checkbox checked={props.value.indexOf(name) > -1} />
+            <ListItemText primary={name} />
           </MenuItem>
         ))}
       </Select>

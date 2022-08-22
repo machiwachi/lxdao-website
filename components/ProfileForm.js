@@ -1,10 +1,12 @@
 /* eslint-disable no-undef */
 import React, { useState } from 'react';
 import { Box, Typography, Button, TextField } from '@mui/material';
+import { useForm, Controller } from 'react-hook-form';
 
 import SkillsField from './SkillsField';
 import ContactsField from './ContactsField';
 import MultiSelect from './MultiSelect';
+import TextInput from './TextInput';
 
 const interestNames = [
   'Design',
@@ -21,7 +23,17 @@ const interestNames = [
 ];
 
 function ProfileForm() {
-  const [interests, setInterests] = useState([]);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+    control,
+  } = useForm();
+  const onSubmit = (data) => {
+    // todo send api request
+    console.log(data);
+  };
 
   return (
     <Box>
@@ -35,15 +47,39 @@ function ProfileForm() {
         </Box>
       </Box>
       <Box marginBottom={2.5}>
-        <TextField fullWidth label="Name" placeholder="Your nick name" />
+        <Controller
+          name={'name'}
+          control={control}
+          render={({ field: { onChange, value } }) => {
+            return (
+              <TextInput
+                fullWidth
+                label="Name"
+                placeholder="Your nick name"
+                onChange={onChange}
+                value={value}
+              />
+            );
+          }}
+        />
       </Box>
       <Box marginBottom={2.5}>
-        <TextField
-          multiline
-          rows={2}
-          placeholder="Self introduction"
-          fullWidth
-          label="Description"
+        <Controller
+          name={'description'}
+          control={control}
+          render={({ field: { onChange, value } }) => {
+            return (
+              <TextInput
+                multiline
+                rows={2}
+                placeholder="Self introduction"
+                fullWidth
+                label="Description"
+                onChange={onChange}
+                value={value}
+              />
+            );
+          }}
         />
       </Box>
       <Box>
@@ -55,19 +91,11 @@ function ProfileForm() {
         >
           Skills
         </Typography>
-        <SkillsField
-          value={[
-            {
-              name: 'Design',
-              level: 'Senior',
-            },
-            {
-              name: 'Project Management',
-              level: 'Junior',
-            },
-          ]}
-          onChange={(value) => {
-            console.log('value: ', value);
+        <Controller
+          name={'skills'}
+          control={control}
+          render={({ field: { onChange, value } }) => {
+            return <SkillsField value={value || []} onChange={onChange} />;
           }}
         />
       </Box>
@@ -80,12 +108,18 @@ function ProfileForm() {
         >
           Interests
         </Typography>
-        <MultiSelect
-          value={interests}
-          onChange={(value) => {
-            setInterests(value);
+        <Controller
+          name={'interests'}
+          control={control}
+          render={({ field: { onChange, value } }) => {
+            return (
+              <MultiSelect
+                value={value || []}
+                onChange={onChange}
+                dropdown={interestNames}
+              />
+            );
           }}
-          dropdown={interestNames}
         />
       </Box>
       <Box>
@@ -97,22 +131,20 @@ function ProfileForm() {
         >
           Contacts
         </Typography>
-        <ContactsField
-          value={{
-            twitter: '@kuncle',
-            github: 'kuncle',
-            wechat: 'kuncle',
-            telegram: 'kuncle',
-            email: 'kuncle@lxdao.io',
-            discord: 'kuncle@lxdao.io',
-          }}
-          onChange={(value) => {
-            console.log('value: ', value);
+        <Controller
+          name={'contacts'}
+          control={control}
+          render={({ field: { onChange, value } }) => {
+            return <ContactsField value={value || {}} onChange={onChange} />;
           }}
         />
       </Box>
       <Box marginTop={2}>
-        <Button variant="contained" size="large">
+        <Button
+          variant="contained"
+          size="large"
+          onClick={handleSubmit(onSubmit)}
+        >
           Save Profile
         </Button>
       </Box>
