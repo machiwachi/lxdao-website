@@ -6,7 +6,7 @@ import Header from '@/components/Header';
 import SectionFinancing from '@/sections/SectionFinancing';
 import Footer from '@/components/Footer';
 
-export default function Home() {
+export default function Invest() {
   return (
     <div>
       <Layout>

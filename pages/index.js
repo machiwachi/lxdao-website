@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '@/components/Layout';
 import Header from '@/components/Header';
-import SectionHero from '@/sections/SectionHero';
+import SectionHomepageHero from '@/sections/SectionHomepageHero';
 import SectionWeb3in2032 from '@/sections/SectionWeb3in2032';
 import SectionMission from '@/sections/SectionMission';
 import SectionProjects from '@/sections/SectionProjects';

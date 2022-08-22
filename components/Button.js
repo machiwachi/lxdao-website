@@ -4,18 +4,23 @@ import { Box } from '@mui/material';
 // eslint-disable-next-line react/prop-types
 const Button = ({ variant, children, ...rest }) => (
   <Box
-    backgroundColor={variant === 'outlined' ? '#ffffff' : '#000000'}
-    padding="12px 20px"
-    outline="none"
-    border="1px solid #000000"
-    borderRadius="8px"
-    color={variant === 'outlined' ? '#000000' : '#ffffff'}
     sx={{
       cursor: 'pointer',
       '&:hover': {
         backgroundColor:
           variant === 'outlined' ? 'rgba(0, 0, 0, 0.05)' : 'rgba(0, 0, 0, 0.8)',
       },
+      color: variant === 'outlined' ? '#000000' : '#ffffff',
+      borderRadius: '8px',
+      border: variant === 'outlined' ? '1px solid #000000' : 'none',
+      outline: 'none',
+      padding: variant === 'bigGradient' ? '22px 63px' : '12px 20px',
+      background:
+        variant === 'outlined'
+          ? '#ffffff'
+          : variant === 'bigGradient'
+          ? 'linear-gradient(90deg, rgba(41,117,223,1) 0%, rgba(58,207,227,1) 100%)'
+          : '#000000',
     }}
     {...rest}
   >
