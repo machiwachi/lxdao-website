@@ -1,6 +1,4 @@
-import React, { useEffect } from 'react';
-import { i18n } from '@lingui/core';
-import { I18nProvider } from '@lingui/react';
+import React from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import { RainbowKitProvider, lightTheme } from '@rainbow-me/rainbowkit';
 import { WagmiConfig } from 'wagmi';
