@@ -1,7 +1,19 @@
 /* eslint-disable no-undef */
 import React, { useState } from 'react';
-import { Box, Typography, Link, Button, Tabs, Tab, Grid } from '@mui/material';
-
+import {
+  Box,
+  Typography,
+  Link,
+  Button,
+  Tabs,
+  Tab,
+  Grid,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+} from '@mui/material';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import CloseIcon from '@mui/icons-material/Close';
 import {
   Timeline,
   TimelineItem,
@@ -15,6 +27,7 @@ import Layout from '@/components/Layout';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Container from '@/components/Container';
+import ProfileForm from '@/components/ProfileForm';
 import { formatAddress } from '@/utils/utility';
 
 function Tag(props) {
@@ -104,6 +117,7 @@ function Links(props) {
 
 function BuidlerDetails() {
   const [details, setDetails] = useState('buidlerCard');
+  const [visible, setVisible] = useState(true);
 
   return (
     <Container paddingY={10}>
@@ -117,7 +131,13 @@ function BuidlerDetails() {
             />
           </Box>
           <Box textAlign="center" marginTop={4}>
-            <Button size="small" variant="outlined">
+            <Button
+              onClick={() => {
+                setVisible(true);
+              }}
+              size="small"
+              variant="outlined"
+            >
               Edit
             </Button>
           </Box>
@@ -262,6 +282,33 @@ function BuidlerDetails() {
           )}
         </Box>
       </Box>
+      <Dialog
+        fullWidth={true}
+        maxWidth={'sm'}
+        onClose={(event, reason) => {
+          if (reason && reason == 'backdropClick') return;
+          setVisible(false);
+        }}
+        open={visible}
+      >
+        <Box
+          onClick={() => {
+            setVisible(false);
+          }}
+          sx={{
+            cursor: 'pointer',
+          }}
+          position="absolute"
+          top="16px"
+          right="16px"
+        >
+          <CloseIcon></CloseIcon>
+        </Box>
+        <DialogTitle>Profile Details</DialogTitle>
+        <DialogContent>
+          <ProfileForm />
+        </DialogContent>
+      </Dialog>
     </Container>
   );
 }
