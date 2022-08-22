@@ -58,7 +58,7 @@ const getTheme = (mode) =>
         MuiMenu: {
           styleOverrides: {
             paper: {
-              width: '110px',
+              width: '140px',
             },
             list: {
               padding: 0,

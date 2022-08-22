@@ -33,3 +33,21 @@ export const shuffle = (array) => {
 
   return array;
 };
+
+export const setLocalStorage = (name, value) => {
+  if (name && window) {
+    window.localStorage.setItem(name, value);
+  }
+};
+
+export const getLocalStorage = (name) => {
+  if (name && window) {
+    return window.localStorage.getItem(name);
+  }
+};
+
+export const removeLocalStorage = (name) => {
+  if (name && window) {
+    return window.localStorage.removeItem(name);
+  }
+};

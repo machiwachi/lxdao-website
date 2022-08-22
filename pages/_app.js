@@ -2,8 +2,11 @@ import React, { useEffect } from 'react';
 import { i18n } from '@lingui/core';
 import { I18nProvider } from '@lingui/react';
 import { ThemeProvider } from '@mui/material/styles';
+import { RainbowKitProvider, lightTheme } from '@rainbow-me/rainbowkit';
+import { WagmiConfig } from 'wagmi';
 
 import getTheme from '@/common/theme';
+import { wagmiClient, chains } from '@/components/ConnectWallet';
 import { activatei18n } from '../i18n';
 
 import '@/common/global.css';
@@ -20,11 +23,20 @@ function MyApp({ Component, pageProps }) {
     // TODO: en by default for now
     activatei18n('en');
   }, []);
-
   return (
     <ThemeProvider theme={getTheme('light')}>
       <I18nProvider i18n={i18n}>
-        <Component {...pageProps} />
+        <WagmiConfig client={wagmiClient}>
+          <RainbowKitProvider
+            theme={lightTheme({
+              borderRadius: 'medium',
+              accentColor: 'linear-gradient(90deg, #305FE8 0%, #3AD9E3 100%)',
+            })}
+            chains={chains}
+          >
+            <Component {...pageProps} />
+          </RainbowKitProvider>
+        </WagmiConfig>
       </I18nProvider>
     </ThemeProvider>
   );

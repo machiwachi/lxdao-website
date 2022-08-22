@@ -12,6 +12,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 
 import { scrollToSection } from '@/utils/utility';
 import Container from './Container';
+import { ConnectWalletButton } from '@/components/ConnectWallet';
 
 const Header = () => {
   const [openMenu, setOpenMenu] = useState(false);
@@ -78,19 +79,37 @@ const Header = () => {
         <ListItem disablePadding>
           <ListItemButton
             onClick={() => {
-              window.open('https://github.com/lxdao-official/', '_blank');
+              window.open('https://forum.lxdao.io/', '_blank');
             }}
           >
-            <Typography sx={{ cursor: 'pointer' }}>GitHub</Typography>
+            <Typography sx={{ cursor: 'pointer' }}>Forum</Typography>
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
           <ListItemButton
             onClick={() => {
-              window.open('https://forum.lxdao.io/', '_blank');
+              window.open('https://twitter.com/LXDAO_Official', '_blank');
             }}
           >
-            <Typography sx={{ cursor: 'pointer' }}>Forum</Typography>
+            <Typography sx={{ cursor: 'pointer' }}>Twitter</Typography>
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton
+            onClick={() => {
+              window.open('https://discord.com/invite/HtcDdPgJ7D', '_blank');
+            }}
+          >
+            <Typography sx={{ cursor: 'pointer' }}>Discord</Typography>
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton
+            onClick={() => {
+              window.open('https://t.me/LXDAO', '_blank');
+            }}
+          >
+            <Typography sx={{ cursor: 'pointer' }}>Telegram</Typography>
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
@@ -117,41 +136,19 @@ const Header = () => {
         <ListItem disablePadding>
           <ListItemButton
             onClick={() => {
+              window.open('https://github.com/lxdao-official/', '_blank');
+            }}
+          >
+            <Typography sx={{ cursor: 'pointer' }}>GitHub</Typography>
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton
+            onClick={() => {
               router.push('/invest');
             }}
           >
             <Typography sx={{ cursor: 'pointer' }}>Invest</Typography>
-          </ListItemButton>
-        </ListItem>
-      </List>
-      <Divider />
-      <List sx={{ padding: 0 }}>
-        <ListItem disablePadding>
-          <ListItemButton sx={{ gap: 2 }}>
-            <Typography
-              target="_blank"
-              component="a"
-              href="https://twitter.com/LXDAO_Official"
-              color="primary"
-            >
-              <Box width="18px" component={'img'} src={'/icons/twitter.svg'} />
-            </Typography>
-            <Typography
-              target="_blank"
-              component="a"
-              href="https://discord.lxdao.io"
-              color="primary"
-            >
-              <Box width="18px" component={'img'} src={'/icons/discord.svg'} />
-            </Typography>
-            <Typography
-              target="_blank"
-              component="a"
-              href="https://t.me/LXDAO"
-              color="primary"
-            >
-              <Box width="18px" component={'img'} src={'/icons/telegram.svg'} />
-            </Typography>
           </ListItemButton>
         </ListItem>
       </List>
@@ -233,8 +230,16 @@ const Header = () => {
                   color={'inherit'}
                   sx={{
                     textDecoration: 'none',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
                   }}
                 >
+                  <Box
+                    width="20px"
+                    component={'img'}
+                    src={`/icons/forum.svg`}
+                  />
                   Forum
                 </Link>
               </MenuItem>
@@ -244,14 +249,70 @@ const Header = () => {
                 }}
               >
                 <Link
-                  href={`https://github.com/lxdao-official`}
+                  href={`https://twitter.com/LXDAO_Official`}
                   target="_blank"
                   color={'inherit'}
                   sx={{
                     textDecoration: 'none',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
                   }}
                 >
-                  GitHub
+                  <Box
+                    width="20px"
+                    component={'img'}
+                    src={`/icons/twitter.svg`}
+                  />
+                  Twitter
+                </Link>
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  handleCommunityMenuClose();
+                }}
+              >
+                <Link
+                  href={`https://discord.com/invite/HtcDdPgJ7D`}
+                  target="_blank"
+                  color={'inherit'}
+                  sx={{
+                    textDecoration: 'none',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                  }}
+                >
+                  <Box
+                    width="20px"
+                    component={'img'}
+                    src={`/icons/discord.svg`}
+                  />
+                  Discord
+                </Link>
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  handleCommunityMenuClose();
+                }}
+              >
+                <Link
+                  href={`https://t.me/LXDAO`}
+                  target="_blank"
+                  color={'inherit'}
+                  sx={{
+                    textDecoration: 'none',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                  }}
+                >
+                  <Box
+                    width="20px"
+                    component={'img'}
+                    src={`/icons/telegram.svg`}
+                  />
+                  Telegram
                 </Link>
               </MenuItem>
             </Menu>
@@ -313,6 +374,22 @@ const Header = () => {
                   handleCommunityMenuClose();
                 }}
               >
+                <Link
+                  href={`https://github.com/lxdao-official`}
+                  target="_blank"
+                  color={'inherit'}
+                  sx={{
+                    textDecoration: 'none',
+                  }}
+                >
+                  GitHub
+                </Link>
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  handleCommunityMenuClose();
+                }}
+              >
                 <Typography
                   sx={{ cursor: 'pointer' }}
                   onClick={() => {
@@ -326,34 +403,7 @@ const Header = () => {
           </Box>
         </Box>
       </Box>
-      <Box display={{ md: 'flex', xs: 'none' }} alignItems="center">
-        <Typography
-          target="_blank"
-          component="a"
-          href="https://twitter.com/LXDAO_Official"
-          color="primary"
-          marginRight={5}
-        >
-          <Box width="26px" component={'img'} src={'/icons/twitter.svg'} />
-        </Typography>
-        <Typography
-          target="_blank"
-          component="a"
-          href="https://discord.lxdao.io"
-          color="primary"
-          marginRight={5}
-        >
-          <Box width="26px" component={'img'} src={'/icons/discord.svg'} />
-        </Typography>
-        <Typography
-          target="_blank"
-          component="a"
-          href="https://t.me/LXDAO"
-          color="primary"
-        >
-          <Box width="26px" component={'img'} src={'/icons/telegram.svg'} />
-        </Typography>
-      </Box>
+      <ConnectWalletButton />
       <MenuIcon
         sx={{
           display: { md: 'none', xs: 'block' },
