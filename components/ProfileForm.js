@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
-import React, { useState } from 'react';
-import { Box, Typography, Button, TextField } from '@mui/material';
+import React from 'react';
+import { Box, Typography, Button } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 
 import SkillsField from './SkillsField';
@@ -23,13 +23,7 @@ const interestNames = [
 ];
 
 function ProfileForm() {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-    control,
-  } = useForm();
+  const { handleSubmit, control } = useForm();
   const onSubmit = (data) => {
     // todo send api request
     console.log(data);

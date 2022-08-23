@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, { useEffect } from 'react';
 import { getDefaultWallets, ConnectButton } from '@rainbow-me/rainbowkit';
 import {

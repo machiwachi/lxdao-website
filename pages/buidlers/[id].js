@@ -45,7 +45,7 @@ function Tag(props) {
   );
 }
 
-function Project(props) {
+function Project() {
   return (
     <Box display="flex" boxShadow={2} borderRadius={1} overflow="hidden">
       <Box flexBasis="158px">

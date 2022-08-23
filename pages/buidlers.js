@@ -1,6 +1,5 @@
 /* eslint-disable no-undef */
-import React, { useEffect } from 'react';
-import { useRouter } from 'next/router';
+import React from 'react';
 import { Typography, Box, Grid } from '@mui/material';
 
 import Layout from '@/components/Layout';

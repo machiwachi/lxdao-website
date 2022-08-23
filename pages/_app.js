@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import { RainbowKitProvider, lightTheme } from '@rainbow-me/rainbowkit';
 import { WagmiConfig } from 'wagmi';
 
 import getTheme from '@/common/theme';
 import { wagmiClient, chains } from '@/components/ConnectWallet';
-import { activatei18n } from '../i18n';
 
 import '@/common/global.css';
 

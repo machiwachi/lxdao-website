@@ -1,10 +1,8 @@
 import React from 'react';
-import { useRouter } from 'next/router';
-import { Box, Typography, Link } from '@mui/material';
+import { Box } from '@mui/material';
 import Container from '@/components/Container';
 
 const SectionHero = ({ leftContent, rightContent }) => {
-  const router = useRouter();
   return (
     <Container
       height="calc(100vh - 81px)"
