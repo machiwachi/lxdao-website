@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import moment from 'moment';
 import {
   Box,
   Typography,
   Grid,
-  Card,
   Chip,
   Stack,
   Avatar,
@@ -12,11 +13,7 @@ import {
 import { makeStyles } from '@mui/styles';
 
 import Container from '@/components/Container';
-import Button from '@/components/Button';
 import ContributorCard from '@/components/ContributorCard';
-
-import projects from '@/common/content/projects';
-import { AddBox } from '@mui/icons-material';
 
 const useStyles = makeStyles({
   tooltip: {
@@ -28,12 +25,28 @@ const useStyles = makeStyles({
 });
 
 const SectionProjectDetail = ({ projectId }) => {
-  const projectItem = projects.filter((project) => project.id === projectId)[0];
-  if (!projectItem) return null;
+  const [project, setProject] = useState(null);
+  // const [contributorData, setContributorData] = useState(
+  //   projectItem?.contributors
+  // );
 
-  const [contributorData, setContributorData] = useState(
-    projectItem?.contributors
-  );
+  const PROJECT_STATUS = {
+    WIP: 'WORK IN PROGRESS',
+    LAUNCHED: 'LAUNCHED',
+  };
+
+  useEffect(() => {
+    axios
+      .get(`${process.env.LXDAO_API_SYNC_URL}/project/${projectId}`)
+      .then((res) => {
+        if (res?.data?.data) {
+          setProject(res?.data?.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   const classes = useStyles();
 
@@ -59,6 +72,8 @@ const SectionProjectDetail = ({ projectId }) => {
     });
   };
 
+  if (!project) return null;
+
   return (
     <Container
       paddingY={{ md: '96px', xs: 8 }}
@@ -74,7 +89,7 @@ const SectionProjectDetail = ({ projectId }) => {
               width: '100%',
               boxShadow: '0px 4px 10px 3px rgba(0, 0, 0, 0.04)',
             }}
-            src={projectItem.logoLarge}
+            src={project.logoLarge}
           />
         </Grid>
         <Grid item md={8} justify="flex-start">
@@ -84,9 +99,9 @@ const SectionProjectDetail = ({ projectId }) => {
               alignItems="flex-end"
               gap="12px"
             >
-              <img style={{ width: '50px' }} src={projectItem.logoLarge} />
+              <img style={{ width: '50px' }} src={project.logoLarge} />
               <Typography variant="h5" align="left">
-                {projectItem.title}
+                {project.name}
               </Typography>
             </Box>
             <Typography
@@ -94,12 +109,12 @@ const SectionProjectDetail = ({ projectId }) => {
               align="left"
               display={{ md: 'block', xs: 'none' }}
             >
-              {projectItem.title}
+              {project.name}
             </Typography>
-            <Typography align="left">{projectItem.description}</Typography>
+            <Typography align="left">{project.description}</Typography>
             <Box align="left" display="flex" gap="5px" flexWrap="wrap">
-              {projectItem.type &&
-                projectItem.type.map((type, index) => {
+              {project.type &&
+                project.type.map((type, index) => {
                   return (
                     <Chip
                       key={index}
@@ -116,29 +131,30 @@ const SectionProjectDetail = ({ projectId }) => {
                 })}
             </Box>
             <Box display="flex" gap={4} flexWrap="wrap">
-              {projectItem.links &&
-                projectItem.links.map((link, index) => {
+              {project.links &&
+                Object.keys(project.links).map((key, index) => {
                   return (
                     <Typography
                       target="_blank"
                       component="a"
-                      href={link.url}
+                      href={project.links[key]}
                       color="primary"
+                      key={index}
                     >
                       <Box
                         width="20px"
                         component={'img'}
-                        src={`/icons/${link.name}.svg`}
+                        src={`/icons/${key}.svg`}
                       />
                     </Typography>
                   );
                 })}
             </Box>
-            <Box align="left">
-              <LabelText label="Buidlers" />
-              <Stack direction="row" spacing={2}>
-                {projectItem.contributors &&
-                  projectItem.contributors.map((contributor, index) => {
+            {project.contributors && (
+              <Box align="left">
+                <LabelText label="Buidlers" />
+                <Stack direction="row" spacing={2}>
+                  {project.contributors.map((contributor, index) => {
                     return (
                       <Tooltip
                         title={
@@ -165,17 +181,19 @@ const SectionProjectDetail = ({ projectId }) => {
                       </Tooltip>
                     );
                   })}
-              </Stack>
-            </Box>
+                </Stack>
+              </Box>
+            )}
+
             <Stack direction="row" spacing={8}>
-              {projectItem.launchDate && (
+              {project.launchDate && (
                 <Box align="left">
                   <LabelText label="Launch Date" />
                   <Typography
                     fontSize={{ md: '20px', xs: '18px' }}
                     color="#000000"
                   >
-                    {projectItem.launchDate}
+                    {moment(project.launchDate).format('YYYY-MM-DD')}
                   </Typography>
                 </Box>
               )}
@@ -185,7 +203,7 @@ const SectionProjectDetail = ({ projectId }) => {
                   fontSize={{ md: '20px', xs: '18px' }}
                   color="#000000"
                 >
-                  {projectItem.status}
+                  {PROJECT_STATUS[project.status]}
                 </Typography>
               </Box>
             </Stack>
