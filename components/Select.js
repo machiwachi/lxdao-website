@@ -1,15 +1,7 @@
 /* eslint-disable no-undef */
-import React, { useState } from 'react';
-import {
-  Box,
-  OutlinedInput,
-  InputLabel,
-  MenuItem,
-  FormControl,
-  Chip,
-} from '@mui/material';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { useTheme } from '@mui/material/styles';
+import React from 'react';
+import { InputLabel, MenuItem, FormControl } from '@mui/material';
+import Select from '@mui/material/Select';
 
 function SingleSelect(props) {
   return (
