@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import { t } from '@lingui/macro';
 import Typography from '@mui/material/Typography';
 
-import Language from '../components/Language';
+// import Language from '../components/Language';
 
 export default function Examples() {
   return (
@@ -13,7 +13,7 @@ export default function Examples() {
         <title>Examples</title>
       </Head>
       <Button>{t`Connect Wallet`}</Button>
-      <Language />
+      {/* <Language /> */}
       <hr />
       <Typography variant="h1" gutterBottom>
         h1. Heading
