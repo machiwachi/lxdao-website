@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import moment from 'moment';
+import { format } from 'date-fns';
 import {
   Box,
   Typography,
@@ -193,7 +193,7 @@ const SectionProjectDetail = ({ projectId }) => {
                     fontSize={{ md: '20px', xs: '18px' }}
                     color="#000000"
                   >
-                    {moment(project.launchDate).format('YYYY-MM-DD')}
+                    {format(new Date(project.launchDate), 'yyyy-MM-dd')}
                   </Typography>
                 </Box>
               )}
