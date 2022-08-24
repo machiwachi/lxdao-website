@@ -10,7 +10,7 @@ import {
 } from 'wagmi';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
-import axios from 'axios';
+import API from '@/common/API';
 import {
   setLocalStorage,
   getLocalStorage,
@@ -42,27 +42,24 @@ const ConnectWalletButton = () => {
   useEffect(() => {
     const currentAccessToken = getLocalStorage('accessToken');
     if (address && !currentAccessToken) {
-      axios
-        .get(`${process.env.LXDAO_API_SYNC_URL}/buidler/nonce/${address}`)
-        .then(({ data }) => {
-          const signatureMessage = data?.data?.signature_message;
-          if (signatureMessage) {
-            signMessage({
-              message: signatureMessage,
-            });
-          }
-        });
+      API.get(`/buidler/nonce/${address}`).then(({ data }) => {
+        const signatureMessage = data?.data?.signature_message;
+        if (signatureMessage) {
+          signMessage({
+            message: signatureMessage,
+          });
+        }
+      });
     }
   }, [isConnected]);
 
   useEffect(() => {
     const currentAccessToken = getLocalStorage('accessToken');
     function signIn(signature) {
-      axios
-        .post(`${process.env.LXDAO_API_SYNC_URL}/auth/signin`, {
-          address: address,
-          signature: signature,
-        })
+      API.post(`/auth/signin`, {
+        address: address,
+        signature: signature,
+      })
         .then(({ data }) => {
           const accessToken = data?.data?.access_token;
           if (accessToken) {

@@ -35,19 +35,19 @@ export const shuffle = (array) => {
 };
 
 export const setLocalStorage = (name, value) => {
-  if (name && window) {
+  if (name && typeof window !== 'undefined') {
     window.localStorage.setItem(name, value);
   }
 };
 
 export const getLocalStorage = (name) => {
-  if (name && window) {
+  if (name && typeof window !== 'undefined') {
     return window.localStorage.getItem(name);
   }
 };
 
 export const removeLocalStorage = (name) => {
-  if (name && window) {
+  if (name && typeof window !== 'undefined') {
     return window.localStorage.removeItem(name);
   }
 };
