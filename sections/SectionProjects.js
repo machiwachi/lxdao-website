@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useRouter } from 'next/router';
 import { Box, Typography, Grid, Card, Chip } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
+import API from '@/common/API';
 import { shuffle } from '@/utils/utility';
 
 import Container from '@/components/Container';
@@ -60,15 +60,14 @@ const SectionProjects = () => {
   const isHomepage = route === '/';
 
   useEffect(() => {
-    axios
-      .get(`${process.env.LXDAO_API_SYNC_URL}/project?page=1&per_page=12`)
+    API.get(`/project?page=1&per_page=12`)
       .then((res) => {
         if (res?.data?.data) {
           const IndexArray = [0, 1, 2, 4];
-          const homepageProjectIndexs = shuffle(IndexArray).slice(0, 3);
+          const homepageProjectIndexes = shuffle(IndexArray).slice(0, 3);
           setProjects(
             isHomepage
-              ? homepageProjects(homepageProjectIndexs, res?.data?.data)
+              ? homepageProjects(homepageProjectIndexes, res?.data?.data)
               : res?.data?.data
           );
         }

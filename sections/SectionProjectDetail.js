@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { format } from 'date-fns';
 import {
   Box,
@@ -12,8 +11,10 @@ import {
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
+import API from '@/common/API';
+
 import Container from '@/components/Container';
-import ContributorCard from '@/components/ContributorCard';
+import BuidlerCard from '@/components/BuidlerCard';
 
 const useStyles = makeStyles({
   tooltip: {
@@ -26,9 +27,6 @@ const useStyles = makeStyles({
 
 const SectionProjectDetail = ({ projectId }) => {
   const [project, setProject] = useState(null);
-  // const [contributorData, setContributorData] = useState(
-  //   projectItem?.contributors
-  // );
 
   const PROJECT_STATUS = {
     WIP: 'WORK IN PROGRESS',
@@ -36,8 +34,7 @@ const SectionProjectDetail = ({ projectId }) => {
   };
 
   useEffect(() => {
-    axios
-      .get(`${process.env.LXDAO_API_SYNC_URL}/project/${projectId}`)
+    API.get(`/project/${projectId}`)
       .then((res) => {
         if (res?.data?.data) {
           setProject(res?.data?.data);
@@ -63,13 +60,14 @@ const SectionProjectDetail = ({ projectId }) => {
     );
   };
 
-  const handleDisplayContributorTooltip = (data, status) => {
-    const cloneContributorData = [...contributorData];
-    cloneContributorData.forEach((item) => {
-      if (item.name === data.name) {
+  const handleDisplayBuidlerTooltip = (data, status) => {
+    const cloneProjectData = { ...project };
+    cloneProjectData?.buidlersOnProject.forEach((item) => {
+      if (item.id === data.id) {
         item.showTooltip = status === 'open';
       }
     });
+    setProject(cloneProjectData);
   };
 
   if (!project) return null;
@@ -150,32 +148,30 @@ const SectionProjectDetail = ({ projectId }) => {
                   );
                 })}
             </Box>
-            {project.contributors && (
+            {project?.buidlersOnProject?.length > 0 && (
               <Box align="left">
                 <LabelText label="Buidlers" />
                 <Stack direction="row" spacing={2}>
-                  {project.contributors.map((contributor, index) => {
+                  {project.buidlersOnProject.map((buidler, index) => {
                     return (
                       <Tooltip
-                        title={
-                          <ContributorCard contributorInfo={contributor} />
-                        }
-                        open={contributor.showTooltip}
+                        title={<BuidlerCard buidlerInfo={buidler} />}
+                        open={buidler.showTooltip}
                         PopperProps={{
                           disablePortal: true,
                         }}
                         onClose={() =>
-                          handleDisplayContributorTooltip(contributor, 'close')
+                          handleDisplayBuidlerTooltip(buidler, 'close')
                         }
                         classes={{ tooltip: classes.tooltip }}
                       >
                         <Avatar
                           key={index}
-                          alt={contributor.name}
-                          src={contributor.avatar}
+                          alt={buidler?.buidler?.name}
+                          src={buidler?.buidler?.image}
                           sx={{ cursor: 'pointer' }}
                           onMouseover={() =>
-                            handleDisplayContributorTooltip(contributor, 'open')
+                            handleDisplayBuidlerTooltip(buidler, 'open')
                           }
                         />
                       </Tooltip>
