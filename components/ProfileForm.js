@@ -7,6 +7,7 @@ import SkillsField from './SkillsField';
 import ContactsField from './ContactsField';
 import MultiSelect from './MultiSelect';
 import TextInput from './TextInput';
+import Avatar from './Avatar';
 
 const interestNames = [
   'Design',
@@ -31,14 +32,16 @@ function ProfileForm() {
 
   return (
     <Box>
-      <Box marginBottom={6}>
-        <Box width="150px" borderRadius="50%" overflow="hidden">
-          <img
-            style={{ display: 'block', width: 150 }}
-            src="/images/kuncle.jpeg"
-            alt=""
-          />
-        </Box>
+      <Box marginBottom={4}>
+        <Controller
+          name={'avatar'}
+          control={control}
+          render={({ field: { onChange, value } }) => {
+            return (
+              <Avatar width="150px" value={value} onChange={onChange}></Avatar>
+            );
+          }}
+        />
       </Box>
       <Box marginBottom={2.5}>
         <Controller
