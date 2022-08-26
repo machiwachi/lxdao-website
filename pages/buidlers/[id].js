@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 import React, { useEffect, useState } from 'react';
 import {
@@ -135,11 +136,11 @@ function BuidlerDetails(props) {
   const [visible, setVisible] = useState(false);
 
   // contract token
-  const [setHasToken] = useState(false);
+  const [hasToken, setHasToken] = useState(false);
   // backend status
-  const [setStatus] = useState('');
+  const [status, setStatus] = useState('');
 
-  const [setTx] = useState(null);
+  const [tx, setTx] = useState(null);
 
   useEffect(async () => {
     if (!signer) {
@@ -386,10 +387,12 @@ export default function Buidler() {
     });
   };
 
+  const id = router.query.id;
   useEffect(() => {
-    const id = router.query.id;
-    requestDetail(id);
-  }, []);
+    if (id) {
+      requestDetail(id);
+    }
+  }, [id]);
 
   return (
     <Layout>
