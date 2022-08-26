@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Typography, Box, Grid } from '@mui/material';
 
 import Layout from '@/components/Layout';
@@ -9,10 +9,20 @@ import TextInput from '@/components/TextInput';
 import SingleSelect from '@/components/Select';
 import skillNames from '@/common/skills';
 import Container from '@/components/Container';
+import API from '@/common/API';
+import { useRouter } from 'next/router';
 
-function BuidlerCard() {
+function BuidlerCard(props) {
+  const record = props.record;
+  console.log(record);
   return (
-    <Box boxShadow={1} borderRadius={2} padding={3} position="relative">
+    <Box
+      boxShadow={1}
+      borderRadius={2}
+      padding={3}
+      position="relative"
+      onClick={() => {}}
+    >
       <Box display="flex">
         <Box
           flexBasis="80px"
@@ -103,6 +113,45 @@ function BuidlerCard() {
 }
 
 export default function Home() {
+  const router = useRouter();
+
+  const [list, setList] = useState([]);
+
+  const searchList = async (name, role) => {
+    let query = `/buidler/list`;
+    if (name && name.length > 0) {
+      query = `${query}?name=${name}`;
+
+      if (role && role.length > 0) {
+        query = query + `&role=${role}`;
+      }
+    } else {
+      if (role && role.length > 0) {
+        query = `${query}?role=${role}`;
+      }
+    }
+
+    API.get(query).then((data) => {
+      const result = data?.data;
+      if (result.status !== 'SUCCESS') {
+        // error
+        return;
+      }
+      const records = result.data;
+
+      let tempList = [];
+      records.forEach((record) => {
+        tempList.push(record);
+      });
+
+      setList(tempList);
+    });
+  };
+
+  useEffect(() => {
+    searchList('', '');
+  }, []);
+
   return (
     <Layout>
       <Header />
@@ -125,15 +174,21 @@ export default function Home() {
         </Box>
         <Box marginTop={6.25}>
           <Grid container spacing={3}>
-            <Grid item xs={4}>
-              <BuidlerCard />
-            </Grid>
-            <Grid item xs={4}>
-              <BuidlerCard />
-            </Grid>
-            <Grid item xs={4}>
-              <BuidlerCard />
-            </Grid>
+            {list.map((item) => {
+              return (
+                <Grid
+                  key={item.id}
+                  item
+                  xs={4}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    router.push('/buidlers/' + item.id);
+                  }}
+                >
+                  <BuidlerCard record={item} />
+                </Grid>
+              );
+            })}
           </Grid>
         </Box>
       </Container>
