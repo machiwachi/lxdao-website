@@ -4,7 +4,8 @@ import { Box, Typography } from '@mui/material';
 const BuidlerCard = ({ buidlerInfo }) => {
   if (!buidlerInfo) return null;
   const { projectRole } = buidlerInfo;
-  const { name, image, description, contacts } = buidlerInfo?.buidler;
+  const { name, image, description, contacts } = buidlerInfo?.buidler || {};
+
   return (
     <Box
       display="flex"
@@ -43,13 +44,14 @@ const BuidlerCard = ({ buidlerInfo }) => {
         {description}
       </Typography>
       <Box>
-        {Object.keys(contacts).map((key) => {
+        {Object.keys(contacts).map((key, index) => {
           return (
             <Typography
               target="_blank"
               component="a"
               href={contacts[key]}
               color="primary"
+              key={index}
             >
               <Box width="20px" component={'img'} src={`/icons/${key}.svg`} />
             </Typography>
