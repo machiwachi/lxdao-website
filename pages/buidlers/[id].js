@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Typography,
@@ -28,6 +28,13 @@ import Footer from '@/components/Footer';
 import Container from '@/components/Container';
 import ProfileForm from '@/components/ProfileForm';
 import { formatAddress } from '@/utils/utility';
+import { useRouter } from 'next/router';
+import API from '@/common/API';
+import { useAccount, useContract, useSigner } from 'wagmi';
+
+import { contractInfo } from '@/components/ContractsOperation';
+
+import { BigNumber } from 'ethers';
 
 function Tag(props) {
   return (
@@ -114,9 +121,52 @@ function Links(props) {
   });
 }
 
-function BuidlerDetails() {
+function BuidlerDetails(props) {
+  const record = props.record;
+
+  const { address, isConnected } = useAccount();
+  const { data: signer } = useSigner();
+  const contract = useContract({
+    ...contractInfo(),
+    signerOrProvider: signer,
+  });
+
   const [details, setDetails] = useState('buidlerCard');
   const [visible, setVisible] = useState(false);
+
+  // contract token
+  const [hasToken, setHasToken] = useState(false);
+  // backend status
+  const [status, setStatus] = useState('');
+
+  const [tx, setTx] = useState(null);
+
+  useEffect(async () => {
+    if (!signer) {
+      return;
+    }
+    setStatus(record.status);
+
+    if (isConnected && address === record.address) {
+      const result = await contract.balanceOf(address);
+      if (BigNumber.isBigNumber(result)) {
+        // own sbt
+        setHasToken(result.toNumber() > 0);
+        // ipfs
+      }
+    }
+  }, [isConnected, signer]);
+
+  const mint = async (signature) => {
+    // test
+    signature =
+      '0x40c835598d05ba1d0ff10a89e87a7a181a1d8be68dae3e808f486166cf5bdf274ce9fe6698391bae2261877bf127381df5646e369e64c92d64565972af10ed351c';
+
+    const tx = await contract.mint(signature);
+    setTx(tx);
+    const response = await tx.wait();
+    console.log(response);
+  };
 
   return (
     <Container paddingY={10}>
@@ -138,6 +188,15 @@ function BuidlerDetails() {
               variant="outlined"
             >
               Edit
+            </Button>
+            <Button
+              onClick={() => {
+                mint();
+              }}
+              size="small"
+              variant="outlined"
+            >
+              Mint
             </Button>
           </Box>
         </Box>
@@ -313,10 +372,29 @@ function BuidlerDetails() {
 }
 
 export default function Buidler() {
+  const router = useRouter();
+  const [record, setRecord] = useState(undefined);
+
+  const requestDetail = async (id) => {
+    API.get(`/buidler/${id}`).then((data) => {
+      const result = data?.data;
+      if (result.status !== 'SUCCESS') {
+        // error
+        return;
+      }
+      setRecord(result.data);
+    });
+  };
+
+  useEffect(() => {
+    const id = router.query.id;
+    requestDetail(id);
+  }, []);
+
   return (
     <Layout>
       <Header />
-      <BuidlerDetails />
+      {record && <BuidlerDetails record={record} />}
       <Footer />
     </Layout>
   );
