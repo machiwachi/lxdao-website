@@ -135,11 +135,11 @@ function BuidlerDetails(props) {
   const [visible, setVisible] = useState(false);
 
   // contract token
-  const [hasToken, setHasToken] = useState(false);
+  const [setHasToken] = useState(false);
   // backend status
-  const [status, setStatus] = useState('');
+  const [setStatus] = useState('');
 
-  const [tx, setTx] = useState(null);
+  const [setTx] = useState(null);
 
   useEffect(async () => {
     if (!signer) {
