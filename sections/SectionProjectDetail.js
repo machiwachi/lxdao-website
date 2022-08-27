@@ -38,6 +38,7 @@ const SectionProjectDetail = ({ projectId }) => {
   const [openJoinDialog, setOpenJoinDialog] = useState(false);
   const [openJoinTooltip, setOpenJoinTooltip] = useState(false);
   const [showJoinButton, setShowJoinButton] = useState(true);
+  const [showInviteButton, setShowInviteButton] = useState(false);
 
   const { address } = useAccount();
   const classes = useStyles();
@@ -99,10 +100,17 @@ const SectionProjectDetail = ({ projectId }) => {
         if (buidler?.buidler?.address === address) {
           count++;
         }
+        if (
+          buidler?.projectRole.includes('Project Manager') &&
+          buidler?.buidler.address === address
+        ) {
+          setShowInviteButton(true);
+        }
       });
       setShowJoinButton(!count);
     } else {
       setShowJoinButton(true);
+      setShowInviteButton(false);
     }
   }, [address, project]);
 
@@ -292,30 +300,32 @@ const SectionProjectDetail = ({ projectId }) => {
                 </Stack>
               </Box>
             )}
-            <Stack direction="row" spacing={2} marginTop={2}>
-              <Autocomplete
-                sx={{ width: '300px' }}
-                freeSolo
-                disableClearable
-                options={buidlerList.map((option) => option.name)}
-                onChange={(e, data) => {
-                  setSelectedBuidler(data);
-                }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Search Buidler"
-                    InputProps={{
-                      ...params.InputProps,
-                      type: 'search',
-                    }}
-                  />
-                )}
-              />
-              <Button variant="gradient" onClick={handleInviteBuidler}>
-                Invite
-              </Button>
-            </Stack>
+            {showInviteButton && (
+              <Stack direction="row" spacing={2} marginTop={2}>
+                <Autocomplete
+                  sx={{ width: '300px' }}
+                  freeSolo
+                  disableClearable
+                  options={buidlerList.map((option) => option.name)}
+                  onChange={(e, data) => {
+                    setSelectedBuidler(data);
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Search Buidler"
+                      InputProps={{
+                        ...params.InputProps,
+                        type: 'search',
+                      }}
+                    />
+                  )}
+                />
+                <Button variant="gradient" onClick={handleInviteBuidler}>
+                  Invite
+                </Button>
+              </Stack>
+            )}
             <Stack direction="row" spacing={8}>
               {project.launchDate && (
                 <Box align="left">
