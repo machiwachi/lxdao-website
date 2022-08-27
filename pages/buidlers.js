@@ -92,12 +92,18 @@ export default function Home() {
   const [list, setList] = useState([]);
   const [search, setSearch] = useState('');
 
-  // todo khan support address
-  // todo support case insensitive search
-  const searchList = async (name) => {
+  const searchList = async (search, role) => {
     let query = `/buidler/list`;
-    if (name && name.length > 0) {
-      query = `${query}?name=${name}`;
+    if (search && search.length > 0) {
+      query = `${query}?search=${search}`;
+
+      if (role && role.length > 0) {
+        query = query + `&role=${role}`;
+      }
+    } else {
+      if (role && role.length > 0) {
+        query = `${query}?role=${role}`;
+      }
     }
 
     API.get(query).then((data) => {

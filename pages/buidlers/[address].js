@@ -372,8 +372,8 @@ export default function Buidler() {
   const router = useRouter();
   const [record, setRecord] = useState(undefined);
 
-  const requestDetail = async (id) => {
-    API.get(`/buidler/${id}`).then((data) => {
+  const requestDetail = async (address) => {
+    API.get(`/buidler/${address}`).then((data) => {
       const result = data?.data;
       if (result.status !== 'SUCCESS') {
         // error
@@ -383,12 +383,12 @@ export default function Buidler() {
     });
   };
 
-  const id = router.query.id;
+  const address = router.query.address;
   useEffect(() => {
-    if (id) {
-      requestDetail(id);
+    if (address) {
+      requestDetail(address);
     }
-  }, [id]);
+  }, [address]);
 
   return <Layout>{record && <BuidlerDetails record={record} />}</Layout>;
 }
