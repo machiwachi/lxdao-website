@@ -10,6 +10,7 @@ const AlertPopup = () => {
     return (
       <Alert
         severity={type}
+        variant="filled"
         sx={{
           position: 'absolute',
           top: '20px',
