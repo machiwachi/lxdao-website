@@ -44,7 +44,7 @@ function formatContacts(contacts) {
   return formattedContacts;
 }
 
-function BuidlerContacts({ contacts }) {
+function BuidlerContacts({ contacts, space }) {
   const formattedContacts = formatContacts(contacts || {});
   return (
     <Box display="flex">
@@ -56,7 +56,7 @@ function BuidlerContacts({ contacts }) {
             href={formattedContacts[key]}
             color="primary"
             key={index}
-            marginLeft={1}
+            marginLeft={space || 1}
           >
             <Box
               width="20px"
