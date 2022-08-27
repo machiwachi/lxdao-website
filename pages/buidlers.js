@@ -1,12 +1,11 @@
 /* eslint-disable no-undef */
 import React, { useEffect, useState } from 'react';
 import { Typography, Box, Grid, Link } from '@mui/material';
+import _ from 'lodash';
 
 import Layout from '@/components/Layout';
 
-import TextInput from '@/components/TextInput';
-import SingleSelect from '@/components/Select';
-import skillNames from '@/common/skills';
+import DebouncedInput from '@/components/DebouncedInput';
 import Container from '@/components/Container';
 import API from '@/common/API';
 import BuidlerContacts from '@/components/BuilderContacts';
@@ -125,25 +124,20 @@ function BuidlerCard(props) {
 
 export default function Home() {
   const [list, setList] = useState([]);
+  const [search, setSearch] = useState('');
 
-  const searchList = async (name, role) => {
+  // todo khan support address
+  // todo support case insensitive search
+  const searchList = async (name) => {
     let query = `/buidler/list`;
     if (name && name.length > 0) {
       query = `${query}?name=${name}`;
-
-      if (role && role.length > 0) {
-        query = query + `&role=${role}`;
-      }
-    } else {
-      if (role && role.length > 0) {
-        query = `${query}?role=${role}`;
-      }
     }
 
     API.get(query).then((data) => {
       const result = data?.data;
       if (result.status !== 'SUCCESS') {
-        // error
+        // error todo alert
         return;
       }
       const records = result.data;
@@ -158,8 +152,12 @@ export default function Home() {
   };
 
   useEffect(() => {
-    searchList('', '');
+    searchList('');
   }, []);
+
+  useEffect(() => {
+    searchList(search);
+  }, [search]);
 
   return (
     <Layout>
@@ -172,24 +170,43 @@ export default function Home() {
         </Box>
         <Box marginTop={6.25}>
           <Grid container spacing={2}>
-            <Grid item xs={8}>
-              <TextInput label="Search" placeholder="Search buidlers" />
+            <Grid item xs={12}>
+              <DebouncedInput
+                value={search}
+                onChange={(value) => {
+                  setSearch(value);
+                }}
+                label="Search"
+                placeholder="Search buidlers"
+              />
             </Grid>
-            <Grid item xs={4}>
-              <SingleSelect label="Skill" dropdown={skillNames} />
-            </Grid>
+            {/* <Grid item xs={4}>
+              <SingleSelect
+                value={skill}
+                label="Skill"
+                dropdown={skillNames}
+                onChange={(value) => {
+                  setSkill(value);
+                  searchList('', value);
+                }}
+              />
+            </Grid> */}
           </Grid>
         </Box>
         <Box marginTop={6.25}>
-          <Grid container spacing={3}>
-            {list.map((item) => {
-              return (
-                <Grid key={item.id} item xs={4}>
-                  <BuidlerCard record={item} />
-                </Grid>
-              );
-            })}
-          </Grid>
+          {list.length === 0 ? (
+            <Box>404 todo not found</Box>
+          ) : (
+            <Grid container spacing={3}>
+              {list.map((item) => {
+                return (
+                  <Grid key={item.id} item xs={4}>
+                    <BuidlerCard record={item} />
+                  </Grid>
+                );
+              })}
+            </Grid>
+          )}
         </Box>
       </Container>
     </Layout>
