@@ -12,6 +12,7 @@ import {
   TextField,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import { useAccount } from 'wagmi';
 
 import API from '@/common/API';
 import { getLocalStorage } from '@/utils/utility';
@@ -36,7 +37,10 @@ const SectionProjectDetail = ({ projectId }) => {
   const [selectedBuidler, setSelectedBuidler] = useState('');
   const [openJoinDialog, setOpenJoinDialog] = useState(false);
   const [openJoinTooltip, setOpenJoinTooltip] = useState(false);
+  const [showJoinButton, setShowJoinButton] = useState(true);
+  const [showInviteButton, setShowInviteButton] = useState(false);
 
+  const { address } = useAccount();
   const classes = useStyles();
 
   const PROJECT_STATUS = {
@@ -45,7 +49,6 @@ const SectionProjectDetail = ({ projectId }) => {
   };
 
   let projectManagerName = '';
-
   project?.buidlersOnProject.forEach((buidler) => {
     if (buidler?.projectRole.includes('Project Manager')) {
       projectManagerName = buidler?.buidler?.name;
@@ -89,6 +92,27 @@ const SectionProjectDetail = ({ projectId }) => {
         console.log(err);
       });
   }, [project]);
+
+  useEffect(() => {
+    if (address) {
+      let count = 0;
+      project?.buidlersOnProject.forEach((buidler) => {
+        if (buidler?.buidler?.address === address) {
+          count++;
+        }
+        if (
+          buidler?.projectRole.includes('Project Manager') &&
+          buidler?.buidler.address === address
+        ) {
+          setShowInviteButton(true);
+        }
+      });
+      setShowJoinButton(!count);
+    } else {
+      setShowJoinButton(true);
+      setShowInviteButton(false);
+    }
+  }, [address, project]);
 
   const LabelText = ({ label }) => {
     return (
@@ -276,30 +300,32 @@ const SectionProjectDetail = ({ projectId }) => {
                 </Stack>
               </Box>
             )}
-            <Stack direction="row" spacing={2} marginTop={2}>
-              <Autocomplete
-                sx={{ width: '300px' }}
-                freeSolo
-                disableClearable
-                options={buidlerList.map((option) => option.name)}
-                onChange={(e, data) => {
-                  setSelectedBuidler(data);
-                }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Search Buidler"
-                    InputProps={{
-                      ...params.InputProps,
-                      type: 'search',
-                    }}
-                  />
-                )}
-              />
-              <Button variant="gradient" onClick={handleInviteBuidler}>
-                Invite
-              </Button>
-            </Stack>
+            {showInviteButton && (
+              <Stack direction="row" spacing={2} marginTop={2}>
+                <Autocomplete
+                  sx={{ width: '300px' }}
+                  freeSolo
+                  disableClearable
+                  options={buidlerList.map((option) => option.name)}
+                  onChange={(e, data) => {
+                    setSelectedBuidler(data);
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Search Buidler"
+                      InputProps={{
+                        ...params.InputProps,
+                        type: 'search',
+                      }}
+                    />
+                  )}
+                />
+                <Button variant="gradient" onClick={handleInviteBuidler}>
+                  Invite
+                </Button>
+              </Stack>
+            )}
             <Stack direction="row" spacing={8}>
               {project.launchDate && (
                 <Box align="left">
@@ -322,7 +348,7 @@ const SectionProjectDetail = ({ projectId }) => {
                 </Typography>
               </Box>
             </Stack>
-            {project?.isAbleToJoin && (
+            {project?.isAbleToJoin && showJoinButton && (
               <Tooltip
                 PopperProps={{
                   disablePortal: true,
