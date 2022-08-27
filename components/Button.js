@@ -18,7 +18,7 @@ const Button = ({ variant, children, ...rest }) => (
       background:
         variant === 'outlined'
           ? '#ffffff'
-          : variant === 'bigGradient'
+          : variant === 'bigGradient' || variant === 'gradient'
           ? 'linear-gradient(90deg, rgba(41,117,223,1) 0%, rgba(58,207,227,1) 100%)'
           : '#000000',
     }}

@@ -4,13 +4,15 @@ import { RainbowKitProvider, lightTheme } from '@rainbow-me/rainbowkit';
 import { WagmiConfig } from 'wagmi';
 
 import getTheme from '@/common/theme';
+import { AlertProvider } from '@/context/AlertContext';
 import { wagmiClient, chains } from '@/components/ConnectWallet';
+import AlertPopup from '@/components/AlertPopup';
 
 // eslint-disable-next-line react/prop-types
 function MyApp({ Component, pageProps }) {
   return (
-    <>
-      <ThemeProvider theme={getTheme('light')}>
+    <ThemeProvider theme={getTheme('light')}>
+      <AlertProvider>
         <WagmiConfig client={wagmiClient}>
           <RainbowKitProvider
             theme={lightTheme({
@@ -20,10 +22,11 @@ function MyApp({ Component, pageProps }) {
             chains={chains}
           >
             <Component {...pageProps} />
+            <AlertPopup />
           </RainbowKitProvider>
         </WagmiConfig>
-      </ThemeProvider>
-    </>
+      </AlertProvider>
+    </ThemeProvider>
   );
 }
 
