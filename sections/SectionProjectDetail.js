@@ -10,11 +10,15 @@ import {
   Tooltip,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import { useConnect } from 'wagmi';
 
 import API from '@/common/API';
+import { getLocalStorage } from '@/utils/utility';
 
+import Button from '@/components/Button';
 import Container from '@/components/Container';
 import BuidlerCard from '@/components/BuidlerCard';
+import Dialog from '@/components/Dialog';
 
 const useStyles = makeStyles({
   tooltip: {
@@ -27,11 +31,23 @@ const useStyles = makeStyles({
 
 const SectionProjectDetail = ({ projectId }) => {
   const [project, setProject] = useState(null);
+  const [openJoinDialog, setOpenJoinDialog] = useState(false);
+  const [openJoinTooltip, setOpenJoinTooltip] = useState(false);
+
+  const { connect } = useConnect();
 
   const PROJECT_STATUS = {
     WIP: 'WORK IN PROGRESS',
     LAUNCHED: 'LAUNCHED',
   };
+
+  let projectManagerName = '';
+
+  project?.buidlersOnProject.forEach((buidler) => {
+    if (buidler?.projectRole.includes('Project Manager')) {
+      projectManagerName = buidler?.buidler?.name;
+    }
+  });
 
   useEffect(() => {
     API.get(`/project/${projectId}`)
@@ -68,6 +84,18 @@ const SectionProjectDetail = ({ projectId }) => {
       }
     });
     setProject(cloneProjectData);
+  };
+
+  const handleBuidlerJoin = () => {
+    const accessToken = getLocalStorage('accessToken');
+    if (accessToken) {
+      setOpenJoinDialog(true);
+    } else {
+      setOpenJoinTooltip(true);
+      setTimeout(() => {
+        setOpenJoinTooltip(false);
+      }, 3000);
+    }
   };
 
   if (!project) return null;
@@ -205,7 +233,6 @@ const SectionProjectDetail = ({ projectId }) => {
                 </Stack>
               </Box>
             )}
-
             <Stack direction="row" spacing={8}>
               {project.launchDate && (
                 <Box align="left">
@@ -228,9 +255,46 @@ const SectionProjectDetail = ({ projectId }) => {
                 </Typography>
               </Box>
             </Stack>
+            {project?.isAbleToJoin && (
+              <Tooltip
+                PopperProps={{
+                  disablePortal: true,
+                }}
+                onClose={() => {
+                  setOpenJoinTooltip(false);
+                }}
+                open={openJoinTooltip}
+                disableFocusListener
+                disableHoverListener
+                disableTouchListener
+                title="Make sure you are a LXDAO buidler and connect your wallet first."
+              >
+                <Box display="flex" width="100px">
+                  <Button
+                    width="100%"
+                    variant="gradient"
+                    onClick={handleBuidlerJoin}
+                  >
+                    Join
+                  </Button>
+                </Box>
+              </Tooltip>
+            )}
           </Stack>
         </Grid>
       </Grid>
+      <Dialog
+        open={openJoinDialog}
+        title="Join this project"
+        content={`Contact with the Project Manager(${projectManagerName}) of this project to apply.`}
+        confirmText="OK"
+        handleClose={() => {
+          setOpenJoinDialog(false);
+        }}
+        handleConfirm={() => {
+          setOpenJoinDialog(false);
+        }}
+      />
     </Container>
   );
 };
