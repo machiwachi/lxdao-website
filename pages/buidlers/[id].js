@@ -12,6 +12,7 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
+  Tooltip,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import {
@@ -25,9 +26,10 @@ import {
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import Layout from '@/components/Layout';
-import showMessage from '@/components/showMessage';
+
 import Container from '@/components/Container';
 import ProfileForm from '@/components/ProfileForm';
+import Skills from '@/components/Skills';
 import { formatAddress } from '@/utils/utility';
 import { useRouter } from 'next/router';
 import API from '@/common/API';
@@ -36,36 +38,23 @@ import { useAccount, useContract, useSigner } from 'wagmi';
 import { contractInfo } from '@/components/ContractsOperation';
 
 import { BigNumber } from 'ethers';
-import BuidlerContacts from '@/components/BuilderContacts';
+import BuidlerContacts from '@/components/BuidlerContacts';
+import Tag from '@/components/Tag';
 
-function Tag(props) {
+function Project({ data }) {
+  console.log('project: ', project);
+  const project = data.project;
   return (
-    <Box
-      style={{
-        border: '1px solid #D0D5DD',
-        borderRadius: '2px',
-        padding: '2px 6px',
-        marginLeft: '4px',
-        marginBottom: '4px',
-      }}
-    >
-      {props.text}
-    </Box>
-  );
-}
-
-function Project() {
-  return (
-    <Box display="flex" boxShadow={2} borderRadius={1} overflow="hidden">
+    <Box display="flex" boxShadow={2} borderRadius={2} overflow="hidden">
       <Box flexBasis="158px">
         <img
           style={{ display: 'block', width: 158 }}
-          src="/projects/2032-logo-square.png"
+          src={project.logoLarge}
           alt=""
         />
       </Box>
       <Box flex="auto" padding={2} position="relative">
-        <Typography variant="h5">Web3 In 2032</Typography>
+        <Typography variant="h5">{project.name}</Typography>
         <Box display="flex" marginTop={2}>
           <Box flex="1">
             <Typography
@@ -105,22 +94,11 @@ function Project() {
           </Box>
         </Box>
         <Typography sx={{ position: 'absolute', top: '24px', right: '36px' }}>
-          Project#002
+          Project#{project.number}
         </Typography>
       </Box>
     </Box>
   );
-}
-
-function Links(props) {
-  const links = props.links;
-  return links.map((link, index) => {
-    return (
-      <Link marginRight={5} target="_blank" href={link.url} key={index}>
-        <Box width="18px" component={'img'} src={`/icons/${link.icon}.svg`} />
-      </Link>
-    );
-  });
 }
 
 function BuidlerDetails(props) {
@@ -172,6 +150,7 @@ function BuidlerDetails(props) {
   };
 
   // todo mint page develop
+  const [copyTip, setCopyTip] = useState('Copy to Clipboard');
 
   return (
     <Container paddingY={10}>
@@ -213,82 +192,77 @@ function BuidlerDetails(props) {
               </Typography>
               <Typography>{record.description}</Typography>
             </Box>
-            <Box display="flex" marginBottom={2}>
+            <Box display="flex" marginBottom={6}>
               <CopyToClipboard
                 text={record.address}
                 onCopy={() => {
-                  showMessage({
-                    type: 'success',
-                    title: 'Copied successfully',
-                    body: (
-                      <Box
-                        sx={{
-                          wordBreak: 'break-all',
-                        }}
-                      >
-                        Address <strong>{record.address}</strong> copied to
-                        clipboard
-                      </Box>
-                    ),
-                  });
+                  setCopyTip('Copied');
+                  setTimeout(() => {
+                    setCopyTip('Copy to Clipboard');
+                  }, 1000);
                 }}
               >
-                <Box
-                  marginRight={1}
-                  paddingRight={3}
-                  borderRight="1px solid #D0D5DD"
-                  display="flex"
-                  sx={{
-                    cursor: 'pointer',
-                  }}
-                >
-                  {formatAddress(record.address)}
+                <Tooltip title={copyTip} placement="top">
                   <Box
-                    marginLeft={1}
-                    width="20px"
-                    component={'img'}
-                    src={`/icons/copy.svg`}
+                    marginRight={1}
+                    paddingRight={3}
+                    borderRight="1px solid #D0D5DD"
+                    display="flex"
                     sx={{
-                      display: 'block',
+                      cursor: 'pointer',
                     }}
-                  />
-                </Box>
+                  >
+                    {formatAddress(record.address)}
+                    <Box
+                      marginLeft={1}
+                      width="20px"
+                      component={'img'}
+                      src={`/icons/copy.svg`}
+                      sx={{
+                        display: 'block',
+                      }}
+                    />
+                  </Box>
+                </Tooltip>
               </CopyToClipboard>
               <Box>
                 <BuidlerContacts space={2} contacts={record.contacts} />
               </Box>
             </Box>
           </Box>
-          <Box display="flex">
-            <Box flex="1">
-              <Typography variant="h5">Role</Typography>
+          <Grid container spacing={2}>
+            <Grid item xs={4}>
+              <Typography fontWeight="bold" variant="h6" marginBottom={2}>
+                Role
+              </Typography>
               <Box display="flex" flexWrap="wrap">
-                <Tag text="Buidler" />
-                <Tag text="Core" />
-                <Tag text="Investor" />
-                <Tag text="Project Manager" />
+                {record.role.map((item) => {
+                  return <Tag key={item} text={item} />;
+                })}
               </Box>
-            </Box>
-            <Box flex="1">
-              <Typography variant="h5">Skills</Typography>
+            </Grid>
+            <Grid item xs={4}>
+              <Typography fontWeight="bold" variant="h6" marginBottom={2}>
+                Skills
+              </Typography>
               <Box display="flex" flexWrap="wrap">
-                <Tag text="UI Design" />
-                <Tag text="PM" />
-                <Tag text="FrontEnd" />
-                <Tag text="Project Manager" />
+                <Skills skills={record.skills} />
               </Box>
-            </Box>
-            <Box flex="1">
-              <Typography variant="h5">Interests</Typography>
+            </Grid>
+            <Grid item xs={4}>
+              <Typography fontWeight="bold" variant="h6" marginBottom={2}>
+                Interests
+              </Typography>
               <Box display="flex" flexWrap="wrap">
-                <Tag text="DAO" />
-                <Tag text="DeFI" />
-                <Tag text="Solidity" />
+                {record.interests.map((item) => {
+                  return <Tag key={item} text={item} />;
+                })}
               </Box>
-            </Box>
-          </Box>
+            </Grid>
+          </Grid>
         </Box>
       </Box>
+      {/* todo zero project */}
       <Box marginTop={10}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value="project">
@@ -297,12 +271,13 @@ function BuidlerDetails(props) {
         </Box>
         <Box display="flex" marginTop={4}>
           <Grid container spacing={4}>
-            <Grid item xs={6}>
-              <Project />
-            </Grid>
-            <Grid item xs={6}>
-              <Project />
-            </Grid>
+            {record.projects.map((project) => {
+              return (
+                <Grid item xs={6} key={project.id}>
+                  <Project data={project} />
+                </Grid>
+              );
+            })}
           </Grid>
         </Box>
       </Box>
