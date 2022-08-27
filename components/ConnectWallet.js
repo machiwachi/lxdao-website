@@ -106,6 +106,7 @@ const ConnectWalletButton = () => {
   };
 
   const SignInErrorMessage = () => {
+    // TODO: error message improve
     return (
       <Typography>
         Something went wrong or you are not LXDAO buidler, welcome to{' '}

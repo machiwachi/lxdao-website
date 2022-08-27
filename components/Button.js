@@ -2,7 +2,7 @@ import React from 'react';
 import { Box } from '@mui/material';
 
 // eslint-disable-next-line react/prop-types
-const Button = ({ variant, children, ...rest }) => (
+const Button = ({ variant, size, children, ...rest }) => (
   <Box
     sx={{
       cursor: 'pointer',
@@ -14,11 +14,11 @@ const Button = ({ variant, children, ...rest }) => (
       borderRadius: '8px',
       border: variant === 'outlined' ? '1px solid #000000' : 'none',
       outline: 'none',
-      padding: variant === 'bigGradient' ? '22px 63px' : '12px 20px',
+      padding: size === 'large' ? '22px 63px' : '12px 20px',
       background:
         variant === 'outlined'
           ? '#ffffff'
-          : variant === 'bigGradient' || variant === 'gradient'
+          : variant === 'gradient'
           ? 'linear-gradient(90deg, rgba(41,117,223,1) 0%, rgba(58,207,227,1) 100%)'
           : '#000000',
     }}
