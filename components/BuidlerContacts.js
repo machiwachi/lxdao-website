@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Tooltip } from '@mui/material';
 
 // https://stackoverflow.com/questions/286141/remove-blank-attributes-from-an-object-in-javascript
 function removeEmpty(obj) {
@@ -50,23 +50,24 @@ function BuidlerContacts({ contacts, space }) {
     <Box display="flex">
       {Object.keys(formattedContacts).map((key, index) => {
         return (
-          <Typography
-            target="_blank"
-            component="a"
-            href={formattedContacts[key]}
-            color="primary"
-            key={index}
-            marginLeft={space || 1}
-          >
-            <Box
-              width="20px"
-              component={'img'}
-              src={`/icons/${key}.svg`}
-              sx={{
-                display: 'block',
-              }}
-            />
-          </Typography>
+          <Tooltip title={key} key={index} placement="top">
+            <Typography
+              target="_blank"
+              component="a"
+              href={formattedContacts[key]}
+              color="primary"
+              marginLeft={space || 1}
+            >
+              <Box
+                width="20px"
+                component={'img'}
+                src={`/icons/${key}.svg`}
+                sx={{
+                  display: 'block',
+                }}
+              />
+            </Typography>
+          </Tooltip>
         );
       })}
     </Box>

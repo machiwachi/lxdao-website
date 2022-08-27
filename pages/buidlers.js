@@ -8,13 +8,9 @@ import Layout from '@/components/Layout';
 import DebouncedInput from '@/components/DebouncedInput';
 import Container from '@/components/Container';
 import API from '@/common/API';
-import BuidlerContacts from '@/components/BuilderContacts';
-
-const levelColors = {
-  Junior: '#4CDBE4',
-  Intermediate: '#4CE4C9',
-  Senior: '#7CD89B',
-};
+import Tag from '@/components/Tag';
+import Skills from '@/components/Skills';
+import BuidlerContacts from '@/components/BuidlerContacts';
 
 function BuidlerCard(props) {
   const record = props.record;
@@ -63,20 +59,7 @@ function BuidlerCard(props) {
             </Typography>
             <Box display="flex" flexWrap="wrap">
               {record.role.map((item) => {
-                return (
-                  <Box
-                    key={item}
-                    paddingX={1}
-                    marginRight={0.5}
-                    marginBottom={0.5}
-                    sx={{
-                      border: '1px solid #ccc',
-                      fontSize: '14px',
-                    }}
-                  >
-                    {item}
-                  </Box>
-                );
+                return <Tag key={item} text={item}></Tag>;
               })}
             </Box>
           </Box>
@@ -87,36 +70,7 @@ function BuidlerCard(props) {
             'No skills'
           ) : (
             <Box display="flex" flexWrap="wrap">
-              {skills
-                .sort((a, b) => {
-                  if (a.level === 'Senior' && b.level !== 'Senior') {
-                    return -1;
-                  }
-                  if (a.level === 'Intermediate' && b.level === 'Junior') {
-                    return -1;
-                  }
-                  if (a.level === 'Junior' && b.level !== 'Junior') {
-                    return 1;
-                  }
-                  return 0;
-                })
-                .map((skill) => {
-                  return (
-                    <Box
-                      key={skill.name}
-                      paddingX={1}
-                      marginRight={0.5}
-                      marginBottom={0.5}
-                      sx={{
-                        background: levelColors[skill.level],
-                        color: '#fff',
-                        borderRadius: 1,
-                      }}
-                    >
-                      <Typography>{skill.name}</Typography>
-                    </Box>
-                  );
-                })}
+              <Skills skills={skills} />
             </Box>
           )}
         </Box>
