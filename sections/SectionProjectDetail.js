@@ -12,6 +12,7 @@ import {
   TextField,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import { useAccount } from 'wagmi';
 
 import API from '@/common/API';
 import { getLocalStorage } from '@/utils/utility';
@@ -36,7 +37,9 @@ const SectionProjectDetail = ({ projectId }) => {
   const [selectedBuidler, setSelectedBuidler] = useState('');
   const [openJoinDialog, setOpenJoinDialog] = useState(false);
   const [openJoinTooltip, setOpenJoinTooltip] = useState(false);
+  const [showJoinButton, setShowJoinButton] = useState(true);
 
+  const { address } = useAccount();
   const classes = useStyles();
 
   const PROJECT_STATUS = {
@@ -45,7 +48,6 @@ const SectionProjectDetail = ({ projectId }) => {
   };
 
   let projectManagerName = '';
-
   project?.buidlersOnProject.forEach((buidler) => {
     if (buidler?.projectRole.includes('Project Manager')) {
       projectManagerName = buidler?.buidler?.name;
@@ -89,6 +91,20 @@ const SectionProjectDetail = ({ projectId }) => {
         console.log(err);
       });
   }, [project]);
+
+  useEffect(() => {
+    if (address) {
+      let count = 0;
+      project?.buidlersOnProject.forEach((buidler) => {
+        if (buidler?.buidler?.address === address) {
+          count++;
+        }
+      });
+      setShowJoinButton(!count);
+    } else {
+      setShowJoinButton(true);
+    }
+  }, [address, project]);
 
   const LabelText = ({ label }) => {
     return (
@@ -322,7 +338,7 @@ const SectionProjectDetail = ({ projectId }) => {
                 </Typography>
               </Box>
             </Stack>
-            {project?.isAbleToJoin && (
+            {project?.isAbleToJoin && showJoinButton && (
               <Tooltip
                 PopperProps={{
                   disablePortal: true,
