@@ -121,7 +121,13 @@ const SectionApplicationSteps = () => {
               );
             })}
           </Box>
-          <Button marginTop={8} width="200px">
+          <Button
+            marginTop={8}
+            width="200px"
+            onClick={() => {
+              window.open('https://tally.so/r/3Ek62r');
+            }}
+          >
             Start
           </Button>
         </Box>

@@ -153,6 +153,9 @@ const SectionProjectDetail = ({ projectId }) => {
                 <LabelText label="Buidlers" />
                 <Stack direction="row" spacing={2}>
                   {project.buidlersOnProject.map((buidler, index) => {
+                    if (buidler.status !== 'ACTIVE') {
+                      return null;
+                    }
                     return (
                       <Tooltip
                         key={index}
@@ -166,15 +169,36 @@ const SectionProjectDetail = ({ projectId }) => {
                         }
                         classes={{ tooltip: classes.tooltip }}
                       >
-                        <Avatar
-                          key={index}
-                          alt={buidler?.buidler?.name}
-                          src={buidler?.buidler?.image}
-                          sx={{ cursor: 'pointer' }}
-                          onMouseOver={() =>
-                            handleDisplayBuidlerTooltip(buidler, 'open')
-                          }
-                        />
+                        <Box position="relative">
+                          <Avatar
+                            key={index}
+                            alt={buidler?.buidler?.name}
+                            src={buidler?.buidler?.image}
+                            sx={{
+                              cursor: 'pointer',
+                            }}
+                            onMouseOver={() =>
+                              handleDisplayBuidlerTooltip(buidler, 'open')
+                            }
+                          />
+                          {buidler?.projectRole.includes('Project Manager') && (
+                            <Box
+                              width="30px"
+                              height="12px"
+                              color="#ffffff"
+                              backgroundColor="rgba(41,117,223)"
+                              fontSize="8px"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                              position="absolute"
+                              right="4px"
+                              bottom="-15px"
+                            >
+                              PM
+                            </Box>
+                          )}
+                        </Box>
                       </Tooltip>
                     );
                   })}
