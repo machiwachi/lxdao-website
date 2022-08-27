@@ -3,7 +3,7 @@ import { Tooltip, Box } from '@mui/material';
 import SkillTag from './SkillTag';
 
 function Skills({ skills }) {
-  return skills
+  return (skills || [])
     .sort((a, b) => {
       if (a.level === 'Senior' && b.level !== 'Senior') {
         return -1;
