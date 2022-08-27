@@ -43,7 +43,7 @@ const BuidlerCard = ({ buidlerInfo }) => {
       <Typography fontSize="16px" color="#666F85">
         {description}
       </Typography>
-      <Box>
+      <Box display="flex" gap="10px">
         {Object.keys(contacts || {}).map((key, index) => {
           return (
             <Typography

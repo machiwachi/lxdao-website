@@ -8,13 +8,18 @@ import {
   Stack,
   Avatar,
   Tooltip,
+  Autocomplete,
+  TextField,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
 import API from '@/common/API';
+import { getLocalStorage } from '@/utils/utility';
 
+import Button from '@/components/Button';
 import Container from '@/components/Container';
 import BuidlerCard from '@/components/BuidlerCard';
+import Dialog from '@/components/Dialog';
 
 const useStyles = makeStyles({
   tooltip: {
@@ -27,11 +32,25 @@ const useStyles = makeStyles({
 
 const SectionProjectDetail = ({ projectId }) => {
   const [project, setProject] = useState(null);
+  const [buidlerList, setBuidlerList] = useState([]);
+  const [selectedBuidler, setSelectedBuidler] = useState('');
+  const [openJoinDialog, setOpenJoinDialog] = useState(false);
+  const [openJoinTooltip, setOpenJoinTooltip] = useState(false);
+
+  const classes = useStyles();
 
   const PROJECT_STATUS = {
     WIP: 'WORK IN PROGRESS',
     LAUNCHED: 'LAUNCHED',
   };
+
+  let projectManagerName = '';
+
+  project?.buidlersOnProject.forEach((buidler) => {
+    if (buidler?.projectRole.includes('Project Manager')) {
+      projectManagerName = buidler?.buidler?.name;
+    }
+  });
 
   useEffect(() => {
     API.get(`/project/${projectId}`)
@@ -45,7 +64,31 @@ const SectionProjectDetail = ({ projectId }) => {
       });
   }, []);
 
-  const classes = useStyles();
+  useEffect(() => {
+    //TODO: PM checks
+    API.get(`/buidler/list`)
+      .then((res) => {
+        if (res?.data?.data) {
+          const activeBuidlers = [];
+          const buidlerIdsOnProject = [];
+          project?.buidlersOnProject.forEach((buidlerOnProject) => {
+            buidlerIdsOnProject.push(buidlerOnProject?.buidler?.id);
+          });
+          res?.data?.data?.forEach((buidler) => {
+            if (
+              buidler.status === 'ACTIVE' &&
+              !buidlerIdsOnProject.includes(buidler.id)
+            ) {
+              activeBuidlers.push(buidler);
+            }
+          });
+          setBuidlerList(activeBuidlers);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [project]);
 
   const LabelText = ({ label }) => {
     return (
@@ -68,6 +111,34 @@ const SectionProjectDetail = ({ projectId }) => {
       }
     });
     setProject(cloneProjectData);
+  };
+
+  const handleBuidlerJoin = () => {
+    const accessToken = getLocalStorage('accessToken');
+    if (accessToken) {
+      setOpenJoinDialog(true);
+    } else {
+      setOpenJoinTooltip(true);
+      setTimeout(() => {
+        setOpenJoinTooltip(false);
+      }, 3000);
+    }
+  };
+
+  const handleInviteBuidler = () => {
+    // TODO: change the buidlerId
+    if (selectedBuidler) {
+      API.post(`/createInvitation`, {
+        buidlerId: 4,
+        projectId: project?.id,
+      })
+        .then((res) => {
+          console.log('res: ', res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   if (!project) return null;
@@ -153,6 +224,9 @@ const SectionProjectDetail = ({ projectId }) => {
                 <LabelText label="Buidlers" />
                 <Stack direction="row" spacing={2}>
                   {project.buidlersOnProject.map((buidler, index) => {
+                    if (buidler.status !== 'ACTIVE') {
+                      return null;
+                    }
                     return (
                       <Tooltip
                         key={index}
@@ -166,22 +240,66 @@ const SectionProjectDetail = ({ projectId }) => {
                         }
                         classes={{ tooltip: classes.tooltip }}
                       >
-                        <Avatar
-                          key={index}
-                          alt={buidler?.buidler?.name}
-                          src={buidler?.buidler?.image}
-                          sx={{ cursor: 'pointer' }}
-                          onMouseOver={() =>
-                            handleDisplayBuidlerTooltip(buidler, 'open')
-                          }
-                        />
+                        <Box position="relative">
+                          <Avatar
+                            key={index}
+                            alt={buidler?.buidler?.name}
+                            src={buidler?.buidler?.image}
+                            sx={{
+                              cursor: 'pointer',
+                            }}
+                            onMouseOver={() =>
+                              handleDisplayBuidlerTooltip(buidler, 'open')
+                            }
+                          />
+                          {buidler?.projectRole.includes('Project Manager') && (
+                            <Box
+                              width="30px"
+                              height="12px"
+                              color="#ffffff"
+                              backgroundColor="rgba(41,117,223)"
+                              fontSize="8px"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                              position="absolute"
+                              right="4px"
+                              bottom="-15px"
+                            >
+                              PM
+                            </Box>
+                          )}
+                        </Box>
                       </Tooltip>
                     );
                   })}
                 </Stack>
               </Box>
             )}
-
+            <Stack direction="row" spacing={2} marginTop={2}>
+              <Autocomplete
+                sx={{ width: '300px' }}
+                freeSolo
+                disableClearable
+                options={buidlerList.map((option) => option.name)}
+                onChange={(e, data) => {
+                  setSelectedBuidler(data);
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Search Buidler"
+                    InputProps={{
+                      ...params.InputProps,
+                      type: 'search',
+                    }}
+                  />
+                )}
+              />
+              <Button variant="gradient" onClick={handleInviteBuidler}>
+                Invite
+              </Button>
+            </Stack>
             <Stack direction="row" spacing={8}>
               {project.launchDate && (
                 <Box align="left">
@@ -204,9 +322,46 @@ const SectionProjectDetail = ({ projectId }) => {
                 </Typography>
               </Box>
             </Stack>
+            {project?.isAbleToJoin && (
+              <Tooltip
+                PopperProps={{
+                  disablePortal: true,
+                }}
+                onClose={() => {
+                  setOpenJoinTooltip(false);
+                }}
+                open={openJoinTooltip}
+                disableFocusListener
+                disableHoverListener
+                disableTouchListener
+                title="Make sure you are a LXDAO buidler and connect your wallet first."
+              >
+                <Box display="flex" width="100px">
+                  <Button
+                    width="100%"
+                    variant="gradient"
+                    onClick={handleBuidlerJoin}
+                  >
+                    Join
+                  </Button>
+                </Box>
+              </Tooltip>
+            )}
           </Stack>
         </Grid>
       </Grid>
+      <Dialog
+        open={openJoinDialog}
+        title="Join this project"
+        content={`Contact with the Project Manager(${projectManagerName}) of this project to apply.`}
+        confirmText="OK"
+        handleClose={() => {
+          setOpenJoinDialog(false);
+        }}
+        handleConfirm={() => {
+          setOpenJoinDialog(false);
+        }}
+      />
     </Container>
   );
 };

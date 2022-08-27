@@ -22,7 +22,7 @@ const MemberTypeCard = ({ type, description, amount, selected, disabled }) => {
             height={{ md: '50px', xs: '40px' }}
             borderRadius="100%"
             border="1px dashed #cccccc"
-            backgroundColor={`${disabled ? '#dbdcdc' : '#ffffff'}`}
+            backgroundColor="#ffffff"
             marginLeft={{ md: '-25px', xs: '-20px' }}
             sx={{ float: 'left' }}
           />
@@ -33,7 +33,7 @@ const MemberTypeCard = ({ type, description, amount, selected, disabled }) => {
 
   return (
     <Box
-      backgroundColor={`${disabled ? 'rgba(0, 0, 0, 0.12)' : '#ffffff'}`}
+      backgroundColor="#ffffff"
       display="flex"
       flexDirection="column"
       gap={3}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Link } from '@mui/material';
 
 import Container from '@/components/Container';
 import Button from '@/components/Button';
@@ -121,9 +121,11 @@ const SectionApplicationSteps = () => {
               );
             })}
           </Box>
-          <Button marginTop={8} width="200px">
-            Start
-          </Button>
+          <Link href="https://tally.so/r/3Ek62r" target="_blank">
+            <Button marginTop={8} width="200px">
+              Start
+            </Button>
+          </Link>
         </Box>
       </Container>
     </Box>

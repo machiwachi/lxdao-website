@@ -6,6 +6,8 @@ import Button from '@/components/Button';
 import SectionHero from './SectionHero';
 
 const SectionHomepageHero = () => {
+  const router = useRouter();
+
   const Title = () => {
     return (
       <>
@@ -26,7 +28,7 @@ const SectionHomepageHero = () => {
                     color: '#101828',
                   }}
                 >
-                  <Typography variant="h3" lineHeight="1.5em">
+                  <Typography variant="body1">
                     Research and Development
                   </Typography>
                 </Box>
@@ -88,7 +90,7 @@ const SectionHomepageHero = () => {
       </>
     );
   };
-  const router = useRouter();
+
   return (
     <SectionHero
       leftContent={
@@ -134,7 +136,8 @@ const SectionHomepageHero = () => {
             &quot; projects for Web3, in a sustainable manner.
           </Typography>
           <Button
-            variant="bigGradient"
+            size="large"
+            variant="gradient"
             onClick={() => {
               router.push('/joinus');
             }}
