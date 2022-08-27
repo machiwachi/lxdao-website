@@ -11,9 +11,9 @@ import API from '@/common/API';
 import BuidlerContacts from '@/components/BuilderContacts';
 
 const levelColors = {
-  Junior: '#55A3FF',
-  Intermediate: '#FFA500',
-  Senior: '#FF0000',
+  Junior: '#4CDBE4',
+  Intermediate: '#4CE4C9',
+  Senior: '#7CD89B',
 };
 
 function BuidlerCard(props) {
@@ -26,7 +26,7 @@ function BuidlerCard(props) {
       borderRadius={2}
       padding={3}
       position="relative"
-      onClick={() => {}}
+      paddingBottom={7}
     >
       <Link
         href={`/buidlers/${record.address}`}
@@ -87,23 +87,36 @@ function BuidlerCard(props) {
             'No skills'
           ) : (
             <Box display="flex" flexWrap="wrap">
-              {skills.map((skill) => {
-                return (
-                  <Box
-                    key={skill.name}
-                    paddingX={1}
-                    marginRight={0.5}
-                    marginBottom={0.5}
-                    sx={{
-                      background: levelColors[skill.level],
-                      color: '#fff',
-                      borderRadius: 1,
-                    }}
-                  >
-                    <Typography>{skill.name}</Typography>
-                  </Box>
-                );
-              })}
+              {skills
+                .sort((a, b) => {
+                  if (a.level === 'Senior' && b.level !== 'Senior') {
+                    return -1;
+                  }
+                  if (a.level === 'Intermediate' && b.level === 'Junior') {
+                    return -1;
+                  }
+                  if (a.level === 'Junior' && b.level !== 'Junior') {
+                    return 1;
+                  }
+                  return 0;
+                })
+                .map((skill) => {
+                  return (
+                    <Box
+                      key={skill.name}
+                      paddingX={1}
+                      marginRight={0.5}
+                      marginBottom={0.5}
+                      sx={{
+                        background: levelColors[skill.level],
+                        color: '#fff',
+                        borderRadius: 1,
+                      }}
+                    >
+                      <Typography>{skill.name}</Typography>
+                    </Box>
+                  );
+                })}
             </Box>
           )}
         </Box>
