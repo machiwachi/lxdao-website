@@ -3,18 +3,24 @@ import React, { useEffect, useState } from 'react';
 import { Typography, Box, Grid } from '@mui/material';
 
 import Layout from '@/components/Layout';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+
 import TextInput from '@/components/TextInput';
 import SingleSelect from '@/components/Select';
 import skillNames from '@/common/skills';
 import Container from '@/components/Container';
 import API from '@/common/API';
-import { useRouter } from 'next/router';
+import BuidlerContacts from '@/components/BuilderContacts';
+
+const levelColors = {
+  Junior: '#55A3FF',
+  Intermediate: '#FFA500',
+  Senior: '#FF0000',
+};
 
 function BuidlerCard(props) {
   const record = props.record;
-  console.log(record);
+  const skills = record.skills ? record.skills : [];
+
   return (
     <Box
       boxShadow={1}
@@ -35,86 +41,79 @@ function BuidlerCard(props) {
         >
           <img
             style={{ display: 'block', width: 80 }}
-            src="/images/kuncle.jpeg"
+            src={record.image || '/images/placeholder.jpeg'}
             alt=""
           />
         </Box>
         <Box>
-          <Typography variant="h6">Kuncle</Typography>
-          <Box display="flex" flexWrap="wrap">
-            <Box
-              paddingX={1}
-              marginRight={0.5}
-              marginBottom={0.5}
-              sx={{
-                border: '1px solid #ccc',
-              }}
-            >
-              Buidler
-            </Box>
-            <Box
-              paddingX={1}
-              marginRight={0.5}
-              marginBottom={0.5}
-              sx={{
-                border: '1px solid #ccc',
-              }}
-            >
-              Core
-            </Box>
-            <Box
-              paddingX={1}
-              marginRight={0.5}
-              marginBottom={0.5}
-              sx={{
-                border: '1px solid #ccc',
-              }}
-            >
-              Investor
-            </Box>
-          </Box>
-        </Box>
-      </Box>
-      <Box marginTop={2}>
-        <Typography marginBottom={1}>Skills</Typography>
-        <Box display="flex" flexWrap="wrap">
-          <Box
-            paddingX={1}
-            marginRight={0.5}
-            marginBottom={0.5}
+          <Typography
+            variant="h6"
             sx={{
-              background: '#55A3FF',
-              color: '#fff',
-              borderRadius: '4px',
+              lineHeight: '44px',
             }}
           >
-            UI Design
+            {record.name}
+          </Typography>
+          <Box display="flex" flexWrap="wrap">
+            {record.role.map((item) => {
+              return (
+                <Box
+                  key={item}
+                  paddingX={1}
+                  marginRight={0.5}
+                  marginBottom={0.5}
+                  sx={{
+                    border: '1px solid #ccc',
+                    fontSize: '14px',
+                  }}
+                >
+                  {item}
+                </Box>
+              );
+            })}
           </Box>
         </Box>
       </Box>
       <Box marginTop={2}>
-        <Typography>Projects</Typography>
+        <Typography fontWeight="bold">Skills</Typography>
+        {skills.length === 0 ? (
+          'No skills'
+        ) : (
+          <Box display="flex" flexWrap="wrap">
+            {skills.map((skill) => {
+              return (
+                <Box
+                  key={skill.name}
+                  paddingX={1}
+                  marginRight={0.5}
+                  marginBottom={0.5}
+                  sx={{
+                    background: levelColors[skill.level],
+                    color: '#fff',
+                    borderRadius: 1,
+                  }}
+                >
+                  <Typography>{skill.name}</Typography>
+                </Box>
+              );
+            })}
+          </Box>
+        )}
+      </Box>
+      <Box marginTop={2}>
+        <Typography fontWeight="bold">Projects</Typography>
         <Typography>
-          <strong>2</strong> Project Involved
+          <strong>{record.projects.length}</strong> Project Involved
         </Typography>
       </Box>
       <Box position="absolute" bottom="16px" right="16px">
-        <Typography
-          target="_blank"
-          component="a"
-          href="https://twitter.com/LXDAO_Official"
-          color="primary"
-        >
-          <Box width="26px" component={'img'} src={'/icons/twitter.svg'} />
-        </Typography>
+        <BuidlerContacts contacts={record.contacts} />
       </Box>
     </Box>
   );
 }
 
 export default function Home() {
-  const router = useRouter();
-
   const [list, setList] = useState([]);
 
   const searchList = async (name, role) => {
@@ -154,8 +153,7 @@ export default function Home() {
 
   return (
     <Layout>
-      <Header />
-      <Container paddingY={10} maxWidth={1085}>
+      <Container paddingY={10}>
         <Box textAlign="center">
           <Typography variant="h3">LXDAO Buidlers</Typography>
           <Typography fontSize="20px" marginTop={2}>
@@ -176,15 +174,7 @@ export default function Home() {
           <Grid container spacing={3}>
             {list.map((item) => {
               return (
-                <Grid
-                  key={item.id}
-                  item
-                  xs={4}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    router.push('/buidlers/' + item.id);
-                  }}
-                >
+                <Grid key={item.id} item xs={4}>
                   <BuidlerCard record={item} />
                 </Grid>
               );
@@ -192,7 +182,6 @@ export default function Home() {
           </Grid>
         </Box>
       </Container>
-      <Footer />
     </Layout>
   );
 }

@@ -24,8 +24,6 @@ import {
 } from '@mui/lab';
 
 import Layout from '@/components/Layout';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 import Container from '@/components/Container';
 import ProfileForm from '@/components/ProfileForm';
 import { formatAddress } from '@/utils/utility';
@@ -394,11 +392,5 @@ export default function Buidler() {
     }
   }, [id]);
 
-  return (
-    <Layout>
-      <Header />
-      {record && <BuidlerDetails record={record} />}
-      <Footer />
-    </Layout>
-  );
+  return <Layout>{record && <BuidlerDetails record={record} />}</Layout>;
 }

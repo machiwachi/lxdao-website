@@ -155,6 +155,7 @@ const SectionProjectDetail = ({ projectId }) => {
                   {project.buidlersOnProject.map((buidler, index) => {
                     return (
                       <Tooltip
+                        key={index}
                         title={<BuidlerCard buidlerInfo={buidler} />}
                         open={buidler.showTooltip}
                         PopperProps={{
@@ -170,7 +171,7 @@ const SectionProjectDetail = ({ projectId }) => {
                           alt={buidler?.buidler?.name}
                           src={buidler?.buidler?.image}
                           sx={{ cursor: 'pointer' }}
-                          onMouseover={() =>
+                          onMouseOver={() =>
                             handleDisplayBuidlerTooltip(buidler, 'open')
                           }
                         />

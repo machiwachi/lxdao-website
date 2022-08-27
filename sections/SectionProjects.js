@@ -4,7 +4,6 @@ import { Box, Typography, Grid, Card, Chip } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
 import API from '@/common/API';
-import { shuffle } from '@/utils/utility';
 
 import Container from '@/components/Container';
 import Button from '@/components/Button';
