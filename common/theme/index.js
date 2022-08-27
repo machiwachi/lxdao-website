@@ -53,6 +53,7 @@ const getTheme = (mode) =>
           styleOverrides: {
             root: {
               borderRadius: 5,
+              height: '48px',
             },
             input: {
               borderRadius: 5,

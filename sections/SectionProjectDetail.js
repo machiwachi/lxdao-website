@@ -8,9 +8,10 @@ import {
   Stack,
   Avatar,
   Tooltip,
+  Autocomplete,
+  TextField,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { useConnect } from 'wagmi';
 
 import API from '@/common/API';
 import { getLocalStorage } from '@/utils/utility';
@@ -31,10 +32,12 @@ const useStyles = makeStyles({
 
 const SectionProjectDetail = ({ projectId }) => {
   const [project, setProject] = useState(null);
+  const [buidlerList, setBuidlerList] = useState([]);
+  const [selectedBuidler, setSelectedBuidler] = useState('');
   const [openJoinDialog, setOpenJoinDialog] = useState(false);
   const [openJoinTooltip, setOpenJoinTooltip] = useState(false);
 
-  const { connect } = useConnect();
+  const classes = useStyles();
 
   const PROJECT_STATUS = {
     WIP: 'WORK IN PROGRESS',
@@ -61,7 +64,31 @@ const SectionProjectDetail = ({ projectId }) => {
       });
   }, []);
 
-  const classes = useStyles();
+  useEffect(() => {
+    //TODO: PM checks
+    API.get(`/buidler/list`)
+      .then((res) => {
+        if (res?.data?.data) {
+          const activeBuidlers = [];
+          const buidlerIdsOnProject = [];
+          project?.buidlersOnProject.forEach((buidlerOnProject) => {
+            buidlerIdsOnProject.push(buidlerOnProject?.buidler?.id);
+          });
+          res?.data?.data?.forEach((buidler) => {
+            if (
+              buidler.status === 'ACTIVE' &&
+              !buidlerIdsOnProject.includes(buidler.id)
+            ) {
+              activeBuidlers.push(buidler);
+            }
+          });
+          setBuidlerList(activeBuidlers);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [project]);
 
   const LabelText = ({ label }) => {
     return (
@@ -95,6 +122,22 @@ const SectionProjectDetail = ({ projectId }) => {
       setTimeout(() => {
         setOpenJoinTooltip(false);
       }, 3000);
+    }
+  };
+
+  const handleInviteBuidler = () => {
+    // TODO: change the buidlerId
+    if (selectedBuidler) {
+      API.post(`/createInvitation`, {
+        buidlerId: 4,
+        projectId: project?.id,
+      })
+        .then((res) => {
+          console.log('res: ', res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
@@ -233,6 +276,30 @@ const SectionProjectDetail = ({ projectId }) => {
                 </Stack>
               </Box>
             )}
+            <Stack direction="row" spacing={2} marginTop={2}>
+              <Autocomplete
+                sx={{ width: '300px' }}
+                freeSolo
+                disableClearable
+                options={buidlerList.map((option) => option.name)}
+                onChange={(e, data) => {
+                  setSelectedBuidler(data);
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Search Buidler"
+                    InputProps={{
+                      ...params.InputProps,
+                      type: 'search',
+                    }}
+                  />
+                )}
+              />
+              <Button variant="gradient" onClick={handleInviteBuidler}>
+                Invite
+              </Button>
+            </Stack>
             <Stack direction="row" spacing={8}>
               {project.launchDate && (
                 <Box align="left">
