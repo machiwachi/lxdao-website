@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 import React, { useEffect, useState } from 'react';
 import {
@@ -23,8 +24,6 @@ import {
 } from '@mui/lab';
 
 import Layout from '@/components/Layout';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 import Container from '@/components/Container';
 import ProfileForm from '@/components/ProfileForm';
 import { formatAddress } from '@/utils/utility';
@@ -135,11 +134,11 @@ function BuidlerDetails(props) {
   const [visible, setVisible] = useState(false);
 
   // contract token
-  const [setHasToken] = useState(false);
+  const [hasToken, setHasToken] = useState(false);
   // backend status
-  const [setStatus] = useState('');
+  const [status, setStatus] = useState('');
 
-  const [setTx] = useState(null);
+  const [tx, setTx] = useState(null);
 
   useEffect(async () => {
     if (!signer) {
@@ -386,16 +385,12 @@ export default function Buidler() {
     });
   };
 
+  const id = router.query.id;
   useEffect(() => {
-    const id = router.query.id;
-    requestDetail(id);
-  }, []);
+    if (id) {
+      requestDetail(id);
+    }
+  }, [id]);
 
-  return (
-    <Layout>
-      <Header />
-      {record && <BuidlerDetails record={record} />}
-      <Footer />
-    </Layout>
-  );
+  return <Layout>{record && <BuidlerDetails record={record} />}</Layout>;
 }

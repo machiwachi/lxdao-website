@@ -44,7 +44,7 @@ const BuidlerCard = ({ buidlerInfo }) => {
         {description}
       </Typography>
       <Box>
-        {Object.keys(contacts).map((key, index) => {
+        {Object.keys(contacts || {}).map((key, index) => {
           return (
             <Typography
               target="_blank"

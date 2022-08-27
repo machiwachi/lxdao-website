@@ -37,6 +37,17 @@ function ContactsField(props) {
         <Grid item xs={12}>
           <TextField
             fullWidth
+            label="Website"
+            value={value.website}
+            placeholder="https://your-website.com/"
+            onChange={(event) => {
+              update('website', event.target.value);
+            }}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            fullWidth
             label="Public Email"
             value={value.email}
             placeholder="your@email.com"

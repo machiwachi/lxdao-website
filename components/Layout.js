@@ -1,7 +1,10 @@
 /* eslint-disable no-undef */
 import React from 'react';
 import Head from 'next/head';
-import { Box } from '@mui/material';
+import { Box, CssBaseline } from '@mui/material';
+
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
 // eslint-disable-next-line react/prop-types
 export default function Layout({ children, title, description }) {
@@ -64,13 +67,11 @@ Our mission: Bringing together buidlers to buidl and maintain LX projects for We
         />
       </Head>
 
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        width="100%"
-      >
-        {children}
+      <CssBaseline />
+      <Box>
+        <Header />
+        <Box minHeight={'100vh'}>{children}</Box>
+        <Footer />
       </Box>
     </>
   );

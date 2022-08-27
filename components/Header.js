@@ -161,6 +161,7 @@ const Header = () => {
       alignItems="center"
       height={{ md: '80px', xs: '64px' }}
       borderBottom="1px solid #F2F4F7"
+      maxWidth="100%"
     >
       <Box display="flex" alignItems="center">
         <Box
