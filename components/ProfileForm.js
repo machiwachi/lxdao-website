@@ -30,6 +30,13 @@ function ProfileForm() {
     console.log(data);
   };
 
+  // todo validation
+  // avatar required
+  // twitter, telegram format
+  // email format
+  // github format
+  // website format
+
   return (
     <Box>
       <Box marginBottom={4}>

@@ -37,10 +37,9 @@ function formatContacts(contacts) {
     }
   });
 
-  // todo
+  // todo might need to pop up to show the contact
   delete formattedContacts['wechat'];
   delete formattedContacts['discord'];
-  console.log('formattedContacts: ', formattedContacts);
 
   return formattedContacts;
 }
@@ -48,10 +47,8 @@ function formatContacts(contacts) {
 function BuidlerContacts({ contacts }) {
   const formattedContacts = formatContacts(contacts || {});
   return (
-    <Box>
+    <Box display="flex">
       {Object.keys(formattedContacts).map((key, index) => {
-        console.log('key: ', key);
-        console.log('contacts[key]: ', contacts[key]);
         return (
           <Typography
             target="_blank"
@@ -59,8 +56,16 @@ function BuidlerContacts({ contacts }) {
             href={formattedContacts[key]}
             color="primary"
             key={index}
+            marginLeft={1}
           >
-            <Box width="20px" component={'img'} src={`/icons/${key}.svg`} />
+            <Box
+              width="20px"
+              component={'img'}
+              src={`/icons/${key}.svg`}
+              sx={{
+                display: 'block',
+              }}
+            />
           </Typography>
         );
       })}
