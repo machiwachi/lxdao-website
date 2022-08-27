@@ -1,7 +1,6 @@
 /* eslint-disable no-undef */
 import React, { useEffect, useState } from 'react';
 import { Typography, Box, Grid, Link } from '@mui/material';
-import _ from 'lodash';
 
 import Layout from '@/components/Layout';
 

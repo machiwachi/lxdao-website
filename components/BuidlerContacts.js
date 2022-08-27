@@ -3,6 +3,7 @@ import { Box, Typography, Tooltip } from '@mui/material';
 
 // https://stackoverflow.com/questions/286141/remove-blank-attributes-from-an-object-in-javascript
 function removeEmpty(obj) {
+  // eslint-disable-next-line no-unused-vars
   return Object.fromEntries(Object.entries(obj).filter(([_, v]) => v != null));
 }
 
