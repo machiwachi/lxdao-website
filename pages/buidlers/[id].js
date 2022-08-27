@@ -22,8 +22,10 @@ import {
   TimelineContent,
   TimelineConnector,
 } from '@mui/lab';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import Layout from '@/components/Layout';
+import showMessage from '@/components/showMessage';
 import Container from '@/components/Container';
 import ProfileForm from '@/components/ProfileForm';
 import { formatAddress } from '@/utils/utility';
@@ -34,6 +36,7 @@ import { useAccount, useContract, useSigner } from 'wagmi';
 import { contractInfo } from '@/components/ContractsOperation';
 
 import { BigNumber } from 'ethers';
+import BuidlerContacts from '@/components/BuilderContacts';
 
 function Tag(props) {
   return (
@@ -122,6 +125,7 @@ function Links(props) {
 
 function BuidlerDetails(props) {
   const record = props.record;
+  console.log('record: ', record);
 
   const { address, isConnected } = useAccount();
   const { data: signer } = useSigner();
@@ -167,6 +171,8 @@ function BuidlerDetails(props) {
     console.log(response);
   };
 
+  // todo mint page develop
+
   return (
     <Container paddingY={10}>
       <Box display="flex">
@@ -174,7 +180,7 @@ function BuidlerDetails(props) {
           <Box width="150px" borderRadius="50%" overflow="hidden">
             <img
               style={{ display: 'block', width: 150 }}
-              src="/images/kuncle.jpeg"
+              src={record.image || '/images/placeholder.jpeg'}
               alt=""
             />
           </Box>
@@ -200,39 +206,56 @@ function BuidlerDetails(props) {
           </Box>
         </Box>
         <Box>
-          <Box>
-            <Box>
-              <Typography variant="h4">Wang Teng</Typography>
-              <Typography>
-                I am a UI designer with 7 years of work experience, I hope to
-                learn more knowledge in WEB3.
+          <Box marginTop={4}>
+            <Box marginBottom={2}>
+              <Typography variant="h4" fontWeight="bold" marginBottom={2}>
+                {record.name}
               </Typography>
+              <Typography>{record.description}</Typography>
             </Box>
-            <Box>
-              <Box borderRight="1px solid #D0D5DD">
-                <Links
-                  links={[
-                    {
-                      url: 'https://twitter.com/LXDAO_Official',
-                      icon: 'website',
-                    },
-                    {
-                      url: 'https://twitter.com/LXDAO_Official',
-                      icon: 'twitter',
-                    },
-                    {
-                      url: 'https://twitter.com/LXDAO_Official',
-                      icon: 'discord',
-                    },
-                    {
-                      url: 'https://twitter.com/LXDAO_Official',
-                      icon: 'ellipsis',
-                    },
-                  ]}
-                />
-              </Box>
+            <Box display="flex" marginBottom={2}>
+              <CopyToClipboard
+                text={record.address}
+                onCopy={() => {
+                  showMessage({
+                    type: 'success',
+                    title: 'Copied successfully',
+                    body: (
+                      <Box
+                        sx={{
+                          wordBreak: 'break-all',
+                        }}
+                      >
+                        Address <strong>{record.address}</strong> copied to
+                        clipboard
+                      </Box>
+                    ),
+                  });
+                }}
+              >
+                <Box
+                  marginRight={1}
+                  paddingRight={3}
+                  borderRight="1px solid #D0D5DD"
+                  display="flex"
+                  sx={{
+                    cursor: 'pointer',
+                  }}
+                >
+                  {formatAddress(record.address)}
+                  <Box
+                    marginLeft={1}
+                    width="20px"
+                    component={'img'}
+                    src={`/icons/copy.svg`}
+                    sx={{
+                      display: 'block',
+                    }}
+                  />
+                </Box>
+              </CopyToClipboard>
               <Box>
-                {formatAddress('0x147b166fb4f1Aa9581D184596Dbabe2980ba4b14')}
+                <BuidlerContacts space={2} contacts={record.contacts} />
               </Box>
             </Box>
           </Box>

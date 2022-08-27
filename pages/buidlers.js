@@ -1,20 +1,19 @@
 /* eslint-disable no-undef */
 import React, { useEffect, useState } from 'react';
-import { Typography, Box, Grid } from '@mui/material';
+import { Typography, Box, Grid, Link } from '@mui/material';
+import _ from 'lodash';
 
 import Layout from '@/components/Layout';
 
-import TextInput from '@/components/TextInput';
-import SingleSelect from '@/components/Select';
-import skillNames from '@/common/skills';
+import DebouncedInput from '@/components/DebouncedInput';
 import Container from '@/components/Container';
 import API from '@/common/API';
 import BuidlerContacts from '@/components/BuilderContacts';
 
 const levelColors = {
-  Junior: '#55A3FF',
-  Intermediate: '#FFA500',
-  Senior: '#FF0000',
+  Junior: '#4CDBE4',
+  Intermediate: '#4CE4C9',
+  Senior: '#7CD89B',
 };
 
 function BuidlerCard(props) {
@@ -27,86 +26,109 @@ function BuidlerCard(props) {
       borderRadius={2}
       padding={3}
       position="relative"
-      onClick={() => {}}
+      paddingBottom={7}
     >
-      <Box display="flex">
-        <Box
-          flexBasis="80px"
-          flexShrink={0}
-          width="80px"
-          height="80px"
-          borderRadius="50%"
-          overflow="hidden"
-          marginRight={3}
-        >
-          <img
-            style={{ display: 'block', width: 80 }}
-            src={record.image || '/images/placeholder.jpeg'}
-            alt=""
-          />
-        </Box>
-        <Box>
-          <Typography
-            variant="h6"
-            sx={{
-              lineHeight: '44px',
-            }}
+      <Link
+        href={`/buidlers/${record.address}`}
+        target="_blank"
+        color={'inherit'}
+        sx={{
+          textDecoration: 'none',
+        }}
+      >
+        <Box display="flex">
+          <Box
+            flexBasis="80px"
+            flexShrink={0}
+            width="80px"
+            height="80px"
+            borderRadius="50%"
+            overflow="hidden"
+            marginRight={3}
           >
-            {record.name}
-          </Typography>
-          <Box display="flex" flexWrap="wrap">
-            {record.role.map((item) => {
-              return (
-                <Box
-                  key={item}
-                  paddingX={1}
-                  marginRight={0.5}
-                  marginBottom={0.5}
-                  sx={{
-                    border: '1px solid #ccc',
-                    fontSize: '14px',
-                  }}
-                >
-                  {item}
-                </Box>
-              );
-            })}
+            <img
+              style={{ display: 'block', width: 80 }}
+              src={record.image || '/images/placeholder.jpeg'}
+              alt=""
+            />
+          </Box>
+          <Box>
+            <Typography
+              variant="h6"
+              sx={{
+                lineHeight: '44px',
+              }}
+            >
+              {record.name}
+            </Typography>
+            <Box display="flex" flexWrap="wrap">
+              {record.role.map((item) => {
+                return (
+                  <Box
+                    key={item}
+                    paddingX={1}
+                    marginRight={0.5}
+                    marginBottom={0.5}
+                    sx={{
+                      border: '1px solid #ccc',
+                      fontSize: '14px',
+                    }}
+                  >
+                    {item}
+                  </Box>
+                );
+              })}
+            </Box>
           </Box>
         </Box>
-      </Box>
-      <Box marginTop={2}>
-        <Typography fontWeight="bold">Skills</Typography>
-        {skills.length === 0 ? (
-          'No skills'
-        ) : (
-          <Box display="flex" flexWrap="wrap">
-            {skills.map((skill) => {
-              return (
-                <Box
-                  key={skill.name}
-                  paddingX={1}
-                  marginRight={0.5}
-                  marginBottom={0.5}
-                  sx={{
-                    background: levelColors[skill.level],
-                    color: '#fff',
-                    borderRadius: 1,
-                  }}
-                >
-                  <Typography>{skill.name}</Typography>
-                </Box>
-              );
-            })}
-          </Box>
-        )}
-      </Box>
-      <Box marginTop={2}>
-        <Typography fontWeight="bold">Projects</Typography>
-        <Typography>
-          <strong>{record.projects.length}</strong> Project Involved
-        </Typography>
-      </Box>
-      <Box position="absolute" bottom="16px" right="16px">
+        <Box marginTop={2}>
+          <Typography fontWeight="bold">Skills</Typography>
+          {skills.length === 0 ? (
+            'No skills'
+          ) : (
+            <Box display="flex" flexWrap="wrap">
+              {skills
+                .sort((a, b) => {
+                  if (a.level === 'Senior' && b.level !== 'Senior') {
+                    return -1;
+                  }
+                  if (a.level === 'Intermediate' && b.level === 'Junior') {
+                    return -1;
+                  }
+                  if (a.level === 'Junior' && b.level !== 'Junior') {
+                    return 1;
+                  }
+                  return 0;
+                })
+                .map((skill) => {
+                  return (
+                    <Box
+                      key={skill.name}
+                      paddingX={1}
+                      marginRight={0.5}
+                      marginBottom={0.5}
+                      sx={{
+                        background: levelColors[skill.level],
+                        color: '#fff',
+                        borderRadius: 1,
+                      }}
+                    >
+                      <Typography>{skill.name}</Typography>
+                    </Box>
+                  );
+                })}
+            </Box>
+          )}
+        </Box>
+        <Box marginTop={2}>
+          <Typography fontWeight="bold">Projects</Typography>
+          <Typography>
+            <strong>{record.projects.length}</strong> Project Involved
+          </Typography>
+        </Box>
+      </Link>
+
+      <Box position="absolute" bottom="24px" right="24px">
         <BuidlerContacts contacts={record.contacts} />
       </Box>
     </Box>
@@ -115,25 +137,20 @@ function BuidlerCard(props) {
 
 export default function Home() {
   const [list, setList] = useState([]);
+  const [search, setSearch] = useState('');
 
-  const searchList = async (name, role) => {
+  // todo khan support address
+  // todo support case insensitive search
+  const searchList = async (name) => {
     let query = `/buidler/list`;
     if (name && name.length > 0) {
       query = `${query}?name=${name}`;
-
-      if (role && role.length > 0) {
-        query = query + `&role=${role}`;
-      }
-    } else {
-      if (role && role.length > 0) {
-        query = `${query}?role=${role}`;
-      }
     }
 
     API.get(query).then((data) => {
       const result = data?.data;
       if (result.status !== 'SUCCESS') {
-        // error
+        // error todo alert
         return;
       }
       const records = result.data;
@@ -148,8 +165,12 @@ export default function Home() {
   };
 
   useEffect(() => {
-    searchList('', '');
+    searchList('');
   }, []);
+
+  useEffect(() => {
+    searchList(search);
+  }, [search]);
 
   return (
     <Layout>
@@ -162,24 +183,43 @@ export default function Home() {
         </Box>
         <Box marginTop={6.25}>
           <Grid container spacing={2}>
-            <Grid item xs={8}>
-              <TextInput label="Search" placeholder="Search buidlers" />
+            <Grid item xs={12}>
+              <DebouncedInput
+                value={search}
+                onChange={(value) => {
+                  setSearch(value);
+                }}
+                label="Search"
+                placeholder="Search buidlers"
+              />
             </Grid>
-            <Grid item xs={4}>
-              <SingleSelect label="Skill" dropdown={skillNames} />
-            </Grid>
+            {/* <Grid item xs={4}>
+              <SingleSelect
+                value={skill}
+                label="Skill"
+                dropdown={skillNames}
+                onChange={(value) => {
+                  setSkill(value);
+                  searchList('', value);
+                }}
+              />
+            </Grid> */}
           </Grid>
         </Box>
         <Box marginTop={6.25}>
-          <Grid container spacing={3}>
-            {list.map((item) => {
-              return (
-                <Grid key={item.id} item xs={4}>
-                  <BuidlerCard record={item} />
-                </Grid>
-              );
-            })}
-          </Grid>
+          {list.length === 0 ? (
+            <Box>404 todo not found</Box>
+          ) : (
+            <Grid container spacing={3}>
+              {list.map((item) => {
+                return (
+                  <Grid key={item.id} item xs={4}>
+                    <BuidlerCard record={item} />
+                  </Grid>
+                );
+              })}
+            </Grid>
+          )}
         </Box>
       </Container>
     </Layout>
