@@ -23,11 +23,19 @@ const interestNames = [
   'Others',
 ];
 
-function ProfileForm() {
+function ProfileForm(props) {
+  // show
+  const metaData = props.metaData;
+  console.log(metaData);
+
+  const saveProfileHandler = props.saveProfileHandler;
+
   const { handleSubmit, control } = useForm();
+
   const onSubmit = (data) => {
-    // todo send api request
-    console.log(data);
+    if (saveProfileHandler) {
+      saveProfileHandler(data);
+    }
   };
 
   // todo validation

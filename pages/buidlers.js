@@ -124,10 +124,6 @@ export default function Home() {
   };
 
   useEffect(() => {
-    searchList('');
-  }, []);
-
-  useEffect(() => {
     searchList(search);
   }, [search]);
 

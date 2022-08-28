@@ -42,7 +42,6 @@ import BuidlerContacts from '@/components/BuidlerContacts';
 import Tag from '@/components/Tag';
 
 function Project({ data }) {
-  console.log('project: ', project);
   const project = data.project;
   return (
     <Box display="flex" boxShadow={2} borderRadius={2} overflow="hidden">
@@ -103,10 +102,11 @@ function Project({ data }) {
 
 function BuidlerDetails(props) {
   const record = props.record;
-  console.log('record: ', record);
 
   const { address, isConnected } = useAccount();
+
   const { data: signer } = useSigner();
+
   const contract = useContract({
     ...contractInfo(),
     signerOrProvider: signer,
@@ -115,11 +115,19 @@ function BuidlerDetails(props) {
   const [details, setDetails] = useState('buidlerCard');
   const [visible, setVisible] = useState(false);
 
-  // contract token
-  const [hasToken, setHasToken] = useState(false);
   // backend status
   const [status, setStatus] = useState('');
 
+  // backend metaData
+  const [metaData, setMetaData] = useState(null);
+
+  // tokenId on chain
+  const [tokenId, setTokenId] = useState(null);
+
+  // ipfsURL on chain
+  const [ipfsURL, setIpfsURL] = useState(null);
+
+  // mint tx
   const [tx, setTx] = useState(null);
 
   useEffect(async () => {
@@ -129,14 +137,34 @@ function BuidlerDetails(props) {
     setStatus(record.status);
 
     if (isConnected && address === record.address) {
-      const result = await contract.balanceOf(address);
-      if (BigNumber.isBigNumber(result)) {
-        // own sbt
-        setHasToken(result.toNumber() > 0);
-        // ipfs
-      }
+      await getToken(address);
     }
   }, [isConnected, signer]);
+
+  const getToken = async (address) => {
+    let result = await contract.balanceOf(address);
+    console.log('contract balanceOf:', result);
+    if (result.toNumber() === 0) {
+      console.log('has no token.');
+      return;
+    }
+
+    const tokenId = await contract.tokenOfOwnerByIndex(address, 0);
+    console.log('contract tokenOfOwnerByIndex:', tokenId);
+    // token
+    setTokenId(tokenId.toNumber());
+    // ipfs
+    await getIpfsURL(tokenId);
+  };
+
+  const getIpfsURL = async (tokenId) => {
+    const result = await contract.tokenURI(tokenId);
+    console.log('contract tokenURI:', result);
+    if (result && result.length > 0) {
+      console.log('ipfs:', result);
+      setIpfsURL(result);
+    }
+  };
 
   const mint = async (signature) => {
     // test
@@ -147,6 +175,42 @@ function BuidlerDetails(props) {
     setTx(tx);
     const response = await tx.wait();
     console.log(response);
+  };
+
+  const saveProfileHandler = async (newMetaData) => {
+    console.log('saveProfile:', newMetaData);
+
+    // 1. backend uploadIPFS
+    let response = await API.post(`/buidler/uploadIPFS`, {
+      metaData: JSON.stringify(newMetaData),
+    });
+    // console.log('backend uploadIPFS:', response);
+    let result = response?.data;
+    if (result.status !== 'SUCCESS') {
+      return;
+    }
+    const { ipfsURI, signature } = result.data;
+
+    // 2. contract updateMetaData
+    const updateMetaData = contract[`updateMetaData(string,bytes)`];
+    const tx = await updateMetaData(ipfsURI, signature);
+    const contractUpdateMetaData = await tx.wait();
+    // console.log('contract updateMetaData:', contractUpdateMetaData);
+
+    // 3. backend updateMetaData
+    response = await API.post(`/buidler/updateMetaData`, {
+      id: record.id,
+      ipfsURI: ipfsURI,
+      metaData: newMetaData,
+    });
+    // console.log('backend updateMetaData:', response);
+    result = response?.data;
+    if (result.status !== 'SUCCESS') {
+      return;
+    }
+    // update meta data success.
+    setVisible(false);
+    alert('Update success.');
   };
 
   // todo mint page develop
@@ -361,7 +425,10 @@ function BuidlerDetails(props) {
         </Box>
         <DialogTitle>Profile Details</DialogTitle>
         <DialogContent>
-          <ProfileForm />
+          <ProfileForm
+            metaData={metaData}
+            saveProfileHandler={saveProfileHandler}
+          />
         </DialogContent>
       </Dialog>
     </Container>
@@ -370,7 +437,7 @@ function BuidlerDetails(props) {
 
 export default function Buidler() {
   const router = useRouter();
-  const [record, setRecord] = useState(undefined);
+  const [record, setRecord] = useState(null);
 
   const requestDetail = async (address) => {
     API.get(`/buidler/${address}`).then((data) => {
