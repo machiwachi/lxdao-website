@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Typography } from '@mui/material';
 
 import BuidlerContacts from './BuidlerContacts';
+import Tag from './Tag';
 
 const BuidlerCard = ({ buidlerInfo }) => {
   if (!buidlerInfo) return null;
@@ -28,18 +29,22 @@ const BuidlerCard = ({ buidlerInfo }) => {
           borderRadius="50%"
           border="1px solid #dedede"
         />
-        <Box display="flex" flexDirection="column" gap="5px">
-          <Typography fontSize="20px" fontWeight="800" color="#000000">
+        <Box display="flex" flexDirection="column" gap="5px" color="#000000">
+          <Typography fontSize="20px" fontWeight="800">
             {name}
           </Typography>
-          {projectRole.length > 0 &&
-            projectRole.map((role, index) => {
-              return (
-                <Typography fontSize="16px" color="#666F85" key={index}>
-                  {role}
-                </Typography>
-              );
-            })}
+          {projectRole.length > 0 && (
+            <Box
+              display="flex"
+              flexDirection="column"
+              alignItems="flex-start"
+              fontSize="14px"
+            >
+              {projectRole.map((role) => (
+                <Tag text={role} />
+              ))}
+            </Box>
+          )}
         </Box>
       </Box>
       <Typography fontSize="16px" color="#666F85">
