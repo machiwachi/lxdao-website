@@ -1,6 +1,8 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 
+import BuidlerContacts from './BuidlerContacts';
+
 const BuidlerCard = ({ buidlerInfo }) => {
   if (!buidlerInfo) return null;
   const { projectRole } = buidlerInfo;
@@ -43,21 +45,7 @@ const BuidlerCard = ({ buidlerInfo }) => {
       <Typography fontSize="16px" color="#666F85">
         {description}
       </Typography>
-      <Box display="flex" gap="10px">
-        {Object.keys(contacts || {}).map((key, index) => {
-          return (
-            <Typography
-              target="_blank"
-              component="a"
-              href={contacts[key]}
-              color="primary"
-              key={index}
-            >
-              <Box width="20px" component={'img'} src={`/icons/${key}.svg`} />
-            </Typography>
-          );
-        })}
-      </Box>
+      <BuidlerContacts contacts={contacts} space="10px" />
     </Box>
   );
 };
