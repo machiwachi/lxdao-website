@@ -1,7 +1,9 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import { Grid, Box, Typography } from '@mui/material';
 
 import Container from '@/components/Container';
+import Button from '@/components/Button';
 
 import coreTeamData from '@/common/content/coreTeam';
 
@@ -36,33 +38,51 @@ const TeamMemberCard = ({ data }) => (
   </Box>
 );
 
-const SectionCoreTeam = () => (
-  <Container
-    paddingY={{ md: '96px', xs: 8 }}
-    textAlign="center"
-    id="CoreTeam-Section"
-    maxWidth="1200px"
-  >
-    <Typography variant="h4">LXDAO Foundation Core Team</Typography>
-    <Typography fontSize="20px" marginTop={2}>
-      We’re buidling our SBT-based membership system, and will onboard more.
-    </Typography>
-    <Box marginTop="96px">
-      <Grid
-        container
-        spacing={{ xs: 4, md: 6 }}
-        columns={{ xs: 4, sm: 8, md: 12 }}
-      >
-        {coreTeamData.map((data, index) => {
-          return (
-            <Grid item xs={2} sm={4} md={4} key={index}>
-              <TeamMemberCard data={data} key={index} />
-            </Grid>
-          );
-        })}
-      </Grid>
-    </Box>
-  </Container>
-);
+const SectionCoreTeam = () => {
+  const router = useRouter();
+  return (
+    <Container
+      paddingY={{ md: '96px', xs: 8 }}
+      textAlign="center"
+      id="CoreTeam-Section"
+      maxWidth="1200px"
+    >
+      <Typography variant="h4">LXDAO Foundation Core Team</Typography>
+      <Typography fontSize="20px" marginTop={2}>
+        We’re buidling our SBT-based membership system, and will onboard more.
+      </Typography>
+      <Box marginTop="96px">
+        <Grid
+          container
+          spacing={{ xs: 4, md: 6 }}
+          columns={{ xs: 4, sm: 8, md: 12 }}
+        >
+          {coreTeamData.map((data, index) => {
+            return (
+              <Grid item xs={2} sm={4} md={4} key={index}>
+                <TeamMemberCard data={data} key={index} />
+              </Grid>
+            );
+          })}
+        </Grid>
+        <Box
+          marginTop={{ md: 8, xs: 4 }}
+          display="flex"
+          justifyContent="center"
+          gap={2}
+        >
+          <Button
+            variant="outlined"
+            onClick={() => {
+              router.push('/buidlers');
+            }}
+          >
+            View More
+          </Button>
+        </Box>
+      </Box>
+    </Container>
+  );
+};
 
 export default SectionCoreTeam;
