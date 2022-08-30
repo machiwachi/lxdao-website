@@ -150,10 +150,15 @@ const SectionProjectDetail = ({ projectId }) => {
   };
 
   const handleInviteBuidler = () => {
-    // TODO: change the buidlerId
     if (selectedBuidler) {
-      API.post(`/createInvitation`, {
-        buidlerId: 4,
+      let selectedBuidlerId = '';
+      buidlerList.forEach((buidler) => {
+        if (buidler.name === selectedBuidler) {
+          selectedBuidlerId = buidler.id;
+        }
+      });
+      API.post(`/buidler/createInvitation`, {
+        buidlerId: selectedBuidlerId,
         projectId: project?.id,
       })
         .then((res) => {
