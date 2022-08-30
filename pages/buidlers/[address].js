@@ -44,7 +44,7 @@ import Tag from '@/components/Tag';
 function Project({ data }) {
   const project = data.project;
   return (
-    <Box display="flex" boxShadow={2} borderRadius={2} overflow="hidden">
+    <Box display="flex" boxShadow={1} borderRadius={2} overflow="hidden">
       <Box flexBasis="158px">
         <img
           style={{ display: 'block', width: 158 }}
@@ -52,47 +52,58 @@ function Project({ data }) {
           alt=""
         />
       </Box>
-      <Box flex="auto" padding={2} position="relative">
-        <Typography variant="h5">{project.name}</Typography>
-        <Box display="flex" marginTop={2}>
+      <Box flex="auto" padding={3} position="relative">
+        <Typography fontSize="20px" fontWeight="bold">
+          {project.name}
+        </Typography>
+        <Box display="flex" marginTop={3}>
           <Box flex="1">
             <Typography
+              marginBottom={1}
               sx={{
                 fontSize: '16px',
                 fontWeight: 'bold',
-                color: '#101828',
               }}
             >
               Project Role
             </Typography>
-            <Typography>Project Manager</Typography>
+            <Typography fontSize="14px" color="#667085">
+              Project Manager
+            </Typography>
           </Box>
           <Box flex="1">
             <Typography
+              marginBottom={1}
               sx={{
                 fontSize: '16px',
                 fontWeight: 'bold',
-                color: '#101828',
               }}
             >
               Started at
             </Typography>
-            <Typography>2022-08-01</Typography>
+            <Typography fontSize="14px" color="#667085">
+              2022-08-01
+            </Typography>
           </Box>
           <Box flex="1">
             <Typography
+              marginBottom={1}
               sx={{
                 fontSize: '16px',
                 fontWeight: 'bold',
-                color: '#101828',
               }}
             >
               Ended at
             </Typography>
-            <Typography>-</Typography>
+            <Typography fontSize="14px" color="#667085">
+              -
+            </Typography>
           </Box>
         </Box>
-        <Typography sx={{ position: 'absolute', top: '24px', right: '36px' }}>
+        <Typography
+          color="#667085"
+          sx={{ position: 'absolute', top: '24px', right: '36px' }}
+        >
           Project#{project.number}
         </Typography>
       </Box>
@@ -102,6 +113,7 @@ function Project({ data }) {
 
 function BuidlerDetails(props) {
   const record = props.record;
+  console.log('record: ', record);
 
   const { address, isConnected } = useAccount();
 
@@ -249,14 +261,27 @@ function BuidlerDetails(props) {
           </Box>
         </Box>
         <Box>
-          <Box marginTop={4}>
-            <Box marginBottom={2}>
+          <Box
+            marginTop={4}
+            marginBottom={6}
+            display="flex"
+            flexWrap="wrap"
+            alignItems="flex-start"
+          >
+            <Box flex="1 1 500px" marginBottom={2}>
               <Typography variant="h4" fontWeight="bold" marginBottom={2}>
                 {record.name}
               </Typography>
               <Typography>{record.description}</Typography>
             </Box>
-            <Box display="flex" marginBottom={6}>
+            <Box flex="1 1 auto" display="flex" marginTop={2}>
+              <Box
+                marginRight={4}
+                paddingRight={4}
+                borderRight="1px solid #D0D5DD"
+              >
+                <BuidlerContacts space={4} contacts={record.contacts} />
+              </Box>
               <CopyToClipboard
                 text={record.address}
                 onCopy={() => {
@@ -270,7 +295,6 @@ function BuidlerDetails(props) {
                   <Box
                     marginRight={1}
                     paddingRight={3}
-                    borderRight="1px solid #D0D5DD"
                     display="flex"
                     sx={{
                       cursor: 'pointer',
@@ -289,9 +313,6 @@ function BuidlerDetails(props) {
                   </Box>
                 </Tooltip>
               </CopyToClipboard>
-              <Box>
-                <BuidlerContacts space={2} contacts={record.contacts} />
-              </Box>
             </Box>
           </Box>
           <Grid container spacing={2}>
@@ -330,7 +351,7 @@ function BuidlerDetails(props) {
       <Box marginTop={10}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value="project">
-            <Tab label="Project 2" value="project" />
+            <Tab label={`Project ${record.projects.length}`} value="project" />
           </Tabs>
         </Box>
         <Box display="flex" marginTop={4}>
@@ -357,12 +378,13 @@ function BuidlerDetails(props) {
             <Tab label="My LXPoints" value="lxPoints" />
           </Tabs>
         </Box>
-        <Box padding={2}>
+        <Box paddingY={2}>
           {details === 'buidlerCard' && (
             <Box>
               <img
-                style={{ display: 'block', width: 150 }}
-                src="/images/kuncle.jpeg"
+                crossOrigin="anonymous"
+                style={{ display: 'block', width: 300 }}
+                src="http://localhost:3000/buidler/card/0x147b166fb4f1Aa9581D184596Dbabe2980ba4b14"
                 alt=""
               />
             </Box>

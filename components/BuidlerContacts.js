@@ -57,7 +57,7 @@ function BuidlerContacts({ contacts, space }) {
               component="a"
               href={formattedContacts[key]}
               color="primary"
-              marginLeft={space || 1}
+              marginLeft={index === 0 ? 0 : space || 1}
             >
               <Box
                 width="20px"
