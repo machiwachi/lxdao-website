@@ -111,6 +111,58 @@ function Project({ data }) {
   );
 }
 
+function totalLXPoints(record) {
+  if (record.lxPoints === null) {
+    return 0;
+  }
+
+  return record.lxPoints.reduce((total, point) => {
+    return total + point.value;
+  }, 0);
+}
+
+function LXPointsTimeline({ points }) {
+  return (
+    <Box marginTop={3} marginLeft={2}>
+      {points.map((point, index) => {
+        const isLastOne = index === points.length - 1;
+        return (
+          <Box
+            key={index}
+            paddingLeft={3}
+            paddingBottom={3}
+            sx={{
+              position: 'relative',
+              '&::before': {
+                position: 'absolute',
+                content: '" "',
+                top: '8px',
+                left: 0,
+                width: '6px',
+                height: '6px',
+                backgroundColor: '#D0D5DD',
+                borderRadius: '50%',
+              },
+              '&::after': {
+                position: 'absolute',
+                display: isLastOne ? 'none' : 'block',
+                content: '" "',
+                top: '12px',
+                left: '2px',
+                bottom: '-10px',
+                width: '2px',
+                backgroundColor: '#D0D5DD',
+              },
+            }}
+          >
+            {point.reason}
+          </Box>
+        );
+      })}
+    </Box>
+  );
+}
+
 function BuidlerDetails(props) {
   const record = props.record;
   console.log('record: ', record);
@@ -381,6 +433,7 @@ function BuidlerDetails(props) {
         <Box paddingY={2}>
           {details === 'buidlerCard' && (
             <Box>
+              {/* todo replace with api and address */}
               <img
                 crossOrigin="anonymous"
                 style={{ display: 'block', width: 300 }}
@@ -390,35 +443,23 @@ function BuidlerDetails(props) {
             </Box>
           )}
           {details === 'lxPoints' && (
-            <Box>
-              <Box>
-                <Typography variant="h4">Accumulated LXPoints</Typography>
-                <Typography>180</Typography>
+            <Box display="flex" marginTop={4}>
+              <Box flex="0 1 240px" marginRight={3}>
+                <Typography fontWeight="bold" variant="h6">
+                  Accumulated LXPoints
+                </Typography>
+                <Typography marginTop={2} fontSize="48px" fontWeight="bold">
+                  {totalLXPoints(record)}
+                </Typography>
               </Box>
-              <Box>
-                <Typography variant="h4">Reason</Typography>
-                <Timeline>
-                  <TimelineItem>
-                    <TimelineSeparator>
-                      <TimelineDot />
-                      <TimelineConnector />
-                    </TimelineSeparator>
-                    <TimelineContent>
-                      text for the reason，text for the reasontext for the
-                      reasontext for the reason
-                    </TimelineContent>
-                  </TimelineItem>
-                  <TimelineItem>
-                    <TimelineSeparator>
-                      <TimelineDot />
-                    </TimelineSeparator>
-                    <TimelineContent>
-                      text for the reason，text for the reasontext for the
-                      reasontext for the reason
-                    </TimelineContent>
-                  </TimelineItem>
-                </Timeline>
-              </Box>
+              {record.lxPoints && record.lxPoints.length > 0 && (
+                <Box>
+                  <Typography fontWeight="bold" variant="h6">
+                    Reason
+                  </Typography>
+                  <LXPointsTimeline points={record.lxPoints} />
+                </Box>
+              )}
             </Box>
           )}
         </Box>
