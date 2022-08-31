@@ -5,7 +5,7 @@ import Container from '@/components/Container';
 const SectionHero = ({ leftContent, rightContent }) => {
   return (
     <Container
-      height="calc(100vh - 81px)"
+      // height="calc(100vh - 81px)"
       minHeight={{ md: '800px', xs: '660px' }}
       display="flex"
       flexDirection={{ lg: 'row', xs: 'column' }}

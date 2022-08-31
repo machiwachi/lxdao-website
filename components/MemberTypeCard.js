@@ -35,6 +35,7 @@ const MemberTypeCard = ({ type, description, amount, selected, disabled }) => {
     <Box
       backgroundColor="#ffffff"
       display="flex"
+      flex="1 1 50%"
       flexDirection="column"
       gap={3}
       borderRadius="13px"

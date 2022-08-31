@@ -21,15 +21,36 @@ const SectionMemberType = () => (
         gap="26px"
       >
         <MemberTypeCard
-          type="Buidler"
-          description="We are an ever growing international community of humans from a diversity of specializations. Coders, Engineers, Legal Experts, Designers, Writers, Testers, Activists - and more! Come one, come all!"
+          type="LX Buidler"
+          description={
+            <>
+              LX Builders are the <strong>most important members</strong> of the
+              LXDAO community. They are responsible for buidling and maintaining
+              the LXDAO projects. Therefore,{' '}
+              <strong>you need to submit an application.</strong>
+              And the Onboarding committee will review and vote on your
+              application. After onboarding,{' '}
+              <strong>you will get a Buidler SBT Card for free</strong> which
+              cannot be transferred.
+            </>
+          }
           amount={36}
           selected={true}
           flex={1}
         />
         <MemberTypeCard
-          type="Member"
-          description="We are an ever growing international community of humans from a diversity of specializations. Coders, Engineers, Legal Experts, Designers, Writers, Testers, Activists - and more! Come one, come all!"
+          type="LX Community Member"
+          description={
+            <>
+              <strong>NOT OPENED YET</strong>. LX Community members are the
+              users or fans of the LXDAO projects. As a member of the community,{' '}
+              <strong>members will receive benefits from LXDAO projects</strong>
+              , for example, VIP privilege for free, airdrop, whitelist, early
+              access, etc.{' '}
+              <strong>Anyone can purchase LX Community member NFT</strong>, a
+              PFP NFT with extra benefits. You can sell or transfer it later.
+            </>
+          }
           selected={false}
           flex={1}
           disabled={true}

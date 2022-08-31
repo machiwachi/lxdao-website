@@ -7,22 +7,26 @@ import Button from '@/components/Button';
 const steps = [
   {
     label: 'Application',
-    description: 'Here is a brief description. Here is a brief description',
+    description:
+      'Submit your application by clicking the "Start your Application" button below. ⬇️',
     icon: '/icons/application-step.svg',
   },
   {
     label: 'Vote',
-    description: 'Here is a brief description. Here is a brief description',
+    description:
+      'The Onboarding committee will review your application. And vote. It takes 2-5 days.',
     icon: '/icons/vote-step.svg',
   },
   {
-    label: 'Onboarding Session',
-    description: 'Here is a brief description. Here is a brief description',
+    label: 'Onboarding',
+    description:
+      '1v1 onboarding session after your application is approved. We will help you get started in LXDAO.',
     icon: '/icons/session-step.svg',
   },
   {
-    label: 'Build Together',
-    description: 'Here is a brief description. Here is a brief description',
+    label: 'Buidl',
+    description:
+      "Join the community, find the projects you want to build. Let's buidl together!",
     icon: '/icons/success-step.svg',
   },
 ];
@@ -56,7 +60,7 @@ const SectionApplicationSteps = () => {
       >
         <Box display="flex" flexDirection="column" alignItems="center">
           <Typography variant="h3" marginBottom={10} textAlign="center">
-            How to become a builder
+            How to become a LX Buidler
           </Typography>
           <Box
             display="flex"
@@ -66,8 +70,8 @@ const SectionApplicationSteps = () => {
           >
             {steps.map((step, index) => {
               return (
-                <Box position="relative">
-                  <Step key={index} stepData={step} />
+                <Box key={index} position="relative" flex="1 1 25%">
+                  <Step stepData={step} />
                   {index !== steps.length - 1 ? (
                     <>
                       <Box
@@ -75,7 +79,6 @@ const SectionApplicationSteps = () => {
                         top="160px"
                         left="185px"
                         bottom="40px"
-                        display="flex"
                         alignItems="center"
                         display={{ lg: 'none', sm: 'block', xs: 'none' }}
                       >
@@ -98,7 +101,6 @@ const SectionApplicationSteps = () => {
                         top="30px"
                         left="185px"
                         bottom="40px"
-                        display="flex"
                         alignItems="center"
                         display={{ lg: 'block', xs: 'none' }}
                       >
@@ -123,7 +125,7 @@ const SectionApplicationSteps = () => {
           </Box>
           <Link href="https://tally.so/r/3Ek62r" target="_blank">
             <Button marginTop={8} width="200px">
-              Start
+              Start your Application
             </Button>
           </Link>
         </Box>
