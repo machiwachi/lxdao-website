@@ -52,6 +52,8 @@ function Avatar(props) {
                 onClick={onImageUpload}
                 sx={{
                   cursor: 'pointer',
+                  border: '2px solid #ccc',
+                  borderColor: props.error ? '#d32f2f' : '#ccc',
                 }}
               >
                 <img src={value} alt="" width="100%" />

@@ -30,20 +30,18 @@ function ProfileForm(props) {
 
   const saveProfileHandler = props.saveProfileHandler;
 
-  const { handleSubmit, control } = useForm();
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm();
 
   const onSubmit = (data) => {
+    console.log('data: ', data);
     if (saveProfileHandler) {
       saveProfileHandler(data);
     }
   };
-
-  // todo validation
-  // avatar required
-  // twitter, telegram format
-  // email format
-  // github format
-  // website format
 
   return (
     <Box>
@@ -51,17 +49,34 @@ function ProfileForm(props) {
         <Controller
           name={'avatar'}
           control={control}
+          rules={{ required: true }}
           render={({ field: { onChange, value } }) => {
             return (
-              <Avatar width="150px" value={value} onChange={onChange}></Avatar>
+              <Avatar
+                error={errors.avatar}
+                width="150px"
+                value={value}
+                onChange={onChange}
+              ></Avatar>
             );
           }}
         />
+        {errors.avatar && (
+          <Typography
+            fontSize="0.75rem"
+            color="#d32f2f"
+            marginTop={2}
+            marginLeft={3}
+          >
+            Avatar is required
+          </Typography>
+        )}
       </Box>
       <Box marginBottom={2.5}>
         <Controller
           name={'name'}
           control={control}
+          rules={{ required: true }}
           render={({ field: { onChange, value } }) => {
             return (
               <TextInput
@@ -70,6 +85,8 @@ function ProfileForm(props) {
                 placeholder="Your nick name"
                 onChange={onChange}
                 value={value}
+                error={errors.name}
+                helperText={errors.name ? 'Name is required' : ''}
               />
             );
           }}
@@ -79,6 +96,7 @@ function ProfileForm(props) {
         <Controller
           name={'description'}
           control={control}
+          rules={{ required: true }}
           render={({ field: { onChange, value } }) => {
             return (
               <TextInput
@@ -89,6 +107,8 @@ function ProfileForm(props) {
                 label="Description"
                 onChange={onChange}
                 value={value}
+                error={errors.description}
+                helperText={errors.description ? 'Description is required' : ''}
               />
             );
           }}
@@ -106,10 +126,21 @@ function ProfileForm(props) {
         <Controller
           name={'skills'}
           control={control}
+          rules={{ required: true }}
           render={({ field: { onChange, value } }) => {
             return <SkillsField value={value || []} onChange={onChange} />;
           }}
         />
+        {errors.skills && (
+          <Typography
+            marginTop={-2}
+            fontSize="0.75rem"
+            color="#d32f2f"
+            marginLeft={2}
+          >
+            Skills are required
+          </Typography>
+        )}
       </Box>
       <Box marginBottom={2.5}>
         <Typography
@@ -123,6 +154,7 @@ function ProfileForm(props) {
         <Controller
           name={'interests'}
           control={control}
+          rules={{ required: true }}
           render={({ field: { onChange, value } }) => {
             return (
               <MultiSelect
@@ -133,6 +165,16 @@ function ProfileForm(props) {
             );
           }}
         />
+        {errors.interests && (
+          <Typography
+            fontSize="0.75rem"
+            color="#d32f2f"
+            marginTop={1}
+            marginLeft={2}
+          >
+            Interests are required
+          </Typography>
+        )}
       </Box>
       <Box>
         <Typography
@@ -156,6 +198,7 @@ function ProfileForm(props) {
           variant="contained"
           size="large"
           onClick={handleSubmit(onSubmit)}
+          disabled={JSON.stringify(errors) === '{}' ? false : true}
         >
           Save Profile
         </Button>
