@@ -106,14 +106,14 @@ const ConnectWalletButton = () => {
   };
 
   const SignInErrorMessage = () => {
-    // TODO: error message improve
     return (
       <Typography>
-        Something went wrong or you are not LXDAO buidler, welcome to{' '}
+        Something went wrong when signing into LXDAO. If you are not LXDAO
+        buidler, welcome to{' '}
         <Typography component="a" href="/joinus">
           join us
         </Typography>
-        .
+        . You can also give feedback to us in the community.
       </Typography>
     );
   };

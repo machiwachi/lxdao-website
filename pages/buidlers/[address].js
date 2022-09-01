@@ -13,16 +13,9 @@ import {
   DialogTitle,
   DialogContent,
   Tooltip,
+  Alert,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import {
-  Timeline,
-  TimelineItem,
-  TimelineSeparator,
-  TimelineDot,
-  TimelineContent,
-  TimelineConnector,
-} from '@mui/lab';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import Layout from '@/components/Layout';
@@ -37,79 +30,9 @@ import { useAccount, useContract, useSigner } from 'wagmi';
 
 import { contractInfo } from '@/components/ContractsOperation';
 
-import { BigNumber } from 'ethers';
 import BuidlerContacts from '@/components/BuidlerContacts';
 import Tag from '@/components/Tag';
-
-function Project({ data }) {
-  const project = data.project;
-  return (
-    <Box display="flex" boxShadow={1} borderRadius={2} overflow="hidden">
-      <Box flexBasis="158px">
-        <img
-          style={{ display: 'block', width: 158 }}
-          src={project.logoLarge}
-          alt=""
-        />
-      </Box>
-      <Box flex="auto" padding={3} position="relative">
-        <Typography fontSize="20px" fontWeight="bold">
-          {project.name}
-        </Typography>
-        <Box display="flex" marginTop={3}>
-          <Box flex="1">
-            <Typography
-              marginBottom={1}
-              sx={{
-                fontSize: '16px',
-                fontWeight: 'bold',
-              }}
-            >
-              Project Role
-            </Typography>
-            <Typography fontSize="14px" color="#667085">
-              Project Manager
-            </Typography>
-          </Box>
-          <Box flex="1">
-            <Typography
-              marginBottom={1}
-              sx={{
-                fontSize: '16px',
-                fontWeight: 'bold',
-              }}
-            >
-              Started at
-            </Typography>
-            <Typography fontSize="14px" color="#667085">
-              2022-08-01
-            </Typography>
-          </Box>
-          <Box flex="1">
-            <Typography
-              marginBottom={1}
-              sx={{
-                fontSize: '16px',
-                fontWeight: 'bold',
-              }}
-            >
-              Ended at
-            </Typography>
-            <Typography fontSize="14px" color="#667085">
-              -
-            </Typography>
-          </Box>
-        </Box>
-        <Typography
-          color="#667085"
-          sx={{ position: 'absolute', top: '24px', right: '36px' }}
-        >
-          Project#{project.number}
-        </Typography>
-      </Box>
-    </Box>
-  );
-}
+import Project from '@/components/Project';
 
 function totalLXPoints(record) {
   if (record.lxPoints === null) {
@@ -155,7 +78,7 @@ function LXPointsTimeline({ points }) {
               },
             }}
           >
-            {point.reason}
+            {point.reason} (+{point.value})
           </Box>
         );
       })}
@@ -168,6 +91,7 @@ function BuidlerDetails(props) {
   console.log('record: ', record);
 
   const { address, isConnected } = useAccount();
+  console.log('address: ', address);
 
   const { data: signer } = useSigner();
 
@@ -277,8 +201,33 @@ function BuidlerDetails(props) {
     alert('Update success.');
   };
 
-  // todo mint page develop
   const [copyTip, setCopyTip] = useState('Copy to Clipboard');
+
+  if (record.status === 'PENDING') {
+    return (
+      <Container paddingY={10}>
+        <Box display="flex" justifyContent="center" flexDirection="column">
+          <Box marginBottom={2}>
+            <Alert severity="info">
+              Welcome LXDAO, please click the Mint Builder Card button to get
+              your LXDAO Builder CARD{' '}
+            </Alert>
+          </Box>
+
+          <Box textAlign="center">
+            <Button
+              onClick={() => {
+                mint();
+              }}
+              variant="outlined"
+            >
+              Mint Builder Card
+            </Button>
+          </Box>
+        </Box>
+      </Container>
+    );
+  }
 
   return (
     <Container paddingY={10}>
@@ -292,24 +241,17 @@ function BuidlerDetails(props) {
             />
           </Box>
           <Box textAlign="center" marginTop={4}>
-            <Button
-              onClick={() => {
-                setVisible(true);
-              }}
-              size="small"
-              variant="outlined"
-            >
-              Edit
-            </Button>
-            <Button
-              onClick={() => {
-                mint();
-              }}
-              size="small"
-              variant="outlined"
-            >
-              Mint
-            </Button>
+            {address === record.address ? (
+              <Button
+                onClick={() => {
+                  setVisible(true);
+                }}
+                size="small"
+                variant="outlined"
+              >
+                Edit
+              </Button>
+            ) : null}
           </Box>
         </Box>
         <Box>
@@ -399,7 +341,6 @@ function BuidlerDetails(props) {
           </Grid>
         </Box>
       </Box>
-      {/* todo zero project */}
       <Box marginTop={10}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value="project">
@@ -407,15 +348,30 @@ function BuidlerDetails(props) {
           </Tabs>
         </Box>
         <Box display="flex" marginTop={4}>
-          <Grid container spacing={4}>
-            {record.projects.map((project) => {
-              return (
-                <Grid item xs={6} key={project.id}>
-                  <Project data={project} />
-                </Grid>
-              );
-            })}
-          </Grid>
+          {record.projects.length ? (
+            <Grid container spacing={4}>
+              {record.projects.map((project) => {
+                return (
+                  <Grid item xs={6} key={project.id}>
+                    <Project data={project} />
+                  </Grid>
+                );
+              })}
+            </Grid>
+          ) : (
+            <Box
+              display="flex"
+              flexDirection="column"
+              width="100%"
+              alignItems="center"
+              paddingY={4}
+            >
+              <img width="80px" src="/icons/no-records.png" />
+              <Typography marginTop={4} color="#D0D5DD" fontSize="16px">
+                You have not participated in any project
+              </Typography>
+            </Box>
+          )}
         </Box>
       </Box>
       <Box marginTop={10}>
@@ -433,11 +389,10 @@ function BuidlerDetails(props) {
         <Box paddingY={2}>
           {details === 'buidlerCard' && (
             <Box>
-              {/* todo replace with api and address */}
               <img
                 crossOrigin="anonymous"
                 style={{ display: 'block', width: 300 }}
-                src="http://localhost:3000/buidler/card/0x147b166fb4f1Aa9581D184596Dbabe2980ba4b14"
+                src={`${process.env.NEXT_PUBLIC_LXDAO_BACKEND_API}/buidler/card/${record.address}`}
                 alt=""
               />
             </Box>

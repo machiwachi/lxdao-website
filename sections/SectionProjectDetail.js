@@ -68,7 +68,7 @@ const SectionProjectDetail = ({ projectId }) => {
   }, []);
 
   useEffect(() => {
-    //TODO: PM checks
+    //TODO: Muxin PM checks
     API.get(`/buidler/list`)
       .then((res) => {
         if (res?.data?.data) {

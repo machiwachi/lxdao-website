@@ -73,7 +73,7 @@ const SectionProjects = () => {
         if (res?.data?.status === 'SUCCESS') {
           setProjects(res?.data?.data);
         } else {
-          // todo error handling
+          // todo Muxin common error handling, function invocation
         }
       })
       .catch((err) => {

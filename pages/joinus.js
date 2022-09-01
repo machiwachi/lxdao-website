@@ -11,7 +11,7 @@ export default function JoinUs() {
     <div>
       <Layout>
         <SectionJoinUsHero />
-        {/* todo later, tell people who we need */}
+        {/* todo Muxin later, tell people who we need */}
         <SectionMemberType />
         <SectionApplicationSteps />
       </Layout>

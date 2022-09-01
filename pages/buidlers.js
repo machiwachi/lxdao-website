@@ -1,9 +1,9 @@
 /* eslint-disable no-undef */
 import React, { useEffect, useState } from 'react';
-import { Typography, Box, Grid, Link } from '@mui/material';
+import { Typography, Box, Grid, Link, CircularProgress } from '@mui/material';
 
 import Layout from '@/components/Layout';
-
+import SingleSelect from '@/components/Select';
 import DebouncedInput from '@/components/DebouncedInput';
 import Container from '@/components/Container';
 import API from '@/common/API';
@@ -88,28 +88,33 @@ function BuidlerCard(props) {
   );
 }
 
+const roleNames = ['Buidler', 'Core', 'Project Manager', 'Investor'];
+
 export default function Home() {
+  const [loading, setLoading] = useState(true);
   const [list, setList] = useState([]);
   const [search, setSearch] = useState('');
+  const [role, setRole] = useState('');
 
-  const searchList = async (search, role) => {
-    let query = `/buidler/list`;
-    if (search && search.length > 0) {
-      query = `${query}?search=${search}`;
-
-      if (role && role.length > 0) {
-        query = query + `&role=${role}`;
-      }
-    } else {
-      if (role && role.length > 0) {
-        query = `${query}?role=${role}`;
-      }
+  const searchList = async (search = '', role = '') => {
+    let query = `/buidler/list?`;
+    let params = [];
+    const trimmedSearch = search.trim();
+    const trimmedRole = role.trim();
+    if (trimmedSearch) {
+      params.push('search=' + trimmedSearch);
     }
+    if (trimmedRole) {
+      params.push('role=' + trimmedRole);
+    }
+    query += params.join('&');
 
-    API.get(query).then((data) => {
-      const result = data?.data;
+    setLoading(true);
+    try {
+      const res = await API.get(query);
+      const result = res.data;
       if (result.status !== 'SUCCESS') {
-        // error todo alert
+        // error todo Muxin add common alert, wang teng design
         return;
       }
       const records = result.data;
@@ -120,25 +125,32 @@ export default function Home() {
       });
 
       setList(tempList);
-    });
+    } catch (err) {
+      console.log(err);
+    }
+    setLoading(false);
   };
 
   useEffect(() => {
-    searchList(search);
+    searchList();
   }, [search]);
 
   return (
     <Layout>
-      <Container paddingY={10}>
+      <Container paddingY={10} maxWidth={1200}>
         <Box textAlign="center">
           <Typography variant="h3">LXDAO Buidlers</Typography>
           <Typography fontSize="20px" marginTop={2}>
-            Here are registered LXDAO Buidlers. Join Us(TODO).
+            Here are registered LXDAO Buidlers. Welcome to{' '}
+            <Link href={`/joinus`} target="_blank" color={'inherit'}>
+              Join Us
+            </Link>
+            !
           </Typography>
         </Box>
         <Box marginTop={6.25}>
           <Grid container spacing={2}>
-            <Grid item xs={12}>
+            <Grid item xs={8}>
               <DebouncedInput
                 value={search}
                 onChange={(value) => {
@@ -148,34 +160,51 @@ export default function Home() {
                 placeholder="Search buidlers"
               />
             </Grid>
-            {/* <Grid item xs={4}>
+            <Grid item xs={4}>
               <SingleSelect
-                value={skill}
-                label="Skill"
-                dropdown={skillNames}
+                value={role}
+                label="Role"
+                dropdown={roleNames}
                 onChange={(value) => {
-                  setSkill(value);
-                  searchList('', value);
+                  setRole(value);
+                  searchList(search, value);
                 }}
               />
-            </Grid> */}
+            </Grid>
           </Grid>
         </Box>
-        <Box marginTop={6.25}>
-          {list.length === 0 ? (
-            <Box>404 todo not found</Box>
-          ) : (
-            <Grid container spacing={3}>
-              {list.map((item) => {
-                return (
-                  <Grid key={item.id} item xs={4}>
-                    <BuidlerCard record={item} />
-                  </Grid>
-                );
-              })}
-            </Grid>
-          )}
-        </Box>
+        {loading ? (
+          <Box marginTop={10} display="flex" justifyContent="center">
+            <CircularProgress />
+          </Box>
+        ) : (
+          <Box marginTop={6.25}>
+            {list.length === 0 ? (
+              <Box
+                display="flex"
+                flexDirection="column"
+                width="100%"
+                alignItems="center"
+                paddingY={4}
+              >
+                <img width="80px" src="/icons/no-records.png" />
+                <Typography marginTop={4} color="#D0D5DD" fontSize="16px">
+                  No builders found with the search criteria
+                </Typography>
+              </Box>
+            ) : (
+              <Grid container spacing={3}>
+                {list.map((item) => {
+                  return (
+                    <Grid key={item.id} item xs={4}>
+                      <BuidlerCard record={item} />
+                    </Grid>
+                  );
+                })}
+              </Grid>
+            )}
+          </Box>
+        )}
       </Container>
     </Layout>
   );
