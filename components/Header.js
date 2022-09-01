@@ -76,70 +76,102 @@ const Header = () => {
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton
-            onClick={() => {
-              window.open('https://forum.lxdao.io/', '_blank');
+          <Link
+            href={`https://forum.lxdao.io/`}
+            target="_blank"
+            color={'inherit'}
+            sx={{
+              textDecoration: 'none',
             }}
           >
-            <Typography sx={{ cursor: 'pointer' }}>Forum</Typography>
-          </ListItemButton>
+            <ListItemButton>
+              <Typography sx={{ cursor: 'pointer' }}>Forum</Typography>
+            </ListItemButton>
+          </Link>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton
-            onClick={() => {
-              window.open('https://twitter.com/LXDAO_Official', '_blank');
+          <Link
+            href={`https://twitter.com/LXDAO_Official`}
+            target="_blank"
+            color={'inherit'}
+            sx={{
+              textDecoration: 'none',
             }}
           >
-            <Typography sx={{ cursor: 'pointer' }}>Twitter</Typography>
-          </ListItemButton>
+            <ListItemButton>
+              <Typography sx={{ cursor: 'pointer' }}>Twitter</Typography>
+            </ListItemButton>
+          </Link>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton
-            onClick={() => {
-              window.open('https://discord.com/invite/HtcDdPgJ7D', '_blank');
+          <Link
+            href={`https://discord.com/invite/HtcDdPgJ7D`}
+            target="_blank"
+            color={'inherit'}
+            sx={{
+              textDecoration: 'none',
             }}
           >
-            <Typography sx={{ cursor: 'pointer' }}>Discord</Typography>
-          </ListItemButton>
+            <ListItemButton>
+              <Typography sx={{ cursor: 'pointer' }}>Discord</Typography>
+            </ListItemButton>
+          </Link>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton
-            onClick={() => {
-              window.open('https://t.me/LXDAO', '_blank');
+          <Link
+            href={`https://t.me/LXDAO`}
+            target="_blank"
+            color={'inherit'}
+            sx={{
+              textDecoration: 'none',
             }}
           >
-            <Typography sx={{ cursor: 'pointer' }}>Telegram</Typography>
-          </ListItemButton>
+            <ListItemButton>
+              <Typography sx={{ cursor: 'pointer' }}>Telegram</Typography>
+            </ListItemButton>
+          </Link>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton
-            onClick={() => {
-              window.open('https://forum.lxdao.io/c/governance/10', '_blank');
+          <Link
+            href={`https://forum.lxdao.io/c/governance/10`}
+            target="_blank"
+            color={'inherit'}
+            sx={{
+              textDecoration: 'none',
             }}
           >
-            <Typography sx={{ cursor: 'pointer' }}>Weekly</Typography>
-          </ListItemButton>
+            <ListItemButton>
+              <Typography sx={{ cursor: 'pointer' }}>Weekly</Typography>
+            </ListItemButton>
+          </Link>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton
-            onClick={() => {
-              window.open(
-                'https://forum.lxdao.io/c/governance/monthly-ama/12',
-                '_blank'
-              );
+          <Link
+            href={`https://forum.lxdao.io/c/governance/monthly-ama/12`}
+            target="_blank"
+            color={'inherit'}
+            sx={{
+              textDecoration: 'none',
             }}
           >
-            <Typography sx={{ cursor: 'pointer' }}>AMA</Typography>
-          </ListItemButton>
+            <ListItemButton>
+              <Typography sx={{ cursor: 'pointer' }}>AMA</Typography>
+            </ListItemButton>
+          </Link>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton
-            onClick={() => {
-              window.open('https://github.com/lxdao-official/', '_blank');
+          <Link
+            href={`https://github.com/lxdao-official/`}
+            target="_blank"
+            color={'inherit'}
+            sx={{
+              textDecoration: 'none',
             }}
           >
-            <Typography sx={{ cursor: 'pointer' }}>GitHub</Typography>
-          </ListItemButton>
+            <ListItemButton>
+              <Typography sx={{ cursor: 'pointer' }}>GitHub</Typography>
+            </ListItemButton>
+          </Link>
         </ListItem>
         <ListItem disablePadding>
           <ListItemButton
