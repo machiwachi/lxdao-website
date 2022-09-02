@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { format } from 'date-fns';
 import {
   Box,
@@ -16,6 +16,7 @@ import { useAccount } from 'wagmi';
 
 import API from '@/common/API';
 import { getLocalStorage } from '@/utils/utility';
+import { AlertContext } from '@/context/AlertContext';
 
 import Button from '@/components/Button';
 import Container from '@/components/Container';
@@ -33,13 +34,18 @@ const useStyles = makeStyles({
 
 const SectionProjectDetail = ({ projectId }) => {
   const [project, setProject] = useState(null);
-  const [buidlerList, setBuidlerList] = useState([]);
+  const [activeBuidlerList, setActiveBuidlerList] = useState([]);
   const [selectedBuidler, setSelectedBuidler] = useState('');
   const [openJoinDialog, setOpenJoinDialog] = useState(false);
   const [openJoinTooltip, setOpenJoinTooltip] = useState(false);
   const [showJoinButton, setShowJoinButton] = useState(true);
   const [showInviteButton, setShowInviteButton] = useState(false);
+  const [showAcceptButton, setShowAcceptButton] = useState(false);
+  const [currentBuidlerOnProjectInfo, setCurrentBuidlerOnProjectInfo] =
+    useState({ id: null, ipfsURI: '' });
 
+  const useAlert = () => useContext(AlertContext);
+  const { setAlert } = useAlert();
   const { address } = useAccount();
   const classes = useStyles();
 
@@ -55,7 +61,7 @@ const SectionProjectDetail = ({ projectId }) => {
     }
   });
 
-  useEffect(() => {
+  const getProjectData = () => {
     API.get(`/project/${projectId}`)
       .then((res) => {
         if (res?.data?.data) {
@@ -65,10 +71,13 @@ const SectionProjectDetail = ({ projectId }) => {
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  useEffect(() => {
+    getProjectData();
   }, []);
 
   useEffect(() => {
-    //TODO: Muxin PM checks
     API.get(`/buidler/list`)
       .then((res) => {
         if (res?.data?.data) {
@@ -78,14 +87,24 @@ const SectionProjectDetail = ({ projectId }) => {
             buidlerIdsOnProject.push(buidlerOnProject?.buidler?.id);
           });
           res?.data?.data?.forEach((buidler) => {
+            let buidlerActiveOnProject = false;
+            buidler?.projects.forEach((buidlerOnProject) => {
+              if (
+                buidlerOnProject?.id === project?.id &&
+                buidlerOnProject?.status === 'ACTIVE'
+              ) {
+                buidlerActiveOnProject = true;
+              }
+            });
             if (
               buidler.status === 'ACTIVE' &&
-              !buidlerIdsOnProject.includes(buidler.id)
+              !buidlerIdsOnProject.includes(buidler.id) &&
+              buidlerActiveOnProject
             ) {
               activeBuidlers.push(buidler);
             }
           });
-          setBuidlerList(activeBuidlers);
+          setActiveBuidlerList(activeBuidlers);
         }
       })
       .catch((err) => {
@@ -100,6 +119,18 @@ const SectionProjectDetail = ({ projectId }) => {
         if (buidler?.buidler?.address === address) {
           count++;
         }
+        // if this buidler is on project and status(project) is PENDING, will show accept button
+        if (
+          buidler?.buidler?.address === address &&
+          buidler?.status === 'PENDING'
+        ) {
+          setShowAcceptButton(true);
+          setCurrentBuidlerOnProjectInfo({
+            id: buidler?.id,
+            ipfsURI: buidler?.buidler?.ipfsURI || '',
+          });
+        }
+        // if this buidler is PM, will show invite button
         if (
           buidler?.projectRole.includes('Project Manager') &&
           buidler?.buidler.address === address
@@ -152,7 +183,7 @@ const SectionProjectDetail = ({ projectId }) => {
   const handleInviteBuidler = () => {
     if (selectedBuidler) {
       let selectedBuidlerId = '';
-      buidlerList.forEach((buidler) => {
+      activeBuidlerList.forEach((buidler) => {
         if (buidler.name === selectedBuidler) {
           selectedBuidlerId = buidler.id;
         }
@@ -162,12 +193,34 @@ const SectionProjectDetail = ({ projectId }) => {
         projectId: project?.id,
       })
         .then((res) => {
-          console.log('res: ', res);
+          if (res?.data?.status === 'SUCCESS') {
+            setAlert(
+              'Invite buidler successfully, please wait for the buidler to accept the invitation',
+              'success'
+            );
+          }
         })
         .catch((err) => {
-          console.log(err);
+          setAlert('something went wrong', 'error');
         });
     }
+  };
+
+  const handleAcceptInvitation = () => {
+    API.post(`/buidler/joinProject`, currentBuidlerOnProjectInfo)
+      .then((res) => {
+        if (res?.data?.status === 'SUCCESS') {
+          setAlert(
+            'Congratulations on your successful participation in this project!',
+            'success'
+          );
+          getProjectData();
+          setShowAcceptButton(false);
+        }
+      })
+      .catch((err) => {
+        setAlert('something went wrong', 'error');
+      });
   };
 
   if (!project) return null;
@@ -311,7 +364,7 @@ const SectionProjectDetail = ({ projectId }) => {
                   sx={{ width: '300px' }}
                   freeSolo
                   disableClearable
-                  options={buidlerList.map((option) => option.name)}
+                  options={activeBuidlerList.map((option) => option.name)}
                   onChange={(e, data) => {
                     setSelectedBuidler(data);
                   }}
@@ -330,6 +383,13 @@ const SectionProjectDetail = ({ projectId }) => {
                   Invite
                 </Button>
               </Stack>
+            )}
+            {showAcceptButton && (
+              <Box display="flex">
+                <Button variant="gradient" onClick={handleAcceptInvitation}>
+                  Accept Invitation
+                </Button>
+              </Box>
             )}
             <Stack direction="row" spacing={8}>
               {project.launchDate && (
