@@ -24,7 +24,7 @@ const interestNames = [
 ];
 
 function ProfileForm(props) {
-  // show
+  // todo fill up the form with the user's data
   const metaData = props.metaData;
   console.log(metaData);
 
@@ -34,7 +34,16 @@ function ProfileForm(props) {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      avatar: '',
+      name: '',
+      description: '',
+      skills: [],
+      interests: [],
+      control: {},
+    },
+  });
 
   const onSubmit = (data) => {
     console.log('data: ', data);
@@ -85,7 +94,7 @@ function ProfileForm(props) {
                 placeholder="Your nick name"
                 onChange={onChange}
                 value={value}
-                error={errors.name}
+                error={!!errors.name}
                 helperText={errors.name ? 'Name is required' : ''}
               />
             );
@@ -107,7 +116,7 @@ function ProfileForm(props) {
                 label="Description"
                 onChange={onChange}
                 value={value}
-                error={errors.description}
+                error={!!errors.description}
                 helperText={errors.description ? 'Description is required' : ''}
               />
             );

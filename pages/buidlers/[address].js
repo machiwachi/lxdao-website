@@ -19,13 +19,13 @@ import CloseIcon from '@mui/icons-material/Close';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import Layout from '@/components/Layout';
-
 import Container from '@/components/Container';
 import ProfileForm from '@/components/ProfileForm';
 import Skills from '@/components/Skills';
 import { formatAddress } from '@/utils/utility';
 import { useRouter } from 'next/router';
 import API from '@/common/API';
+import { getEtherScanDomain, getOpenSeaDomain } from '@/utils/utility';
 import { useAccount, useContract, useSigner } from 'wagmi';
 
 import { contractInfo } from '@/components/ContractsOperation';
@@ -88,6 +88,7 @@ function LXPointsTimeline({ points }) {
 
 function BuidlerDetails(props) {
   const record = props.record;
+  const signature = props.signature;
   console.log('record: ', record);
 
   const { address, isConnected } = useAccount();
@@ -102,6 +103,7 @@ function BuidlerDetails(props) {
 
   const [details, setDetails] = useState('buidlerCard');
   const [visible, setVisible] = useState(false);
+  const [minting, setMinting] = useState(false);
 
   // backend status
   const [status, setStatus] = useState('');
@@ -117,6 +119,7 @@ function BuidlerDetails(props) {
 
   // mint tx
   const [tx, setTx] = useState(null);
+  const [txRes, setTxRes] = useState(null);
 
   useEffect(async () => {
     if (!signer) {
@@ -154,15 +157,23 @@ function BuidlerDetails(props) {
     }
   };
 
-  const mint = async (signature) => {
-    // test
-    signature =
-      '0x40c835598d05ba1d0ff10a89e87a7a181a1d8be68dae3e808f486166cf5bdf274ce9fe6698391bae2261877bf127381df5646e369e64c92d64565972af10ed351c';
-
-    const tx = await contract.mint(signature);
-    setTx(tx);
-    const response = await tx.wait();
-    console.log(response);
+  const mint = async () => {
+    if (minting) return;
+    setMinting(true);
+    try {
+      const tx = await contract.mint(signature);
+      setTx(tx);
+      const response = await tx.wait();
+      setTxRes(response);
+      // update buidler status
+      if (response) {
+        // todo Kahn add an activate API for new builders
+      }
+    } catch (err) {
+      // todo Muxin common error handling
+      console.log(err);
+    }
+    setMinting(false);
   };
 
   const saveProfileHandler = async (newMetaData) => {
@@ -208,20 +219,54 @@ function BuidlerDetails(props) {
       <Container paddingY={10}>
         <Box display="flex" alignItems="center" flexDirection="column">
           <Box marginBottom={2}>
-            <Alert severity="info">
-              Welcome LXDAO, please click the Mint Builder Card button to get
-              your LXDAO Builder CARD{' '}
-            </Alert>
+            {signature ? (
+              <Alert severity="info">
+                Welcome LXDAO, please click the Mint Builder Card button to get
+                your LXDAO Builder CARD{' '}
+              </Alert>
+            ) : (
+              <Alert severity="error">
+                We cannot get the mint signature, please contact LXDAO
+                Onboarding committee.
+              </Alert>
+            )}
           </Box>
+
+          {tx && (
+            <Link
+              marginBottom={2}
+              target="_blank"
+              href={`https://${getEtherScanDomain()}/tx/${tx.hash}`}
+            >
+              {tx.hash}
+            </Link>
+          )}
+
+          {txRes && (
+            <Box marginBottom={2}>
+              <Alert severity="success">
+                Minted successfully, check on{' '}
+                <Link
+                  target="_blank"
+                  color={'inherit'}
+                  href={`https://${getOpenSeaDomain()}/account`}
+                >
+                  OpenSea
+                </Link>
+                . Please refresh the page to fill the form.
+              </Alert>
+            </Box>
+          )}
 
           <Box textAlign="center">
             <Button
+              disabled={!signature}
               onClick={() => {
                 mint();
               }}
               variant="outlined"
             >
-              Mint Builder Card
+              {minting ? 'Minting Builder Card...' : 'Mint Builder Card'}
             </Button>
           </Box>
         </Box>
@@ -475,5 +520,11 @@ export default function Buidler() {
     }
   }, [address]);
 
-  return <Layout>{record && <BuidlerDetails record={record} />}</Layout>;
+  return (
+    <Layout>
+      {record && (
+        <BuidlerDetails record={record} signature={router.query.signature} />
+      )}
+    </Layout>
+  );
 }
