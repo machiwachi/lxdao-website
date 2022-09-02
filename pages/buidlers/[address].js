@@ -206,7 +206,7 @@ function BuidlerDetails(props) {
   if (record.status === 'PENDING') {
     return (
       <Container paddingY={10}>
-        <Box display="flex" justifyContent="center" flexDirection="column">
+        <Box display="flex" alignItems="center" flexDirection="column">
           <Box marginBottom={2}>
             <Alert severity="info">
               Welcome LXDAO, please click the Mint Builder Card button to get

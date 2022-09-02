@@ -22,6 +22,7 @@ function BuidlerCard(props) {
       padding={3}
       position="relative"
       paddingBottom={7}
+      height="100%"
     >
       <Link
         href={`/buidlers/${record.address}`}
