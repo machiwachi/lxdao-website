@@ -61,7 +61,7 @@ const SectionMemberType = ({activeBuidlers}) => {
           selected={false}
           flex={1}
           disabled={true}
-          avatars={new Array(4)}
+          avatars={['', '', '', '']}
         />
       </Box>
     </Container>
