@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import React from 'react';
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Typography, Button, Alert } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 
 import SkillsField from './SkillsField';
@@ -24,9 +24,7 @@ const interestNames = [
 ];
 
 function ProfileForm(props) {
-  // todo fill up the form with the user's data
-  const metaData = props.metaData;
-  console.log(metaData);
+  const values = props.values;
 
   const saveProfileHandler = props.saveProfileHandler;
 
@@ -42,6 +40,7 @@ function ProfileForm(props) {
       skills: [],
       interests: [],
       control: {},
+      ...values,
     },
   });
 
@@ -51,6 +50,31 @@ function ProfileForm(props) {
       saveProfileHandler(data);
     }
   };
+
+  function SubmitButton() {
+    if (JSON.stringify(errors) !== '{}') {
+      return (
+        <Button variant="contained" size="large" disabled={true}>
+          Update Profile
+        </Button>
+      );
+    }
+
+    // todo add more steps and tips, like uploading to IPFS etc.
+    if (props.updating) {
+      return (
+        <Button variant="contained" size="large" disabled={true}>
+          Updating Profile...
+        </Button>
+      );
+    }
+
+    return (
+      <Button variant="contained" size="large" onClick={handleSubmit(onSubmit)}>
+        Update Profile
+      </Button>
+    );
+  }
 
   return (
     <Box>
@@ -202,15 +226,15 @@ function ProfileForm(props) {
           }}
         />
       </Box>
+      {JSON.stringify(errors) !== '{}' && (
+        <Box marginTop={2}>
+          <Alert severity="error">
+            Found errors on the form, please check.
+          </Alert>
+        </Box>
+      )}
       <Box marginTop={2}>
-        <Button
-          variant="contained"
-          size="large"
-          onClick={handleSubmit(onSubmit)}
-          disabled={JSON.stringify(errors) === '{}' ? false : true}
-        >
-          Save Profile
-        </Button>
+        <SubmitButton />
       </Box>
     </Box>
   );

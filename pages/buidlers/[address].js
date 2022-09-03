@@ -17,6 +17,7 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import _ from 'lodash';
 
 import Layout from '@/components/Layout';
 import Container from '@/components/Container';
@@ -104,12 +105,10 @@ function BuidlerDetails(props) {
   const [details, setDetails] = useState('buidlerCard');
   const [visible, setVisible] = useState(false);
   const [minting, setMinting] = useState(false);
+  const [updating, setUpdating] = useState(false);
 
   // backend status
   const [status, setStatus] = useState('');
-
-  // backend metaData
-  const [metaData, setMetaData] = useState(null);
 
   // tokenId on chain
   const [tokenId, setTokenId] = useState(null);
@@ -166,8 +165,9 @@ function BuidlerDetails(props) {
       const response = await tx.wait();
       setTxRes(response);
       // update buidler status
-      if (response) {
-        // todo Kahn add an activate API for new builders
+      if (!response) {
+        // todo error handling and improve the UI
+        await API.post('/buidler/activate');
       }
     } catch (err) {
       // todo Muxin common error handling
@@ -178,38 +178,48 @@ function BuidlerDetails(props) {
 
   const saveProfileHandler = async (newMetaData) => {
     console.log('saveProfile:', newMetaData);
+    setUpdating(true);
+    try {
+      // 1. backend uploadIPFS
+      let response = await API.post(`/buidler/uploadIPFS`, {
+        metaData: JSON.stringify({
+          ...newMetaData,
+          // set the NFT image
+          image: `${process.env.NEXT_PUBLIC_LXDAO_BACKEND_API}/buidler/card/${record.address}`,
+        }),
+      });
+      // console.log('backend uploadIPFS:', response);
+      let result = response?.data;
+      if (result.status !== 'SUCCESS') {
+        return;
+      }
+      const { ipfsURI, signature } = result.data;
 
-    // 1. backend uploadIPFS
-    let response = await API.post(`/buidler/uploadIPFS`, {
-      metaData: JSON.stringify(newMetaData),
-    });
-    // console.log('backend uploadIPFS:', response);
-    let result = response?.data;
-    if (result.status !== 'SUCCESS') {
-      return;
+      // 2. contract updateMetaData
+      const updateMetaData = contract[`updateMetaData(string,bytes)`];
+      const tx = await updateMetaData(ipfsURI, signature);
+      const contractUpdateMetaData = await tx.wait();
+      console.log('contract updateMetaData:', contractUpdateMetaData);
+
+      // 3. backend updateMetaData
+      response = await API.post(`/buidler/updateMetaData`, {
+        id: record.id,
+        ipfsURI: ipfsURI,
+        metaData: newMetaData,
+      });
+      console.log('backend updateMetaData:', response);
+      result = response?.data;
+      if (result.status !== 'SUCCESS') {
+        // todo error handling
+        return;
+      }
+      // update meta data success.
+      setVisible(false);
+    } catch (err) {
+      // todo error handling
+      console.log('err: ', err);
     }
-    const { ipfsURI, signature } = result.data;
-
-    // 2. contract updateMetaData
-    const updateMetaData = contract[`updateMetaData(string,bytes)`];
-    const tx = await updateMetaData(ipfsURI, signature);
-    const contractUpdateMetaData = await tx.wait();
-    // console.log('contract updateMetaData:', contractUpdateMetaData);
-
-    // 3. backend updateMetaData
-    response = await API.post(`/buidler/updateMetaData`, {
-      id: record.id,
-      ipfsURI: ipfsURI,
-      metaData: newMetaData,
-    });
-    // console.log('backend updateMetaData:', response);
-    result = response?.data;
-    if (result.status !== 'SUCCESS') {
-      return;
-    }
-    // update meta data success.
-    setVisible(false);
-    alert('Update success.');
+    setUpdating(false);
   };
 
   const [copyTip, setCopyTip] = useState('Copy to Clipboard');
@@ -281,7 +291,7 @@ function BuidlerDetails(props) {
           <Box width="150px" borderRadius="50%" overflow="hidden">
             <img
               style={{ display: 'block', width: 150 }}
-              src={record.image || '/images/placeholder.jpeg'}
+              src={record.avatar || '/images/placeholder.jpeg'}
               alt=""
             />
           </Box>
@@ -318,6 +328,7 @@ function BuidlerDetails(props) {
                 marginRight={4}
                 paddingRight={4}
                 borderRight="1px solid #D0D5DD"
+                marginLeft="auto"
               >
                 <BuidlerContacts space={4} contacts={record.contacts} />
               </Box>
@@ -489,7 +500,17 @@ function BuidlerDetails(props) {
         <DialogTitle>Profile Details</DialogTitle>
         <DialogContent>
           <ProfileForm
-            metaData={metaData}
+            updating={updating}
+            values={_.cloneDeep(
+              _.pick(record, [
+                'avatar',
+                'name',
+                'description',
+                'skills',
+                'interests',
+                'contacts',
+              ])
+            )}
             saveProfileHandler={saveProfileHandler}
           />
         </DialogContent>
