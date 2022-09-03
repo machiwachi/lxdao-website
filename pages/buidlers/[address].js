@@ -12,27 +12,25 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  Tooltip,
   Alert,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { useRouter } from 'next/router';
 import _ from 'lodash';
+import { useContract, useAccount, useSigner } from 'wagmi';
 
 import Layout from '@/components/Layout';
+import CopyText from '@/components/CopyText';
 import Container from '@/components/Container';
 import ProfileForm from '@/components/ProfileForm';
 import Skills from '@/components/Skills';
 import { formatAddress } from '@/utils/utility';
-import { useRouter } from 'next/router';
 import API from '@/common/API';
 import { getEtherScanDomain, getOpenSeaDomain } from '@/utils/utility';
-import { useAccount, useContract, useSigner } from 'wagmi';
-
 import { contractInfo } from '@/components/ContractsOperation';
-
 import BuidlerContacts from '@/components/BuidlerContacts';
 import Tag from '@/components/Tag';
+import showMessage from '@/components/showMessage';
 import Project from '@/components/Project';
 
 function totalLXPoints(record) {
@@ -92,11 +90,8 @@ function BuidlerDetails(props) {
   const signature = props.signature;
   console.log('record: ', record);
 
-  const { address, isConnected } = useAccount();
-  console.log('address: ', address);
-
+  const { address } = useAccount();
   const { data: signer } = useSigner();
-
   const contract = useContract({
     ...contractInfo(),
     signerOrProvider: signer,
@@ -107,183 +102,117 @@ function BuidlerDetails(props) {
   const [minting, setMinting] = useState(false);
   const [updating, setUpdating] = useState(false);
 
-  // tokenId on chain
-  const [tokenId, setTokenId] = useState(null);
-
-  // ipfsURL on chain
-  const [ipfsURL, setIpfsURL] = useState(null);
-
-  // mint tx
   const [tx, setTx] = useState(null);
   const [txRes, setTxRes] = useState(null);
-
-  useEffect(async () => {
-    if (!signer) {
-      return;
-    }
-
-    if (isConnected && address === record.address) {
-      await getToken(address);
-    }
-  }, [isConnected, signer]);
-
-  const getToken = async (address) => {
-    let result = await contract.balanceOf(address);
-    console.log('contract balanceOf:', result);
-    if (result.toNumber() === 0) {
-      console.log('has no token.');
-      return;
-    }
-
-    const tokenId = await contract.tokenOfOwnerByIndex(address, 0);
-    console.log('contract tokenOfOwnerByIndex:', tokenId);
-    // token
-    setTokenId(tokenId.toNumber());
-    // ipfs
-    await getIpfsURL(tokenId);
-  };
-
-  // todo compare and check logic
-  const getIpfsURL = async (tokenId) => {
-    const result = await contract.tokenURI(tokenId);
-    console.log('contract tokenURI:', result);
-    if (result && result.length > 0) {
-      console.log('ipfs:', result);
-      setIpfsURL(result);
-    }
-  };
 
   const mint = async () => {
     if (minting) return;
     setMinting(true);
     try {
-      const tx = await contract.mint(signature);
+      // todo replace with new contract
+      const tx = await contract.mint(record.ipfsURI, signature);
       setTx(tx);
       const response = await tx.wait();
       setTxRes(response);
-      // update buidler status
-      if (!response) {
-        // todo error handling and improve the UI
+
+      if (response) {
         await API.post('/buidler/activate');
+        props.refresh();
       }
     } catch (err) {
-      // todo Muxin common error handling
-      console.log(err);
+      showMessage({
+        type: 'error',
+        title: 'Failed to mint',
+        body: err.message,
+      });
     }
     setMinting(false);
   };
 
   const saveProfileHandler = async (newMetaData) => {
     setUpdating(true);
+    const userProfile = {
+      ...newMetaData,
+      role: ['Buidler'],
+      // set the NFT image
+      image: `${process.env.NEXT_PUBLIC_LXDAO_BACKEND_API}/buidler/card/${record.address}`,
+      buddyAddress: props.buddy,
+    };
     try {
-      // 1. backend uploadIPFS
-      let response = await API.post(`/buidler/uploadIPFS`, {
-        metaData: JSON.stringify({
-          ...newMetaData,
-          // set the NFT image
-          image: `${process.env.NEXT_PUBLIC_LXDAO_BACKEND_API}/buidler/card/${record.address}`,
-        }),
+      const response = await API.put(`/buidler/${address}`, {
+        metaData: userProfile,
       });
-      // console.log('backend uploadIPFS:', response);
-      let result = response?.data;
+      const result = response?.data;
       if (result.status !== 'SUCCESS') {
-        return;
+        throw new Error(result.message);
       }
-      const { ipfsURI, signature } = result.data;
-
-      // 2. contract updateMetaData
-      const updateMetaData = contract[`updateMetaData(string,bytes)`];
-      const tx = await updateMetaData(ipfsURI, signature);
-      const contractUpdateMetaData = await tx.wait();
-      console.log('contract updateMetaData:', contractUpdateMetaData);
-
-      // 3. backend updateMetaData
-      response = await API.post(`/buidler/updateMetaData`, {
-        id: record.id,
-        ipfsURI: ipfsURI,
-        metaData: newMetaData,
-      });
-      console.log('backend updateMetaData:', response);
-      result = response?.data;
-      if (result.status !== 'SUCCESS') {
-        // todo error handling
-        return;
-      }
-      // update meta data success.
       setVisible(false);
-      window.location.reload();
+      props.refresh();
     } catch (err) {
-      // todo error handling
-      console.log('err: ', err);
+      showMessage({
+        type: 'error',
+        title: 'Failed to update profile',
+        body: err.message,
+      });
     }
     setUpdating(false);
   };
 
-  const [copyTip, setCopyTip] = useState('Copy to Clipboard');
-
-  if (record.status === 'PENDING') {
-    return (
-      <Container paddingY={10}>
-        <Box display="flex" alignItems="center" flexDirection="column">
-          <Box marginBottom={2}>
-            {signature ? (
-              <Alert severity="info">
-                Welcome LXDAO, please click the Mint Builder Card button to get
-                your LXDAO Builder CARD{' '}
-              </Alert>
-            ) : (
-              <Alert severity="error">
-                We cannot get the mint signature, please contact LXDAO
-                Onboarding committee.
-              </Alert>
-            )}
-          </Box>
-
-          {tx && (
-            <Link
-              marginBottom={2}
-              target="_blank"
-              href={`https://${getEtherScanDomain()}/tx/${tx.hash}`}
-            >
-              {tx.hash}
-            </Link>
+  return (
+    <Container>
+      {record.status === 'PENDING' && (
+        <Box marginTop={4}>
+          {!signature && (
+            <Alert severity="error">
+              We cannot get the mint signature, please contact LXDAO Onboarding
+              committee before you Mint your Builder Card.
+            </Alert>
           )}
-
-          {txRes && (
-            <Box marginBottom={2}>
-              <Alert severity="success">
-                Minted successfully, check on{' '}
-                <Link
-                  target="_blank"
-                  color={'inherit'}
-                  href={`https://${getOpenSeaDomain()}/account`}
-                >
-                  OpenSea
-                </Link>
-                . Please refresh the page to fill the form.
-              </Alert>
-            </Box>
-          )}
-
-          <Box textAlign="center">
+          <Alert severity="info">
+            Welcome LXDAO. Your Buidler Card is Pending, please fill up your
+            profile, and click{' '}
             <Button
               disabled={!signature}
               onClick={() => {
                 mint();
               }}
+              size="small"
               variant="outlined"
             >
               {minting ? 'Minting Builder Card...' : 'Mint Builder Card'}
             </Button>
-          </Box>
+          </Alert>
         </Box>
-      </Container>
-    );
-  }
+      )}
+      {tx && (
+        <Alert severity="info">
+          Minting, tx:{' '}
+          <Link
+            marginBottom={2}
+            target="_blank"
+            href={`https://${getEtherScanDomain()}/tx/${tx.hash}`}
+          >
+            {tx.hash}
+          </Link>
+        </Alert>
+      )}
 
-  return (
-    <Container paddingY={10}>
-      <Box display="flex">
+      {txRes && (
+        <Box marginBottom={2}>
+          <Alert severity="success">
+            Minted successfully, check on{' '}
+            <Link
+              target="_blank"
+              color={'inherit'}
+              href={`https://${getOpenSeaDomain()}/account`}
+            >
+              OpenSea
+            </Link>
+            . Please refresh the page.
+          </Alert>
+        </Box>
+      )}
+      <Box display="flex" marginTop={6}>
         <Box marginRight={6}>
           <Box width="150px" borderRadius="50%" overflow="hidden">
             <img
@@ -305,8 +234,12 @@ function BuidlerDetails(props) {
               </Button>
             ) : null}
           </Box>
+
+          <Button size="small" variant="outlined">
+            Sync onChain todo
+          </Button>
         </Box>
-        <Box>
+        <Box flex="1 1 auto">
           <Box
             marginTop={4}
             marginBottom={6}
@@ -329,37 +262,10 @@ function BuidlerDetails(props) {
               >
                 <BuidlerContacts space={4} contacts={record.contacts} />
               </Box>
-              <CopyToClipboard
-                text={record.address}
-                onCopy={() => {
-                  setCopyTip('Copied');
-                  setTimeout(() => {
-                    setCopyTip('Copy to Clipboard');
-                  }, 1000);
-                }}
-              >
-                <Tooltip title={copyTip} placement="top">
-                  <Box
-                    marginRight={1}
-                    paddingRight={3}
-                    display="flex"
-                    sx={{
-                      cursor: 'pointer',
-                    }}
-                  >
-                    {formatAddress(record.address)}
-                    <Box
-                      marginLeft={1}
-                      width="20px"
-                      component={'img'}
-                      src={`/icons/copy.svg`}
-                      sx={{
-                        display: 'block',
-                      }}
-                    />
-                  </Box>
-                </Tooltip>
-              </CopyToClipboard>
+              <CopyText
+                copyTextOriginal={record.address}
+                copyText={formatAddress(record.address)}
+              />
             </Box>
           </Box>
           <Grid container spacing={2}>
@@ -541,7 +447,14 @@ export default function Buidler() {
   return (
     <Layout>
       {record && (
-        <BuidlerDetails record={record} signature={router.query.signature} />
+        <BuidlerDetails
+          refresh={() => {
+            requestDetail(address);
+          }}
+          record={record}
+          signature={router.query.signature}
+          buddy={router.query.buddy}
+        />
       )}
     </Layout>
   );
