@@ -50,20 +50,8 @@ const ConnectWalletButton = () => {
   useEffect(() => {
     const currentAccessToken = getLocalStorage('accessToken');
     if (address && !currentAccessToken) {
-      API.get(`/buidler/${address}/nonce`)
-        .then(({ data }) => {
-          const signatureMessage = data?.data?.signature_message;
-          if (signatureMessage) {
-            signMessage({
-              message: signatureMessage,
-            });
-          }
-        })
-        .catch((err) => {
-          if (err) {
-            signInErrorHandler();
-          }
-        });
+      setPreAddress(address);
+      handleSignature(address);
     }
   }, [isConnected]);
 
