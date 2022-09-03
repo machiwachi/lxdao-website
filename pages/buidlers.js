@@ -98,7 +98,7 @@ export default function Home() {
   const [role, setRole] = useState('');
 
   const searchList = async (search = '', role = '') => {
-    let query = `/buidler/list?`;
+    let query = `/buidler?`;
     let params = [];
     const trimmedSearch = search.trim();
     const trimmedRole = role.trim();

@@ -78,7 +78,7 @@ const SectionProjectDetail = ({ projectId }) => {
   }, []);
 
   useEffect(() => {
-    API.get(`/buidler/list`)
+    API.get(`/buidler`)
       .then((res) => {
         if (res?.data?.data) {
           const activeBuidlers = [];
