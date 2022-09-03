@@ -97,6 +97,8 @@ function BuidlerDetails(props) {
     signerOrProvider: signer,
   });
 
+  const router = useRouter();
+
   const [details, setDetails] = useState('buidlerCard');
   const [visible, setVisible] = useState(false);
   const [minting, setMinting] = useState(false);
@@ -117,6 +119,8 @@ function BuidlerDetails(props) {
 
       if (response) {
         await API.post('/buidler/activate');
+        // remove signature and buddy from URL
+        router.push(`/buidlers/${record.address}`);
         props.refresh();
       }
     } catch (err) {
