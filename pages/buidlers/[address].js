@@ -17,6 +17,7 @@ import {
 import CloseIcon from '@mui/icons-material/Close';
 import { useRouter } from 'next/router';
 import _ from 'lodash';
+import SyncIcon from '@mui/icons-material/Sync';
 import { useContract, useAccount, useSigner } from 'wagmi';
 
 import Layout from '@/components/Layout';
@@ -102,7 +103,7 @@ function BuidlerDetails(props) {
   const signature = props.signature;
   console.log('record: ', record);
 
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
   const { data: signer } = useSigner();
   const contract = useContract({
     ...contractInfo(),
@@ -115,9 +116,44 @@ function BuidlerDetails(props) {
   const [visible, setVisible] = useState(false);
   const [minting, setMinting] = useState(false);
   const [updating, setUpdating] = useState(false);
+  const [syncing, setSyncing] = useState(false);
 
   const [tx, setTx] = useState(null);
   const [txRes, setTxRes] = useState(null);
+
+  // tokenId on chain
+  const [tokenId, setTokenId] = useState(null);
+  // ipfsURL on chain
+  const [ipfsURLOnChain, setIpfsURLOnChain] = useState(null);
+
+  useEffect(async () => {
+    if (!signer) {
+      return;
+    }
+
+    if (isConnected && address === record.address) {
+      await getToken(address);
+    }
+  }, [isConnected, signer]);
+
+  const getToken = async (address) => {
+    let result = await contract.balanceOf(address);
+    if (result.toNumber() === 0) {
+      console.log('has no token.');
+      return;
+    }
+
+    const tokenId = await contract.tokenOfOwnerByIndex(address, 0);
+    setTokenId(tokenId.toNumber());
+    await getOnChainIpfsURL(tokenId);
+  };
+
+  const getOnChainIpfsURL = async (tokenId) => {
+    const result = await contract.tokenURI(tokenId);
+    if (result && result.length > 0) {
+      setIpfsURLOnChain(result);
+    }
+  };
 
   const mint = async () => {
     if (minting) return;
@@ -176,6 +212,52 @@ function BuidlerDetails(props) {
 
   return (
     <Container>
+      {address === record.address &&
+        !!ipfsURLOnChain &&
+        ipfsURLOnChain !== record.ipfsURI && (
+          <Box marginTop={4}>
+            <Alert severity="info">
+              We found your latest information not synced on the Ethereum,
+              please click{' '}
+              <Button
+                onClick={async () => {
+                  setSyncing(true);
+                  try {
+                    const syncInfoRes = await API.post(
+                      `/buidler/${address}/syncInfo`
+                    );
+                    if (syncInfoRes?.data?.status !== 'SUCCESS') {
+                      throw new Error(syncInfoRes?.data.message);
+                    }
+                    const { signature, ipfsURI } =
+                      syncInfoRes?.data?.data || {};
+                    const updateMetaData =
+                      contract[`updateMetaData(string,bytes)`];
+                    const tx = await updateMetaData(ipfsURI, signature);
+                    await tx.wait();
+                    await getToken(address);
+                    // todo add tx
+                  } catch (err) {
+                    showMessage({
+                      type: 'error',
+                      title: 'Failed to update metadata',
+                      body: err.message,
+                    });
+                  }
+                  setSyncing(false);
+                }}
+                size="small"
+                variant="outlined"
+                disabled={syncing}
+              >
+                <SyncIcon fontSize="small"></SyncIcon>{' '}
+                {syncing ? 'Syncing...' : 'Sync My Profile'}
+              </Button>
+              . You need to pay for the Gas fee, we suggest you finish every
+              update and then sync them together.
+            </Alert>
+          </Box>
+        )}
       {record.status === 'PENDING' && (
         <Box marginTop={4}>
           {!signature && (
@@ -250,10 +332,6 @@ function BuidlerDetails(props) {
               </Button>
             ) : null}
           </Box>
-
-          <Button size="small" variant="outlined">
-            Sync onChain todo
-          </Button>
         </Box>
         <Box flex="1 1 auto">
           <Box

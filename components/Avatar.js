@@ -65,7 +65,7 @@ function Avatar(props) {
               )}
               {imageList.map((image, index) => (
                 <Box key={index}>
-                  {uploading && 'uploading...'}
+                  {uploading && 'Uploading...'}
                   <Box
                     borderRadius="50%"
                     overflow="hidden"
