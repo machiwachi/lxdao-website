@@ -1,34 +1,35 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Avatar } from '@mui/material';
 
-const MemberTypeCard = ({ type, description, amount, selected, disabled }) => {
-  const Avatar = ({ img }) => {
-    return (
-      <>
-        {img ? (
-          <Box
-            width={{ md: '50px', xs: '40px' }}
-            height={{ md: '50px', xs: '40px' }}
-            borderRadius="100%"
-            border="1px solid #ffffff"
-            backgroundColor="rgba(0, 0, 0, 0.8)"
-            marginLeft={{ md: '-25px', xs: '-20px' }}
-            backgroundImage={`url(${img})`}
-            sx={{ float: 'left' }}
-          />
-        ) : (
-          <Box
-            width={{ md: '50px', xs: '40px' }}
-            height={{ md: '50px', xs: '40px' }}
-            borderRadius="100%"
-            border="1px dashed #cccccc"
-            backgroundColor="#ffffff"
-            marginLeft={{ md: '-25px', xs: '-20px' }}
-            sx={{ float: 'left' }}
-          />
-        )}
-      </>
-    );
+const MemberTypeCard = ({ type, description, amount, selected, disabled, avatars }) => {
+  const DisplayAvatar = ({ img, type }) => {
+    if(type.includes('Buidler')) {
+      return (
+        <Avatar
+        src={img}
+        sx={{
+          float: 'left',
+          width: {md: '50px', xs: '40px'},
+          height: {md: '50px', xs: '40px'},
+          marginLeft: {md: '-25px', xs: '-20px'},
+          border: '1px solid #ffffff',
+          borderRadius: '100%'
+        }}
+      />
+      )
+    } else {
+      return (
+        <Box
+          width={{ md: '50px', xs: '40px' }}
+          height={{ md: '50px', xs: '40px' }}
+          borderRadius="100%"
+          border="1px dashed #cccccc"
+          backgroundColor="#ffffff"
+          marginLeft={{ md: '-25px', xs: '-20px' }}
+          sx={{ float: 'left' }}
+        />
+      )
+    }
   };
 
   return (
@@ -80,10 +81,11 @@ const MemberTypeCard = ({ type, description, amount, selected, disabled }) => {
       >
         <Box>
           <Box>
-            <Avatar />
-            <Avatar />
-            <Avatar />
-            <Avatar />
+          {avatars?.length > 0 &&
+            avatars.map(avatar => {
+              return <DisplayAvatar img={avatar} type={type} />
+            })
+          }
           </Box>
         </Box>
         <Box textAlign="left">

@@ -328,7 +328,7 @@ const SectionProjectDetail = ({ projectId }) => {
                           <Avatar
                             key={index}
                             alt={buidler?.buidler?.name}
-                            src={buidler?.buidler?.image}
+                            src={buidler?.buidler?.avatar}
                             sx={{
                               cursor: 'pointer',
                             }}
