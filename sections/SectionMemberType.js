@@ -4,8 +4,14 @@ import { Box, Typography } from '@mui/material';
 import Container from '@/components/Container';
 import MemberTypeCard from '@/components/MemberTypeCard';
 
-const SectionMemberType = () => (
-  <Box backgroundColor="#F9FAFB" width="100%">
+const SectionMemberType = ({activeBuidlers}) => {
+  const activeBuidlerAmount = activeBuidlers?.length;
+  const displayBuidlerAvatars = [];
+  activeBuidlers.forEach(buidler => {
+    displayBuidlerAvatars.push(buidler?.avatar)
+  })
+  return (
+    <Box backgroundColor="#F9FAFB" width="100%">
     <Container
       paddingY={{ md: '96px', xs: 8 }}
       textAlign="center"
@@ -34,9 +40,10 @@ const SectionMemberType = () => (
               cannot be transferred.
             </>
           }
-          amount={36}
+          amount={activeBuidlerAmount}
           selected={true}
           flex={1}
+          avatars={displayBuidlerAvatars}
         />
         <MemberTypeCard
           type="LX Community Member"
@@ -54,10 +61,12 @@ const SectionMemberType = () => (
           selected={false}
           flex={1}
           disabled={true}
+          avatars={['', '', '', '']}
         />
       </Box>
     </Container>
   </Box>
-);
+  )
+}
 
 export default SectionMemberType;

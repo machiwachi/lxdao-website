@@ -1,14 +1,20 @@
 /* eslint-disable no-undef */
 import React from 'react';
+import { useRouter } from 'next/router';
 
 import Layout from '@/components/Layout';
 import SectionProjectDetail from '@/sections/SectionProjectDetail';
 
 export default function Home() {
+  const router = useRouter();
+  const projectId = router.query.id;
+  
+  if (!projectId) return null;
+
   return (
     <div>
       <Layout>
-        <SectionProjectDetail projectId="004" />
+        <SectionProjectDetail projectId={projectId} />
       </Layout>
     </div>
   );

@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import React, { useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Typography } from '@mui/material';
 import { getDefaultWallets, ConnectButton } from '@rainbow-me/rainbowkit';
 import {
@@ -41,6 +41,7 @@ const wagmiClient = createClient({
 
 const ConnectWalletButton = () => {
   const { address, isConnected, isDisconnected } = useAccount();
+  const [preAddress, setPreAddress] = useState(address);
   const { disconnect } = useDisconnect();
   const { data, signMessage } = useSignMessage();
   const useAlert = () => useContext(AlertContext);
@@ -49,42 +50,13 @@ const ConnectWalletButton = () => {
   useEffect(() => {
     const currentAccessToken = getLocalStorage('accessToken');
     if (address && !currentAccessToken) {
-      API.get(`/buidler/${address}/nonce`)
-        .then(({ data }) => {
-          const signatureMessage = data?.data?.signature_message;
-          if (signatureMessage) {
-            signMessage({
-              message: signatureMessage,
-            });
-          }
-        })
-        .catch((err) => {
-          if (err) {
-            signInErrorHandler();
-          }
-        });
+      setPreAddress(address);
+      handleSignature(address);
     }
   }, [isConnected]);
 
   useEffect(() => {
     const currentAccessToken = getLocalStorage('accessToken');
-    function signIn(signature) {
-      API.post(`/auth/signin`, {
-        address: address,
-        signature: signature,
-      })
-        .then(({ data }) => {
-          const accessToken = data?.data?.access_token;
-          if (accessToken) {
-            setLocalStorage('accessToken', accessToken);
-          }
-        })
-        .catch((err) => {
-          if (err) {
-            signInErrorHandler();
-          }
-        });
-    }
     if (data && !currentAccessToken) {
       signIn(data);
     }
@@ -97,6 +69,49 @@ const ConnectWalletButton = () => {
     }
   }, [isDisconnected]);
 
+  useEffect(() => {
+    if(preAddress && preAddress !== address) {
+      removeLocalStorage('accessToken');
+      setPreAddress(address);
+      handleSignature(address);
+    }
+  }, [address])
+
+  const handleSignature = (address) => {
+    API.get(`/buidler/${address}/nonce`)
+    .then(({ data }) => {
+      const signatureMessage = data?.data?.signature_message;
+      if (signatureMessage) {
+        signMessage({
+          message: signatureMessage,
+        });
+      }
+    })
+    .catch((err) => {
+      if (err) {
+        signInErrorHandler();
+      }
+    });
+  }
+
+  const signIn = (signature) => {
+    API.post(`/auth/signin`, {
+      address: address,
+      signature: signature,
+    })
+      .then(({ data }) => {
+        const accessToken = data?.data?.access_token;
+        if (accessToken) {
+          setLocalStorage('accessToken', accessToken);
+        }
+      })
+      .catch((err) => {
+        if (err) {
+          signInErrorHandler();
+        }
+      });
+  }
+
   const signInErrorHandler = () => {
     const DISCONNECT_TIME = 5000;
     setAlert(<SignInErrorMessage />, 'error');
@@ -104,6 +119,7 @@ const ConnectWalletButton = () => {
       disconnect();
     }, DISCONNECT_TIME);
   };
+
 
   const SignInErrorMessage = () => {
     return (
