@@ -49,7 +49,7 @@ const ConnectWalletButton = () => {
   useEffect(() => {
     const currentAccessToken = getLocalStorage('accessToken');
     if (address && !currentAccessToken) {
-      API.get(`/buidler/nonce/${address}`)
+      API.get(`/buidler/${address}/nonce`)
         .then(({ data }) => {
           const signatureMessage = data?.data?.signature_message;
           if (signatureMessage) {

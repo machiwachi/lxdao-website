@@ -139,7 +139,7 @@ function BuidlerDetails(props) {
       ...newMetaData,
       role: ['Buidler'],
       // set the NFT image
-      image: `${process.env.NEXT_PUBLIC_LXDAO_BACKEND_API}/buidler/card/${record.address}`,
+      image: `${process.env.NEXT_PUBLIC_LXDAO_BACKEND_API}/buidler/${record.address}/card`,
       buddyAddress: props.buddy,
     };
     try {
@@ -355,13 +355,13 @@ function BuidlerDetails(props) {
               <img
                 crossOrigin="anonymous"
                 style={{ display: 'block', width: 300 }}
-                src={`${process.env.NEXT_PUBLIC_LXDAO_BACKEND_API}/buidler/card/${record.address}`}
+                src={`${process.env.NEXT_PUBLIC_LXDAO_BACKEND_API}/buidler/${record.address}/card`}
                 alt=""
               />
             </Box>
           )}
           {details === 'lxPoints' && (
-            <Box display="flex" marginTop={4}>
+            <Box display="flex" marginTop={4} marginBottom={4}>
               <Box flex="0 1 240px" marginRight={3}>
                 <Typography fontWeight="bold" variant="h6">
                   Accumulated LXPoints
