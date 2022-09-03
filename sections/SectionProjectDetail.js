@@ -75,7 +75,7 @@ const SectionProjectDetail = ({ projectId }) => {
 
   useEffect(() => {
     getProjectData();
-  }, []);
+  }, [address]);
 
   useEffect(() => {
     API.get(`/buidler`)
@@ -114,10 +114,11 @@ const SectionProjectDetail = ({ projectId }) => {
 
   useEffect(() => {
     if (address) {
-      let count = 0;
+      let showJoinButtonFlag = false;
+      let showInviteButtonFlag = false;
       project?.buidlersOnProject.forEach((buidler) => {
         if (buidler?.buidler?.address === address) {
-          count++;
+          showJoinButtonFlag = true;
         }
         // if this buidler is on project and status(project) is PENDING, will show accept button
         if (
@@ -135,10 +136,11 @@ const SectionProjectDetail = ({ projectId }) => {
           buidler?.projectRole.includes('Project Manager') &&
           buidler?.buidler.address === address
         ) {
-          setShowInviteButton(true);
+          showInviteButtonFlag = true;
         }
       });
-      setShowJoinButton(!count);
+      setShowInviteButton(showInviteButtonFlag);
+      setShowJoinButton(!showJoinButtonFlag);
     } else {
       setShowJoinButton(true);
       setShowInviteButton(false);
@@ -326,7 +328,7 @@ const SectionProjectDetail = ({ projectId }) => {
                           <Avatar
                             key={index}
                             alt={buidler?.buidler?.name}
-                            src={buidler?.buidler?.image}
+                            src={buidler?.buidler?.avatar}
                             sx={{
                               cursor: 'pointer',
                             }}
