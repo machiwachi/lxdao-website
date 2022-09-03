@@ -34,12 +34,18 @@ import showMessage from '@/components/showMessage';
 import Project from '@/components/Project';
 
 function totalLXPoints(record) {
-  if (record.lxPoints === null) {
+  if (!record.lxPoints) {
     return 0;
   }
 
   return record.lxPoints.reduce((total, point) => {
-    return total + point.value;
+    if (point.operator === '+') {
+      return total + point.value;
+    }
+    if (point.operator === '-') {
+      return total - point.value;
+    }
+    return total;
   }, 0);
 }
 
@@ -77,7 +83,13 @@ function LXPointsTimeline({ points }) {
               },
             }}
           >
-            {point.reason} (+{point.value})
+            <Typography>
+              {point.reason} ({point.operator}
+              {point.value})
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {point.createdAt}
+            </Typography>
           </Box>
         );
       })}
