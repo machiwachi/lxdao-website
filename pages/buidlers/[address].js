@@ -174,7 +174,6 @@ function BuidlerDetails(props) {
   };
 
   const saveProfileHandler = async (newMetaData) => {
-    console.log('saveProfile:', newMetaData);
     setUpdating(true);
     try {
       // 1. backend uploadIPFS
