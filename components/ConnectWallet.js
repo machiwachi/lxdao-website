@@ -78,7 +78,7 @@ const ConnectWalletButton = () => {
   }, [address])
 
   const handleSignature = (address) => {
-    API.get(`/buidler/nonce/${address}`)
+    API.get(`/buidler/${address}/nonce`)
     .then(({ data }) => {
       const signatureMessage = data?.data?.signature_message;
       if (signatureMessage) {
