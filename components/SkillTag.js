@@ -17,6 +17,7 @@ function SkillTag(props) {
         background: levelColors[props.level],
         color: '#fff',
         borderRadius: 1,
+        wordBreak: 'break-all',
       }}
     >
       <Typography>{props.text}</Typography>
