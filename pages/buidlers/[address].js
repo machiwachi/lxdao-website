@@ -107,9 +107,6 @@ function BuidlerDetails(props) {
   const [minting, setMinting] = useState(false);
   const [updating, setUpdating] = useState(false);
 
-  // backend status
-  const [status, setStatus] = useState('');
-
   // tokenId on chain
   const [tokenId, setTokenId] = useState(null);
 
@@ -124,7 +121,6 @@ function BuidlerDetails(props) {
     if (!signer) {
       return;
     }
-    setStatus(record.status);
 
     if (isConnected && address === record.address) {
       await getToken(address);
@@ -147,6 +143,7 @@ function BuidlerDetails(props) {
     await getIpfsURL(tokenId);
   };
 
+  // todo compare and check logic
   const getIpfsURL = async (tokenId) => {
     const result = await contract.tokenURI(tokenId);
     console.log('contract tokenURI:', result);
@@ -215,6 +212,7 @@ function BuidlerDetails(props) {
       }
       // update meta data success.
       setVisible(false);
+      window.location.reload();
     } catch (err) {
       // todo error handling
       console.log('err: ', err);
