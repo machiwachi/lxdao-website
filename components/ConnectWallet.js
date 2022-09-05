@@ -70,29 +70,29 @@ const ConnectWalletButton = () => {
   }, [isDisconnected]);
 
   useEffect(() => {
-    if(preAddress && preAddress !== address) {
+    if (preAddress && preAddress !== address) {
       removeLocalStorage('accessToken');
       setPreAddress(address);
       handleSignature(address);
     }
-  }, [address])
+  }, [address]);
 
   const handleSignature = (address) => {
     API.get(`/buidler/${address}/nonce`)
-    .then(({ data }) => {
-      const signatureMessage = data?.data?.signature_message;
-      if (signatureMessage) {
-        signMessage({
-          message: signatureMessage,
-        });
-      }
-    })
-    .catch((err) => {
-      if (err) {
-        signInErrorHandler();
-      }
-    });
-  }
+      .then(({ data }) => {
+        const signatureMessage = data?.data?.signature_message;
+        if (signatureMessage) {
+          signMessage({
+            message: signatureMessage,
+          });
+        }
+      })
+      .catch((err) => {
+        if (err) {
+          signInErrorHandler();
+        }
+      });
+  };
 
   const signIn = (signature) => {
     API.post(`/auth/signin`, {
@@ -110,7 +110,7 @@ const ConnectWalletButton = () => {
           signInErrorHandler();
         }
       });
-  }
+  };
 
   const signInErrorHandler = () => {
     const DISCONNECT_TIME = 5000;
@@ -119,7 +119,6 @@ const ConnectWalletButton = () => {
       disconnect();
     }, DISCONNECT_TIME);
   };
-
 
   const SignInErrorMessage = () => {
     return (

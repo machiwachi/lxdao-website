@@ -62,7 +62,14 @@ const Header = () => {
         <ListItem disablePadding>
           <ListItemButton
             onClick={() => {
-              router.push('/buidlers');
+              if (route === '/') {
+                scrollToSection('Buidlers-Section');
+              } else {
+                router.push({
+                  pathname: '/',
+                  query: { scrollToSection: 'Buidlers-Section' },
+                });
+              }
             }}
           >
             <Typography sx={{ cursor: 'pointer' }}>Buidlers</Typography>
@@ -212,7 +219,14 @@ const Header = () => {
           <Typography
             sx={{ cursor: 'pointer' }}
             onClick={() => {
-              router.push('/buidlers');
+              if (route === '/') {
+                scrollToSection('Buidlers-Section');
+              } else {
+                router.push({
+                  pathname: '/',
+                  query: { scrollToSection: 'Buidlers-Section' },
+                });
+              }
             }}
           >
             Buidlers
