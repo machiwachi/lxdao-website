@@ -210,6 +210,10 @@ function BuidlerDetails(props) {
     setUpdating(false);
   };
 
+  const projects = record.projects.filter((project) => {
+    return project.status !== 'PENDING';
+  });
+
   return (
     <Container>
       {address === record.address &&
@@ -310,7 +314,14 @@ function BuidlerDetails(props) {
           </Alert>
         </Box>
       )}
-      <Box display="flex" marginTop={6}>
+      <Box
+        display="flex"
+        marginTop={6}
+        flexDirection={{
+          md: 'row',
+          xs: 'column',
+        }}
+      >
         <Box marginRight={6}>
           <Box width="150px" borderRadius="50%" overflow="hidden">
             <img
@@ -341,29 +352,40 @@ function BuidlerDetails(props) {
             flexWrap="wrap"
             alignItems="flex-start"
           >
-            <Box flex="1 1 500px" marginBottom={2}>
+            <Box flex="1 1 40%" marginBottom={2}>
               <Typography variant="h4" fontWeight="bold" marginBottom={2}>
                 {record.name}
               </Typography>
               <Typography>{record.description}</Typography>
             </Box>
-            <Box flex="1 1 auto" display="flex" marginTop={2}>
+            <Box
+              flex="1 1 auto"
+              display="flex"
+              marginTop={2}
+              flexWrap="wrap"
+              flexDirection={{ xs: 'column', md: 'row' }}
+            >
               <Box
                 marginRight={4}
                 paddingRight={4}
-                borderRight="1px solid #D0D5DD"
-                marginLeft="auto"
+                marginBottom={4}
+                borderRight={{
+                  md: '1px solid #D0D5DD',
+                }}
+                marginLeft={{ xs: 0, md: 'auto' }}
               >
                 <BuidlerContacts space={4} contacts={record.contacts} />
               </Box>
-              <CopyText
-                copyTextOriginal={record.address}
-                copyText={formatAddress(record.address)}
-              />
+              <Box>
+                <CopyText
+                  copyTextOriginal={record.address}
+                  copyText={formatAddress(record.address)}
+                />
+              </Box>
             </Box>
           </Box>
           <Grid container spacing={2}>
-            <Grid item xs={4}>
+            <Grid item xs={12} sm={6} md={4}>
               <Typography fontWeight="bold" variant="h6" marginBottom={2}>
                 Role
               </Typography>
@@ -373,7 +395,7 @@ function BuidlerDetails(props) {
                 })}
               </Box>
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={12} sm={6} md={4}>
               <Typography fontWeight="bold" variant="h6" marginBottom={2}>
                 Skills
               </Typography>
@@ -381,7 +403,7 @@ function BuidlerDetails(props) {
                 <Skills skills={record.skills} />
               </Box>
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={12} sm={6} md={4}>
               <Typography fontWeight="bold" variant="h6" marginBottom={2}>
                 Interests
               </Typography>
@@ -401,11 +423,11 @@ function BuidlerDetails(props) {
           </Tabs>
         </Box>
         <Box display="flex" marginTop={4}>
-          {record.projects.length ? (
+          {projects.length ? (
             <Grid container spacing={4}>
-              {record.projects.map((project) => {
+              {projects.map((project) => {
                 return (
-                  <Grid item xs={6} key={project.id}>
+                  <Grid item xs={12} md={6} key={project.id}>
                     <Project data={project} />
                   </Grid>
                 );
@@ -451,8 +473,16 @@ function BuidlerDetails(props) {
             </Box>
           )}
           {details === 'lxPoints' && (
-            <Box display="flex" marginTop={4} marginBottom={4}>
-              <Box flex="0 1 240px" marginRight={3}>
+            <Box
+              display="flex"
+              marginTop={4}
+              marginBottom={4}
+              flexDirection={{
+                xs: 'column',
+                md: 'row',
+              }}
+            >
+              <Box marginRight={3} marginBottom={3}>
                 <Typography fontWeight="bold" variant="h6">
                   Accumulated LXPoints
                 </Typography>

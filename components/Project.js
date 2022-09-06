@@ -1,71 +1,95 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Grid } from '@mui/material';
 
 function Project({ data }) {
-  const project = data.project;
   return (
-    <Box display="flex" boxShadow={1} borderRadius={2} overflow="hidden">
-      <Box flexBasis="158px">
+    <Box
+      display="flex"
+      boxShadow={1}
+      borderRadius={2}
+      overflow="hidden"
+      height="100%"
+      flexDirection={{
+        xs: 'column',
+        sm: 'row',
+      }}
+    >
+      <Box flex="0 0 158px">
         <img
           style={{ display: 'block', width: 158 }}
-          src={project.logoLarge}
+          src={data.project.logoLarge}
           alt=""
         />
       </Box>
+
       <Box flex="auto" padding={3} position="relative">
         <Typography fontSize="20px" fontWeight="bold">
-          {project.name}
+          {data.project.name}
         </Typography>
-        <Box display="flex" marginTop={3}>
-          <Box flex="1">
-            <Typography
-              marginBottom={1}
-              sx={{
-                fontSize: '16px',
-                fontWeight: 'bold',
-              }}
-            >
-              Project Role
-            </Typography>
-            <Typography fontSize="14px" color="#667085">
-              Project Manager
-            </Typography>
-          </Box>
-          <Box flex="1">
-            <Typography
-              marginBottom={1}
-              sx={{
-                fontSize: '16px',
-                fontWeight: 'bold',
-              }}
-            >
-              Started at
-            </Typography>
-            <Typography fontSize="14px" color="#667085">
-              2022-08-01
-            </Typography>
-          </Box>
-          <Box flex="1">
-            <Typography
-              marginBottom={1}
-              sx={{
-                fontSize: '16px',
-                fontWeight: 'bold',
-              }}
-            >
-              Ended at
-            </Typography>
-            <Typography fontSize="14px" color="#667085">
-              -
-            </Typography>
-          </Box>
-        </Box>
         <Typography
           color="#667085"
-          sx={{ position: 'absolute', top: '24px', right: '36px' }}
+          sx={{
+            position: {
+              xs: 'none',
+              lg: 'absolute',
+            },
+            top: '24px',
+            right: '36px',
+          }}
         >
-          Project#{project.number}
+          Project#{data.project.number}
         </Typography>
+        <Grid container spacing={2} marginTop={3}>
+          <Grid item xs={6} sm={6} md={6} lg={4}>
+            <Box>
+              <Typography
+                marginBottom={1}
+                sx={{
+                  fontSize: '16px',
+                  fontWeight: 'bold',
+                }}
+              >
+                Project Role
+              </Typography>
+              <Typography fontSize="14px" color="#667085">
+                {data.projectRole.join(', ') || 'Unknown'}
+              </Typography>
+            </Box>
+          </Grid>
+          <Grid item xs={6} sm={6} md={6} lg={4}>
+            <Box>
+              <Typography
+                marginBottom={1}
+                sx={{
+                  fontSize: '16px',
+                  fontWeight: 'bold',
+                }}
+              >
+                Started at
+              </Typography>
+              <Typography fontSize="14px" color="#667085">
+                {data.createdAt.split('T')[0]}
+              </Typography>
+            </Box>
+          </Grid>
+          <Grid item xs={6} sm={6} md={6} lg={4}>
+            <Box>
+              <Typography
+                marginBottom={1}
+                sx={{
+                  fontSize: '16px',
+                  fontWeight: 'bold',
+                }}
+              >
+                Ended at
+              </Typography>
+              {/* todo add end date and feature */}
+              <Typography fontSize="14px" color="#667085">
+                -
+              </Typography>
+            </Box>
+          </Grid>
+        </Grid>
       </Box>
     </Box>
   );

@@ -44,7 +44,7 @@ function BuidlerCard(props) {
           >
             <img
               style={{ display: 'block', width: 80 }}
-              src={record.image || '/images/placeholder.jpeg'}
+              src={record.avatar || '/images/placeholder.jpeg'}
               alt=""
             />
           </Box>
@@ -77,7 +77,14 @@ function BuidlerCard(props) {
         <Box marginTop={2}>
           <Typography fontWeight="bold">Projects</Typography>
           <Typography>
-            <strong>{record.projects.length}</strong> Project Involved
+            <strong>
+              {
+                record.projects.filter(
+                  (project) => project.status !== 'PENDING'
+                ).length
+              }
+            </strong>{' '}
+            Project Involved
           </Typography>
         </Box>
       </Link>
@@ -197,7 +204,7 @@ export default function Home() {
               <Grid container spacing={3}>
                 {list.map((item) => {
                   return (
-                    <Grid key={item.id} item xs={4}>
+                    <Grid key={item.id} item xs={12} md={6} lg={4}>
                       <BuidlerCard record={item} />
                     </Grid>
                   );
