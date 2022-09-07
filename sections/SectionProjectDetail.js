@@ -66,6 +66,7 @@ const SectionProjectDetail = ({ projectId }) => {
       .then((res) => {
         if (res?.data?.data) {
           setProject(res?.data?.data);
+          getBuidlersData();
         }
       })
       .catch((err) => {
@@ -77,7 +78,7 @@ const SectionProjectDetail = ({ projectId }) => {
     getProjectData();
   }, [address]);
 
-  useEffect(() => {
+  const getBuidlersData = () => {
     API.get(`/buidler`)
       .then((res) => {
         if (res?.data?.data) {
@@ -110,7 +111,7 @@ const SectionProjectDetail = ({ projectId }) => {
       .catch((err) => {
         console.log(err);
       });
-  }, [project]);
+  };
 
   useEffect(() => {
     if (address) {

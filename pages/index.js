@@ -6,8 +6,8 @@ import SectionHero from '@/sections/SectionHomepageHero';
 import SectionWeb3in2032 from '@/sections/SectionWeb3in2032';
 import SectionMission from '@/sections/SectionMission';
 import SectionProjects from '@/sections/SectionProjects';
+import SectionBuidlers from '@/sections/SectionBuidlers';
 import SectionCoreTeam from '@/sections/SectionCoreTeam';
-// import SectionFinancing from '@/sections/SectionFinancing';
 import SectionMailchimp from '@/sections/SectionMailchimp';
 
 import { scrollToSection } from '@/utils/utility';
@@ -28,6 +28,7 @@ export default function Home() {
       <SectionMission />
       <SectionWeb3in2032 />
       <SectionProjects />
+      <SectionBuidlers />
       <SectionCoreTeam />
       <SectionMailchimp />
     </Layout>

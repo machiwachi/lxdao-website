@@ -11,7 +11,7 @@ import Tag from '@/components/Tag';
 import Skills from '@/components/Skills';
 import BuidlerContacts from '@/components/BuidlerContacts';
 
-function BuidlerCard(props) {
+export function BuidlerCard(props) {
   const record = props.record;
   const skills = record.skills ? record.skills : [];
 

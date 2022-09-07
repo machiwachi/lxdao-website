@@ -4,6 +4,8 @@ import { Box } from '@mui/material';
 // eslint-disable-next-line react/prop-types
 const Button = ({ variant, size, children, ...rest }) => (
   <Box
+    display="flex"
+    alignItems="center"
     sx={{
       cursor: 'pointer',
       '&:hover': {
