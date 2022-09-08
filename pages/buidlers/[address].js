@@ -19,6 +19,7 @@ import { useRouter } from 'next/router';
 import _ from 'lodash';
 import SyncIcon from '@mui/icons-material/Sync';
 import { useContract, useAccount, useSigner } from 'wagmi';
+import * as bs58 from 'bs58';
 
 import Layout from '@/components/Layout';
 import CopyText from '@/components/CopyText';
@@ -142,7 +143,7 @@ function BuidlerDetails(props) {
       return;
     }
 
-    const tokenId = await contract.tokenOfOwnerByIndex(address, 0);
+    const tokenId = await contract.tokenIdOfOwner(address);
     setTokenId(tokenId.toNumber());
     await getOnChainIpfsURL(tokenId);
   };
@@ -158,8 +159,11 @@ function BuidlerDetails(props) {
     if (minting) return;
     setMinting(true);
     try {
-      // todo replace with new contract
-      const tx = await contract.mint(record.ipfsURI, signature);
+      const ipfsURI = record.ipfsURI;
+      const ipfsHash = ipfsURI.replace('ipfs://', '');
+
+      const bytes = bs58.decode(ipfsHash).slice(2);
+      const tx = await contract.mint(bytes, signature);
       setTx(tx);
       const response = await tx.wait();
       setTxRes(response);
@@ -184,7 +188,7 @@ function BuidlerDetails(props) {
     setUpdating(true);
     const userProfile = {
       ...newMetaData,
-      role: ['Buidler'],
+      role: record.role || ['Buidler'],
       // set the NFT image
       image: `${process.env.NEXT_PUBLIC_LXDAO_BACKEND_API}/buidler/${record.address}/card`,
       buddyAddress: props.buddy,
