@@ -139,9 +139,10 @@ export default function Home() {
     setLoading(false);
   };
 
+  // todo Muxin add pagination later with many buidlers
   useEffect(() => {
     searchList();
-  }, [search]);
+  }, []);
 
   return (
     <Layout>
@@ -163,6 +164,7 @@ export default function Home() {
                 value={search}
                 onChange={(value) => {
                   setSearch(value);
+                  searchList(value, role);
                 }}
                 label="Search"
                 placeholder="Search buidlers"
