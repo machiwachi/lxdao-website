@@ -70,7 +70,7 @@ const SectionProjectDetail = ({ projectId }) => {
         }
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
   };
 
@@ -109,7 +109,7 @@ const SectionProjectDetail = ({ projectId }) => {
         }
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
   };
 

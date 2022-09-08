@@ -23,7 +23,7 @@ const SectionBuidlers = () => {
       const records = result?.data;
       setBuidlers(getRandom(records, records.length >= 6 ? 6 : records.length));
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   }, []);
 

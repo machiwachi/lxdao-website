@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 
 import API from '@/common/API';
 import Layout from '@/components/Layout';
@@ -20,9 +20,9 @@ export default function JoinUs() {
       }
       setActiveBuidlers(result?.data);
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
-  }, [])
+  }, []);
 
   return (
     <div>

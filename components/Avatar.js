@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import ImageUploading from 'react-images-uploading';
 
@@ -9,10 +9,8 @@ function Avatar(props) {
   const [images, setImages] = useState([]);
   const [value, setValue] = useState(props.value || '/images/placeholder.jpeg');
   const [uploading, setUploading] = useState(false);
-  console.log('uploading: ', uploading);
 
   function onChange(imageList) {
-    console.log('imageList: ', imageList);
     setImages(imageList);
   }
 

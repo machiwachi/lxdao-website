@@ -10,7 +10,7 @@ import TextInput from './TextInput';
 import Avatar from './Avatar';
 
 const interestNames = [
-  'Design',
+  'UI/UX Design',
   'Project Management',
   'Product Management',
   'FrontEnd',
@@ -45,7 +45,6 @@ function ProfileForm(props) {
   });
 
   const onSubmit = (data) => {
-    console.log('data: ', data);
     if (saveProfileHandler) {
       saveProfileHandler(data);
     }

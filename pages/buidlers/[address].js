@@ -101,7 +101,6 @@ function LXPointsTimeline({ points }) {
 function BuidlerDetails(props) {
   const record = props.record;
   const signature = props.signature;
-  console.log('record: ', record);
 
   const { address, isConnected } = useAccount();
   const { data: signer } = useSigner();

@@ -1,5 +1,5 @@
 export default [
-  'Design',
+  'UI/UX Design',
   'Project Management',
   'Product Management',
   'FrontEnd',
