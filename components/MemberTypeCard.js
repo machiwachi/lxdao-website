@@ -1,22 +1,30 @@
 import React from 'react';
 import { Box, Typography, Avatar } from '@mui/material';
 
-const MemberTypeCard = ({ type, description, amount, selected, disabled, avatars }) => {
+const MemberTypeCard = ({
+  title,
+  type,
+  description,
+  amount,
+  selected,
+  disabled,
+  avatars,
+}) => {
   const DisplayAvatar = ({ img, type }) => {
-    if(type.includes('Buidler')) {
+    if (type === 'buidler') {
       return (
         <Avatar
-        src={img}
-        sx={{
-          float: 'left',
-          width: {md: '50px', xs: '40px'},
-          height: {md: '50px', xs: '40px'},
-          marginLeft: {md: '-25px', xs: '-20px'},
-          border: '1px solid #ffffff',
-          borderRadius: '100%'
-        }}
-      />
-      )
+          src={img}
+          sx={{
+            float: 'left',
+            width: { md: '50px', xs: '40px' },
+            height: { md: '50px', xs: '40px' },
+            marginLeft: { md: '-25px', xs: '-20px' },
+            border: '1px solid #ffffff',
+            borderRadius: '100%',
+          }}
+        />
+      );
     } else {
       return (
         <Box
@@ -28,7 +36,7 @@ const MemberTypeCard = ({ type, description, amount, selected, disabled, avatars
           marginLeft={{ md: '-25px', xs: '-20px' }}
           sx={{ float: 'left' }}
         />
-      )
+      );
     }
   };
 
@@ -48,7 +56,7 @@ const MemberTypeCard = ({ type, description, amount, selected, disabled, avatars
     >
       <Box display="flex" justifyContent="space-between">
         <Typography variant="h6" textAlign="left">
-          {type}
+          {title}
         </Typography>
         {selected ? (
           <Box
@@ -81,17 +89,18 @@ const MemberTypeCard = ({ type, description, amount, selected, disabled, avatars
       >
         <Box>
           <Box>
-          {avatars?.length > 0 &&
-            avatars.map(avatar => {
-              return <DisplayAvatar img={avatar} type={type} />
-            })
-          }
+            {avatars?.length > 0 &&
+              avatars.map((avatar) => {
+                return <DisplayAvatar img={avatar} type={type} />;
+              })}
           </Box>
         </Box>
         <Box textAlign="left">
           <Typography variant="h6">+{amount || '?'}</Typography>
           <Typography variant="body1" fontSize={{ md: '16px', xs: '14px' }}>
-            {amount ? `${amount} people have joined` : 'Coming Soon'}{' '}
+            {amount
+              ? `${amount} ${type}${amount > 1 ? 's' : ''} have joined`
+              : 'Coming Soon'}{' '}
           </Typography>
         </Box>
       </Box>

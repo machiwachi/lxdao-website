@@ -100,6 +100,7 @@ const SectionProjects = () => {
                     paddingBottom: 4,
                     cursor: 'pointer',
                     overflow: 'visible',
+                    width: '100%',
                   }}
                   onClick={() => {
                     router.push({
@@ -151,17 +152,19 @@ const SectionProjects = () => {
                           />
                         );
                       })}
-                    <Chip
-                      size="small"
-                      label={project.status}
-                      variant="outlined"
-                      sx={{
-                        borderRadius: '4px',
-                        color: '#4DCC9E',
-                        borderColor: '#4DCC9E',
-                        fontSize: '12px',
-                      }}
-                    />
+                    {project.status && (
+                      <Chip
+                        size="small"
+                        label={project.status}
+                        variant="outlined"
+                        sx={{
+                          borderRadius: '4px',
+                          color: '#4DCC9E',
+                          borderColor: '#4DCC9E',
+                          fontSize: '12px',
+                        }}
+                      />
+                    )}
                   </Box>
                   <Typography
                     marginTop={1}
