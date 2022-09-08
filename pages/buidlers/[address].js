@@ -569,7 +569,7 @@ export default function Buidler() {
 
   return (
     <Layout>
-      {record && (
+      {record ? (
         <BuidlerDetails
           refresh={() => {
             requestDetail(address);
@@ -578,6 +578,19 @@ export default function Buidler() {
           signature={router.query.signature}
           buddy={router.query.buddy}
         />
+      ) : (
+        <Box
+          display="flex"
+          flexDirection="column"
+          width="100%"
+          alignItems="center"
+          paddingY={20}
+        >
+          <img width="80px" src="/icons/no-records.png" />
+          <Typography marginTop={4} color="#D0D5DD" fontSize="16px">
+            No Buidler found with the address {address}
+          </Typography>
+        </Box>
       )}
     </Layout>
   );
