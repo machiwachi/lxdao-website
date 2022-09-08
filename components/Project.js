@@ -17,7 +17,7 @@ function Project({ data }) {
       <Box flex="0 0 158px">
         <img
           style={{ display: 'block', width: 158 }}
-          src={data.project.logoLarge}
+          src={data.project.logoLarge || '/images/placeholder.jpeg'}
           alt=""
         />
       </Box>
