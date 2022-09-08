@@ -214,7 +214,7 @@ function BuidlerDetails(props) {
   };
 
   const projects = record.projects.filter((project) => {
-    return project.status !== 'PENDING';
+    return project.status === 'ACTIVE';
   });
 
   return (
@@ -422,7 +422,13 @@ function BuidlerDetails(props) {
       <Box marginTop={10}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value="project">
-            <Tab label={`Project ${record.projects.length}`} value="project" />
+            <Tab
+              label={`Project ${
+                record.projects.filter((project) => project.status === 'ACTIVE')
+                  .length
+              }`}
+              value="project"
+            />
           </Tabs>
         </Box>
         <Box display="flex" marginTop={4}>
