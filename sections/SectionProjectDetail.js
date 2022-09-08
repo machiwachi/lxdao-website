@@ -10,6 +10,7 @@ import {
   Tooltip,
   Autocomplete,
   TextField,
+  Link,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useAccount } from 'wagmi';
@@ -325,17 +326,20 @@ const SectionProjectDetail = ({ projectId }) => {
                         classes={{ tooltip: classes.tooltip }}
                       >
                         <Box position="relative">
-                          <Avatar
-                            key={index}
-                            alt={buidler?.buidler?.name}
-                            src={buidler?.buidler?.avatar}
-                            sx={{
-                              cursor: 'pointer',
-                            }}
-                            onMouseOver={() =>
-                              handleDisplayBuidlerTooltip(buidler, 'open')
-                            }
-                          />
+                          <Link href={`/buidlers/${buidler?.buidler?.address}`}>
+                            <Avatar
+                              key={index}
+                              alt={buidler?.buidler?.name}
+                              src={buidler?.buidler?.avatar}
+                              sx={{
+                                cursor: 'pointer',
+                              }}
+                              onMouseOver={() =>
+                                handleDisplayBuidlerTooltip(buidler, 'open')
+                              }
+                            />
+                          </Link>
+
                           {buidler?.projectRole.includes('Project Manager') && (
                             <Box
                               width="30px"

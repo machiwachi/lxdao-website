@@ -97,10 +97,10 @@ const SectionCoreTeam = () => {
       id="CoreTeam-Section"
       maxWidth="1200px"
     >
-      <Typography variant="h4">LXDAO Foundation Core Team</Typography>
+      <Typography variant="h4">LXDAO Foundation Team</Typography>
       <Typography fontSize="20px" marginTop={2}>
-        The LXDAO Foundation Core Team is responsable for the LXDAO
-        infrastructure and acting as a backup to buidl with LXDAO buidlers.
+        The LXDAO Foundation Team is responsable for the LXDAO infrastructure
+        and acting as a backup to buidl with LXDAO buidlers.
       </Typography>
       <Box marginTop="96px">
         <Grid
