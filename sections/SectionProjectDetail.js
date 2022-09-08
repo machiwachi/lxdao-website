@@ -79,7 +79,7 @@ const SectionProjectDetail = ({ projectId }) => {
   }, [address]);
 
   const getBuidlersData = () => {
-    API.get(`/buidler`)
+    API.get(`/buidler?status=ACTIVE`)
       .then((res) => {
         if (res?.data?.data) {
           const activeBuidlers = [];
@@ -98,7 +98,6 @@ const SectionProjectDetail = ({ projectId }) => {
               }
             });
             if (
-              buidler.status === 'ACTIVE' &&
               !buidlerIdsOnProject.includes(buidler.id) &&
               buidlerActiveOnProject
             ) {
