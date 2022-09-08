@@ -6,6 +6,7 @@ const Button = ({ variant, size, children, ...rest }) => (
   <Box
     display="flex"
     alignItems="center"
+    justifyContent="center"
     sx={{
       cursor: 'pointer',
       '&:hover': {
