@@ -545,19 +545,28 @@ function BuidlerDetails(props) {
   );
 }
 
+// todo load builder on nodejs Muxin
 export default function Buidler() {
   const router = useRouter();
   const [record, setRecord] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const requestDetail = async (address) => {
-    API.get(`/buidler/${address}`).then((data) => {
+    setLoading(true);
+    try {
+      const data = await API.get(`/buidler/${address}`);
       const result = data?.data;
       if (result.status !== 'SUCCESS') {
         // error
-        return;
+        throw new Error('Cannot get buidler detail');
       }
       setRecord(result.data);
-    });
+    } catch (error) {
+      // todo Muxin common error
+      console.log(error);
+    }
+
+    setLoading(false);
   };
 
   const address = router.query.address;
@@ -569,7 +578,7 @@ export default function Buidler() {
 
   return (
     <Layout>
-      {record ? (
+      {loading ? null : record ? (
         <BuidlerDetails
           refresh={() => {
             requestDetail(address);
