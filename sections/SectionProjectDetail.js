@@ -67,7 +67,7 @@ const SectionProjectDetail = ({ projectId }) => {
       .then((res) => {
         if (res?.data?.data) {
           setProject(res?.data?.data);
-          getBuidlersData();
+          getBuidlersData(res?.data?.data);
         }
       })
       .catch((err) => {
@@ -79,29 +79,17 @@ const SectionProjectDetail = ({ projectId }) => {
     getProjectData();
   }, [address]);
 
-  const getBuidlersData = () => {
+  const getBuidlersData = (project) => {
     API.get(`/buidler?status=ACTIVE`)
       .then((res) => {
         if (res?.data?.data) {
           const activeBuidlers = [];
           const buidlerIdsOnProject = [];
           project?.buidlersOnProject.forEach((buidlerOnProject) => {
-            buidlerIdsOnProject.push(buidlerOnProject?.buidler?.id);
+            buidlerIdsOnProject.push(buidlerOnProject?.buidlerId);
           });
           res?.data?.data?.forEach((buidler) => {
-            let buidlerActiveOnProject = false;
-            buidler?.projects.forEach((buidlerOnProject) => {
-              if (
-                buidlerOnProject?.id === project?.id &&
-                buidlerOnProject?.status === 'ACTIVE'
-              ) {
-                buidlerActiveOnProject = true;
-              }
-            });
-            if (
-              !buidlerIdsOnProject.includes(buidler.id) &&
-              buidlerActiveOnProject
-            ) {
+            if (!buidlerIdsOnProject.includes(buidler.id)) {
               activeBuidlers.push(buidler);
             }
           });
@@ -227,7 +215,6 @@ const SectionProjectDetail = ({ projectId }) => {
   };
 
   if (!project) return null;
-
   return (
     <Container
       paddingY={{ md: '96px', xs: 8 }}
