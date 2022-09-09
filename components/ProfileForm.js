@@ -217,7 +217,10 @@ function ProfileForm(props) {
             fontSize: '20px',
           }}
         >
-          Contacts
+          Contacts{' '}
+          <Typography fontSize="14px" display="inline">
+            (the following contacts will be publicly available)
+          </Typography>
         </Typography>
         <Controller
           name={'contacts'}
