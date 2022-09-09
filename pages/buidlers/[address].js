@@ -101,7 +101,6 @@ function LXPointsTimeline({ points }) {
 
 function BuidlerDetails(props) {
   const record = props.record;
-  const signature = props.signature;
 
   const { address, isConnected } = useAccount();
   const { data: signer } = useSigner();
@@ -159,6 +158,10 @@ function BuidlerDetails(props) {
     if (minting) return;
     setMinting(true);
     try {
+      // get signature
+      const signatureRes = await API.post(`/buidler/${address}/signature`);
+      const signature = signatureRes.data.data.signature;
+
       const ipfsURI = record.ipfsURI;
       const ipfsHash = ipfsURI.replace('ipfs://', '');
 
@@ -170,8 +173,6 @@ function BuidlerDetails(props) {
 
       if (response) {
         await API.post('/buidler/activate');
-        // remove signature and buddy from URL
-        router.push(`/buidlers/${record.address}`);
         props.refresh();
       }
     } catch (err) {
@@ -188,10 +189,9 @@ function BuidlerDetails(props) {
     setUpdating(true);
     const userProfile = {
       ...newMetaData,
-      role: record.role || ['Buidler'],
+      role: record.role.length === 0 ? ['Buidler'] : record.role,
       // set the NFT image
       image: `${process.env.NEXT_PUBLIC_LXDAO_BACKEND_API}/buidler/${record.address}/card`,
-      buddyAddress: props.buddy,
     };
     try {
       const response = await API.put(`/buidler/${address}`, {
@@ -267,26 +267,20 @@ function BuidlerDetails(props) {
         )}
       {record.status === 'PENDING' && (
         <Box marginTop={4}>
-          {!signature && (
-            <Alert severity="error">
-              We cannot get the mint signature, please contact LXDAO Onboarding
-              committee before you Mint your Builder Card.
-            </Alert>
-          )}
           <Alert severity="info">
             Welcome LXDAO. Your Buidler Card is Pending, please fill up your
-            profile, and click{' '}
+            profile first, and then mint your Buidler Card!
+          </Alert>
+          <Box marginTop={2} marginBottom={2}>
             <Button
-              disabled={!signature}
               onClick={() => {
                 mint();
               }}
-              size="small"
               variant="outlined"
             >
               {minting ? 'Minting Builder Card...' : 'Mint Builder Card'}
             </Button>
-          </Alert>
+          </Box>
         </Box>
       )}
       {tx && (
@@ -594,8 +588,6 @@ export default function Buidler() {
             requestDetail(address);
           }}
           record={record}
-          signature={router.query.signature}
-          buddy={router.query.buddy}
         />
       ) : (
         <Box
