@@ -97,6 +97,7 @@ export function BuidlerCard(props) {
 }
 
 const roleNames = [
+  'All',
   'Buidler',
   'Core',
   'Project Manager',
@@ -182,8 +183,8 @@ export default function Home() {
                 label="Role"
                 dropdown={roleNames}
                 onChange={(value) => {
-                  setRole(value);
-                  searchList(search, value);
+                  setRole(value === 'All' ? '' : value);
+                  searchList(search, value === 'All' ? '' : value);
                 }}
               />
             </Grid>
