@@ -99,6 +99,12 @@ function LXPointsTimeline({ points }) {
   );
 }
 
+function ipfsToBytes(ipfsURI) {
+  const ipfsHash = ipfsURI.replace('ipfs://', '');
+
+  return bs58.decode(ipfsHash).slice(2);
+}
+
 function BuidlerDetails(props) {
   const record = props.record;
 
@@ -163,9 +169,7 @@ function BuidlerDetails(props) {
       const signature = signatureRes.data.data.signature;
 
       const ipfsURI = record.ipfsURI;
-      const ipfsHash = ipfsURI.replace('ipfs://', '');
-
-      const bytes = bs58.decode(ipfsHash).slice(2);
+      const bytes = ipfsToBytes(ipfsURI);
       const tx = await contract.mint(bytes, signature);
       setTx(tx);
       const response = await tx.wait();
@@ -238,12 +242,15 @@ function BuidlerDetails(props) {
                     }
                     const { signature, ipfsURI } =
                       syncInfoRes?.data?.data || {};
-                    const updateMetaData =
-                      contract[`updateMetaData(string,bytes)`];
-                    const tx = await updateMetaData(ipfsURI, signature);
+                    const updateMetadata =
+                      contract[`updateMetadata(bytes,bytes)`];
+                    const tx = await updateMetadata(
+                      ipfsToBytes(ipfsURI),
+                      signature
+                    );
                     await tx.wait();
                     await getToken(address);
-                    // todo add tx
+                    // todo add tx to the page
                   } catch (err) {
                     showMessage({
                       type: 'error',
