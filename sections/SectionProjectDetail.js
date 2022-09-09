@@ -80,7 +80,6 @@ const SectionProjectDetail = ({ projectId }) => {
   }, [address]);
 
   const getBuidlersData = (project) => {
-    console.log('project: ', project);
     API.get(`/buidler?status=ACTIVE`)
       .then((res) => {
         if (res?.data?.data) {
@@ -216,7 +215,6 @@ const SectionProjectDetail = ({ projectId }) => {
   };
 
   if (!project) return null;
-  console.log('activeBuidlerList', activeBuidlerList);
   return (
     <Container
       paddingY={{ md: '96px', xs: 8 }}
