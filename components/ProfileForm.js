@@ -112,6 +112,7 @@ function ProfileForm(props) {
           render={({ field: { onChange, value } }) => {
             return (
               <TextInput
+                required
                 fullWidth
                 label="Name"
                 placeholder="Your nick name"
@@ -132,6 +133,7 @@ function ProfileForm(props) {
           render={({ field: { onChange, value } }) => {
             return (
               <TextInput
+                required
                 multiline
                 rows={2}
                 placeholder="Self introduction"
