@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
-import React, { useState, useEffect, useContext } from 'react';
-import { Typography } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Link, Box } from '@mui/material';
 import { getDefaultWallets, ConnectButton } from '@rainbow-me/rainbowkit';
 import {
   chain,
@@ -19,7 +19,7 @@ import {
   getLocalStorage,
   removeLocalStorage,
 } from '@/utils/utility';
-import { AlertContext } from '@/context/AlertContext';
+import showMessage from '@/components/showMessage';
 
 import '@rainbow-me/rainbowkit/styles.css';
 
@@ -44,8 +44,6 @@ const ConnectWalletButton = () => {
   const [preAddress, setPreAddress] = useState(address);
   const { disconnect } = useDisconnect();
   const { data, signMessage } = useSignMessage();
-  const useAlert = () => useContext(AlertContext);
-  const { setAlert } = useAlert();
 
   useEffect(() => {
     const currentAccessToken = getLocalStorage('accessToken');
@@ -81,16 +79,36 @@ const ConnectWalletButton = () => {
     API.get(`/buidler/${address}/nonce`)
       .then(({ data }) => {
         const signatureMessage = data?.data?.signature_message;
-        if (signatureMessage) {
+        const nonce = data?.data?.nonce;
+        // no builder record in DB
+        if (!nonce) {
+          showMessage({
+            type: 'error',
+            title: 'Cannot find your LXDAO builder record',
+            body: (
+              <Box>
+                It seems you are not a LXDAO buidler, welcome to{' '}
+                <Link marginBottom={2} target="_blank" href={`/joinus`}>
+                  join us
+                </Link>
+                . Let&apos;s buidler a better Web3 together!
+              </Box>
+            ),
+          });
+          disconnect();
+        } else if (signatureMessage) {
           signMessage({
             message: signatureMessage,
           });
         }
       })
       .catch((err) => {
-        if (err) {
-          signInErrorHandler();
-        }
+        showMessage({
+          type: 'error',
+          title: 'Failed to sign-in',
+          body: err.message,
+        });
+        disconnect();
       });
   };
 
@@ -106,31 +124,13 @@ const ConnectWalletButton = () => {
         }
       })
       .catch((err) => {
-        if (err) {
-          signInErrorHandler();
-        }
+        showMessage({
+          type: 'error',
+          title: 'Failed to sign-in',
+          body: err.message,
+        });
+        disconnect();
       });
-  };
-
-  const signInErrorHandler = () => {
-    const DISCONNECT_TIME = 5000;
-    setAlert(<SignInErrorMessage />, 'error');
-    setTimeout(() => {
-      disconnect();
-    }, DISCONNECT_TIME);
-  };
-
-  const SignInErrorMessage = () => {
-    return (
-      <Typography>
-        Something went wrong when signing into LXDAO. If you are not LXDAO
-        buidler, welcome to{' '}
-        <Typography component="a" href="/joinus">
-          join us
-        </Typography>
-        . You can also give feedback to us in the community.
-      </Typography>
-    );
   };
 
   return (
