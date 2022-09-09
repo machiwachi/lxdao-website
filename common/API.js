@@ -9,4 +9,12 @@ if (typeof window !== 'undefined') {
 
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_LXDAO_BACKEND_API;
 
+function refreshAPIToken() {
+  if (typeof window !== 'undefined') {
+    const accessToken = getLocalStorage('accessToken');
+    axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+  }
+}
+
+export { refreshAPIToken };
 export default axios;
