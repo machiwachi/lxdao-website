@@ -18,6 +18,7 @@ const Button = ({ variant, size, children, ...rest }) => (
       border: variant === 'outlined' ? '1px solid #000000' : 'none',
       outline: 'none',
       padding: size === 'large' ? '22px 63px' : '12px 20px',
+      fontWeight: 'bold',
       background:
         variant === 'outlined'
           ? '#ffffff'

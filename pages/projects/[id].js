@@ -8,14 +8,12 @@ import SectionProjectDetail from '@/sections/SectionProjectDetail';
 export default function Home() {
   const router = useRouter();
   const projectId = router.query.id;
-  
+
   if (!projectId) return null;
 
   return (
-    <div>
-      <Layout>
-        <SectionProjectDetail projectId={projectId} />
-      </Layout>
-    </div>
+    <Layout>
+      <SectionProjectDetail projectId={projectId} />
+    </Layout>
   );
 }

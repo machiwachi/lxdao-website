@@ -55,6 +55,7 @@ const SectionProjectDetail = ({ projectId }) => {
     LAUNCHED: 'LAUNCHED',
   };
 
+  // todo improve and use find
   let projectManagerName = '';
   project?.buidlersOnProject.forEach((buidler) => {
     if (buidler?.projectRole.includes('Project Manager')) {
@@ -436,8 +437,9 @@ const SectionProjectDetail = ({ projectId }) => {
       </Grid>
       <Dialog
         open={openJoinDialog}
-        title="Join this project"
-        content={`Contact with the Project Manager(${projectManagerName}) of this project to apply.`}
+        title="Want to join this project?"
+        // todo give a link to the builder detail
+        content={`Please contact with the Project Manager: ${projectManagerName}.`}
         confirmText="OK"
         handleClose={() => {
           setOpenJoinDialog(false);
