@@ -96,7 +96,13 @@ export function BuidlerCard(props) {
   );
 }
 
-const roleNames = ['Buidler', 'Core', 'Project Manager', 'Investor'];
+const roleNames = [
+  'Buidler',
+  'Core',
+  'Project Manager',
+  'Investor',
+  'Onboarding Committee',
+];
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
