@@ -190,6 +190,8 @@ const SectionProjectDetail = ({ projectId }) => {
               'Invite buidler successfully, please wait for the buidler to accept the invitation',
               'success'
             );
+          } else {
+            setAlert(res?.data?.message, 'error');
           }
         })
         .catch((err) => {
