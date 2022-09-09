@@ -115,7 +115,7 @@ export default function Home() {
     let query = `/buidler?`;
     let params = [];
     const trimmedSearch = search.trim();
-    const trimmedRole = role.trim();
+    const trimmedRole = role === 'All' ? '' : role.trim();
     if (trimmedSearch) {
       params.push('search=' + trimmedSearch);
     }
@@ -183,8 +183,8 @@ export default function Home() {
                 label="Role"
                 dropdown={roleNames}
                 onChange={(value) => {
-                  setRole(value === 'All' ? '' : value);
-                  searchList(search, value === 'All' ? '' : value);
+                  setRole(value);
+                  searchList(search, value);
                 }}
               />
             </Grid>
