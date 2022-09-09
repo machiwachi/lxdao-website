@@ -55,13 +55,9 @@ const SectionProjectDetail = ({ projectId }) => {
     LAUNCHED: 'LAUNCHED',
   };
 
-  // todo improve and use find
-  let projectManagerName = '';
-  project?.buidlersOnProject.forEach((buidler) => {
-    if (buidler?.projectRole.includes('Project Manager')) {
-      projectManagerName = buidler?.buidler?.name;
-    }
-  });
+  const projectManagerName = project?.buidlersOnProject.find((buidler) => {
+    return buidler?.projectRole.includes('Project Manager');
+  })?.buidler?.name;
 
   const getProjectData = () => {
     API.get(`/project/${projectId}`)
