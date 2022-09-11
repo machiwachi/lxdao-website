@@ -262,9 +262,9 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "from",
-        "type": "address"
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
       }
     ],
     "name": "activate",
@@ -291,18 +291,11 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "archive",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "from",
-        "type": "address"
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
       }
     ],
     "name": "archive",
@@ -332,9 +325,9 @@
   {
     "inputs": [
       {
-        "internalType": "address[]",
-        "name": "owners",
-        "type": "address[]"
+        "internalType": "uint256[]",
+        "name": "tokenIds",
+        "type": "uint256[]"
       },
       {
         "internalType": "bytes[]",
@@ -709,9 +702,9 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "from",
-        "type": "address"
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
       }
     ],
     "name": "suspend",
@@ -842,24 +835,6 @@
         "internalType": "address",
         "name": "to",
         "type": "address"
-      }
-    ],
-    "name": "transferFrom",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "from",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "to",
-        "type": "address"
       },
       {
         "internalType": "uint256",
@@ -888,27 +863,9 @@
   {
     "inputs": [
       {
-        "internalType": "bytes",
-        "name": "metadataURI",
-        "type": "bytes"
-      },
-      {
-        "internalType": "bytes",
-        "name": "signature",
-        "type": "bytes"
-      }
-    ],
-    "name": "updateMetadata",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "to",
-        "type": "address"
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
       },
       {
         "internalType": "bytes",

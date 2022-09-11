@@ -242,9 +242,8 @@ function BuidlerDetails(props) {
                     }
                     const { signature, ipfsURI } =
                       syncInfoRes?.data?.data || {};
-                    const updateMetadata =
-                      contract[`updateMetadata(bytes,bytes)`];
-                    const tx = await updateMetadata(
+                    const tx = await contract.updateMetadata(
+                      tokenId,
                       ipfsToBytes(ipfsURI),
                       signature
                     );
