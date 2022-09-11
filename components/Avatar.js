@@ -78,7 +78,9 @@ function Avatar(props) {
                   </Box>
 
                   <Box marginTop={2}>
-                    <Button onClick={uploadImage}>Confirm</Button>
+                    <Button variant="contained" onClick={uploadImage}>
+                      Confirm
+                    </Button>
                     <Button onClick={() => onImageUpdate(index)}>Change</Button>
                     <Button onClick={() => onImageRemove(index)}>Remove</Button>
                   </Box>
