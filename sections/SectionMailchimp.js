@@ -10,12 +10,12 @@ const SignupFormWrapper = styled.div`
   & input,
   & button {
     font-size: 16px;
-    line-height: 24px;
+    line-height: 48px;
   }
 
   & input {
     width: 90%;
-    height: 24px;
+    height: 48px;
     padding: 12px 14px;
     margin-right: 16px;
 
@@ -26,13 +26,14 @@ const SignupFormWrapper = styled.div`
 
   & button {
     background-color: #000000;
-    padding: 12px 20px;
+    padding: 16px 20px;
     outline: none;
     border: none;
     border-radius: 8px;
     color: #ffffff;
     cursor: pointer;
     margin-top: 12px;
+    line-height: 16px;
 
     &:hover {
       background-color: rgba(0, 0, 0, 0.8);

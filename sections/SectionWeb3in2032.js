@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { Grid, Box, Typography } from '@mui/material';
+import { Grid, Box, Typography, Link } from '@mui/material';
 
 import Container from '@/components/Container';
 import Button from '@/components/Button';
@@ -106,21 +106,22 @@ const SectionWeb3in2032 = () => {
         justifyContent="center"
         gap={2}
       >
-        <Button
-          variant="outlined"
-          onClick={() => {
-            window.open('http://web3in2032.io/', '_blank');
-          }}
+        <Link
+          href={`http://web3in2032.io/`}
+          target="_blank"
+          color={'inherit'}
+          sx={{ textDecoration: 'none' }}
         >
-          View More
-        </Button>
-        <Button
-          onClick={() => {
-            window.open('http://web3in2032.io/', '_blank');
-          }}
+          <Button variant="outlined">View More</Button>
+        </Link>
+        <Link
+          href={`http://web3in2032.io/`}
+          target="_blank"
+          color={'inherit'}
+          sx={{ textDecoration: 'none' }}
         >
-          Describe your life in 2032
-        </Button>
+          <Button>Describe your life in 2032</Button>
+        </Link>
       </Box>
       <Typography variant="body1" marginTop={4}>
         The future of Web3 should be colorful, free, and exciting. We're going

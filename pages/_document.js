@@ -1,6 +1,7 @@
 import React from 'react';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import { CacheProvider } from '@emotion/react';
+import { ServerStyleSheets } from '@mui/styles';
 import createCache from '@emotion/cache';
 import createEmotionServer from '@emotion/server/create-instance';
 
@@ -15,7 +16,7 @@ export default class MyDocument extends Document {
   render() {
     return (
       <Html lang="en">
-        <Head></Head>
+        <Head />
         <body>
           <Main />
           <NextScript />
@@ -54,6 +55,7 @@ MyDocument.getInitialProps = async (ctx) => {
   const originalRenderPage = ctx.renderPage;
 
   const cache = getCache();
+  const sheets = new ServerStyleSheets();
   const { extractCriticalToChunks } = createEmotionServer(cache);
 
   ctx.renderPage = () =>
@@ -61,7 +63,7 @@ MyDocument.getInitialProps = async (ctx) => {
       // Take precedence over the CacheProvider in our custom _app.js
       // eslint-disable-next-line react/display-name
       enhanceComponent: (Component) => (props) =>
-        (
+        sheets.collect(
           <CacheProvider value={cache}>
             <Component {...props} />
           </CacheProvider>
@@ -84,6 +86,7 @@ MyDocument.getInitialProps = async (ctx) => {
     // Styles fragment is rendered after the app and page rendering finish.
     styles: [
       ...React.Children.toArray(initialProps.styles),
+      sheets.getStyleElement(),
       ...emotionStyleTags,
     ],
   };
