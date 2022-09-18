@@ -55,9 +55,13 @@ const SectionProjectDetail = ({ projectId }) => {
     LAUNCHED: 'LAUNCHED',
   };
 
-  const projectManagerName = project?.buidlersOnProject.find((buidler) => {
-    return buidler?.projectRole.includes('Project Manager');
-  })?.buidler?.name;
+  let projectManagerName = '';
+  let projectManagerAddress = '';
+  const projectManagerBudilder = project?.buidlersOnProject.find((buidler) =>
+    buidler?.projectRole.includes('Project Manager')
+  );
+  projectManagerName = projectManagerBudilder?.buidler?.name;
+  projectManagerAddress = projectManagerBudilder?.buidler?.address;
 
   const getProjectData = () => {
     API.get(`/project/${projectId}`)
@@ -436,8 +440,15 @@ const SectionProjectDetail = ({ projectId }) => {
       <Dialog
         open={openJoinDialog}
         title="Want to join this project?"
-        // todo give a link to the builder detail
-        content={`Please contact with the Project Manager: ${projectManagerName}.`}
+        content={
+          <Box>
+            Please contact with the Project Manager:{' '}
+            <Link href={`/buidlers/${projectManagerAddress}`} target="_blank">
+              {projectManagerName}
+            </Link>
+            .
+          </Box>
+        }
         confirmText="OK"
         handleClose={() => {
           setOpenJoinDialog(false);
