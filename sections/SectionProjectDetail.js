@@ -11,6 +11,14 @@ import {
   Autocomplete,
   TextField,
   Link,
+  MenuItem,
+  Select,
+  Checkbox,
+  OutlinedInput,
+  ListItemText,
+  InputLabel,
+  FormControl,
+  FormHelperText,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useAccount } from 'wagmi';
@@ -44,6 +52,36 @@ const SectionProjectDetail = ({ projectId }) => {
   const [showAcceptButton, setShowAcceptButton] = useState(false);
   const [currentBuidlerOnProjectInfo, setCurrentBuidlerOnProjectInfo] =
     useState({ id: null, ipfsURI: '' });
+  const [projectRoleValue, setProjectRoleValue] = useState([]);
+  const [inviteBuidlerErrors, setInviteBuidlerErrors] = useState({
+    buidler: {
+      error: false,
+      errorMsg: '',
+    },
+    role: {
+      error: false,
+      errorMsg: '',
+    },
+  });
+
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 230,
+      },
+    },
+  };
+
+  const projectRoleList = [
+    'Project Manager',
+    'Developer',
+    'Artist',
+    'UI/UX Desinger',
+    'Operation',
+  ];
 
   const useAlert = () => useContext(AlertContext);
   const { setAlert } = useAlert();
@@ -55,9 +93,13 @@ const SectionProjectDetail = ({ projectId }) => {
     LAUNCHED: 'LAUNCHED',
   };
 
-  const projectManagerName = project?.buidlersOnProject.find((buidler) => {
-    return buidler?.projectRole.includes('Project Manager');
-  })?.buidler?.name;
+  let projectManagerName = '';
+  let projectManagerAddress = '';
+  const projectManagerBudilder = project?.buidlersOnProject.find((buidler) =>
+    buidler?.projectRole.includes('Project Manager')
+  );
+  projectManagerName = projectManagerBudilder?.buidler?.name;
+  projectManagerAddress = projectManagerBudilder?.buidler?.address;
 
   const getProjectData = () => {
     API.get(`/project/${projectId}`)
@@ -169,7 +211,26 @@ const SectionProjectDetail = ({ projectId }) => {
   };
 
   const handleInviteBuidler = () => {
-    if (selectedBuidler) {
+    const cloneInviteBuidlerErrors = { ...inviteBuidlerErrors };
+    if (!selectedBuidler) {
+      cloneInviteBuidlerErrors['buidler'].error = true;
+      cloneInviteBuidlerErrors['buidler'].errorMsg = 'Please select a buidler';
+      setInviteBuidlerErrors({
+        ...inviteBuidlerErrors,
+        ...cloneInviteBuidlerErrors,
+      });
+      return;
+    }
+    if (projectRoleValue.length < 1) {
+      cloneInviteBuidlerErrors['role'].error = true;
+      cloneInviteBuidlerErrors['role'].errorMsg = 'Please select a role';
+      setInviteBuidlerErrors({
+        ...inviteBuidlerErrors,
+        ...cloneInviteBuidlerErrors,
+      });
+      return;
+    }
+    if (selectedBuidler && projectRoleValue.length > 0) {
       let selectedBuidlerId = '';
       activeBuidlerList.forEach((buidler) => {
         if (buidler.name === selectedBuidler) {
@@ -179,6 +240,7 @@ const SectionProjectDetail = ({ projectId }) => {
       API.post(`/buidler/createInvitation`, {
         buidlerId: selectedBuidlerId,
         projectId: project?.id,
+        projectRole: projectRoleValue,
       })
         .then((res) => {
           if (res?.data?.status === 'SUCCESS') {
@@ -351,29 +413,92 @@ const SectionProjectDetail = ({ projectId }) => {
               </Box>
             )}
             {showInviteButton && (
-              <Stack direction="row" spacing={2} marginTop={2}>
-                <Autocomplete
-                  sx={{ width: '300px' }}
-                  freeSolo
-                  disableClearable
-                  options={activeBuidlerList.map((option) => option.name)}
-                  onChange={(e, data) => {
-                    setSelectedBuidler(data);
-                  }}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label="Search Buidler"
-                      InputProps={{
-                        ...params.InputProps,
-                        type: 'search',
+              <Stack direction="column" spacing={1} alignItems="flex-start">
+                <Typography>Invitate builder to join this project:</Typography>
+                <Box display="flex" gap="10px">
+                  <Autocomplete
+                    sx={{ width: '300px', height: '56px' }}
+                    options={activeBuidlerList.map((option) => option.name)}
+                    onChange={(e, data) => {
+                      setSelectedBuidler(data);
+                      if (data) {
+                        const cloneInviteBuidlerErrors = {
+                          ...inviteBuidlerErrors,
+                        };
+                        cloneInviteBuidlerErrors['buidler'].error = false;
+                        cloneInviteBuidlerErrors['buidler'].errorMsg = '';
+                        setInviteBuidlerErrors({
+                          ...inviteBuidlerErrors,
+                          ...cloneInviteBuidlerErrors,
+                        });
+                      }
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Search Buidler"
+                        InputProps={{
+                          ...params.InputProps,
+                          type: 'search',
+                        }}
+                        error={inviteBuidlerErrors['buidler'].error}
+                        helperText={inviteBuidlerErrors['buidler'].errorMsg}
+                      />
+                    )}
+                  />
+                  <FormControl
+                    sx={{ m: 1, width: 230, margin: 0 }}
+                    error={inviteBuidlerErrors['role'].error}
+                  >
+                    <InputLabel id="project-role-multiple-checkbox-label">
+                      Project Role
+                    </InputLabel>
+                    <Select
+                      sx={{ width: '230px', height: '56px' }}
+                      labelId="project-role-multiple-checkbox-label"
+                      id="project-role-multiple-checkbox"
+                      multiple
+                      error={inviteBuidlerErrors['role'].error}
+                      value={projectRoleValue}
+                      MenuProps={MenuProps}
+                      onChange={(event) => {
+                        setProjectRoleValue(event.target.value);
+                        if (event.target.value) {
+                          const cloneInviteBuidlerErrors = {
+                            ...inviteBuidlerErrors,
+                          };
+                          cloneInviteBuidlerErrors['role'].error = false;
+                          cloneInviteBuidlerErrors['role'].errorMsg = '';
+                          setInviteBuidlerErrors({
+                            ...inviteBuidlerErrors,
+                            ...cloneInviteBuidlerErrors,
+                          });
+                        }
                       }}
-                    />
-                  )}
-                />
-                <Button variant="gradient" onClick={handleInviteBuidler}>
-                  Invite
-                </Button>
+                      input={<OutlinedInput label="Project Role" />}
+                      renderValue={(selected) => selected.join(', ')}
+                    >
+                      {projectRoleList.map((role) => (
+                        <MenuItem key={role} value={role}>
+                          <Checkbox
+                            checked={projectRoleValue.indexOf(role) > -1}
+                          />
+                          <ListItemText primary={role} />
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    <FormHelperText>
+                      {inviteBuidlerErrors['role'].errorMsg}
+                    </FormHelperText>
+                  </FormControl>
+                  <Button
+                    variant="gradient"
+                    onClick={handleInviteBuidler}
+                    height="56px"
+                  >
+                    Invite
+                  </Button>
+                </Box>
               </Stack>
             )}
             {showAcceptButton && (
@@ -436,8 +561,15 @@ const SectionProjectDetail = ({ projectId }) => {
       <Dialog
         open={openJoinDialog}
         title="Want to join this project?"
-        // todo give a link to the builder detail
-        content={`Please contact with the Project Manager: ${projectManagerName}.`}
+        content={
+          <Box>
+            Please contact with the Project Manager:{' '}
+            <Link href={`/buidlers/${projectManagerAddress}`} target="_blank">
+              {projectManagerName}
+            </Link>
+            .
+          </Box>
+        }
         confirmText="OK"
         handleClose={() => {
           setOpenJoinDialog(false);
