@@ -7,7 +7,11 @@ import MemberTypeCard from '@/components/MemberTypeCard';
 const SectionMemberType = ({ activeBuidlers }) => {
   const activeBuidlerAmount = activeBuidlers?.length;
   const displayBuidlerAvatars = [];
-  activeBuidlers.forEach((buidler) => {
+  const displayBuidlers =
+    activeBuidlerAmount > 4
+      ? activeBuidlers.slice(activeBuidlers.length - 4, activeBuidlers.length)
+      : activeBuidlers;
+  displayBuidlers.forEach((buidler) => {
     displayBuidlerAvatars.push(buidler?.avatar);
   });
   return (
