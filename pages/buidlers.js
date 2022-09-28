@@ -122,7 +122,7 @@ export default function Home() {
     if (trimmedRole) {
       params.push('role=' + trimmedRole);
     }
-    params.push('per_page=24');
+    params.push('per_page=50');
     query += params.join('&');
 
     setLoading(true);
