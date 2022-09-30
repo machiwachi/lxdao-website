@@ -286,13 +286,15 @@ const SectionProjectDetail = ({ projectId }) => {
     >
       <Grid container spacing={4}>
         <Grid item xs={4} display={{ md: 'block', xs: 'none' }}>
-          <img
-            style={{
-              width: '100%',
-              boxShadow: '0px 4px 10px 3px rgba(0, 0, 0, 0.04)',
-            }}
-            src={project.logoLarge}
-          />
+          <Link href={project?.links.website || ''} target="_blank">
+            <img
+              style={{
+                width: '100%',
+                boxShadow: '0px 4px 10px 3px rgba(0, 0, 0, 0.04)',
+              }}
+              src={project.logoLarge}
+            />
+          </Link>
         </Grid>
         <Grid item md={8} justify="flex-start">
           <Stack spacing={3.5}>
@@ -301,18 +303,32 @@ const SectionProjectDetail = ({ projectId }) => {
               alignItems="flex-end"
               gap="12px"
             >
-              <img style={{ width: '50px' }} src={project.logoLarge} />
-              <Typography variant="h5" align="left">
+              <Link href={project?.links.website || ''} target="_blank">
+                <img style={{ width: '50px' }} src={project.logoLarge} />
+              </Link>
+              <Link
+                href={project?.links.website || ''}
+                target="_blank"
+                sx={{ textDecoration: 'none' }}
+              >
+                <Typography variant="h5" align="left">
+                  {project.name}
+                </Typography>
+              </Link>
+            </Box>
+            <Link
+              href={project?.links.website || ''}
+              target="_blank"
+              sx={{ textDecoration: 'none' }}
+            >
+              <Typography
+                variant="h4"
+                align="left"
+                display={{ md: 'block', xs: 'none' }}
+              >
                 {project.name}
               </Typography>
-            </Box>
-            <Typography
-              variant="h4"
-              align="left"
-              display={{ md: 'block', xs: 'none' }}
-            >
-              {project.name}
-            </Typography>
+            </Link>
             <Typography align="left">{project.description}</Typography>
             <Box align="left" display="flex" gap="5px" flexWrap="wrap">
               {project.type &&
@@ -544,13 +560,13 @@ const SectionProjectDetail = ({ projectId }) => {
                 disableTouchListener
                 title="Make sure you are a LXDAO buidler and connect your wallet first."
               >
-                <Box display="flex" width="100px">
+                <Box display="flex" width="180px">
                   <Button
                     width="100%"
                     variant="gradient"
                     onClick={handleBuidlerJoin}
                   >
-                    Join
+                    Join this project
                   </Button>
                 </Box>
               </Tooltip>
