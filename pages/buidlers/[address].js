@@ -345,6 +345,28 @@ function BuidlerDetails(props) {
                 Edit
               </Button>
             ) : null}
+            {address === record.address &&
+            record.role.includes('Onboarding Committee') ? (
+              <Button
+                style={{
+                  marginLeft: 8,
+                }}
+                onClick={async () => {
+                  const newAddress = window.prompt('New joiner address');
+                  const data = await API.post(`/buidler`, {
+                    address: newAddress,
+                  });
+                  const result = data?.data;
+                  if (result.status === 'SUCCESS') {
+                    alert('created!');
+                  }
+                }}
+                size="small"
+                variant="outlined"
+              >
+                Onboarding
+              </Button>
+            ) : null}
           </Box>
         </Box>
         <Box flex="1 1 auto">
