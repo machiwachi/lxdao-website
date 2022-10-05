@@ -220,6 +220,8 @@ function BuidlerDetails(props) {
   const projects = record.projects.filter((project) => {
     return project.status === 'ACTIVE';
   });
+  console.log('ipfsURLOnChain: ', ipfsURLOnChain);
+  console.log('record.ipfsURI: ', record.ipfsURI);
 
   return (
     <Container>
