@@ -1,181 +1,108 @@
 import React from 'react';
 import { useRouter } from 'next/router';
+import styled, { keyframes } from 'styled-components';
 import { Box, Typography, Link } from '@mui/material';
-import StyledToolTip from '@/components/StyledToolTip';
 import Button from '@/components/Button';
-import SectionHero from './SectionHero';
+import Container from '@/components/container';
+
+const textColorGradient = keyframes`
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+`;
+
+const HightlightText = styled.span`
+  background-size: 400% 400%;
+  background-image: linear-gradient(to right, #3c7aff, #1eedd4);
+  -webkit-background-clip: text;
+  animation: ${textColorGradient} 3s ease infinite;
+  color: transparent;
+  font-size: 98px;
+  line-height: 100px;
+  font-weight: 700;
+`;
 
 const SectionHomepageHero = () => {
   const router = useRouter();
 
   const Title = () => {
     return (
-      <>
-        <Box marginBottom="20px" display={{ lg: 'block', xs: 'none' }}>
-          <Typography variant="h3" lineHeight="1.5em">
+      <Box>
+        <Box display={{ lg: 'block', xs: 'none' }}>
+          <Typography variant="h1" lineHeight="100px" fontWeight="700">
             LXDAO is an
           </Typography>
-          <Typography variant="h3" lineHeight="1.5em">
-            <StyledToolTip
-              placement="top"
-              title={
-                <Box
-                  sx={{
-                    background: '#fff',
-                    boxShadow: 4,
-                    padding: '4px 16px',
-                    borderRadius: 2,
-                    color: '#101828',
-                  }}
-                >
-                  <Typography variant="body1">
-                    Research and Development
-                  </Typography>
-                </Box>
-              }
-            >
-              <span
-                style={{
-                  borderBottom: '4px dashed #101828',
-                  cursor: 'pointer',
-                  fontWeight: '700',
-                }}
-              >
-                R&amp;D
-              </span>
-            </StyledToolTip>
+          <HightlightText>R&amp;D</HightlightText>
+          <Typography
+            variant="h1"
+            lineHeight="100px"
+            fontWeight="700"
+            display="inline"
+          >
             -focused DAO
           </Typography>
-          <Typography variant="h3" lineHeight="1.5em">
+          <Typography variant="h1" lineHeight="100px" fontWeight="700">
             in Web3
           </Typography>
         </Box>
-        <Typography
-          variant="h3"
-          lineHeight="1.5em"
-          marginBottom="20px"
-          display={{ lg: 'none', xs: 'block' }}
-        >
-          LXDAO is an{' '}
-          <StyledToolTip
-            placement="top"
-            title={
-              <Box
-                sx={{
-                  background: '#fff',
-                  boxShadow: 4,
-                  padding: '4px 16px',
-                  borderRadius: 2,
-                  color: '#101828',
-                }}
-              >
-                <Typography variant="body1">
-                  Research and Development
-                </Typography>
-              </Box>
-            }
-          >
-            <span
-              style={{
-                borderBottom: '4px dashed #101828',
-                cursor: 'pointer',
-                fontWeight: '700',
-              }}
-            >
-              R&amp;D
-            </span>
-          </StyledToolTip>
-          -focused DAO in Web3
-        </Typography>
-      </>
+      </Box>
     );
   };
 
   return (
-    <SectionHero
-      leftContent={
-        <>
-          <Title />
-          <Typography
-            marginBottom={4}
-            fontSize={{ md: '24px', sm: '20px', xs: '18px' }}
-            maxWidth={{ md: '700px', sm: '500px', xs: '300px' }}
-          >
-            Bringing together buidlers to buidl and maintain &quot;
-            <StyledToolTip
-              placement="top"
-              title={
-                <Box
-                  sx={{
-                    background: '#fff',
-                    boxShadow: 4,
-                    padding: '8px 16px',
-                    borderRadius: 2,
-                    color: '#101828',
-                  }}
-                >
-                  <Typography variant="body1">
-                    LX = 良心 = Conscience
-                  </Typography>
-                  <Typography variant="body1">
-                    Core Values: Buidl valuable things
-                  </Typography>
-                </Box>
-              }
-            >
-              <span
-                style={{
-                  borderBottom: '3px dashed #667085',
-                  cursor: 'pointer',
-                  fontWeight: '700',
-                }}
-              >
-                LX
-              </span>
-            </StyledToolTip>
-            &quot; projects for Web3, in a sustainable manner.
+    <Container
+      minHeight={{ md: '800px', xs: '660px' }}
+      display="flex"
+      flexDirection={{ lg: 'row', xs: 'column' }}
+      justifyContent="center"
+      alignItems="center"
+      textAlign="center"
+      gap={{ lg: '120px', xs: '40px' }}
+    >
+      <Box
+        display="flex"
+        flexDirection="column"
+        gap={6}
+        alignItems={{ lg: 'flex-start', xs: 'center' }}
+        textAlign={{ lg: 'left', xs: 'center' }}
+      >
+        <Title />
+        <Box>
+          <Typography variant="body1" lineHeight="36px" color="#667085">
+            Our Vision & Consensus - The technologies, concepts and ideas of
+            Web3
           </Typography>
-          <Button
-            size="large"
-            variant="gradient"
-            onClick={() => {
-              router.push('/joinus');
+          <Typography varient="body1" lineHeight="36px" color="#667085">
+            will be used by a billion people in a decade.
+          </Typography>
+        </Box>
+        <Button variant="gradient" width="180px">
+          <Link
+            href={`/joinus`}
+            color="#ffffff"
+            sx={{
+              textDecoration: 'none',
             }}
           >
             JOIN US
-          </Button>
-        </>
-      }
-      rightContent={
-        <>
-          <Box
-            width={{ sm: '500px', xs: '300px' }}
-            height={{ sm: '280px', xs: '176px' }}
-          >
-            <iframe
-              width="100%"
-              height="100%"
-              src="https://www.youtube.com/embed/LIbl-UtP7zw"
-              title="YouTube video player"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen={true}
-            ></iframe>
-          </Box>
-          <Box marginTop={2}>
-            <Typography variant="body2">
-              <Link
-                href={`https://lxdao.sharepoint.com/:b:/s/LXDAO140/ETQ8Yu6mR79GhhXOgdy_HDgBYP9BE_-I-AJINHkPWL70AQ?e=S8bf2n`}
-                target="_blank"
-                color={'inherit'}
-              >
-                (Download the latest PDF Pitch Deck)
-              </Link>
-            </Typography>
-          </Box>
-        </>
-      }
-    />
+          </Link>
+        </Button>
+        <Box>
+          <Link>
+            <Box component={'img'} src={'/icons/twitter-circle.svg'} />
+          </Link>
+          <Link>
+            <Box component={'img'} src={'/icons/discord-circle.svg'} />
+          </Link>
+          <Link>
+            <Box component={'img'} src={'/icons/telegram-circle.svg'} />
+          </Link>
+          <Link>
+            <Box component={'img'} src={'/icons/forum-circle.svg'} />
+          </Link>
+        </Box>
+      </Box>
+    </Container>
   );
 };
 
