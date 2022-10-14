@@ -10,6 +10,7 @@ const getTheme = (mode) =>
       shadows: shadows(mode),
       typography: {
         fontFamily: [
+          'Inter',
           '-apple-system',
           'BlinkMacSystemFont',
           '"Segoe UI"',
@@ -24,6 +25,12 @@ const getTheme = (mode) =>
         button: {
           textTransform: 'none',
           fontWeight: 'medium',
+        },
+        body1: {
+          fontSize: '21px',
+        },
+        h1: {
+          fontSize: '98px',
         },
       },
       zIndex: {

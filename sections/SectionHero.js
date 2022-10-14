@@ -12,7 +12,6 @@ const SectionHero = ({ leftContent, rightContent }) => {
       justifyContent="center"
       alignItems="center"
       textAlign="center"
-      maxWidth="1200px"
       gap={{ lg: '120px', xs: '40px' }}
     >
       <Box
