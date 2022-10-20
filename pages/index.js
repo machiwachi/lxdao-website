@@ -3,12 +3,12 @@ import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '@/components/Layout';
 import SectionHero from '@/sections/SectionHomepageHero';
-import SectionWeb3in2032 from '@/sections/SectionWeb3in2032';
 import SectionMission from '@/sections/SectionMission';
+import SectionWorkSteps from '@/sections/SectionWorkSteps';
 import SectionProjects from '@/sections/SectionProjects';
 import SectionBuidlers from '@/sections/SectionBuidlers';
 import SectionCoreTeam from '@/sections/SectionCoreTeam';
-import SectionMailchimp from '@/sections/SectionMailchimp';
+import SectionPartners from '@/sections/SectionPartners';
 
 import { scrollToSection } from '@/utils/utility';
 
@@ -26,11 +26,11 @@ export default function Home() {
     <Layout>
       <SectionHero />
       <SectionMission />
-      <SectionWeb3in2032 />
+      <SectionWorkSteps />
       <SectionProjects />
       <SectionBuidlers />
       <SectionCoreTeam />
-      <SectionMailchimp />
+      <SectionPartners />
     </Layout>
   );
 }
