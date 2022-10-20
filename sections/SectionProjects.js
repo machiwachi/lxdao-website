@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { Box, Typography, Grid, Card, Chip } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
-import projects from '@/common/content/projects';
-import { shuffle } from '@/utils/utility';
+import API from '@/common/API';
+import { getRandom } from '@/utils/utility';
 
 import Container from '@/components/Container';
 import Button from '@/components/Button';
@@ -47,22 +47,27 @@ const CornerIcon = (props) => {
   );
 };
 
-const homepageProjects = (indexArray, projects) => {
-  return indexArray.map((index) => {
-    return projects[index];
-  });
-};
-
 const SectionProjects = () => {
+  const [projects, setProjects] = useState([]);
   const router = useRouter();
   const route = router.route;
   const isHomepage = route === '/';
-  const IndexArray = [0, 1, 2, 4];
-  const homepageProjectIndexs = shuffle(IndexArray).slice(0, 3);
 
-  const projectArray = isHomepage
-    ? homepageProjects(homepageProjectIndexs, projects)
-    : projects;
+  useEffect(() => {
+    API.get(`/project?page=1&per_page=12`)
+      .then((res) => {
+        if (res?.data?.status === 'SUCCESS') {
+          setProjects(res?.data?.data);
+        } else {
+          // todo Muxin common error handling, function invocation
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
+
+  const realProjects = isHomepage ? getRandom(projects, 3) : projects;
 
   return (
     <Container
@@ -77,7 +82,7 @@ const SectionProjects = () => {
       </Typography>
       <Box marginTop={6}>
         <Grid container spacing={3} alignItems="stretch">
-          {projectArray.map((project, index) => {
+          {realProjects.map((project, index) => {
             return (
               <Grid
                 key={index}
@@ -95,10 +100,11 @@ const SectionProjects = () => {
                     paddingBottom: 4,
                     cursor: 'pointer',
                     overflow: 'visible',
+                    width: '100%',
                   }}
                   onClick={() => {
                     router.push({
-                      pathname: `/projects/${project.id}`,
+                      pathname: `/projects/${project.number}`,
                     });
                   }}
                 >
@@ -113,12 +119,15 @@ const SectionProjects = () => {
                         marginTop: '-15%',
                       }}
                     />
-                    <CornerIcon index={project.id} />
+                    <CornerIcon index={project.number} />
                   </Box>
                   <Typography
-                    sx={{ marginBottom: '18px', fontFamily: 'Avenir medium' }}
+                    sx={{
+                      marginBottom: '18px',
+                      fontFamily: 'Avenir medium',
+                    }}
                   >
-                    {project.title}
+                    {project.name}
                   </Typography>
                   <Box
                     marginX="20px"
@@ -127,13 +136,13 @@ const SectionProjects = () => {
                     flexWrap="wrap"
                     justifyContent="center"
                   >
-                    {project.type &&
-                      project.type.map((type, index) => {
+                    {project.tags &&
+                      project.tags.map((tag, index) => {
                         return (
                           <Chip
                             key={index}
                             size="small"
-                            label={type}
+                            label={tag}
                             variant="outlined"
                             sx={{
                               borderRadius: '4px',
@@ -143,17 +152,19 @@ const SectionProjects = () => {
                           />
                         );
                       })}
-                    <Chip
-                      size="small"
-                      label={project.status}
-                      variant="outlined"
-                      sx={{
-                        borderRadius: '4px',
-                        color: '#4DCC9E',
-                        borderColor: '#4DCC9E',
-                        fontSize: '12px',
-                      }}
-                    />
+                    {project.status && (
+                      <Chip
+                        size="small"
+                        label={project.status}
+                        variant="outlined"
+                        sx={{
+                          borderRadius: '4px',
+                          color: '#4DCC9E',
+                          borderColor: '#4DCC9E',
+                          fontSize: '12px',
+                        }}
+                      />
+                    )}
                   </Box>
                   <Typography
                     marginTop={1}
