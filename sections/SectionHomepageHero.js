@@ -2,8 +2,11 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import styled, { keyframes } from 'styled-components';
 import { Box, Typography, Link } from '@mui/material';
+
 import Button from '@/components/Button';
-import Container from '@/components/container';
+import Container from '@/components/Container';
+import CommunityLinkGroup from '@/components/CommunityLinkGroup';
+import ActivityNotification from '@/components/ActivityNotification';
 
 const textColorGradient = keyframes`
   0%{background-position:0% 50%}
@@ -13,9 +16,9 @@ const textColorGradient = keyframes`
 
 const HightlightText = styled.span`
   background-size: 400% 400%;
-  background-image: linear-gradient(to right, #3c7aff, #1eedd4);
+  background-image: linear-gradient(to right, #366eff, #23e5ff, #ff7fdb);
   -webkit-background-clip: text;
-  animation: ${textColorGradient} 3s ease infinite;
+  animation: ${textColorGradient} 10s ease infinite;
   color: transparent;
   font-size: 98px;
   line-height: 100px;
@@ -27,23 +30,14 @@ const SectionHomepageHero = () => {
 
   const Title = () => {
     return (
-      <Box>
+      <Box marginTop="112px">
         <Box display={{ lg: 'block', xs: 'none' }}>
-          <Typography variant="h1" lineHeight="100px" fontWeight="700">
-            LXDAO is an
-          </Typography>
+          <Typography variant="h1">LXDAO is an</Typography>
           <HightlightText>R&amp;D</HightlightText>
-          <Typography
-            variant="h1"
-            lineHeight="100px"
-            fontWeight="700"
-            display="inline"
-          >
+          <Typography variant="h1" display="inline">
             -focused DAO
           </Typography>
-          <Typography variant="h1" lineHeight="100px" fontWeight="700">
-            in Web3
-          </Typography>
+          <Typography variant="h1">in Web3</Typography>
         </Box>
       </Box>
     );
@@ -54,7 +48,7 @@ const SectionHomepageHero = () => {
       minHeight={{ md: '800px', xs: '660px' }}
       display="flex"
       flexDirection={{ lg: 'row', xs: 'column' }}
-      justifyContent="center"
+      justifyContent="flex-start"
       alignItems="center"
       textAlign="center"
       gap={{ lg: '120px', xs: '40px' }}
@@ -68,15 +62,15 @@ const SectionHomepageHero = () => {
       >
         <Title />
         <Box>
-          <Typography variant="body1" lineHeight="36px" color="#667085">
+          <Typography variant="subtitle1" lineHeight="36px" color="#667085">
             Our Vision & Consensus - The technologies, concepts and ideas of
             Web3
           </Typography>
-          <Typography varient="body1" lineHeight="36px" color="#667085">
+          <Typography variant="subtitle1" lineHeight="36px" color="#667085">
             will be used by a billion people in a decade.
           </Typography>
         </Box>
-        <Button variant="gradient" width="180px">
+        <Button variant="gradient" width="180px" marginBottom={2}>
           <Link
             href={`/joinus`}
             color="#ffffff"
@@ -87,20 +81,8 @@ const SectionHomepageHero = () => {
             JOIN US
           </Link>
         </Button>
-        <Box>
-          <Link>
-            <Box component={'img'} src={'/icons/twitter-circle.svg'} />
-          </Link>
-          <Link>
-            <Box component={'img'} src={'/icons/discord-circle.svg'} />
-          </Link>
-          <Link>
-            <Box component={'img'} src={'/icons/telegram-circle.svg'} />
-          </Link>
-          <Link>
-            <Box component={'img'} src={'/icons/forum-circle.svg'} />
-          </Link>
-        </Box>
+        <CommunityLinkGroup />
+        <ActivityNotification />
       </Box>
     </Container>
   );
