@@ -22,15 +22,37 @@ const getTheme = (mode) =>
           '"Segoe UI Emoji"',
           '"Segoe UI Symbol"',
         ].join(','),
-        button: {
-          textTransform: 'none',
-          fontWeight: 'medium',
-        },
-        body1: {
-          fontSize: '21px',
-        },
         h1: {
           fontSize: '98px',
+          lineHeight: 1.02,
+          fontWeight: 700,
+        },
+        h2: {
+          fontSize: '56px',
+        },
+        h3: {
+          fontSize: '42px',
+        },
+        h4: {
+          fontSize: '30px',
+        },
+        h5: {
+          fontSize: '28px',
+        },
+        h6: {
+          fontSize: '24px',
+        },
+        subtitle1: {
+          fontSize: '21px',
+        },
+        subtitle2: {
+          fontSize: '18px',
+        },
+        body1: {
+          fontSize: '16px',
+        },
+        body2: {
+          fontSize: '14px',
         },
       },
       zIndex: {
@@ -38,17 +60,6 @@ const getTheme = (mode) =>
         drawer: 1300,
       },
       components: {
-        MuiButton: {
-          styleOverrides: {
-            root: {
-              fontWeight: 400,
-              borderRadius: 5,
-              paddingTop: 5,
-              paddingBottom: 5,
-            },
-            containedSecondary: mode === 'light' ? { color: 'white' } : {},
-          },
-        },
         MuiInputBase: {
           styleOverrides: {
             root: {
