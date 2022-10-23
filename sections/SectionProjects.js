@@ -37,7 +37,7 @@ const CornerIcon = (props) => {
   return (
     <>
       <img
-        src="/projects/number-bg.png"
+        src="/images/projects/number-bg.png"
         className={classes.rect}
         width="75px"
         height="75px"
