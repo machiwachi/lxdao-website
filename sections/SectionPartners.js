@@ -6,7 +6,7 @@ import Container from '@/components/Container';
 const partnersData = [
   {
     name: 'NextDAO',
-    logo: '/icons/partners/nextdao-logo.svg',
+    logo: '/images/partners/nextdao-logo.svg',
     link: 'https://twitter.com/theNextDAO',
   },
 ];

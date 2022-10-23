@@ -42,7 +42,7 @@ const wagmiClient = createClient({
 const ConnectWalletButton = () => {
   const { address, isConnected, isDisconnected } = useAccount();
   const { disconnect } = useDisconnect();
-  const { data: signature, signMessage } = useSignMessage();
+  const { data: signature, signMessageAsync } = useSignMessage();
   const addressInfo = useRef({ address });
 
   useEffect(() => {
@@ -110,9 +110,9 @@ const ConnectWalletButton = () => {
         });
         disconnect();
       } else if (signatureMessage) {
-        signMessage({
-          message: signatureMessage,
-        });
+          await signMessageAsync({
+            message: signatureMessage,
+          });
       }
     } catch (err) {
       showMessage({
