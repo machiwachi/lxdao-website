@@ -13,6 +13,7 @@ import BuidlerContacts from '@/components/BuidlerContacts';
 import Button from '@/components/Button';
 
 import { convertIpfsGateway } from '@/utils/utility';
+import Button from '@/components/Button';
 
 export function BuidlerCard(props) {
   const record = props.record;
