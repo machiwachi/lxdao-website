@@ -8,6 +8,7 @@ import SectionWorkSteps from '@/sections/SectionWorkSteps';
 import SectionProjects from '@/sections/SectionProjects';
 import SectionBuidlers from '@/sections/SectionBuidlers';
 import SectionCoreTeam from '@/sections/SectionCoreTeam';
+import SectionActivities from '@/sections/SectionActivities';
 import SectionPartners from '@/sections/SectionPartners';
 
 import { scrollToSection } from '@/utils/utility';
@@ -30,6 +31,7 @@ export default function Home() {
       <SectionProjects />
       <SectionBuidlers />
       <SectionCoreTeam />
+      <SectionActivities />
       <SectionPartners />
     </Layout>
   );
