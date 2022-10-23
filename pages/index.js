@@ -7,7 +7,7 @@ import SectionMission from '@/sections/SectionMission';
 import SectionWorkSteps from '@/sections/SectionWorkSteps';
 import SectionProjects from '@/sections/SectionProjects';
 import SectionBuidlers from '@/sections/SectionBuidlers';
-import SectionCoreTeam from '@/sections/SectionCoreTeam';
+import SectionWorkingGroup from '@/sections/SectionWorkingGroup';
 import SectionActivities from '@/sections/SectionActivities';
 import SectionPartners from '@/sections/SectionPartners';
 
@@ -30,7 +30,7 @@ export default function Home() {
       <SectionWorkSteps />
       <SectionProjects />
       <SectionBuidlers />
-      <SectionCoreTeam />
+      <SectionWorkingGroup />
       <SectionActivities />
       <SectionPartners />
     </Layout>

@@ -6,8 +6,8 @@ const data = {
   name: 'My First NFT',
   description:
     'MyFirstNFT is a non-profit instructional project for Web3 newbies. Get a FREE NFT while learning about Web3...',
-  logo: '/projects/mfnft-logo.png',
-  banner: '/projects/mfnft-banner.png',
+  logo: '/images/projects/mfnft-logo.png',
+  banner: '/images/projects/mfnft-banner.png',
   buidlers: [
     {
       avatar:
