@@ -101,6 +101,7 @@ const SectionProjects = () => {
           alignItems: 'center',
           margin: '0 auto',
           marginTop: '48px',
+          cursor: 'pointer',
         }}
         onClick={() => {}}
       >
