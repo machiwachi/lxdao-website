@@ -89,3 +89,11 @@ export function convertIpfsGateway(ipfsUrl) {
   }
   return ipfsUrl;
 }
+
+// https://stackoverflow.com/questions/286141/remove-blank-attributes-from-an-object-in-javascript
+export function removeEmpty(obj) {
+  // eslint-disable-next-line no-unused-vars
+  return Object.fromEntries(
+    Object.entries(obj).filter(([_, v]) => v != null && v != '')
+  );
+}
