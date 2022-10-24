@@ -69,18 +69,6 @@ function ProfileForm(props) {
     }
 
     return (
-      <Button
-        variant="contained"
-        size="large"
-        onClick={handleSubmit((data) => {
-          console.log('data: ', data);
-        })}
-      >
-        Update Profile
-      </Button>
-    );
-
-    return (
       <Button variant="contained" size="large" onClick={handleSubmit(onSubmit)}>
         Update Profile
       </Button>
