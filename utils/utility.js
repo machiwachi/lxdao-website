@@ -78,3 +78,14 @@ export function getOpenSeaDomain() {
     ? 'opensea.io'
     : 'testnets.opensea.io';
 }
+
+export function convertIpfsGateway(ipfs) {
+  // https://cloudflare-ipfs.com/ipfs/bafkreid67qrfaq2yqacnsvpvfnetjocgy7kiuwu4jw4v23tc3yqgfgis2e
+  // to
+  // https://bafkreid67qrfaq2yqacnsvpvfnetjocgy7kiuwu4jw4v23tc3yqgfgis2e.ipfs.nftstorage.link/
+  if (ipfs.includes('nftstorage.link')) {
+    return ipfs;
+  }
+  const cid = ipfs.replace('https://cloudflare-ipfs.com/ipfs/', '');
+  return `https://${cid}.ipfs.nftstorage.link`;
+}

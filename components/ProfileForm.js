@@ -34,7 +34,7 @@ function ProfileForm(props) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      avatar: '',
+      avatar: '/images/placeholder.jpeg',
       name: '',
       description: '',
       skills: [],
@@ -67,6 +67,18 @@ function ProfileForm(props) {
         </Button>
       );
     }
+
+    return (
+      <Button
+        variant="contained"
+        size="large"
+        onClick={handleSubmit((data) => {
+          console.log('data: ', data);
+        })}
+      >
+        Update Profile
+      </Button>
+    );
 
     return (
       <Button variant="contained" size="large" onClick={handleSubmit(onSubmit)}>
