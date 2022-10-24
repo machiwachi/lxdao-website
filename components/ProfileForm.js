@@ -193,7 +193,13 @@ function ProfileForm(props) {
             return (
               <MultiSelect
                 value={value || []}
-                onChange={onChange}
+                onChange={(values) => {
+                  let lastValue = values.pop();
+                  if (lastValue === 'Others') {
+                    lastValue = window.prompt('Please input your interest');
+                  }
+                  onChange([...values, lastValue]);
+                }}
                 dropdown={interestNames}
               />
             );
