@@ -35,7 +35,7 @@ function ProfileForm(props) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      avatar: '/images/placeholder.jpeg',
+      avatar: '',
       name: '',
       description: '',
       skills: [],

@@ -7,7 +7,7 @@ import { convertIpfsGateway } from '../utils/utility';
 import API from '@/common/API';
 
 function Avatar(props) {
-  const [value, setValue] = useState(props.value);
+  const [value, setValue] = useState(props.value || '/images/placeholder.jpeg');
   const [uploading, setUploading] = useState(false);
   const [image, setImage] = useState();
 
