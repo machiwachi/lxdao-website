@@ -327,7 +327,12 @@ function BuidlerDetails(props) {
         }}
       >
         <Box marginRight={6}>
-          <Box width="150px" borderRadius="50%" overflow="hidden">
+          <Box
+            width="150px"
+            height="150px"
+            borderRadius="50%"
+            overflow="hidden"
+          >
             <img
               style={{ display: 'block', width: 150 }}
               src={
