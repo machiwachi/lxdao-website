@@ -18,7 +18,8 @@ import {
   ListItemText,
   InputLabel,
   FormControl,
-  FormHelperText,
+  CardContent,
+  Card,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useAccount } from 'wagmi';
@@ -275,10 +276,65 @@ const SectionProjectDetail = ({ projectId }) => {
       });
   };
 
+  const cardData = [
+    {
+      title: 'items',
+      url: '',
+      value: '1.0k',
+    },
+    {
+      title: 'items',
+      url: '',
+      value: '1.0k',
+    },
+    {
+      title: 'items',
+      url: '/icons/eth.svg',
+      value: '0.05',
+    },
+    {
+      title: 'items',
+      url: '/icons/eth.svg',
+      value: '300',
+    },
+  ];
+  const cardItem = (item, isRight) => {
+    return (
+      <Card
+        sx={{
+          minWidth: '180px',
+          height: '132px',
+          background: '#FFFFFF',
+          border: '0.5px solid #D0D5DD',
+          borderRadius: '6px',
+          marginRight: isRight ? 3 : 0,
+        }}
+      >
+        <CardContent>
+          <Typography textAlign="left" variant="body1">
+            {item.title}
+          </Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              height: '32px',
+            }}
+          >
+            <img src={item.url} style={{ height: '100%' }} />
+            <Typography sx={{ fontWeight: 600, fontSize: '32px' }}>
+              {item.value}
+            </Typography>
+          </Box>
+        </CardContent>
+      </Card>
+    );
+  };
   if (!project) return null;
   return (
     <Container
       paddingY={{ md: '96px', xs: 8 }}
+      // paddingX={{ md: 32, xs: 8 }}
       textAlign="center"
       id="Project-Detail-Section"
       maxWidth="1200px"
@@ -286,51 +342,62 @@ const SectionProjectDetail = ({ projectId }) => {
     >
       <Grid container spacing={4}>
         <Grid item xs={4} display={{ md: 'block', xs: 'none' }}>
-          <Link href={project?.links.website || ''} target="_blank">
-            <img
-              style={{
-                width: '100%',
-                boxShadow: '0px 4px 10px 3px rgba(0, 0, 0, 0.04)',
-              }}
-              src={project.logoLarge}
-            />
-          </Link>
-        </Grid>
-        <Grid item md={8} justify="flex-start">
-          <Stack spacing={3.5}>
-            <Box
-              display={{ md: 'none', xs: 'flex' }}
-              alignItems="flex-end"
-              gap="12px"
-            >
-              <Link href={project?.links.website || ''} target="_blank">
-                <img style={{ width: '50px' }} src={project.logoLarge} />
-              </Link>
-              <Link
-                href={project?.links.website || ''}
-                target="_blank"
-                sx={{ textDecoration: 'none' }}
-              >
-                <Typography variant="h5" align="left">
-                  {project.name}
-                </Typography>
-              </Link>
-            </Box>
+          <Box
+            sx={{
+              background: '#FFFFFF',
+              border: '0.5px solid #D0D5DD',
+              borderRadius: '6px',
+              width: '100%',
+              padding: 3,
+            }}
+          >
             <Link
               href={project?.links.website || ''}
               target="_blank"
-              sx={{ textDecoration: 'none' }}
+              sx={{ position: 'relative' }}
             >
+              <img
+                style={{
+                  width: '100%',
+                  boxShadow: '0px 4px 10px 3px rgba(0, 0, 0, 0.04)',
+                }}
+                src={project.logoLarge}
+              />
               <Typography
-                variant="h4"
-                align="left"
-                display={{ md: 'block', xs: 'none' }}
+                sx={{
+                  position: 'absolute',
+                  left: '1px',
+                  bottom: '4px',
+                  background: '#36AFF9',
+                  borderRadius: '2px',
+                  fontSize: '12px',
+                  lineHeight: '15px',
+                  color: '#fff',
+                }}
+                width={38}
+                height={16}
               >
-                {project.name}
+                {'#' + project.number}
               </Typography>
             </Link>
+            <Typography variant="h5">{project.name}</Typography>
+            <Box
+              sx={{
+                width: '100%',
+                height: '0px',
+                border: '0.5px solid #E5E5E5',
+              }}
+              marginTop={3}
+              marginBottom={3}
+            ></Box>
             <Typography align="left">{project.description}</Typography>
-            <Box align="left" display="flex" gap="5px" flexWrap="wrap">
+            <Box
+              align="left"
+              display="flex"
+              gap="5px"
+              flexWrap="wrap"
+              minHeight={'26px'}
+            >
               {project.type &&
                 project.type.map((type, index) => {
                   return (
@@ -368,179 +435,40 @@ const SectionProjectDetail = ({ projectId }) => {
                   );
                 })}
             </Box>
-            {project?.buidlersOnProject?.length > 0 && (
-              <Box align="left">
-                <LabelText label="Buidlers" />
-                <Stack direction="row" spacing={2}>
-                  {project.buidlersOnProject.map((buidler, index) => {
-                    if (buidler.status !== 'ACTIVE') {
-                      return null;
-                    }
-                    return (
-                      <Tooltip
-                        key={index}
-                        title={<BuidlerCard buidlerInfo={buidler} />}
-                        open={buidler.showTooltip}
-                        PopperProps={{
-                          disablePortal: true,
-                        }}
-                        onClose={() =>
-                          handleDisplayBuidlerTooltip(buidler, 'close')
-                        }
-                        classes={{ tooltip: classes.tooltip }}
-                      >
-                        <Box position="relative">
-                          <Link href={`/buidlers/${buidler?.buidler?.address}`}>
-                            <Avatar
-                              key={index}
-                              alt={buidler?.buidler?.name}
-                              src={buidler?.buidler?.avatar}
-                              sx={{
-                                cursor: 'pointer',
-                              }}
-                              onMouseOver={() =>
-                                handleDisplayBuidlerTooltip(buidler, 'open')
-                              }
-                            />
-                          </Link>
-
-                          {buidler?.projectRole.includes('Project Manager') && (
-                            <Box
-                              width="30px"
-                              height="12px"
-                              color="#ffffff"
-                              backgroundColor="rgba(41,117,223)"
-                              fontSize="8px"
-                              display="flex"
-                              alignItems="center"
-                              justifyContent="center"
-                              position="absolute"
-                              right="4px"
-                              bottom="-15px"
-                            >
-                              PM
-                            </Box>
-                          )}
-                        </Box>
-                      </Tooltip>
-                    );
-                  })}
-                </Stack>
-              </Box>
-            )}
-            {showInviteButton && (
-              <Stack direction="column" spacing={1} alignItems="flex-start">
-                <Typography>Invitate builder to join this project:</Typography>
-                <Box display="flex" gap="10px">
-                  <Autocomplete
-                    sx={{ width: '300px', height: '56px' }}
-                    options={activeBuidlerList.map((option) => option.name)}
-                    onChange={(e, data) => {
-                      setSelectedBuidler(data);
-                      if (data) {
-                        const cloneInviteBuidlerErrors = {
-                          ...inviteBuidlerErrors,
-                        };
-                        cloneInviteBuidlerErrors['buidler'].error = false;
-                        cloneInviteBuidlerErrors['buidler'].errorMsg = '';
-                        setInviteBuidlerErrors({
-                          ...inviteBuidlerErrors,
-                          ...cloneInviteBuidlerErrors,
-                        });
-                      }
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Search Buidler"
-                        InputProps={{
-                          ...params.InputProps,
-                          type: 'search',
-                        }}
-                        error={inviteBuidlerErrors['buidler'].error}
-                        helperText={inviteBuidlerErrors['buidler'].errorMsg}
-                      />
-                    )}
-                  />
-                  <FormControl
-                    sx={{ m: 1, width: 230, margin: 0 }}
-                    error={inviteBuidlerErrors['role'].error}
-                  >
-                    <InputLabel id="project-role-multiple-checkbox-label">
-                      Project Role
-                    </InputLabel>
-                    <Select
-                      sx={{ width: '230px', height: '56px' }}
-                      labelId="project-role-multiple-checkbox-label"
-                      id="project-role-multiple-checkbox"
-                      multiple
-                      error={inviteBuidlerErrors['role'].error}
-                      value={projectRoleValue}
-                      MenuProps={MenuProps}
-                      onChange={(event) => {
-                        setProjectRoleValue(event.target.value);
-                        if (event.target.value) {
-                          const cloneInviteBuidlerErrors = {
-                            ...inviteBuidlerErrors,
-                          };
-                          cloneInviteBuidlerErrors['role'].error = false;
-                          cloneInviteBuidlerErrors['role'].errorMsg = '';
-                          setInviteBuidlerErrors({
-                            ...inviteBuidlerErrors,
-                            ...cloneInviteBuidlerErrors,
-                          });
-                        }
-                      }}
-                      input={<OutlinedInput label="Project Role" />}
-                      renderValue={(selected) => selected.join(', ')}
-                    >
-                      {projectRoleList.map((role) => (
-                        <MenuItem key={role} value={role}>
-                          <Checkbox
-                            checked={projectRoleValue.indexOf(role) > -1}
-                          />
-                          <ListItemText primary={role} />
-                        </MenuItem>
-                      ))}
-                    </Select>
-                    <FormHelperText>
-                      {inviteBuidlerErrors['role'].errorMsg}
-                    </FormHelperText>
-                  </FormControl>
-                  <Button
-                    variant="gradient"
-                    onClick={handleInviteBuidler}
-                    height="56px"
-                  >
-                    Invite
-                  </Button>
-                </Box>
-              </Stack>
-            )}
-            {showAcceptButton && (
-              <Box display="flex">
-                <Button variant="gradient" onClick={handleAcceptInvitation}>
-                  Accept Invitation
-                </Button>
-              </Box>
-            )}
-            <Stack direction="row" spacing={8}>
+            <Box
+              sx={{
+                width: '100%',
+                height: '0px',
+                border: '0.5px solid #E5E5E5',
+              }}
+              marginBottom={3}
+              marginTop="26px"
+            ></Box>
+            <Stack direction="column" spacing={2} marginBottom={3}>
               {project.launchDate && (
-                <Box align="left">
+                <Box align="center" display={'flex'}>
                   <LabelText label="Launch Date" />
                   <Typography
-                    fontSize={{ md: '20px', xs: '18px' }}
+                    fontSize={{ md: '16px', xs: '14px' }}
                     color="#000000"
                   >
                     {format(new Date(project.launchDate), 'yyyy-MM-dd')}
                   </Typography>
                 </Box>
               )}
-              <Box align="left">
-                <LabelText label="Status" />
+              <Box align="center">
                 <Typography
-                  fontSize={{ md: '20px', xs: '18px' }}
-                  color="#000000"
+                  fontSize={{ md: '14px', xs: '12px' }}
+                  width="97px"
+                  height="23.92px"
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    textAlign: 'center',
+                    color: '#4DCC9E',
+                    background: 'rgba(77, 204, 158, 0.1)',
+                    display: 'block',
+                  }}
                 >
                   {PROJECT_STATUS[project.status]}
                 </Typography>
@@ -559,6 +487,7 @@ const SectionProjectDetail = ({ projectId }) => {
                 disableHoverListener
                 disableTouchListener
                 title="Make sure you are a LXDAO buidler and connect your wallet first."
+                marginTop={3}
               >
                 <Box display="flex" width="180px">
                   <Button
@@ -571,6 +500,45 @@ const SectionProjectDetail = ({ projectId }) => {
                 </Box>
               </Tooltip>
             )}
+          </Box>
+        </Grid>
+        <Grid item md={8} justify="flex-start">
+          <Stack spacing={3.5}>
+            <Box sx={{ display: 'flex' }} marginBottom={3}>
+              {cardData.map((card, i) =>
+                cardItem(card, i < cardData.length - 1)
+              )}
+            </Box>
+            <Box
+              sx={{
+                width: '100%',
+                height: '146px',
+                padding: '22px 32px',
+                background: '#FFFFFF',
+                border: '0.5px solid #D0D5DD',
+                borderRadius: '6px',
+              }}
+              marginBottom={3}
+            >
+              <Typography variant="body1" marginBottom={2}>
+                Buidlers
+              </Typography>
+              <Box justify="space-between" alignItems="center"></Box>
+            </Box>
+            <Box
+              sx={{
+                width: '100%',
+                height: 'auto',
+                padding: 4,
+                background: '#FFFFFF',
+                border: '0.5px solid #D0D5DD',
+                borderRadius: '6px',
+              }}
+            >
+              <Typography variant="body1" marginBottom={2}>
+                Forum
+              </Typography>
+            </Box>
           </Stack>
         </Grid>
       </Grid>
