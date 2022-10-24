@@ -87,7 +87,12 @@ function SkillsField(props) {
               dropdown={filteredSkillNames}
               value={''}
               onChange={(value) => {
-                createSkill('name', value);
+                let newValue = value;
+                if (value === 'Others') {
+                  newValue = prompt('Please enter the skill name');
+                  skillNames.push(newValue);
+                }
+                createSkill('name', newValue);
               }}
             ></Select>
           </Grid>
