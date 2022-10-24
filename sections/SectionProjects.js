@@ -8,47 +8,13 @@ import { getRandom } from '@/utils/utility';
 
 import Container from '@/components/Container';
 import Button from '@/components/Button';
-
-const CornerIcon = (props) => {
-  const useStyles = makeStyles({
-    rect: {
-      position: 'absolute',
-      left: '-6px',
-      top: '-6px',
-    },
-    desc: {
-      '&::before': {
-        display: 'inline-block',
-        content: `"No.${props.index}"`,
-        transform: 'rotateZ(-45deg)',
-        transformOrigin: 'bottom left',
-      },
-      position: 'absolute',
-      top: 30,
-      bottom: 0,
-      left: 15,
-      zIndex: 100,
-      color: '#fff',
-      fontSize: '14px',
-    },
-  });
-  const classes = useStyles();
-
-  return (
-    <>
-      <img
-        src="/images/projects/number-bg.png"
-        className={classes.rect}
-        width="75px"
-        height="75px"
-      />
-      <div className={classes.desc}></div>
-    </>
-  );
-};
+import DebouncedInput from '@/components/DebouncedInput';
+import ProjectCard from '@/components/ProjectCard';
 
 const SectionProjects = () => {
   const [projects, setProjects] = useState([]);
+  const [search, setSearch] = useState('');
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
   const route = router.route;
   const isHomepage = route === '/';
@@ -69,6 +35,38 @@ const SectionProjects = () => {
 
   const realProjects = isHomepage ? getRandom(projects, 3) : projects;
 
+  const searchList = async (search = '') => {
+    let query = `/project?`;
+    let params = [];
+    const trimmedSearch = search.trim();
+    if (trimmedSearch) {
+      params.push('search=' + trimmedSearch);
+    }
+    params.push('per_page=50');
+    query += params.join('&');
+
+    setLoading(true);
+    try {
+      const res = await API.get(query);
+      const result = res.data;
+      if (result.status !== 'SUCCESS') {
+        // error todo Muxin add common alert, wang teng design
+        return;
+      }
+      const records = result.data;
+
+      let tempList = [];
+      records.forEach((record) => {
+        tempList.push(record);
+      });
+
+      setList(tempList);
+    } catch (err) {
+      console.error(err);
+    }
+    setLoading(false);
+  };
+
   return (
     <Container
       paddingY={{ md: '96px', xs: 8 }}
@@ -78,8 +76,48 @@ const SectionProjects = () => {
     >
       <Typography variant="h4">Projects</Typography>
       <Typography fontSize="20px" marginTop={2}>
-        We buidl good, valuable, and useful things.
+        We buidl good, valuable, and useful things.If you have a perfect idea
+        want to become true, please write a proposal first.
       </Typography>
+      <Box
+        sx={{
+          width: '200px',
+          height: '48px',
+          background:
+            'linear-gradient(89.57deg, #2975DF 0.27%, #3ACFE3 105.82%)',
+          /* Shadow/xs */
+          boxShadow: '0px 1px 2px rgba(16, 24, 40, 0.05)',
+          borderRadius: '6px',
+          fontWeight: 500,
+          fontSize: '16px',
+          lineHeight: '24px',
+          /* identical to box height, or 150% */
+          textTransform: 'capitalize',
+          /* Base/White */
+          color: '#FFFFFF',
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          margin: '0 auto',
+          marginTop: '48px',
+        }}
+        onClick={() => {}}
+      >
+        buld your OWN
+      </Box>
+      <Box marginTop={8}>
+        <DebouncedInput
+          value={search}
+          onChange={(value) => {
+            setSearch(value);
+            searchList(value);
+          }}
+          label="Search"
+          placeholder="Search buidlers"
+          sx={{ width: '389px', height: '54px' }}
+        />
+      </Box>
       <Box marginTop={6}>
         <Grid container spacing={3} alignItems="stretch">
           {realProjects.map((project, index) => {
@@ -93,88 +131,7 @@ const SectionProjects = () => {
                 display="flex"
                 alignItems="stretch"
               >
-                <Card
-                  sx={{
-                    position: 'relative',
-                    borderRadius: 4,
-                    paddingBottom: 4,
-                    cursor: 'pointer',
-                    overflow: 'visible',
-                    width: '100%',
-                  }}
-                  onClick={() => {
-                    router.push({
-                      pathname: `/projects/${project.number}`,
-                    });
-                  }}
-                >
-                  <Box>
-                    <img style={{ width: '100%' }} src={project.banner} />
-                    <img
-                      src={project.logo}
-                      style={{
-                        width: '30%',
-                        height: '30%',
-                        marign: '0 auto',
-                        marginTop: '-15%',
-                      }}
-                    />
-                    <CornerIcon index={project.number} />
-                  </Box>
-                  <Typography
-                    sx={{
-                      marginBottom: '18px',
-                      fontFamily: 'Avenir medium',
-                    }}
-                  >
-                    {project.name}
-                  </Typography>
-                  <Box
-                    marginX="20px"
-                    display="flex"
-                    gap="5px"
-                    flexWrap="wrap"
-                    justifyContent="center"
-                  >
-                    {project.tags &&
-                      project.tags.map((tag, index) => {
-                        return (
-                          <Chip
-                            key={index}
-                            size="small"
-                            label={tag}
-                            variant="outlined"
-                            sx={{
-                              borderRadius: '4px',
-                              borderColor: '#000000',
-                              fontSize: '12px',
-                            }}
-                          />
-                        );
-                      })}
-                    {project.status && (
-                      <Chip
-                        size="small"
-                        label={project.status}
-                        variant="outlined"
-                        sx={{
-                          borderRadius: '4px',
-                          color: '#4DCC9E',
-                          borderColor: '#4DCC9E',
-                          fontSize: '12px',
-                        }}
-                      />
-                    )}
-                  </Box>
-                  <Typography
-                    marginTop={1}
-                    marginX={2.5}
-                    color="#666f85"
-                    textAlign="left"
-                  >
-                    {project.description}
-                  </Typography>
-                </Card>
+                <ProjectCard project={project} index={index} />
               </Grid>
             );
           })}
