@@ -79,13 +79,13 @@ export function getOpenSeaDomain() {
     : 'testnets.opensea.io';
 }
 
-export function convertIpfsGateway(ipfs) {
+export function convertIpfsGateway(ipfsUrl) {
   // https://cloudflare-ipfs.com/ipfs/bafkreid67qrfaq2yqacnsvpvfnetjocgy7kiuwu4jw4v23tc3yqgfgis2e
   // to
   // https://bafkreid67qrfaq2yqacnsvpvfnetjocgy7kiuwu4jw4v23tc3yqgfgis2e.ipfs.nftstorage.link/
-  if (ipfs.includes('nftstorage.link')) {
-    return ipfs;
+  if (ipfsUrl && ipfsUrl.includes('cloudflare-ipfs')) {
+    const cid = ipfsUrl.replace('https://cloudflare-ipfs.com/ipfs/', '');
+    return `https://${cid}.ipfs.nftstorage.link`;
   }
-  const cid = ipfs.replace('https://cloudflare-ipfs.com/ipfs/', '');
-  return `https://${cid}.ipfs.nftstorage.link`;
+  return ipfsUrl;
 }

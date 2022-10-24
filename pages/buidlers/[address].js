@@ -34,6 +34,7 @@ import BuidlerContacts from '@/components/BuidlerContacts';
 import Tag from '@/components/Tag';
 import showMessage from '@/components/showMessage';
 import Project from '@/components/Project';
+import { convertIpfsGateway } from '@/utils/utility';
 
 function totalLXPoints(record) {
   if (!record.lxPoints) {
@@ -329,7 +330,9 @@ function BuidlerDetails(props) {
           <Box width="150px" borderRadius="50%" overflow="hidden">
             <img
               style={{ display: 'block', width: 150 }}
-              src={record.avatar || '/images/placeholder.jpeg'}
+              src={
+                convertIpfsGateway(record.avatar) || '/images/placeholder.jpeg'
+              }
               alt=""
             />
           </Box>
