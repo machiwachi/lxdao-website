@@ -88,15 +88,13 @@ export function BuidlerCard(props) {
         </Box>
 
         <Box display="flex" flexWrap="wrap" marginTop={2}>
-          {record.role.map((item, index) => {
-            return <Tag key={item} index={index} text={item}></Tag>;
+          {record.role.map((item) => {
+            return <Tag key={item} text={item}></Tag>;
           })}
         </Box>
-        {skills.length === 0 ? (
-          ''
-        ) : (
+        {skills.length > 0 && (
           <Box marginTop={2}>
-            <Typography fontWeight="bold" marginBottom={2} variant="body1">
+            <Typography fontWeight="600" marginBottom={2} variant="body1">
               Skills
             </Typography>
             <Box display="flex" flexWrap="wrap">
@@ -105,11 +103,9 @@ export function BuidlerCard(props) {
           </Box>
         )}
         {record.projects.filter((project) => project.status !== 'PENDING')
-          .length === 0 ? (
-          ''
-        ) : (
+          .length > 0 && (
           <Box marginTop={2}>
-            <Typography fontWeight="bold" marginBottom={2} variant="body1">
+            <Typography fontWeight="600" marginBottom={2} variant="body1">
               Projects
             </Typography>
             <Box display="flex">
