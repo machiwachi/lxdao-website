@@ -115,7 +115,7 @@ const SectionProjects = () => {
             searchList(value);
           }}
           label="Search"
-          placeholder="Search buidlers"
+          placeholder="Search project"
           sx={{ width: '389px', height: '54px' }}
         />
       </Box>
