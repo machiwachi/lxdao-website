@@ -126,6 +126,7 @@ export default function Home() {
       params.push('role=' + trimmedRole);
     }
     params.push('per_page=50');
+    params.push('status=ACTIVE');
     query += params.join('&');
 
     setLoading(true);
