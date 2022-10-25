@@ -13,6 +13,7 @@ import {
   DialogTitle,
   DialogContent,
   Alert,
+  Divider,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useRouter } from 'next/router';
@@ -35,6 +36,7 @@ import Tag from '@/components/Tag';
 import showMessage from '@/components/showMessage';
 import Project from '@/components/Project';
 import { convertIpfsGateway } from '@/utils/utility';
+import LXButton from '@/components/Button';
 
 function totalLXPoints(record) {
   if (!record.lxPoints) {
@@ -118,7 +120,6 @@ function BuidlerDetails(props) {
 
   const router = useRouter();
 
-  const [details, setDetails] = useState('buidlerCard');
   const [visible, setVisible] = useState(false);
   const [minting, setMinting] = useState(false);
   const [updating, setUpdating] = useState(false);
@@ -241,6 +242,10 @@ function BuidlerDetails(props) {
   const buddies = record.buddies.map((buddy) => buddy.address);
   const isBuddyChecking = buddies.includes(address);
 
+  const createdAt =
+    record.createdAt &&
+    new Date(Date.parse(record.createdAt)).toDateString().split(' ');
+
   return (
     <Container>
       {address === record.address &&
@@ -293,7 +298,7 @@ function BuidlerDetails(props) {
         )}
       {address === record.address && record.status === 'PENDING' && (
         <Box marginTop={4}>
-          <Alert severity="info">
+          <Alert severity="success">
             Welcome LXDAO. Please fill up the form first, and your Buddy will
             enable your Mint access on the Onboarding Session. Thanks.
           </Alert>
@@ -314,10 +319,13 @@ function BuidlerDetails(props) {
               onClick={() => {
                 mint();
               }}
-              variant="outlined"
             >
               {minting ? 'Minting Builder Card...' : 'Mint Builder Card'}
-            </Button>
+            </LXButton>
+          </Box>
+          <Box display="flex" justifyContent="center">
+            We will arrange on-boarding as soon as possible and help you mint
+            buidler card
           </Box>
         </Box>
       )}
@@ -425,130 +433,160 @@ function BuidlerDetails(props) {
         </Box>
         <Box flex="1 1 auto">
           <Box
-            marginTop={4}
-            marginBottom={6}
+            border="0.5px solid #D0D5DD"
+            borderRadius="6px"
             display="flex"
-            flexWrap="wrap"
-            alignItems="flex-start"
+            padding={3}
           >
-            <Box flex="1 1 40%" marginBottom={2}>
-              <Typography variant="h4" fontWeight="bold" marginBottom={2}>
+            <Box>
+              <Box
+                width="252px"
+                border="0.5px solid #D0D5DD"
+                borderRadius="6px"
+                overflow="hidden"
+              >
+                <img
+                  style={{ display: 'block', width: 252 }}
+                  src={record.avatar || '/images/placeholder.jpeg'}
+                  alt=""
+                />
+              </Box>
+              <Typography
+                variant="h5"
+                fontWeight="500"
+                textAlign="center"
+                marginTop={3}
+                marginBottom={1}
+              >
                 {record.name}
               </Typography>
-              <Typography>{record.description}</Typography>
-            </Box>
-            <Box
-              flex="1 1 auto"
-              display="flex"
-              marginTop={2}
-              flexWrap="wrap"
-              flexDirection={{ xs: 'column', md: 'row' }}
-            >
-              <Box
-                marginRight={4}
-                paddingRight={4}
-                marginBottom={4}
-                borderRight={{
-                  md: '1px solid #D0D5DD',
-                }}
-                marginLeft={{ xs: 0, md: 'auto' }}
-              >
-                <BuidlerContacts space={4} contacts={record.contacts} />
-              </Box>
-              <Box>
+              <Box display="flex" justifyContent="center">
                 <CopyText
+                  textAlign="center"
                   copyTextOriginal={record.address}
                   copyText={formatAddress(record.address)}
                 />
               </Box>
+              <Divider
+                sx={{
+                  marginTop: '24px',
+                  borderColor: '#E5E5E5',
+                }}
+              />
+              {record.description && (
+                <Box marginTop={3}>
+                  <Typography>{record.description}</Typography>
+                </Box>
+              )}
+              {record.role?.length > 0 && (
+                <Grid marginTop={3} item>
+                  <Box display="flex" flexWrap="wrap">
+                    {record.role.map((item) => {
+                      return <Tag key={item} text={item} />;
+                    })}
+                  </Box>
+                </Grid>
+              )}
+              {record.contacts && (
+                <Box
+                  marginTop={2}
+                  display="flex"
+                  flexWrap="wrap"
+                  alignItems="flex-start"
+                  width="176px"
+                >
+                  <BuidlerContacts
+                    sx={{ flexWrap: 'wrap' }}
+                    contacts={record.contacts}
+                  />
+                </Box>
+              )}
+              {record.role?.length > 0 &&
+                record.description &&
+                record.contacts && (
+                  <Divider
+                    sx={{
+                      marginTop: '24px',
+                      borderColor: '#E5E5E5',
+                    }}
+                  />
+                )}
+              {createdAt.length === 4 && (
+                <Box paddingTop={3} display="flex" justifyContent="center">
+                  <Typography>{`Joined ${createdAt[1]} ${createdAt[3]}`}</Typography>
+                </Box>
+              )}
+              <Divider
+                sx={{
+                  marginTop: '24px',
+                  borderColor: '#E5E5E5',
+                }}
+              />
+              <Box textAlign="center" marginTop={4}>
+                {address === record.address ? (
+                  <Button
+                    onClick={() => {
+                      setVisible(true);
+                    }}
+                    size="small"
+                    variant="outlined"
+                  >
+                    Edit
+                  </Button>
+                ) : null}
+                {address === record.address &&
+                record.role.includes('Onboarding Committee') ? (
+                  <Button
+                    style={{
+                      marginLeft: 8,
+                    }}
+                    onClick={async () => {
+                      const newAddress = window.prompt('New joiner address');
+                      const data = await API.post(`/buidler`, {
+                        address: newAddress,
+                      });
+                      const result = data?.data;
+                      if (result.status === 'SUCCESS') {
+                        alert('created!');
+                      }
+                    }}
+                    size="small"
+                    variant="outlined"
+                  >
+                    Onboarding
+                  </Button>
+                ) : null}
+              </Box>
             </Box>
           </Box>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6} md={4}>
-              <Typography fontWeight="bold" variant="h6" marginBottom={2}>
-                Role
-              </Typography>
-              <Box display="flex" flexWrap="wrap">
-                {record.role.map((item) => {
-                  return <Tag key={item} text={item} />;
-                })}
-              </Box>
-            </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <Typography fontWeight="bold" variant="h6" marginBottom={2}>
-                Skills
-              </Typography>
-              <Box display="flex" flexWrap="wrap">
-                <Skills skills={record.skills} />
-              </Box>
-            </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <Typography fontWeight="bold" variant="h6" marginBottom={2}>
-                Interests
-              </Typography>
-              <Box display="flex" flexWrap="wrap">
-                {record.interests.map((item) => {
-                  return <Tag key={item} text={item} />;
-                })}
-              </Box>
-            </Grid>
-          </Grid>
-        </Box>
-      </Box>
-      <Box marginTop={10}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs value="project">
-            <Tab
-              label={`Project ${
-                record.projects.filter((project) => project.status === 'ACTIVE')
-                  .length
-              }`}
-              value="project"
-            />
-          </Tabs>
-        </Box>
-        <Box display="flex" marginTop={4}>
-          {projects.length ? (
-            <Grid container spacing={4}>
-              {projects.map((project) => {
-                return (
-                  <Grid item xs={12} md={6} key={project.id}>
-                    <Project data={project} />
-                  </Grid>
-                );
-              })}
-            </Grid>
-          ) : (
-            <Box
-              display="flex"
-              flexDirection="column"
-              width="100%"
-              alignItems="center"
-              paddingY={4}
-            >
-              <img width="80px" src="/icons/no-records.png" />
-              <Typography marginTop={4} color="#D0D5DD" fontSize="16px">
-                You have not participated in any project
-              </Typography>
-            </Box>
-          )}
-        </Box>
-      </Box>
-      <Box marginTop={10}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs
-            value={details}
-            onChange={(event, value) => {
-              setDetails(value);
-            }}
+          <Box
+            marginTop={3}
+            border="0.5px solid #D0D5DD"
+            borderRadius="6px"
+            display="flex"
+            padding="20px 24px"
           >
-            <Tab label="Buidler Card" value="buidlerCard" />
-            <Tab label="My LXPoints" value="lxPoints" />
-          </Tabs>
-        </Box>
-        <Box paddingY={2}>
-          {details === 'buidlerCard' && (
-            <Box>
+            <Box display="flex" alignItems="center">
+              Buddy
+            </Box>
+            {record.buddies?.length > 0 && (
+              <Box
+                width="76.95px"
+                height="80px"
+                borderRadius="6px"
+                overflow="hidden"
+              >
+                <img
+                  style={{ display: 'block', width: 80 }}
+                  src={record.buddies[0].avatar || '/images/placeholder.jpeg'}
+                  alt=""
+                />
+              </Box>
+            )}
+          </Box>
+
+          {record.status === 'ACTIVE' ? (
+            <Box marginTop={2}>
               <img
                 crossOrigin="anonymous"
                 style={{ display: 'block', width: 300 }}
@@ -556,37 +594,103 @@ function BuidlerDetails(props) {
                 alt=""
               />
             </Box>
-          )}
-          {details === 'lxPoints' && (
-            <Box
-              display="flex"
-              marginTop={4}
-              marginBottom={4}
-              flexDirection={{
-                xs: 'column',
-                md: 'row',
-              }}
-            >
-              <Box marginRight={3} marginBottom={3}>
+          ) : null}
+        </Box>
+        {/* right senction */}
+        <Box flex="1" width="calc(100% - 29px)" marginLeft="29px">
+          <Box
+            display="flex"
+            marginTop={4}
+            marginBottom={4}
+            flexDirection={{
+              xs: 'column',
+              md: 'row',
+            }}
+          >
+            <Box marginRight={3} marginBottom={3}>
+              <Typography fontWeight="bold" variant="h6">
+                Accumulated LXPoints
+              </Typography>
+              <Typography marginTop={2} fontSize="48px" fontWeight="bold">
+                {totalLXPoints(record)}
+              </Typography>
+            </Box>
+            {record.lxPoints && record.lxPoints.length > 0 && (
+              <Box>
                 <Typography fontWeight="bold" variant="h6">
-                  Accumulated LXPoints
+                  Reason
                 </Typography>
-                <Typography marginTop={2} fontSize="48px" fontWeight="bold">
-                  {totalLXPoints(record)}
-                </Typography>
+                <LXPointsTimeline points={record.lxPoints} />
               </Box>
-              {record.lxPoints && record.lxPoints.length > 0 && (
-                <Box>
-                  <Typography fontWeight="bold" variant="h6">
-                    Reason
+            )}
+          </Box>
+
+          <Box flex="1 1 auto">
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6} md={4}>
+                <Typography fontWeight="bold" variant="h6" marginBottom={2}>
+                  Skills
+                </Typography>
+                <Box display="flex" flexWrap="wrap">
+                  <Skills skills={record.skills} />
+                </Box>
+              </Grid>
+              <Grid item xs={12} sm={6} md={4}>
+                <Typography fontWeight="bold" variant="h6" marginBottom={2}>
+                  Interests
+                </Typography>
+                <Box display="flex" flexWrap="wrap">
+                  {record.interests.map((item) => {
+                    return <Tag key={item} text={item} />;
+                  })}
+                </Box>
+              </Grid>
+            </Grid>
+          </Box>
+
+          <Box marginTop={10}>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+              <Tabs value="project">
+                <Tab
+                  label={`Project ${
+                    record.projects.filter(
+                      (project) => project.status === 'ACTIVE'
+                    ).length
+                  }`}
+                  value="project"
+                />
+              </Tabs>
+            </Box>
+            <Box display="flex" marginTop={4}>
+              {projects.length ? (
+                <Grid container spacing={4}>
+                  {projects.map((project) => {
+                    return (
+                      <Grid item xs={12} md={6} key={project.id}>
+                        <Project data={project} />
+                      </Grid>
+                    );
+                  })}
+                </Grid>
+              ) : (
+                <Box
+                  display="flex"
+                  flexDirection="column"
+                  width="100%"
+                  alignItems="center"
+                  paddingY={4}
+                >
+                  <img width="80px" src="/icons/no-records.png" />
+                  <Typography marginTop={4} color="#D0D5DD" fontSize="16px">
+                    You have not participated in any project
                   </Typography>
-                  <LXPointsTimeline points={record.lxPoints} />
                 </Box>
               )}
             </Box>
-          )}
+          </Box>
         </Box>
       </Box>
+
       <Dialog
         fullWidth={true}
         maxWidth={'sm'}

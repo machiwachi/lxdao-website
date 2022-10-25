@@ -70,7 +70,7 @@ export function BuidlerCard(props) {
             >
               {record.name}
             </Typography>
-            <Box width="36px" height="36px">
+            <Box height="36px">
               <BuidlerContacts contacts={record.contacts} />
             </Box>
           </Box>
