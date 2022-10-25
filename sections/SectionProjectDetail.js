@@ -6,18 +6,8 @@ import {
   Grid,
   Chip,
   Stack,
-  Avatar,
   Tooltip,
-  Autocomplete,
-  TextField,
   Link,
-  MenuItem,
-  Select,
-  Checkbox,
-  OutlinedInput,
-  ListItemText,
-  InputLabel,
-  FormControl,
   CardContent,
   Card,
 } from '@mui/material';
@@ -32,6 +22,8 @@ import Button from '@/components/Button';
 import Container from '@/components/Container';
 import BuidlerCard from '@/components/BuidlerCard';
 import Dialog from '@/components/Dialog';
+import DebouncedInput from '@/components/DebouncedInput';
+import SingleSelect from '@/components/Select';
 
 const useStyles = makeStyles({
   tooltip: {
@@ -51,6 +43,10 @@ const SectionProjectDetail = ({ projectId }) => {
   const [showJoinButton, setShowJoinButton] = useState(true);
   const [showInviteButton, setShowInviteButton] = useState(false);
   const [showAcceptButton, setShowAcceptButton] = useState(false);
+  const [role, setRole] = useState('');
+  const [search, setSearch] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [isPM, setIsPM] = useState(true);
   const [currentBuidlerOnProjectInfo, setCurrentBuidlerOnProjectInfo] =
     useState({ id: null, ipfsURI: '' });
   const [projectRoleValue, setProjectRoleValue] = useState([]);
@@ -84,6 +80,14 @@ const SectionProjectDetail = ({ projectId }) => {
     'Operation',
   ];
 
+  const roleNames = [
+    'All',
+    'Buidler',
+    'Core',
+    'Project Manager',
+    'Investor',
+    'Onboarding Committee',
+  ];
   const useAlert = () => useContext(AlertContext);
   const { setAlert } = useAlert();
   const { address } = useAccount();
@@ -330,6 +334,37 @@ const SectionProjectDetail = ({ projectId }) => {
       </Card>
     );
   };
+  const searchList = async (search = '') => {
+    let query = `/buidler?`;
+    let params = [];
+    const trimmedSearch = search.trim();
+    if (trimmedSearch) {
+      params.push('search=' + trimmedSearch);
+    }
+    params.push('per_page=50');
+    query += params.join('&');
+
+    setLoading(true);
+    try {
+      const res = await API.get(query);
+      const result = res.data;
+      if (result.status !== 'SUCCESS') {
+        // error todo Muxin add common alert, wang teng design
+        return;
+      }
+      const records = result.data;
+
+      let tempList = [];
+      records.forEach((record) => {
+        tempList.push(record);
+      });
+
+      setList(tempList);
+    } catch (err) {
+      console.error(err);
+    }
+    setLoading(false);
+  };
   if (!project) return null;
   return (
     <Container
@@ -446,11 +481,12 @@ const SectionProjectDetail = ({ projectId }) => {
             ></Box>
             <Stack direction="column" spacing={2} marginBottom={3}>
               {project.launchDate && (
-                <Box align="center" display={'flex'}>
+                <Box display="flex" justifyContent="center">
                   <LabelText label="Launch Date" />
                   <Typography
                     fontSize={{ md: '16px', xs: '14px' }}
                     color="#000000"
+                    marginLeft={2}
                   >
                     {format(new Date(project.launchDate), 'yyyy-MM-dd')}
                   </Typography>
@@ -489,7 +525,7 @@ const SectionProjectDetail = ({ projectId }) => {
                 title="Make sure you are a LXDAO buidler and connect your wallet first."
                 marginTop={3}
               >
-                <Box display="flex" width="180px">
+                <Box display="flex" width="180px" margin="auto">
                   <Button
                     width="100%"
                     variant="gradient"
@@ -512,7 +548,7 @@ const SectionProjectDetail = ({ projectId }) => {
             <Box
               sx={{
                 width: '100%',
-                height: '146px',
+                minHeight: '146px',
                 padding: '22px 32px',
                 background: '#FFFFFF',
                 border: '0.5px solid #D0D5DD',
@@ -523,7 +559,84 @@ const SectionProjectDetail = ({ projectId }) => {
               <Typography variant="body1" marginBottom={2}>
                 Buidlers
               </Typography>
-              <Box justify="space-between" alignItems="center"></Box>
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+              >
+                <Box display="flex">
+                  <Box
+                    width="60px"
+                    height="60px"
+                    marginRight="10px"
+                    position="relative"
+                    sx={{ border: '0.5px solid #D0D5DD', borderRadius: '2px' }}
+                  >
+                    <Typography
+                      position="absolute"
+                      sx={{
+                        left: 0,
+                        top: 0,
+                        fontSize: '12px',
+                        lineHeight: '15px',
+                        color: '#fff',
+                        background: '#36AFF9',
+                        width: '30px',
+                      }}
+                    >
+                      PM
+                    </Typography>
+                  </Box>
+                  <Box
+                    width="60px"
+                    height="60px"
+                    marginRight="10px"
+                    position="relative"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    sx={{
+                      border: '0.5px solid #D0D5DD',
+                      borderRadius: '2px',
+                      color: '#D0D5DD',
+                    }}
+                  >
+                    <img src="/icons/add.svg" />
+                  </Box>
+                </Box>
+                <Button variant="gradient">Accept Invitation</Button>
+              </Box>
+              {isPM && (
+                <Box marginTop={3} maxWidth="500px">
+                  <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                      <DebouncedInput
+                        value={search}
+                        onChange={(value) => {
+                          setSearch(value);
+                          searchList(value, role);
+                        }}
+                        label="Search"
+                        placeholder="Search buidlers"
+                      />
+                    </Grid>
+                    <Grid item xs={3}>
+                      <SingleSelect
+                        value={role}
+                        label="Role"
+                        dropdown={roleNames}
+                        onChange={(value) => {
+                          setRole(value);
+                          searchList(search, value);
+                        }}
+                      />
+                    </Grid>
+                    <Grid item xs={3}>
+                      <Button variant="gradient">invite</Button>
+                    </Grid>
+                  </Grid>
+                </Box>
+              )}
             </Box>
             <Box
               sx={{
@@ -538,6 +651,74 @@ const SectionProjectDetail = ({ projectId }) => {
               <Typography variant="body1" marginBottom={2}>
                 Forum
               </Typography>
+              <Box>
+                <Box
+                  sx={{
+                    padding: '22px 23px',
+                    width: '100%',
+                    height: '88px',
+                    background: '#FFFFFF',
+                    border: '0.5px solid #D0D5DD',
+                    borderRadius: '6px',
+                  }}
+                  marginBottom={2}
+                  display="flex"
+                  justifyContent="space-between"
+                >
+                  <Box>
+                    <Typography variant="body1" align="left" fontWeight={600}>
+                      About the 000 GCLX category
+                    </Typography>
+                    <Box display="flex" alignItems="center">
+                      <Box display="flex" gap="3px" marginRight={2}>
+                        <Typography variant="body2" marginRight={0.5}>
+                          Views
+                        </Typography>
+                        <Typography color="#36AFF9" variant="body2">
+                          18
+                        </Typography>
+                      </Box>
+                      <Box display="flex" gap="3px" marginRight={2}>
+                        <Typography variant="body2" marginRight={0.5}>
+                          Replies{' '}
+                        </Typography>
+                        <Typography color="#36AFF9" variant="body2">
+                          0
+                        </Typography>
+                      </Box>
+                      <Box display="flex" gap="3px" marginRight={2}>
+                        <Typography variant="body2" marginRight={0.5}>
+                          Activity{' '}
+                        </Typography>
+                        <Typography color="#36AFF9" variant="body2">
+                          12d
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </Box>
+                  <Typography color="#36AFF9" fontSize="21px" fontWeight={600}>
+                    →
+                  </Typography>
+                </Box>
+              </Box>
+              <Box
+                width="200px"
+                height="48px"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                margin="auto"
+                fontWeight={500}
+                sx={{
+                  background: '#FFFFFF',
+                  border: '1px solid #D0D5DD',
+                  /* Shadow/xs */
+                  boxShadow: '0px 1px 2px rgba(16, 24, 40, 0.05)',
+                  borderRadius: '6px',
+                }}
+              >
+                View More
+              </Box>
             </Box>
           </Stack>
         </Grid>
@@ -555,6 +736,7 @@ const SectionProjectDetail = ({ projectId }) => {
           </Box>
         }
         confirmText="OK"
+        variant="gradient"
         handleClose={() => {
           setOpenJoinDialog(false);
         }}
