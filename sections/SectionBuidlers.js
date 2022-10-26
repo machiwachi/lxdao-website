@@ -1,15 +1,106 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { Grid, Box, Typography, Link } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { Box, Typography, Link } from '@mui/material';
+
+import API from '@/common/API';
 
 import Container from '@/components/Container';
 import Button from '@/components/Button';
-import { BuidlerCard } from '@/pages/buidlers';
-import API from '@/common/API';
-import { getRandom } from '@/utils/utility';
+import StyledTooltip from '@/components/StyledToolTip';
+import Tag from '@/components/Tag';
+
+const BudilerTooltip = ({ buidler, ...rest }) => {
+  console.log('buidler: ', buidler);
+  const BuidlerDetails = ({ name, description, address, role, skills }) => {
+    return (
+      <Box>
+        <Typography
+          color="#000000"
+          variant="h5"
+          lineHeight="24px"
+          fontWeight={500}
+          marginBottom={3}
+        >
+          {name}
+        </Typography>
+        <Typography
+          color="#666F85"
+          variant="body1"
+          lineHeight="24px"
+          fontWeight={400}
+          marginBottom="17px"
+        >
+          {description}
+        </Typography>
+        {role.length && (
+          <Box display="flex" flexWrap="wrap" marginBottom="25px">
+            {role.map((roleItem, index) => {
+              return <Tag key={index} text={roleItem} />;
+            })}
+          </Box>
+        )}
+        {skills.length && (
+          <>
+            <Typography
+              variant="body1"
+              color="#101828"
+              lineHeight="24px"
+              fontWeight={500}
+              marginBottom="17px"
+            >
+              Skills
+            </Typography>
+            <Box display="flex" flexWrap="wrap">
+              {role.map((roleItem, index) => {
+                return <Tag key={index} text={roleItem} />;
+              })}
+            </Box>
+          </>
+        )}
+        <Link href={`/buidlers/${address}`} sx={{ textDecoration: 'none' }}>
+          <Typography
+            color="#101828"
+            variant="body1"
+            lineHeight="24px"
+            fontWeight={500}
+            textAlign="right"
+          >
+            More ->
+          </Typography>
+        </Link>
+      </Box>
+    );
+  };
+
+  return (
+    <StyledTooltip
+      title={<BuidlerDetails {...buidler} />}
+      placement="bottom-start"
+    >
+      <Box {...rest} width="180px" height="180px">
+        <Link
+          href={`/buidlers/${buidler.address}`}
+          target="_blank"
+          sx={{
+            textDecoration: 'none',
+          }}
+        >
+          <Box
+            component="img"
+            src={buidler.avatar || '/images/placeholder.jpeg'}
+            width="180px"
+            height="180px"
+          />
+        </Link>
+      </Box>
+    </StyledTooltip>
+  );
+};
 
 const SectionBuidlers = () => {
   const [buidlers, setBuidlers] = useState([]);
+  const [activeBuidlerIndex, setActiveBuidlerIndex] = useState(null);
   const router = useRouter();
 
   useEffect(async () => {
@@ -20,59 +111,50 @@ const SectionBuidlers = () => {
         // error todo Muxin add common alert, wang teng design
         return;
       }
-      const records = result?.data;
-      setBuidlers(getRandom(records, records.length >= 6 ? 6 : records.length));
+      setBuidlers(result?.data);
     } catch (err) {
       console.error(err);
     }
   }, []);
 
   return (
-    <Container
-      paddingY={{ md: '96px', xs: 8 }}
-      textAlign="center"
-      id="Buidlers-Section"
-      maxWidth="1200px"
-    >
-      <Typography variant="h4">LXDAO Buidlers</Typography>
-      <Typography fontSize="20px" marginTop={2}>
-        Welcome to{' '}
-        <Link href={`/joinus`} color={'inherit'}>
-          Join Us
-        </Link>
-        , let's buidl more valuable Web3 products together!
-      </Typography>
-      <Box marginTop="96px" textAlign="left">
-        <Grid
-          container
-          spacing={{ xs: 2, md: 4 }}
-          columns={{ xs: 2, sm: 4, md: 12 }}
+    <Box backgroundColor="#000000">
+      <Container paddingY={{ md: '112px', xs: 8 }}>
+        <Typography
+          variant="h2"
+          lineHeight="44px"
+          fontWeight="600"
+          color="#ffffff"
+          marginBottom="31px"
         >
+          LXDAO BUIDLERS
+        </Typography>
+        <Typography
+          variant="subtitle1"
+          lineHeight="30px"
+          fontWeight={400}
+          color="#ffffff"
+          marginBottom="102px"
+        >
+          Welcome to Join Us, let's buidl more valuable Web3 products together!
+        </Typography>
+        <Box display="flex" flexWrap="wrap">
           {buidlers.map((buidler, index) => {
-            return (
-              <Grid item xs={2} sm={2} md={4} key={index}>
-                <BuidlerCard record={buidler} />
-              </Grid>
-            );
+            return <BudilerTooltip buidler={buidler} key={index} />;
           })}
-        </Grid>
-        <Box
-          marginTop={{ md: 8, xs: 4 }}
-          display="flex"
-          justifyContent="center"
-          gap={2}
-        >
-          <Button
-            variant="outlined"
-            onClick={() => {
-              router.push('/buidlers');
-            }}
-          >
-            View More
-          </Button>
         </Box>
-      </Box>
-    </Container>
+        <Button
+          variant="gradient"
+          width="200px"
+          marginTop="96px"
+          onClick={() => {
+            router.push('/joinus');
+          }}
+        >
+          Join Us
+        </Button>
+      </Container>
+    </Box>
   );
 };
 

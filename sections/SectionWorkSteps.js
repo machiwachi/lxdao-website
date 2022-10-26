@@ -5,7 +5,7 @@ import { Box, Typography, Link } from '@mui/material';
 
 import SimpleProjectCard from '@/components/SimpleProjectCard';
 
-const WorkDetailItem = ({ title, data }) => {
+const WorkDetailItem = ({ title, data, ...rest }) => {
   return (
     <Box
       display="flex"
@@ -15,6 +15,7 @@ const WorkDetailItem = ({ title, data }) => {
       sx={{ backgroundColor: '#ffffff' }}
       borderRadius="6px"
       gap="100px"
+      {...rest}
     >
       <Box display="flex" flexDirection="column" gap={1}>
         <Typography
@@ -81,8 +82,8 @@ const WorkDetailSection = ({
       </Typography>
       <Box display="flex" gap={2} flexDirection="column">
         {data.length &&
-          data.map((item) => (
-            <WorkDetailItem title={item.content} data={item.data} />
+          data.map((item, index) => (
+            <WorkDetailItem key={index} title={item.content} data={item.data} />
           ))}
       </Box>
       <Link

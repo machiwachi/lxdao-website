@@ -4,8 +4,12 @@ import { Tooltip } from '@mui/material';
 
 const useStyles = makeStyles({
   tooltip: {
-    marginTop: '10px !important',
-    background: 'transparent',
+    marginTop: '0px !important',
+    marginLeft: '0px !important',
+    background: '#ffffff',
+    borderRadius: '0',
+    width: '420px',
+    padding: '36px',
   },
 });
 
