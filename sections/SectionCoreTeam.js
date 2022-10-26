@@ -4,6 +4,7 @@ import { makeStyles } from '@mui/styles';
 
 import Container from '@/components/Container';
 import coreTeamData from '@/common/content/coreTeam';
+import { convertIpfsGateway } from '@/utils/utility';
 
 const useStyles = makeStyles(() => ({
   memberCardWrapper: {
@@ -50,7 +51,7 @@ const TeamMemberCard = ({ data }) => {
     >
       <Box marginBottom="12px">
         <img
-          src={data.avatarUrl}
+          src={convertIpfsGateway(data.avatarUrl)}
           style={{ borderRadius: '50%' }}
           className="memberAvatar"
         />

@@ -1,11 +1,7 @@
 import React from 'react';
 import { Box, Typography, Tooltip } from '@mui/material';
 
-// https://stackoverflow.com/questions/286141/remove-blank-attributes-from-an-object-in-javascript
-function removeEmpty(obj) {
-  // eslint-disable-next-line no-unused-vars
-  return Object.fromEntries(Object.entries(obj).filter(([_, v]) => v != null));
-}
+import { removeEmpty } from '@/utils/utility';
 
 // check contacts format in components/ContactsField.js
 // twitter: @xxx
@@ -46,6 +42,7 @@ function formatContacts(contacts) {
 }
 
 function BuidlerContacts({ contacts, space }) {
+  console.log('contacts: ', contacts);
   const formattedContacts = formatContacts(contacts || {});
   return (
     <Box display="flex">

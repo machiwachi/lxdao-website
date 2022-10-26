@@ -10,6 +10,7 @@ import API from '@/common/API';
 import Tag from '@/components/Tag';
 import Skills from '@/components/Skills';
 import BuidlerContacts from '@/components/BuidlerContacts';
+import { convertIpfsGateway } from '@/utils/utility';
 
 export function BuidlerCard(props) {
   const record = props.record;
@@ -44,7 +45,9 @@ export function BuidlerCard(props) {
           >
             <img
               style={{ display: 'block', width: 80 }}
-              src={record.avatar || '/images/placeholder.jpeg'}
+              src={
+                convertIpfsGateway(record.avatar) || '/images/placeholder.jpeg'
+              }
               alt=""
             />
           </Box>
@@ -123,6 +126,7 @@ export default function Home() {
       params.push('role=' + trimmedRole);
     }
     params.push('per_page=50');
+    params.push('status=ACTIVE');
     query += params.join('&');
 
     setLoading(true);
