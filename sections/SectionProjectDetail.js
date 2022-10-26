@@ -10,6 +10,17 @@ import {
   Link,
   CardContent,
   Card,
+  Avatar,
+  Autocomplete,
+  TextField,
+  MenuItem,
+  Select,
+  Checkbox,
+  OutlinedInput,
+  ListItemText,
+  InputLabel,
+  FormControl,
+  FormHelperText,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useAccount } from 'wagmi';
@@ -43,10 +54,7 @@ const SectionProjectDetail = ({ projectId }) => {
   const [showJoinButton, setShowJoinButton] = useState(true);
   const [showInviteButton, setShowInviteButton] = useState(false);
   const [showAcceptButton, setShowAcceptButton] = useState(false);
-  const [role, setRole] = useState('');
-  const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
-  const [isPM, setIsPM] = useState(true);
   const [currentBuidlerOnProjectInfo, setCurrentBuidlerOnProjectInfo] =
     useState({ id: null, ipfsURI: '' });
   const [projectRoleValue, setProjectRoleValue] = useState([]);
@@ -80,14 +88,6 @@ const SectionProjectDetail = ({ projectId }) => {
     'Operation',
   ];
 
-  const roleNames = [
-    'All',
-    'Buidler',
-    'Core',
-    'Project Manager',
-    'Investor',
-    'Onboarding Committee',
-  ];
   const useAlert = () => useContext(AlertContext);
   const { setAlert } = useAlert();
   const { address } = useAccount();
@@ -334,37 +334,6 @@ const SectionProjectDetail = ({ projectId }) => {
       </Card>
     );
   };
-  const searchList = async (search = '') => {
-    let query = `/buidler?`;
-    let params = [];
-    const trimmedSearch = search.trim();
-    if (trimmedSearch) {
-      params.push('search=' + trimmedSearch);
-    }
-    params.push('per_page=50');
-    query += params.join('&');
-
-    setLoading(true);
-    try {
-      const res = await API.get(query);
-      const result = res.data;
-      if (result.status !== 'SUCCESS') {
-        // error todo Muxin add common alert, wang teng design
-        return;
-      }
-      const records = result.data;
-
-      let tempList = [];
-      records.forEach((record) => {
-        tempList.push(record);
-      });
-
-      setList(tempList);
-    } catch (err) {
-      console.error(err);
-    }
-    setLoading(false);
-  };
   if (!project) return null;
   return (
     <Container
@@ -564,77 +533,182 @@ const SectionProjectDetail = ({ projectId }) => {
                 alignItems="center"
                 justifyContent="space-between"
               >
-                <Box display="flex">
-                  <Box
-                    width="60px"
-                    height="60px"
-                    marginRight="10px"
-                    position="relative"
-                    sx={{ border: '0.5px solid #D0D5DD', borderRadius: '2px' }}
-                  >
-                    <Typography
-                      position="absolute"
-                      sx={{
-                        left: 0,
-                        top: 0,
-                        fontSize: '12px',
-                        lineHeight: '15px',
-                        color: '#fff',
-                        background: '#36AFF9',
-                        width: '30px',
+                {project.buidlersOnProject.map((buidler, index) => {
+                  if (buidler.status !== 'ACTIVE') {
+                    return null;
+                  }
+                  return (
+                    <Tooltip
+                      key={index}
+                      title={<BuidlerCard buidlerInfo={buidler} />}
+                      open={buidler.showTooltip}
+                      PopperProps={{
+                        disablePortal: true,
                       }}
+                      onClose={() =>
+                        handleDisplayBuidlerTooltip(buidler, 'close')
+                      }
+                      classes={{ tooltip: classes.tooltip }}
                     >
-                      PM
-                    </Typography>
-                  </Box>
-                  <Box
-                    width="60px"
-                    height="60px"
-                    marginRight="10px"
-                    position="relative"
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                    sx={{
-                      border: '0.5px solid #D0D5DD',
-                      borderRadius: '2px',
-                      color: '#D0D5DD',
-                    }}
-                  >
-                    <img src="/icons/add.svg" />
-                  </Box>
-                </Box>
-                <Button variant="gradient">Accept Invitation</Button>
+                      <Box display="flex">
+                        <Link href={`/buidlers/${buidler?.buidler?.address}`}>
+                          <Box
+                            width="60px"
+                            height="60px"
+                            marginRight="10px"
+                            position="relative"
+                            sx={{
+                              border: '0.5px solid #D0D5DD',
+                              borderRadius: '2px',
+                            }}
+                          >
+                            {buidler?.projectRole.includes(
+                              'Project Manager'
+                            ) && (
+                              <Typography
+                                position="absolute"
+                                sx={{
+                                  left: 0,
+                                  top: 0,
+                                  fontSize: '12px',
+                                  lineHeight: '15px',
+                                  color: '#fff',
+                                  background: '#36AFF9',
+                                  width: '30px',
+                                  zIndex: 3,
+                                }}
+                              >
+                                PM
+                              </Typography>
+                            )}
+                            <Avatar
+                              key={index}
+                              alt={buidler?.buidler?.name}
+                              src={buidler?.buidler?.avatar}
+                              sx={{
+                                cursor: 'pointer',
+                                position: 'absolute',
+                                zIndex: 2,
+                                margin: '10px',
+                                left: 0,
+                              }}
+                              onMouseOver={() =>
+                                handleDisplayBuidlerTooltip(buidler, 'open')
+                              }
+                            />
+                          </Box>
+                        </Link>
+                        <Box
+                          width="60px"
+                          height="60px"
+                          marginRight="10px"
+                          position="relative"
+                          display="flex"
+                          alignItems="center"
+                          justifyContent="center"
+                          sx={{
+                            border: '0.5px solid #D0D5DD',
+                            borderRadius: '2px',
+                            color: '#D0D5DD',
+                          }}
+                        >
+                          <img src="/icons/add.svg" />
+                        </Box>
+                      </Box>
+                    </Tooltip>
+                  );
+                })}
+                {showAcceptButton && (
+                  <Button variant="gradient" onClick={handleAcceptInvitation}>
+                    Accept Invitation
+                  </Button>
+                )}
               </Box>
-              {isPM && (
-                <Box marginTop={3} maxWidth="500px">
-                  <Grid container spacing={2}>
-                    <Grid item xs={6}>
-                      <DebouncedInput
-                        value={search}
-                        onChange={(value) => {
-                          setSearch(value);
-                          searchList(value, role);
+
+              {showInviteButton && (
+                <Box marginTop={3} maxWidth="700px" display="flex" gap="10px">
+                  <Autocomplete
+                    sx={{ width: '300px', height: '56px' }}
+                    options={activeBuidlerList.map((option) => option.name)}
+                    onChange={(e, data) => {
+                      setSelectedBuidler(data);
+                      if (data) {
+                        const cloneInviteBuidlerErrors = {
+                          ...inviteBuidlerErrors,
+                        };
+                        cloneInviteBuidlerErrors['buidler'].error = false;
+                        cloneInviteBuidlerErrors['buidler'].errorMsg = '';
+                        setInviteBuidlerErrors({
+                          ...inviteBuidlerErrors,
+                          ...cloneInviteBuidlerErrors,
+                        });
+                      }
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Search Buidler"
+                        InputProps={{
+                          ...params.InputProps,
+                          type: 'search',
                         }}
-                        label="Search"
-                        placeholder="Search buidlers"
+                        error={inviteBuidlerErrors['buidler'].error}
+                        helperText={inviteBuidlerErrors['buidler'].errorMsg}
                       />
-                    </Grid>
-                    <Grid item xs={3}>
-                      <SingleSelect
-                        value={role}
-                        label="Role"
-                        dropdown={roleNames}
-                        onChange={(value) => {
-                          setRole(value);
-                          searchList(search, value);
-                        }}
-                      />
-                    </Grid>
-                    <Grid item xs={3}>
-                      <Button variant="gradient">invite</Button>
-                    </Grid>
-                  </Grid>
+                    )}
+                  />
+                  <FormControl
+                    sx={{ m: 1, width: 230, margin: 0 }}
+                    error={inviteBuidlerErrors['role'].error}
+                  >
+                    <InputLabel id="project-role-multiple-checkbox-label">
+                      Project Role
+                    </InputLabel>
+                    <Select
+                      sx={{ width: '230px', height: '56px' }}
+                      labelId="project-role-multiple-checkbox-label"
+                      id="project-role-multiple-checkbox"
+                      multiple
+                      error={inviteBuidlerErrors['role'].error}
+                      value={projectRoleValue}
+                      MenuProps={MenuProps}
+                      onChange={(event) => {
+                        setProjectRoleValue(event.target.value);
+                        if (event.target.value) {
+                          const cloneInviteBuidlerErrors = {
+                            ...inviteBuidlerErrors,
+                          };
+                          cloneInviteBuidlerErrors['role'].error = false;
+                          cloneInviteBuidlerErrors['role'].errorMsg = '';
+                          setInviteBuidlerErrors({
+                            ...inviteBuidlerErrors,
+                            ...cloneInviteBuidlerErrors,
+                          });
+                        }
+                      }}
+                      input={<OutlinedInput label="Project Role" />}
+                      renderValue={(selected) => selected.join(', ')}
+                    >
+                      {projectRoleList.map((role) => (
+                        <MenuItem key={role} value={role}>
+                          <Checkbox
+                            checked={projectRoleValue.indexOf(role) > -1}
+                          />
+                          <ListItemText primary={role} />
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    <FormHelperText>
+                      {inviteBuidlerErrors['role'].errorMsg}
+                    </FormHelperText>
+                  </FormControl>
+                  <Button
+                    variant="gradient"
+                    onClick={handleInviteBuidler}
+                    height="56px"
+                  >
+                    Invite
+                  </Button>
                 </Box>
               )}
             </Box>
