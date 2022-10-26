@@ -46,28 +46,31 @@ function BuidlerContacts({ contacts, space }) {
   const formattedContacts = formatContacts(contacts || {});
   return (
     <Box display="flex">
-      {Object.keys(formattedContacts).map((key, index) => {
-        return (
-          <Tooltip title={key} key={index} placement="top">
-            <Typography
-              target="_blank"
-              component="a"
-              href={formattedContacts[key]}
-              color="primary"
-              marginLeft={index === 0 ? 0 : space || 1}
-            >
-              <Box
-                width="20px"
-                component={'img'}
-                src={`/icons/${key}.svg`}
-                sx={{
-                  display: 'block',
-                }}
-              />
-            </Typography>
-          </Tooltip>
-        );
-      })}
+      {Object.keys(formattedContacts)
+        .reverse()
+        .map((key, index) => {
+          return (
+            <Tooltip title={key} key={index} placement="top">
+              <Typography
+                target="_blank"
+                component="a"
+                href={formattedContacts[key]}
+                color="primary"
+                marginLeft={index === 0 ? 0 : space || 1}
+                marginRight={1}
+              >
+                <Box
+                  width="20px"
+                  component={'img'}
+                  src={`/icons/${key}.svg`}
+                  sx={{
+                    display: 'block',
+                  }}
+                />
+              </Typography>
+            </Tooltip>
+          );
+        })}
     </Box>
   );
 }
