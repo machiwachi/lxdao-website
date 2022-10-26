@@ -14,6 +14,13 @@ import {
   DialogContent,
   Alert,
   Divider,
+  TableContainer,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Paper,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useRouter } from 'next/router';
@@ -54,51 +61,37 @@ function totalLXPoints(record) {
   }, 0);
 }
 
-function LXPointsTimeline({ points }) {
+function LXPointsTable({ points }) {
   return (
-    <Box marginTop={3} marginLeft={2}>
-      {points.map((point, index) => {
-        const isLastOne = index === points.length - 1;
-        return (
-          <Box
-            key={index}
-            paddingLeft={3}
-            paddingBottom={3}
-            sx={{
-              position: 'relative',
-              '&::before': {
-                position: 'absolute',
-                content: '" "',
-                top: '8px',
-                left: 0,
-                width: '6px',
-                height: '6px',
-                backgroundColor: '#D0D5DD',
-                borderRadius: '50%',
-              },
-              '&::after': {
-                position: 'absolute',
-                display: isLastOne ? 'none' : 'block',
-                content: '" "',
-                top: '12px',
-                left: '2px',
-                bottom: '-10px',
-                width: '2px',
-                backgroundColor: '#D0D5DD',
-              },
-            }}
-          >
-            <Typography>
-              {point.reason} ({point.operator}
-              {point.value})
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {point.createdAt}
-            </Typography>
-          </Box>
-        );
-      })}
-    </Box>
+    <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell align="left">remuneration</TableCell>
+            <TableCell align="left">reason</TableCell>
+            <TableCell align="left">source</TableCell>
+            <TableCell align="left">release time</TableCell>
+            <TableCell align="right">transaction link</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {points.map((point) => (
+            <TableRow
+              key={point.id}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            >
+              <TableCell component="th" scope="row">
+                {point.value}
+              </TableCell>
+              <TableCell align="right">{point.reason}</TableCell>
+              <TableCell align="right">{point.source}</TableCell>
+              <TableCell align="right">{point.createdAt}</TableCell>
+              <TableCell align="right">view</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 }
 
@@ -315,7 +308,7 @@ function BuidlerDetails(props) {
             Welcome LXDAO. Your Buidler Card is Ready to Mint.
           </Alert>
           <Box marginTop={2} marginBottom={2}>
-            <Button
+            <LXButton
               onClick={() => {
                 mint();
               }}
@@ -374,64 +367,13 @@ function BuidlerDetails(props) {
       )}
       <Box
         display="flex"
-        marginTop={6}
         flexDirection={{
-          md: 'row',
           xs: 'column',
+          md: 'row',
         }}
       >
-        <Box marginRight={6}>
-          <Box
-            width="150px"
-            height="150px"
-            borderRadius="50%"
-            overflow="hidden"
-          >
-            <img
-              style={{ display: 'block', width: 150 }}
-              src={
-                convertIpfsGateway(record.avatar) || '/images/placeholder.jpeg'
-              }
-              alt=""
-            />
-          </Box>
-          <Box textAlign="center" marginTop={4}>
-            {address === record.address ? (
-              <Button
-                onClick={() => {
-                  setVisible(true);
-                }}
-                size="small"
-                variant="outlined"
-              >
-                Edit
-              </Button>
-            ) : null}
-            {address === record.address &&
-            record.role.includes('Onboarding Committee') ? (
-              <Button
-                style={{
-                  marginLeft: 8,
-                }}
-                onClick={async () => {
-                  const newAddress = window.prompt('New joiner address');
-                  const data = await API.post(`/buidler`, {
-                    address: newAddress,
-                  });
-                  const result = data?.data;
-                  if (result.status === 'SUCCESS') {
-                    alert('created!');
-                  }
-                }}
-                size="small"
-                variant="outlined"
-              >
-                Onboarding
-              </Button>
-            ) : null}
-          </Box>
-        </Box>
-        <Box flex="1 1 auto">
+        {/* left section*/}
+        <Box width="300px">
           <Box
             border="0.5px solid #D0D5DD"
             borderRadius="6px"
@@ -441,13 +383,17 @@ function BuidlerDetails(props) {
             <Box>
               <Box
                 width="252px"
+                height="252px"
                 border="0.5px solid #D0D5DD"
                 borderRadius="6px"
                 overflow="hidden"
               >
                 <img
                   style={{ display: 'block', width: 252 }}
-                  src={record.avatar || '/images/placeholder.jpeg'}
+                  src={
+                    convertIpfsGateway(record.avatar) ||
+                    '/images/placeholder.jpeg'
+                  }
                   alt=""
                 />
               </Box>
@@ -602,27 +548,17 @@ function BuidlerDetails(props) {
             display="flex"
             marginTop={4}
             marginBottom={4}
-            flexDirection={{
-              xs: 'column',
-              md: 'row',
-            }}
+            flexDirection="column"
           >
             <Box marginRight={3} marginBottom={3}>
               <Typography fontWeight="bold" variant="h6">
-                Accumulated LXPoints
+                all remuneration
               </Typography>
               <Typography marginTop={2} fontSize="48px" fontWeight="bold">
                 {totalLXPoints(record)}
               </Typography>
             </Box>
-            {record.lxPoints && record.lxPoints.length > 0 && (
-              <Box>
-                <Typography fontWeight="bold" variant="h6">
-                  Reason
-                </Typography>
-                <LXPointsTimeline points={record.lxPoints} />
-              </Box>
-            )}
+            <LXPointsTable points={record.lxPoints} />
           </Box>
 
           <Box flex="1 1 auto">
