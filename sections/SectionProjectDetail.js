@@ -344,8 +344,13 @@ const SectionProjectDetail = ({ projectId }) => {
       maxWidth="1200px"
       minHeight="calc(100vh - 280px)"
     >
-      <Grid container spacing={4}>
-        <Grid item xs={4} display={{ md: 'block', xs: 'none' }}>
+      <Grid
+        container
+        spacing={4}
+        flexDirection={{ md: 'row', xs: 'column' }}
+        width={{ xs: '100%' }}
+      >
+        <Grid item xs={10} md={4} margin={{ xs: 'auto' }}>
           <Box
             sx={{
               background: '#FFFFFF',
@@ -507,7 +512,7 @@ const SectionProjectDetail = ({ projectId }) => {
             )}
           </Box>
         </Grid>
-        <Grid item md={8} justify="flex-start">
+        <Grid item md={8} xs={10} justify="flex-start">
           <Stack spacing={3.5}>
             <Box sx={{ display: 'flex' }} marginBottom={3}>
               {cardData.map((card, i) =>
