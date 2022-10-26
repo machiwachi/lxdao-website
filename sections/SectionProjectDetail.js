@@ -6,11 +6,13 @@ import {
   Grid,
   Chip,
   Stack,
-  Avatar,
   Tooltip,
+  Link,
+  CardContent,
+  Card,
+  Avatar,
   Autocomplete,
   TextField,
-  Link,
   MenuItem,
   Select,
   Checkbox,
@@ -31,6 +33,8 @@ import Button from '@/components/Button';
 import Container from '@/components/Container';
 import BuidlerCard from '@/components/BuidlerCard';
 import Dialog from '@/components/Dialog';
+import DebouncedInput from '@/components/DebouncedInput';
+import SingleSelect from '@/components/Select';
 
 const useStyles = makeStyles({
   tooltip: {
@@ -50,6 +54,7 @@ const SectionProjectDetail = ({ projectId }) => {
   const [showJoinButton, setShowJoinButton] = useState(true);
   const [showInviteButton, setShowInviteButton] = useState(false);
   const [showAcceptButton, setShowAcceptButton] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [currentBuidlerOnProjectInfo, setCurrentBuidlerOnProjectInfo] =
     useState({ id: null, ipfsURI: '' });
   const [projectRoleValue, setProjectRoleValue] = useState([]);
@@ -275,62 +280,133 @@ const SectionProjectDetail = ({ projectId }) => {
       });
   };
 
+  const cardData = [
+    {
+      title: 'items',
+      url: '',
+      value: '1.0k',
+    },
+    {
+      title: 'items',
+      url: '',
+      value: '1.0k',
+    },
+    {
+      title: 'items',
+      url: '/icons/eth.svg',
+      value: '0.05',
+    },
+    {
+      title: 'items',
+      url: '/icons/eth.svg',
+      value: '300',
+    },
+  ];
+  const cardItem = (item, isRight) => {
+    return (
+      <Card
+        sx={{
+          minWidth: '180px',
+          height: '132px',
+          background: '#FFFFFF',
+          border: '0.5px solid #D0D5DD',
+          borderRadius: '6px',
+          marginRight: isRight ? 3 : 0,
+        }}
+      >
+        <CardContent>
+          <Typography textAlign="left" variant="body1">
+            {item.title}
+          </Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              height: '32px',
+            }}
+          >
+            <img src={item.url} style={{ height: '100%' }} />
+            <Typography sx={{ fontWeight: 600, fontSize: '32px' }}>
+              {item.value}
+            </Typography>
+          </Box>
+        </CardContent>
+      </Card>
+    );
+  };
   if (!project) return null;
   return (
     <Container
       paddingY={{ md: '96px', xs: 8 }}
+      // paddingX={{ md: 32, xs: 8 }}
       textAlign="center"
       id="Project-Detail-Section"
       maxWidth="1200px"
       minHeight="calc(100vh - 280px)"
     >
-      <Grid container spacing={4}>
-        <Grid item xs={4} display={{ md: 'block', xs: 'none' }}>
-          <Link href={project?.links.website || ''} target="_blank">
-            <img
-              style={{
-                width: '100%',
-                boxShadow: '0px 4px 10px 3px rgba(0, 0, 0, 0.04)',
-              }}
-              src={project.logoLarge}
-            />
-          </Link>
-        </Grid>
-        <Grid item md={8} justify="flex-start">
-          <Stack spacing={3.5}>
-            <Box
-              display={{ md: 'none', xs: 'flex' }}
-              alignItems="flex-end"
-              gap="12px"
-            >
-              <Link href={project?.links.website || ''} target="_blank">
-                <img style={{ width: '50px' }} src={project.logoLarge} />
-              </Link>
-              <Link
-                href={project?.links.website || ''}
-                target="_blank"
-                sx={{ textDecoration: 'none' }}
-              >
-                <Typography variant="h5" align="left">
-                  {project.name}
-                </Typography>
-              </Link>
-            </Box>
+      <Grid
+        container
+        spacing={4}
+        flexDirection={{ md: 'row', xs: 'column' }}
+        width={{ xs: '100%' }}
+      >
+        <Grid item xs={10} md={4} margin={{ xs: 'auto' }}>
+          <Box
+            sx={{
+              background: '#FFFFFF',
+              border: '0.5px solid #D0D5DD',
+              borderRadius: '6px',
+              width: '100%',
+              padding: 3,
+            }}
+          >
             <Link
               href={project?.links.website || ''}
               target="_blank"
-              sx={{ textDecoration: 'none' }}
+              sx={{ position: 'relative' }}
             >
+              <img
+                style={{
+                  width: '100%',
+                  boxShadow: '0px 4px 10px 3px rgba(0, 0, 0, 0.04)',
+                }}
+                src={project.logoLarge}
+              />
               <Typography
-                variant="h4"
-                align="left"
-                display={{ md: 'block', xs: 'none' }}
+                sx={{
+                  position: 'absolute',
+                  left: '1px',
+                  bottom: '4px',
+                  background: '#36AFF9',
+                  borderRadius: '2px',
+                  fontSize: '12px',
+                  lineHeight: '15px',
+                  color: '#fff',
+                }}
+                width={38}
+                height={16}
               >
-                {project.name}
+                {'#' + project.number}
               </Typography>
             </Link>
+            <Typography variant="h5">{project.name}</Typography>
+            <Box
+              sx={{
+                width: '100%',
+                height: '0px',
+                border: '0.5px solid #E5E5E5',
+              }}
+              marginTop={3}
+              marginBottom={3}
+            ></Box>
             <Typography align="left">{project.description}</Typography>
-            <Box align="left" display="flex" gap="5px" flexWrap="wrap">
+            <Box
+              align="left"
+              display="flex"
+              gap="5px"
+              flexWrap="wrap"
+              minHeight={'26px'}
+            >
               {project.type &&
                 project.type.map((type, index) => {
                   return (
@@ -368,10 +444,101 @@ const SectionProjectDetail = ({ projectId }) => {
                   );
                 })}
             </Box>
-            {project?.buidlersOnProject?.length > 0 && (
-              <Box align="left">
-                <LabelText label="Buidlers" />
-                <Stack direction="row" spacing={2}>
+            <Box
+              sx={{
+                width: '100%',
+                height: '0px',
+                border: '0.5px solid #E5E5E5',
+              }}
+              marginBottom={3}
+              marginTop="26px"
+            ></Box>
+            <Stack direction="column" spacing={2} marginBottom={3}>
+              {project.launchDate && (
+                <Box display="flex" justifyContent="center">
+                  <LabelText label="Launch Date" />
+                  <Typography
+                    fontSize={{ md: '16px', xs: '14px' }}
+                    color="#000000"
+                    marginLeft={2}
+                  >
+                    {format(new Date(project.launchDate), 'yyyy-MM-dd')}
+                  </Typography>
+                </Box>
+              )}
+              <Box align="center">
+                <Typography
+                  fontSize={{ md: '14px', xs: '12px' }}
+                  width="97px"
+                  height="23.92px"
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    textAlign: 'center',
+                    color: '#4DCC9E',
+                    background: 'rgba(77, 204, 158, 0.1)',
+                    display: 'block',
+                  }}
+                >
+                  {PROJECT_STATUS[project.status]}
+                </Typography>
+              </Box>
+            </Stack>
+            {project?.isAbleToJoin && showJoinButton && (
+              <Tooltip
+                PopperProps={{
+                  disablePortal: true,
+                }}
+                onClose={() => {
+                  setOpenJoinTooltip(false);
+                }}
+                open={openJoinTooltip}
+                disableFocusListener
+                disableHoverListener
+                disableTouchListener
+                title="Make sure you are a LXDAO buidler and connect your wallet first."
+                marginTop={3}
+              >
+                <Box display="flex" width="180px" margin="auto">
+                  <Button
+                    width="100%"
+                    variant="gradient"
+                    onClick={handleBuidlerJoin}
+                  >
+                    Join this project
+                  </Button>
+                </Box>
+              </Tooltip>
+            )}
+          </Box>
+        </Grid>
+        <Grid item md={8} xs={10} justify="flex-start">
+          <Stack spacing={3.5}>
+            <Box sx={{ display: 'flex' }} marginBottom={3}>
+              {cardData.map((card, i) =>
+                cardItem(card, i < cardData.length - 1)
+              )}
+            </Box>
+            <Box
+              sx={{
+                width: '100%',
+                minHeight: '146px',
+                padding: '22px 32px',
+                background: '#FFFFFF',
+                border: '0.5px solid #D0D5DD',
+                borderRadius: '6px',
+              }}
+              marginBottom={3}
+            >
+              <Typography variant="body1" marginBottom={2}>
+                Buidlers
+              </Typography>
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+              >
+                <Box display="flex">
                   {project.buidlersOnProject.map((buidler, index) => {
                     if (buidler.status !== 'ACTIVE') {
                       return null;
@@ -389,49 +556,85 @@ const SectionProjectDetail = ({ projectId }) => {
                         }
                         classes={{ tooltip: classes.tooltip }}
                       >
-                        <Box position="relative">
-                          <Link href={`/buidlers/${buidler?.buidler?.address}`}>
+                        <Link href={`/buidlers/${buidler?.buidler?.address}`}>
+                          <Box
+                            width="60px"
+                            height="60px"
+                            marginRight="10px"
+                            position="relative"
+                            sx={{
+                              border: '0.5px solid #D0D5DD',
+                              borderRadius: '2px',
+                            }}
+                          >
+                            {buidler?.projectRole.includes(
+                              'Project Manager'
+                            ) && (
+                              <Typography
+                                position="absolute"
+                                sx={{
+                                  left: 0,
+                                  top: 0,
+                                  fontSize: '12px',
+                                  lineHeight: '15px',
+                                  color: '#fff',
+                                  background: '#36AFF9',
+                                  width: '30px',
+                                  zIndex: 3,
+                                }}
+                              >
+                                PM
+                              </Typography>
+                            )}
                             <Avatar
                               key={index}
                               alt={buidler?.buidler?.name}
                               src={buidler?.buidler?.avatar}
                               sx={{
                                 cursor: 'pointer',
+                                position: 'absolute',
+                                zIndex: 2,
+                                margin: '10px',
+                                left: 0,
                               }}
                               onMouseOver={() =>
                                 handleDisplayBuidlerTooltip(buidler, 'open')
                               }
                             />
-                          </Link>
-
-                          {buidler?.projectRole.includes('Project Manager') && (
-                            <Box
-                              width="30px"
-                              height="12px"
-                              color="#ffffff"
-                              backgroundColor="rgba(41,117,223)"
-                              fontSize="8px"
-                              display="flex"
-                              alignItems="center"
-                              justifyContent="center"
-                              position="absolute"
-                              right="4px"
-                              bottom="-15px"
-                            >
-                              PM
-                            </Box>
-                          )}
-                        </Box>
+                          </Box>
+                        </Link>
                       </Tooltip>
                     );
                   })}
-                </Stack>
+                  {!showInviteButton && (
+                    <Box
+                      width="60px"
+                      height="60px"
+                      marginRight="10px"
+                      position="relative"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      sx={{
+                        border: '0.5px solid #D0D5DD',
+                        borderRadius: '2px',
+                        color: '#D0D5DD',
+                      }}
+                      onClick={() => setShowInviteButton(true)}
+                    >
+                      <img src="/icons/add.svg" />
+                    </Box>
+                  )}
+                </Box>
+                {showAcceptButton && (
+                  <Button variant="gradient" onClick={handleAcceptInvitation}>
+                    Accept Invitation
+                  </Button>
+                )}
               </Box>
-            )}
-            {showInviteButton && (
-              <Stack direction="column" spacing={1} alignItems="flex-start">
-                <Typography>Invitate builder to join this project:</Typography>
-                <Box display="flex" gap="10px">
+
+              {showInviteButton && (
+                <Box marginTop={3} maxWidth="700px" display="flex" gap="10px">
                   <Autocomplete
                     sx={{ width: '300px', height: '56px' }}
                     options={activeBuidlerList.map((option) => option.name)}
@@ -515,62 +718,90 @@ const SectionProjectDetail = ({ projectId }) => {
                     Invite
                   </Button>
                 </Box>
-              </Stack>
-            )}
-            {showAcceptButton && (
-              <Box display="flex">
-                <Button variant="gradient" onClick={handleAcceptInvitation}>
-                  Accept Invitation
-                </Button>
-              </Box>
-            )}
-            <Stack direction="row" spacing={8}>
-              {project.launchDate && (
-                <Box align="left">
-                  <LabelText label="Launch Date" />
-                  <Typography
-                    fontSize={{ md: '20px', xs: '18px' }}
-                    color="#000000"
-                  >
-                    {format(new Date(project.launchDate), 'yyyy-MM-dd')}
+              )}
+            </Box>
+            <Box
+              sx={{
+                width: '100%',
+                height: 'auto',
+                padding: 4,
+                background: '#FFFFFF',
+                border: '0.5px solid #D0D5DD',
+                borderRadius: '6px',
+              }}
+            >
+              <Typography variant="body1" marginBottom={2}>
+                Forum
+              </Typography>
+              <Box>
+                <Box
+                  sx={{
+                    padding: '22px 23px',
+                    width: '100%',
+                    height: '88px',
+                    background: '#FFFFFF',
+                    border: '0.5px solid #D0D5DD',
+                    borderRadius: '6px',
+                  }}
+                  marginBottom={2}
+                  display="flex"
+                  justifyContent="space-between"
+                >
+                  <Box>
+                    <Typography variant="body1" align="left" fontWeight={600}>
+                      About the 000 GCLX category
+                    </Typography>
+                    <Box display="flex" alignItems="center">
+                      <Box display="flex" gap="3px" marginRight={2}>
+                        <Typography variant="body2" marginRight={0.5}>
+                          Views
+                        </Typography>
+                        <Typography color="#36AFF9" variant="body2">
+                          18
+                        </Typography>
+                      </Box>
+                      <Box display="flex" gap="3px" marginRight={2}>
+                        <Typography variant="body2" marginRight={0.5}>
+                          Replies{' '}
+                        </Typography>
+                        <Typography color="#36AFF9" variant="body2">
+                          0
+                        </Typography>
+                      </Box>
+                      <Box display="flex" gap="3px" marginRight={2}>
+                        <Typography variant="body2" marginRight={0.5}>
+                          Activity{' '}
+                        </Typography>
+                        <Typography color="#36AFF9" variant="body2">
+                          12d
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </Box>
+                  <Typography color="#36AFF9" fontSize="21px" fontWeight={600}>
+                    →
                   </Typography>
                 </Box>
-              )}
-              <Box align="left">
-                <LabelText label="Status" />
-                <Typography
-                  fontSize={{ md: '20px', xs: '18px' }}
-                  color="#000000"
-                >
-                  {PROJECT_STATUS[project.status]}
-                </Typography>
               </Box>
-            </Stack>
-            {project?.isAbleToJoin && showJoinButton && (
-              <Tooltip
-                PopperProps={{
-                  disablePortal: true,
+              <Box
+                width="200px"
+                height="48px"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                margin="auto"
+                fontWeight={500}
+                sx={{
+                  background: '#FFFFFF',
+                  border: '1px solid #D0D5DD',
+                  /* Shadow/xs */
+                  boxShadow: '0px 1px 2px rgba(16, 24, 40, 0.05)',
+                  borderRadius: '6px',
                 }}
-                onClose={() => {
-                  setOpenJoinTooltip(false);
-                }}
-                open={openJoinTooltip}
-                disableFocusListener
-                disableHoverListener
-                disableTouchListener
-                title="Make sure you are a LXDAO buidler and connect your wallet first."
               >
-                <Box display="flex" width="180px">
-                  <Button
-                    width="100%"
-                    variant="gradient"
-                    onClick={handleBuidlerJoin}
-                  >
-                    Join this project
-                  </Button>
-                </Box>
-              </Tooltip>
-            )}
+                View More
+              </Box>
+            </Box>
           </Stack>
         </Grid>
       </Grid>
@@ -587,6 +818,7 @@ const SectionProjectDetail = ({ projectId }) => {
           </Box>
         }
         confirmText="OK"
+        variant="gradient"
         handleClose={() => {
           setOpenJoinDialog(false);
         }}

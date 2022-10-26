@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-
+import { InputAdornment } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 import TextInput from './TextInput';
 
 // copy from https://usehooks.com/useDebounce/
@@ -48,6 +49,13 @@ function DebounceInput(props) {
   return (
     <TextInput
       {...props}
+      InputProps={{
+        endAdornment: (
+          <InputAdornment>
+            <SearchIcon />
+          </InputAdornment>
+        ),
+      }}
       value={value}
       onChange={(value) => {
         setValue(value);
