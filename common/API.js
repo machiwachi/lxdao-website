@@ -7,7 +7,7 @@ if (typeof window !== 'undefined') {
   axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 }
 
-axios.defaults.baseURL = 'https://api-dev.lxdao.io'; //process.env.NEXT_PUBLIC_LXDAO_BACKEND_API;
+axios.defaults.baseURL = process.env.NEXT_PUBLIC_LXDAO_BACKEND_API; //'https://api-dev.lxdao.io';
 
 function refreshAPIToken() {
   if (typeof window !== 'undefined') {
