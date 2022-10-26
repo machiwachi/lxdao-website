@@ -538,24 +538,24 @@ const SectionProjectDetail = ({ projectId }) => {
                 alignItems="center"
                 justifyContent="space-between"
               >
-                {project.buidlersOnProject.map((buidler, index) => {
-                  if (buidler.status !== 'ACTIVE') {
-                    return null;
-                  }
-                  return (
-                    <Tooltip
-                      key={index}
-                      title={<BuidlerCard buidlerInfo={buidler} />}
-                      open={buidler.showTooltip}
-                      PopperProps={{
-                        disablePortal: true,
-                      }}
-                      onClose={() =>
-                        handleDisplayBuidlerTooltip(buidler, 'close')
-                      }
-                      classes={{ tooltip: classes.tooltip }}
-                    >
-                      <Box display="flex">
+                <Box display="flex">
+                  {project.buidlersOnProject.map((buidler, index) => {
+                    if (buidler.status !== 'ACTIVE') {
+                      return null;
+                    }
+                    return (
+                      <Tooltip
+                        key={index}
+                        title={<BuidlerCard buidlerInfo={buidler} />}
+                        open={buidler.showTooltip}
+                        PopperProps={{
+                          disablePortal: true,
+                        }}
+                        onClose={() =>
+                          handleDisplayBuidlerTooltip(buidler, 'close')
+                        }
+                        classes={{ tooltip: classes.tooltip }}
+                      >
                         <Link href={`/buidlers/${buidler?.buidler?.address}`}>
                           <Box
                             width="60px"
@@ -603,26 +603,29 @@ const SectionProjectDetail = ({ projectId }) => {
                             />
                           </Box>
                         </Link>
-                        <Box
-                          width="60px"
-                          height="60px"
-                          marginRight="10px"
-                          position="relative"
-                          display="flex"
-                          alignItems="center"
-                          justifyContent="center"
-                          sx={{
-                            border: '0.5px solid #D0D5DD',
-                            borderRadius: '2px',
-                            color: '#D0D5DD',
-                          }}
-                        >
-                          <img src="/icons/add.svg" />
-                        </Box>
-                      </Box>
-                    </Tooltip>
-                  );
-                })}
+                      </Tooltip>
+                    );
+                  })}
+                  {!showInviteButton && (
+                    <Box
+                      width="60px"
+                      height="60px"
+                      marginRight="10px"
+                      position="relative"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      sx={{
+                        border: '0.5px solid #D0D5DD',
+                        borderRadius: '2px',
+                        color: '#D0D5DD',
+                      }}
+                      onClick={() => setShowInviteButton(true)}
+                    >
+                      <img src="/icons/add.svg" />
+                    </Box>
+                  )}
+                </Box>
                 {showAcceptButton && (
                   <Button variant="gradient" onClick={handleAcceptInvitation}>
                     Accept Invitation
