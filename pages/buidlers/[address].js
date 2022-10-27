@@ -34,6 +34,7 @@ import BuidlerContacts from '@/components/BuidlerContacts';
 import Tag from '@/components/Tag';
 import showMessage from '@/components/showMessage';
 import Project from '@/components/Project';
+import { convertIpfsGateway } from '@/utils/utility';
 
 function totalLXPoints(record) {
   if (!record.lxPoints) {
@@ -189,6 +190,22 @@ function BuidlerDetails(props) {
     setMinting(false);
   };
 
+  const enableMint = async () => {
+    try {
+      const enableMintRes = await API.post(
+        `/buidler/${record.address}/enableMint`
+      );
+      const data = enableMintRes.data.data;
+      alert('Success!');
+    } catch (err) {
+      showMessage({
+        type: 'error',
+        title: 'Failed to enable mint access',
+        body: err.message,
+      });
+    }
+  };
+
   const saveProfileHandler = async (newMetaData) => {
     setUpdating(true);
     const userProfile = {
@@ -220,6 +237,9 @@ function BuidlerDetails(props) {
   const projects = record.projects.filter((project) => {
     return project.status === 'ACTIVE';
   });
+
+  const buddies = record.buddies.map((buddy) => buddy.address);
+  const isBuddyChecking = buddies.includes(address);
 
   return (
     <Container>
@@ -271,11 +291,23 @@ function BuidlerDetails(props) {
             </Alert>
           </Box>
         )}
-      {record.status === 'PENDING' && (
+      {address === record.address && record.status === 'PENDING' && (
         <Box marginTop={4}>
           <Alert severity="info">
-            Welcome LXDAO. Your Buidler Card is Pending, please fill up your
-            profile first, and then mint your Buidler Card!
+            Welcome LXDAO. Please fill up the form first, and your Buddy will
+            enable your Mint access on the Onboarding Session. Thanks.
+          </Alert>
+          <Box marginTop={2} marginBottom={2}>
+            <Button disabled={true} variant="outlined">
+              {minting ? 'Minting Builder Card...' : 'Mint Builder Card'}
+            </Button>
+          </Box>
+        </Box>
+      )}
+      {address === record.address && record.status === 'READYTOMINT' && (
+        <Box marginTop={4}>
+          <Alert severity="info">
+            Welcome LXDAO. Your Buidler Card is Ready to Mint.
           </Alert>
           <Box marginTop={2} marginBottom={2}>
             <Button
@@ -285,6 +317,21 @@ function BuidlerDetails(props) {
               variant="outlined"
             >
               {minting ? 'Minting Builder Card...' : 'Mint Builder Card'}
+            </Button>
+          </Box>
+        </Box>
+      )}
+      {isBuddyChecking && (
+        <Box marginTop={4}>
+          <Alert severity="info">Enable Mint Access</Alert>
+          <Box marginTop={2} marginBottom={2}>
+            <Button
+              onClick={() => {
+                enableMint();
+              }}
+              variant="outlined"
+            >
+              Enable Mint Access
             </Button>
           </Box>
         </Box>
@@ -326,10 +373,17 @@ function BuidlerDetails(props) {
         }}
       >
         <Box marginRight={6}>
-          <Box width="150px" borderRadius="50%" overflow="hidden">
+          <Box
+            width="150px"
+            height="150px"
+            borderRadius="50%"
+            overflow="hidden"
+          >
             <img
               style={{ display: 'block', width: 150 }}
-              src={record.avatar || '/images/placeholder.jpeg'}
+              src={
+                convertIpfsGateway(record.avatar) || '/images/placeholder.jpeg'
+              }
               alt=""
             />
           </Box>

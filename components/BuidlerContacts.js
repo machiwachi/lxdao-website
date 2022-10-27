@@ -1,11 +1,7 @@
 import React from 'react';
 import { Box, Typography, Tooltip } from '@mui/material';
 
-// https://stackoverflow.com/questions/286141/remove-blank-attributes-from-an-object-in-javascript
-function removeEmpty(obj) {
-  // eslint-disable-next-line no-unused-vars
-  return Object.fromEntries(Object.entries(obj).filter(([_, v]) => v != null));
-}
+import { removeEmpty } from '@/utils/utility';
 
 // check contacts format in components/ContactsField.js
 // twitter: @xxx
@@ -46,31 +42,35 @@ function formatContacts(contacts) {
 }
 
 function BuidlerContacts({ contacts, space }) {
+  console.log('contacts: ', contacts);
   const formattedContacts = formatContacts(contacts || {});
   return (
     <Box display="flex">
-      {Object.keys(formattedContacts).map((key, index) => {
-        return (
-          <Tooltip title={key} key={index} placement="top">
-            <Typography
-              target="_blank"
-              component="a"
-              href={formattedContacts[key]}
-              color="primary"
-              marginLeft={index === 0 ? 0 : space || 1}
-            >
-              <Box
-                width="20px"
-                component={'img'}
-                src={`/icons/${key}.svg`}
-                sx={{
-                  display: 'block',
-                }}
-              />
-            </Typography>
-          </Tooltip>
-        );
-      })}
+      {Object.keys(formattedContacts)
+        .reverse()
+        .map((key, index) => {
+          return (
+            <Tooltip title={key} key={index} placement="top">
+              <Typography
+                target="_blank"
+                component="a"
+                href={formattedContacts[key]}
+                color="primary"
+                marginLeft={index === 0 ? 0 : space || 1}
+                marginRight={1}
+              >
+                <Box
+                  width="20px"
+                  component={'img'}
+                  src={`/icons/${key}.svg`}
+                  sx={{
+                    display: 'block',
+                  }}
+                />
+              </Typography>
+            </Tooltip>
+          );
+        })}
     </Box>
   );
 }

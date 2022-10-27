@@ -1,31 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import ImageUploading from 'react-images-uploading';
+import AutorenewIcon from '@mui/icons-material/Autorenew';
+import { convertIpfsGateway } from '../utils/utility';
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
 
 import API from '@/common/API';
 
 function Avatar(props) {
-  // value is a image url
-  const [images, setImages] = useState([]);
   const [value, setValue] = useState(props.value || '/images/placeholder.jpeg');
   const [uploading, setUploading] = useState(false);
+  const [image, setImage] = useState();
 
   function onChange(imageList) {
-    setImages(imageList);
+    setImage(imageList[0].data_url);
+    uploadImage(imageList[0].data_url);
   }
 
-  async function uploadImage() {
+  async function uploadImage(imageUrl) {
     setUploading(true);
     const res = await API.post(`/upload/ipfs`, {
-      imageDataUrl: images[0].data_url,
+      imageDataUrl: imageUrl,
     });
     if (res.data.status === 'SUCCESS') {
-      const url = res.data.data;
+      const url = convertIpfsGateway(res.data.data);
       setValue(url);
       props.onChange && props.onChange(url);
-      setImages([]);
     } else {
       alert('Please Connect Wallet first.');
     }
@@ -53,7 +54,6 @@ function Avatar(props) {
     <>
       <ImageUploading
         acceptType={['jpeg', 'png', 'jpg']}
-        value={images}
         onChange={onChange}
         dataURLKey="data_url"
       >
@@ -66,44 +66,49 @@ function Avatar(props) {
                 width="150px"
                 height="150px"
                 onClick={onImageUpload}
+                position="relative"
                 sx={{
                   cursor: 'pointer',
                   border: '2px solid #ccc',
                   borderColor: props.error ? '#d32f2f' : '#ccc',
                 }}
               >
-                <img src={value} alt="" width="100%" />
-              </Box>
-              {imageList.length > 0 && (
-                <Typography marginTop={2} marginBottom={1}>
-                  New Avatar
-                </Typography>
-              )}
-              {imageList.map((image, index) => (
-                <Box key={index}>
-                  {uploading && 'Uploading...'}
+                <img
+                  src={uploading ? image : convertIpfsGateway(value)}
+                  alt=""
+                  width="100%"
+                />
+                {uploading && (
                   <Box
-                    borderRadius="50%"
-                    overflow="hidden"
-                    width="150px"
-                    height="150px"
-                    onClick={onImageUpload}
-                    sx={{
-                      cursor: 'pointer',
-                    }}
+                    position="absolute"
+                    top="0"
+                    bottom="0"
+                    right="0"
+                    left="0"
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    backgroundColor="rgba(0,0,0,.5)"
+                    zIndex="1"
                   >
-                    <img src={image['data_url']} alt="" width="100%" />
+                    <AutorenewIcon
+                      sx={{
+                        color: 'white',
+                        animation: 'spin 1s linear infinite',
+                        '@keyframes spin': {
+                          '0%': {
+                            transform: 'rotate(0deg)',
+                          },
+                          '100%': {
+                            transform: 'rotate(360deg)',
+                          },
+                        },
+                      }}
+                      fontSize="large"
+                    />
                   </Box>
-
-                  <Box marginTop={2}>
-                    <Button variant="contained" onClick={uploadImage}>
-                      Confirm
-                    </Button>
-                    <Button onClick={() => onImageUpdate(index)}>Change</Button>
-                    <Button onClick={() => onImageRemove(index)}>Remove</Button>
-                  </Box>
-                </Box>
-              ))}
+                )}
+              </Box>
             </Box>
           );
         }}

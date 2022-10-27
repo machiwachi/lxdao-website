@@ -2,6 +2,7 @@
 import React from 'react';
 import { Box, Typography, Button, Alert } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
+import { removeEmpty } from '@/utils/utility';
 
 import SkillsField from './SkillsField';
 import ContactsField from './ContactsField';
@@ -193,7 +194,13 @@ function ProfileForm(props) {
             return (
               <MultiSelect
                 value={value || []}
-                onChange={onChange}
+                onChange={(values) => {
+                  let lastValue = values.pop();
+                  if (lastValue === 'Others') {
+                    lastValue = window.prompt('Please input your interest');
+                  }
+                  onChange([...values, lastValue]);
+                }}
                 dropdown={interestNames}
               />
             );
@@ -218,17 +225,37 @@ function ProfileForm(props) {
           }}
         >
           Contacts{' '}
-          <Typography fontSize="14px" display="inline">
+          <span
+            style={{
+              fontSize: 14,
+              display: 'inline',
+            }}
+          >
             (the following contacts will be publicly available)
-          </Typography>
+          </span>
         </Typography>
         <Controller
           name={'contacts'}
           control={control}
+          rules={{
+            validate: (value) => {
+              return JSON.stringify(removeEmpty(value)) !== '{}';
+            },
+          }}
           render={({ field: { onChange, value } }) => {
             return <ContactsField value={value || {}} onChange={onChange} />;
           }}
         />
+        {errors.contacts && (
+          <Typography
+            fontSize="0.75rem"
+            color="#d32f2f"
+            marginTop={1}
+            marginLeft={2}
+          >
+            At least one contacts are required
+          </Typography>
+        )}
       </Box>
       {JSON.stringify(errors) !== '{}' && (
         <Box marginTop={2}>

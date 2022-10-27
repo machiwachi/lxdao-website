@@ -10,6 +10,9 @@ import API from '@/common/API';
 import Tag from '@/components/Tag';
 import Skills from '@/components/Skills';
 import BuidlerContacts from '@/components/BuidlerContacts';
+import Button from '@/components/Button';
+
+import { convertIpfsGateway } from '@/utils/utility';
 
 export function BuidlerCard(props) {
   const record = props.record;
@@ -17,8 +20,8 @@ export function BuidlerCard(props) {
 
   return (
     <Box
-      boxShadow={1}
-      borderRadius={2}
+      border="0.5px solid #D0D5DD"
+      borderRadius="6px"
       padding={3}
       position="relative"
       paddingBottom={7}
@@ -38,60 +41,100 @@ export function BuidlerCard(props) {
             flexShrink={0}
             width="80px"
             height="80px"
-            borderRadius="50%"
+            borderRadius="6px"
             overflow="hidden"
+            border="0.5px solid #E5E5E5"
             marginRight={3}
           >
             <img
               style={{ display: 'block', width: 80 }}
-              src={record.avatar || '/images/placeholder.jpeg'}
+              src={
+                convertIpfsGateway(record.avatar) || '/images/placeholder.jpeg'
+              }
               alt=""
             />
           </Box>
-          <Box>
+          <Box
+            display="flex"
+            flexDirection="column"
+            justifyContent="space-between"
+          >
             <Typography
-              variant="h6"
+              variant="h5"
               sx={{
-                lineHeight: '44px',
+                lineHeight: '24px',
+                fontWeight: 'bold',
+                color: '#000',
               }}
             >
               {record.name}
             </Typography>
-            <Box display="flex" flexWrap="wrap">
-              {record.role.map((item) => {
-                return <Tag key={item} text={item}></Tag>;
-              })}
+            <Box width="36px" height="36px">
+              <BuidlerContacts contacts={record.contacts} />
             </Box>
           </Box>
         </Box>
-        <Box marginTop={2}>
-          <Typography fontWeight="bold">Skills</Typography>
-          {skills.length === 0 ? (
-            'No skills'
-          ) : (
+        <Box display="flex" flexWrap="wrap" marginTop={2}>
+          <Typography
+            variant="body1"
+            sx={{
+              lineHeight: '24px',
+              color: '#666F85',
+            }}
+          >
+            {record.description}
+          </Typography>
+        </Box>
+
+        <Box display="flex" flexWrap="wrap" marginTop={2}>
+          {record.role.map((item, index) => {
+            return <Tag key={item} index={index} text={item}></Tag>;
+          })}
+        </Box>
+        {skills.length === 0 ? (
+          ''
+        ) : (
+          <Box marginTop={2}>
+            <Typography fontWeight="bold" marginBottom={2} variant="body1">
+              Skills
+            </Typography>
             <Box display="flex" flexWrap="wrap">
               <Skills skills={skills} />
             </Box>
-          )}
-        </Box>
-        <Box marginTop={2}>
-          <Typography fontWeight="bold">Projects</Typography>
-          <Typography>
-            <strong>
-              {
-                record.projects.filter(
-                  (project) => project.status !== 'PENDING'
-                ).length
-              }
-            </strong>{' '}
-            Project Involved
-          </Typography>
-        </Box>
+          </Box>
+        )}
+        {record.projects.filter((project) => project.status !== 'PENDING')
+          .length === 0 ? (
+          ''
+        ) : (
+          <Box marginTop={2}>
+            <Typography fontWeight="bold" marginBottom={2} variant="body1">
+              Projects
+            </Typography>
+            <Box display="flex">
+              {record.projects
+                .filter((project) => project.status !== 'PENDING')
+                .map((project) => (
+                  <Box
+                    key={project.id}
+                    width="60px"
+                    height="60px"
+                    borderRadius="6px"
+                    overflow="hidden"
+                    border="0.5px solid #E5E5E5"
+                    marginRight={1.25}
+                  >
+                    <img
+                      style={{ display: 'block', width: 60 }}
+                      src={project.project?.logo || '/images/placeholder.jpeg'}
+                      alt=""
+                    />
+                  </Box>
+                ))}
+            </Box>
+          </Box>
+        )}
       </Link>
-
-      <Box position="absolute" bottom="24px" right="24px">
-        <BuidlerContacts contacts={record.contacts} />
-      </Box>
     </Box>
   );
 }
@@ -123,6 +166,7 @@ export default function Home() {
       params.push('role=' + trimmedRole);
     }
     params.push('per_page=50');
+    params.push('status=ACTIVE');
     query += params.join('&');
 
     setLoading(true);
@@ -154,43 +198,67 @@ export default function Home() {
 
   return (
     <Layout>
-      <Container paddingY={10} maxWidth={1200}>
-        <Box textAlign="center">
-          <Typography variant="h3">LXDAO Buidlers</Typography>
-          <Typography fontSize="20px" marginTop={2}>
-            Here are registered LXDAO Buidlers. Welcome to{' '}
-            <Link href={`/joinus`} target="_blank" color={'inherit'}>
-              Join Us
+      <Container paddingY={10} maxWidth={1216}>
+        <Box
+          display="flex"
+          flexDirection="column"
+          gap={6}
+          alignItems={{ lg: 'center', xs: 'center' }}
+          textAlign={{ lg: 'center', xs: 'center' }}
+        >
+          <Box textAlign="center" gap={6}>
+            <Typography variant="h1" lineHeight="70px">
+              LXDAO Buidlers
+            </Typography>
+            <Typography
+              variant="subtitle1"
+              lineHeight="30px"
+              color="#667085"
+              marginTop={4}
+            >
+              Welcome to Join Us, let's buidl more valuable Web3 products
+              together!
+            </Typography>
+          </Box>
+          <Button variant="gradient" width="200px" marginBottom={2}>
+            <Link
+              href={`/joinus`}
+              color="#ffffff"
+              sx={{
+                textDecoration: 'none',
+              }}
+            >
+              JOIN US
             </Link>
-            !
-          </Typography>
+          </Button>
         </Box>
-        <Box marginTop={6.25}>
-          <Grid container spacing={2}>
-            <Grid item xs={8}>
-              <DebouncedInput
-                value={search}
-                onChange={(value) => {
-                  setSearch(value);
-                  searchList(value, role);
-                }}
-                label="Search"
-                placeholder="Search buidlers"
-              />
-            </Grid>
-            <Grid item xs={4}>
-              <SingleSelect
-                value={role}
-                label="Role"
-                dropdown={roleNames}
-                onChange={(value) => {
-                  setRole(value);
-                  searchList(search, value);
-                }}
-              />
-            </Grid>
+
+        <Grid marginTop={10} container spacing={2}>
+          <Grid xs={2} />
+          <Grid item xs={4}>
+            <DebouncedInput
+              value={search}
+              onChange={(value) => {
+                setSearch(value);
+                searchList(value, role);
+              }}
+              label="Search"
+              placeholder="Search buidlers"
+            />
           </Grid>
-        </Box>
+          <Grid item xs={4}>
+            <SingleSelect
+              value={role}
+              label="Role"
+              dropdown={roleNames}
+              onChange={(value) => {
+                setRole(value);
+                searchList(search, value);
+              }}
+            />
+          </Grid>
+        </Grid>
+
         {loading ? (
           <Box marginTop={10} display="flex" justifyContent="center">
             <CircularProgress />

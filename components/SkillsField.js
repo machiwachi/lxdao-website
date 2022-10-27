@@ -2,9 +2,20 @@ import React from 'react';
 import { Box, Grid } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import Select from './Select';
-import skillNames from '../common/skills';
 
 const skillLevels = ['Junior', 'Intermediate', 'Senior'];
+let skillNames = [
+  'UI/UX Design',
+  'Project Management',
+  'Product Management',
+  'FrontEnd',
+  'FullStack',
+  'BackEnd',
+  'Operation',
+  'Solidity',
+  'Blockchain',
+  'Others',
+];
 
 function filterSkills(skills, value) {
   const selectedSkills = value.map((item) => item.name);
@@ -33,6 +44,8 @@ function SkillsField(props) {
   }
 
   const filteredSkillNames = filterSkills(skillNames, value);
+  skillNames = [...skillNames, ...value.map((item) => item.name)];
+  skillNames = [...new Set(skillNames)];
 
   return (
     <Box>
@@ -87,7 +100,12 @@ function SkillsField(props) {
               dropdown={filteredSkillNames}
               value={''}
               onChange={(value) => {
-                createSkill('name', value);
+                let newValue = value;
+                if (value === 'Others') {
+                  newValue = prompt('Please enter the skill name');
+                  skillNames.push(newValue);
+                }
+                createSkill('name', newValue);
               }}
             ></Select>
           </Grid>

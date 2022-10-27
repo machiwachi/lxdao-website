@@ -2,17 +2,17 @@ import React from 'react';
 import { Box, Typography } from '@mui/material';
 
 const levelColors = {
-  Junior: '#4CDBE4',
-  Intermediate: '#4CE4C9',
-  Senior: '#7CD89B',
+  Junior: 'rgba(54,175,249,0.4)',
+  Intermediate: 'rgba(54,175,249,0.7)',
+  Senior: '#009FFF',
 };
 
 function SkillTag(props) {
   return (
     <Box
       paddingX={1}
-      marginRight={0.5}
-      marginBottom={0.5}
+      marginRight={1}
+      marginBottom={1}
       sx={{
         background: levelColors[props.level],
         color: '#fff',

@@ -78,3 +78,22 @@ export function getOpenSeaDomain() {
     ? 'opensea.io'
     : 'testnets.opensea.io';
 }
+
+export function convertIpfsGateway(ipfsUrl) {
+  // https://cloudflare-ipfs.com/ipfs/bafkreid67qrfaq2yqacnsvpvfnetjocgy7kiuwu4jw4v23tc3yqgfgis2e
+  // to
+  // https://bafkreid67qrfaq2yqacnsvpvfnetjocgy7kiuwu4jw4v23tc3yqgfgis2e.ipfs.nftstorage.link/
+  if (ipfsUrl && ipfsUrl.includes('cloudflare-ipfs')) {
+    const cid = ipfsUrl.replace('https://cloudflare-ipfs.com/ipfs/', '');
+    return `https://${cid}.ipfs.nftstorage.link`;
+  }
+  return ipfsUrl;
+}
+
+// https://stackoverflow.com/questions/286141/remove-blank-attributes-from-an-object-in-javascript
+export function removeEmpty(obj) {
+  // eslint-disable-next-line no-unused-vars
+  return Object.fromEntries(
+    Object.entries(obj || {}).filter(([_, v]) => v != null && v != '')
+  );
+}
