@@ -1,9 +1,9 @@
 import React from 'react';
 import { Typography, Box, Link, Grid } from '@mui/material';
 
-const WorkingGroupCard = ({ image, name, link }) => {
+const WorkingGroupCard = ({ image, name, link, hasBorder }) => {
   return (
-    <Grid item xs={6} sm={6} md={6} lg={4}>
+    <Grid item xs={6} sm={6} md={6} lg={6}>
       <Link href={link} sx={{ textDecoration: 'none' }}>
         <Box
           backgroundColor="#F5F5F5"
@@ -12,6 +12,7 @@ const WorkingGroupCard = ({ image, name, link }) => {
           alignItems="center"
           justifyContent="center"
           borderRadius="6px 6px 0 0"
+          sx={{ border: `${hasBorder ? ' 0.5px solid #D0D5DD' : 'none'}` }}
         >
           <Box component="img" src={image} />
         </Box>
@@ -22,6 +23,7 @@ const WorkingGroupCard = ({ image, name, link }) => {
           backgroundColor="#ffffff"
           padding="20px 24px"
           borderRadius="0 0 6px 6px"
+          sx={{ border: `${hasBorder ? ' 0.5px solid #D0D5DD' : 'none'}` }}
         >
           {name}
         </Typography>

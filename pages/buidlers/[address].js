@@ -21,7 +21,11 @@ import {
   TableHead,
   TableRow,
   Paper,
+  AccordionDetails,
+  AccordionSummary,
+  Accordion,
 } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CloseIcon from '@mui/icons-material/Close';
 import { useRouter } from 'next/router';
 import _ from 'lodash';
@@ -44,6 +48,9 @@ import showMessage from '@/components/showMessage';
 import Project from '@/components/Project';
 import { convertIpfsGateway } from '@/utils/utility';
 import LXButton from '@/components/Button';
+import WorkingGroupCard from '@/components/WorkingGroupCard';
+
+import workingGroupsData from '@/common/content/workingGroups';
 
 function totalLXPoints(record) {
   if (!record.lxPoints) {
@@ -103,7 +110,13 @@ function ipfsToBytes(ipfsURI) {
 
 function BuidlerDetails(props) {
   const record = props.record;
-
+  record.lxPoints = [
+    { id: 1, value: 12 },
+    { id: 2, value: 12 },
+    { id: 3, value: 15 },
+    { id: 4, value: 12 },
+    { id: 5, value: 12 },
+  ];
   const { address, isConnected } = useAccount();
   const { data: signer } = useSigner();
   const contract = useContract({
@@ -544,58 +557,145 @@ function BuidlerDetails(props) {
         </Box>
         {/* right senction */}
         <Box flex="1" width="calc(100% - 29px)" marginLeft="29px">
-          <Box
-            display="flex"
-            marginTop={4}
-            marginBottom={4}
-            flexDirection="column"
-          >
-            <Box marginRight={3} marginBottom={3}>
-              <Typography fontWeight="bold" variant="h6">
-                all remuneration
-              </Typography>
-              <Typography marginTop={2} fontSize="48px" fontWeight="bold">
-                {totalLXPoints(record)}
-              </Typography>
-            </Box>
-            <LXPointsTable points={record.lxPoints} />
+          <Box display="flex" flexDirection="column">
+            <Accordion padding={4} maxHeight="363px">
+              <AccordionSummary
+                height="128px"
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <Typography fontWeight="bold" variant="h6">
+                  all remuneration
+                  <Box
+                    marginLeft={1}
+                    width="16px"
+                    component={'img'}
+                    src={`/icons/help-fill.svg`}
+                  />
+                </Typography>
+                <Typography sx={{ color: 'text.secondary' }}>
+                  I am an accordion
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <LXPointsTable maxHeight="235px" points={record.lxPoints} />
+              </AccordionDetails>
+            </Accordion>
           </Box>
 
-          <Box flex="1 1 auto">
+          <Box flex="1 1" marginTop={3}>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6} md={4}>
-                <Typography fontWeight="bold" variant="h6" marginBottom={2}>
-                  Skills
-                </Typography>
-                <Box display="flex" flexWrap="wrap">
-                  <Skills skills={record.skills} />
+              <Grid item xs={12} sm={6}>
+                <Box
+                  border="0.5px solid #D0D5DD"
+                  borderRadius="6px"
+                  padding="22px 17px 18.66px 31px"
+                >
+                  <Box display="flex" justifyContent="space-between">
+                    <Typography
+                      fontWeight="600"
+                      variant="body1"
+                      marginBottom={2}
+                      display="inline-block"
+                    >
+                      Skills
+                    </Typography>
+                    <Box display="inline-block">
+                      <Typography
+                        fontWeight="400"
+                        variant="body2"
+                        display="inline-block"
+                      >
+                        <Box
+                          width="10px"
+                          height="10px"
+                          borderRadius="50%"
+                          display="inline-block"
+                          marginRight={1}
+                          marginLeft={1}
+                          sx={{ background: '#009FFF' }}
+                        ></Box>
+                        Senior
+                      </Typography>
+                      <Typography
+                        fontWeight="400"
+                        variant="body2"
+                        display="inline-block"
+                      >
+                        <Box
+                          width="10px"
+                          height="10px"
+                          borderRadius="50%"
+                          display="inline-block"
+                          marginRight={1}
+                          marginLeft={1}
+                          sx={{ background: 'rgba(0,159,255,0.7)' }}
+                        ></Box>
+                        intermediate
+                      </Typography>
+                      <Typography
+                        fontWeight="400"
+                        variant="body2"
+                        display="inline-block"
+                      >
+                        <Box
+                          width="10px"
+                          height="10px"
+                          borderRadius="50%"
+                          display="inline-block"
+                          marginRight={1}
+                          marginLeft={1}
+                          sx={{ background: 'rgba(0,159,255,0.4)' }}
+                        ></Box>
+                        jonior
+                      </Typography>
+                    </Box>
+                  </Box>
+                  <Box display="flex" flexWrap="wrap">
+                    <Skills skills={record.skills} />
+                  </Box>
                 </Box>
               </Grid>
-              <Grid item xs={12} sm={6} md={4}>
-                <Typography fontWeight="bold" variant="h6" marginBottom={2}>
-                  Interests
-                </Typography>
-                <Box display="flex" flexWrap="wrap">
-                  {record.interests.map((item) => {
-                    return <Tag key={item} text={item} />;
-                  })}
+              <Grid item xs={12} sm={6} height="100%" sx={{ height: '100%' }}>
+                <Box
+                  border="0.5px solid #D0D5DD"
+                  borderRadius="6px"
+                  padding="22px 17px 26.66px 31px"
+                  sx={{ height: '100%' }}
+                >
+                  <Box>
+                    <Typography
+                      fontWeight="600"
+                      variant="body1"
+                      marginBottom={2}
+                      display="inline-block"
+                    >
+                      Interests
+                    </Typography>
+                  </Box>
+                  <Box display="flex" flexWrap="wrap">
+                    {record.interests.map((item) => {
+                      return (
+                        <Tag
+                          background="rgba(255,184,0,0.1)"
+                          color="#FFB800"
+                          key={item}
+                          text={item}
+                        />
+                      );
+                    })}
+                  </Box>
                 </Box>
               </Grid>
             </Grid>
           </Box>
 
-          <Box marginTop={10}>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-              <Tabs value="project">
-                <Tab
-                  label={`Project ${
-                    record.projects.filter(
-                      (project) => project.status === 'ACTIVE'
-                    ).length
-                  }`}
-                  value="project"
-                />
-              </Tabs>
+          <Box marginTop={3}>
+            <Box>
+              <Typography fontWeight="600" variant="body1" marginBottom={2}>
+                Project
+              </Typography>
             </Box>
             <Box display="flex" marginTop={4}>
               {projects.length ? (
@@ -608,6 +708,41 @@ function BuidlerDetails(props) {
                     );
                   })}
                 </Grid>
+              ) : (
+                <Box
+                  display="flex"
+                  flexDirection="column"
+                  width="100%"
+                  alignItems="center"
+                  paddingY={4}
+                >
+                  <img width="80px" src="/icons/no-records.png" />
+                  <Typography marginTop={4} color="#D0D5DD" fontSize="16px">
+                    You have not participated in any project
+                  </Typography>
+                </Box>
+              )}
+            </Box>
+          </Box>
+
+          <Box marginTop={3}>
+            <Box>
+              <Typography fontWeight="600" variant="body1" marginBottom={2}>
+                Working Group
+              </Typography>
+            </Box>
+            <Box display="flex" marginTop={4}>
+              {workingGroupsData.length ? (
+                <Box width="100%">
+                  <Grid container spacing={3}>
+                    {workingGroupsData.length > 0 &&
+                      workingGroupsData.map((group, index) => {
+                        return (
+                          <WorkingGroupCard hasBorder key={index} {...group} />
+                        );
+                      })}
+                  </Grid>
+                </Box>
               ) : (
                 <Box
                   display="flex"
