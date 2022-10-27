@@ -11,6 +11,7 @@ import Tag from '@/components/Tag';
 import Skills from '@/components/Skills';
 import BuidlerContacts from '@/components/BuidlerContacts';
 import Button from '@/components/Button';
+import Masonry from '@mui/lab/Masonry';
 import { convertIpfsGateway } from '@/utils/utility';
 
 export function BuidlerCard(props) {
@@ -145,11 +146,19 @@ const roleNames = [
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [list, setList] = useState([]);
   const [search, setSearch] = useState('');
   const [role, setRole] = useState('');
+  const [current, setCurrent] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
 
-  const searchList = async (search = '', role = '') => {
+  const searchList = async (
+    search = '',
+    role = '',
+    currentPage = 0,
+    isAddMore = false
+  ) => {
     let query = `/buidler?`;
     let params = [];
     const trimmedSearch = search.trim();
@@ -160,11 +169,16 @@ export default function Home() {
     if (trimmedRole) {
       params.push('role=' + trimmedRole);
     }
-    params.push('per_page=50');
+    // params.push('current=' + (currentPage || current));
+    params.push('per_page=' + 6 * (currentPage || current));
     params.push('status=ACTIVE');
     query += params.join('&');
 
-    setLoading(true);
+    if (!isAddMore) {
+      setLoading(true);
+    } else {
+      setLoadingMore(true);
+    }
     try {
       const res = await API.get(query);
       const result = res.data;
@@ -178,12 +192,21 @@ export default function Home() {
       records.forEach((record) => {
         tempList.push(record);
       });
+      if (list.length === tempList.length) {
+        setHasMore(false);
+      } else {
+        setHasMore(true);
+      }
 
       setList(tempList);
     } catch (err) {
       console.error(err);
     }
-    setLoading(false);
+    if (!isAddMore) {
+      setLoading(false);
+    } else {
+      setLoadingMore(false);
+    }
   };
 
   // todo Muxin add pagination later with many buidlers
@@ -234,8 +257,9 @@ export default function Home() {
             <DebouncedInput
               value={search}
               onChange={(value) => {
+                setCurrent(1);
                 setSearch(value);
-                searchList(value, role);
+                searchList(value, role, 1);
               }}
               label="Search"
               placeholder="Search buidlers"
@@ -247,8 +271,9 @@ export default function Home() {
               label="Role"
               dropdown={roleNames}
               onChange={(value) => {
+                setCurrent(1);
                 setRole(value);
-                searchList(search, value);
+                searchList(search, value, 1);
               }}
             />
           </Grid>
@@ -274,15 +299,39 @@ export default function Home() {
                 </Typography>
               </Box>
             ) : (
-              <Grid container spacing={3}>
-                {list.map((item) => {
-                  return (
-                    <Grid key={item.id} item xs={12} md={6} lg={4}>
-                      <BuidlerCard record={item} />
-                    </Grid>
-                  );
-                })}
-              </Grid>
+              <Box marginLeft={{ xs: 2, md: 0 }}>
+                <Masonry columns={{ lg: 3, md: 2, xs: 1 }} spacing={2}>
+                  {list.map((item) => {
+                    return (
+                      <Grid key={item.id} item xs={12} md={6} lg={4}>
+                        <BuidlerCard record={item} />
+                      </Grid>
+                    );
+                  })}
+                </Masonry>
+                <Box
+                  marginTop={{ md: 6, xs: 3 }}
+                  display="flex"
+                  justifyContent="center"
+                  gap={2}
+                >
+                  {loadingMore ? (
+                    <Box marginTop={10} display="flex" justifyContent="center">
+                      <CircularProgress />
+                    </Box>
+                  ) : hasMore ? (
+                    <Button
+                      variant="outlined"
+                      onClick={() => {
+                        setCurrent(current + 1);
+                        searchList(search, role, current + 1, true);
+                      }}
+                    >
+                      View More
+                    </Button>
+                  ) : null}
+                </Box>
+              </Box>
             )}
           </Box>
         )}
