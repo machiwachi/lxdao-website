@@ -42,6 +42,7 @@
     "next-connect": "^0.12.2",
     "react": "17.0.2",
     "react-copy-to-clipboard": "^5.1.0",
+    "react-cropper": "^2.1.8",
     "react-dom": "17.0.2",
     "react-hook-form": "^7.34.2",
     "react-images-uploading": "^3.1.7",

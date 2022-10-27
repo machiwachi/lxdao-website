@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import ImageUploading from 'react-images-uploading';
+import Cropper from 'react-cropper';
+import 'cropperjs/dist/cropper.css';
 
 import API from '@/common/API';
 
@@ -30,6 +32,22 @@ function Avatar(props) {
 
     setUploading(false);
   }
+
+  // useEffect(() => {
+  //   const image = document.getElementById('image');
+  //   const cropper = new Cropper(image, {
+  //     aspectRatio: 16 / 9,
+  //     crop(event) {
+  //       console.log(event.detail.x);
+  //       console.log(event.detail.y);
+  //       console.log(event.detail.width);
+  //       console.log(event.detail.height);
+  //       console.log(event.detail.rotate);
+  //       console.log(event.detail.scaleX);
+  //       console.log(event.detail.scaleY);
+  //     },
+  //   });
+  // }, []);
 
   return (
     <>
