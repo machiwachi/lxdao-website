@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { Box, Typography, Grid, Card, Chip } from '@mui/material';
+import {
+  Box,
+  Typography,
+  Avatar,
+  Card,
+  Chip,
+  Link,
+  Skeleton,
+} from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
 const CornerIcon = (props) => {
@@ -59,7 +67,7 @@ const ProjectCard = ({ project, index }) => {
         });
       }}
     >
-      <Box sx={{ display: 'flex' }} marginBottom={8}>
+      <Box sx={{ display: 'flex' }} marginBottom={4}>
         <Box sx={{ marginRight: '26px' }}>
           <Box sx={{ position: 'relative' }}>
             <img
@@ -90,33 +98,40 @@ const ProjectCard = ({ project, index }) => {
           <Typography
             sx={{
               marginBottom: '18px',
-              fontFamily: 'Avenir medium',
+              fontFamily: 'Inter',
+              fontStyle: 'normal',
+              fontWeight: 600,
+              fontSize: '21px',
+              lineHeight: '25px',
+              color: '#101828',
             }}
+            textAlign="left"
           >
             {project.name}
           </Typography>
-          <Box>
-            {project.status && (
-              <Chip
-                size="small"
-                label={project.status}
-                variant="outlined"
-                sx={{
-                  borderRadius: '4px',
-                  color: '#4DCC9E',
-                  borderColor: '#4DCC9E',
-                  fontSize: '12px',
-                }}
-              />
-            )}
-          </Box>
           <Box
             display="flex"
             gap="8px"
             flexWrap="wrap"
-            justifyContent="center"
-            maxHeight={60}
+            justifyContent="flex-start"
+            height={60}
           >
+            <Box>
+              {project.status && (
+                <Chip
+                  size="small"
+                  label={project.status}
+                  variant="outlined"
+                  sx={{
+                    borderRadius: '4px',
+                    fontSize: '12px',
+                    background: 'rgba(77, 204, 158, 0.1)',
+                    color: '#4DCC9E',
+                    border: 'none',
+                  }}
+                />
+              )}
+            </Box>
             {project.tags &&
               project.tags.map((tag, index) => {
                 return (
@@ -127,8 +142,10 @@ const ProjectCard = ({ project, index }) => {
                     variant="outlined"
                     sx={{
                       borderRadius: '4px',
-                      borderColor: '#000000',
+                      border: 'none',
                       fontSize: '12px',
+                      color: '#36AFF9',
+                      background: 'rgba(54, 175, 249, 0.1)',
                     }}
                   />
                 );
@@ -138,7 +155,7 @@ const ProjectCard = ({ project, index }) => {
       </Box>
       <Box
         sx={{
-          width: '351px',
+          width: '100%',
           height: '200px',
           background: '#FFFFFF',
           border: '0.5px solid #D0D5DD',
@@ -148,9 +165,31 @@ const ProjectCard = ({ project, index }) => {
       >
         <img style={{ width: '100%' }} src={project.banner} />
       </Box>
-      <Typography marginTop={1} color="#666f85" textAlign="left">
-        {project.description}
-      </Typography>
+      {project.description ? (
+        <Typography
+          marginTop={1}
+          color="#666f85"
+          textAlign="left"
+          variant="body1"
+          maxWidth="351px"
+          sx={{
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            display: '-webkit-box',
+            '-webkit-box-orient': 'vertical',
+            '-webkit-line-clamp': '3',
+          }}
+        >
+          {project.description}
+        </Typography>
+      ) : (
+        <Skeleton
+          variant="rectangular"
+          width="100%"
+          height={72}
+          sx={{ marginTop: 1 }}
+        />
+      )}
       <Typography
         color="#101828"
         variant="body1"
@@ -160,20 +199,63 @@ const ProjectCard = ({ project, index }) => {
       >
         Builder
       </Typography>
-      <Box display="flex" gap="10px" flexWrap="wrap" justifyContent="center">
-        {project.builder &&
-          project.builder.map((builder) => (
-            <Box width={60} height={60} sx={{ position: 'relative' }}>
-              <img />
-              <Typography
-                width={30}
-                height={16}
-                sx={{ position: 'absolute', top: 0, left: 0 }}
-              >
-                PM
-              </Typography>
-            </Box>
-          ))}
+      <Box
+        display="flex"
+        gap="10px"
+        flexWrap="wrap"
+        justifyContent="flex-start"
+      >
+        {project.buidlersOnProject &&
+          project.buidlersOnProject.map((buidler, index) => {
+            if (buidler.status !== 'ACTIVE') {
+              return null;
+            }
+            return (
+              <Link href={`/buidlers/${buidler?.buidler?.address}`}>
+                <Box
+                  width={60}
+                  height={60}
+                  marginRight="10px"
+                  key={index}
+                  sx={{
+                    position: 'relative',
+                    border: '0.5px solid #D0D5DD',
+                    borderRadius: '2px',
+                  }}
+                >
+                  <Avatar
+                    key={index}
+                    alt={buidler?.buidler?.name}
+                    src={buidler?.buidler?.avatar}
+                    sx={{
+                      cursor: 'pointer',
+                      position: 'absolute',
+                      zIndex: 2,
+                      margin: '10px',
+                      left: 0,
+                    }}
+                  />
+                  {buidler?.projectRole.includes('Project Manager') && (
+                    <Typography
+                      position="absolute"
+                      sx={{
+                        left: 0,
+                        top: 0,
+                        fontSize: '12px',
+                        lineHeight: '15px',
+                        color: '#fff',
+                        background: '#36AFF9',
+                        width: '30px',
+                        zIndex: 3,
+                      }}
+                    >
+                      PM
+                    </Typography>
+                  )}
+                </Box>
+              </Link>
+            );
+          })}
       </Box>
     </Card>
   );
