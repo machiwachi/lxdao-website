@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import ImageUploading from 'react-images-uploading';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
@@ -31,7 +31,7 @@ function Avatar(props) {
 
     setUploading(false);
   }
-  
+
   return (
     <>
       <ImageUploading
