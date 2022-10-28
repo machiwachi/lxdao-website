@@ -13,8 +13,9 @@ function Project({ data }) {
     >
       <Box
         display="flex"
+        border="0.5px solid #D0D5DD"
+        borderRadius="6px"
         boxShadow={1}
-        borderRadius={2}
         overflow="hidden"
         height="100%"
         flexDirection={{
@@ -22,82 +23,62 @@ function Project({ data }) {
           sm: 'row',
         }}
       >
-        <Box flex="0 0 180px">
+        <Box flex="0 0 148px">
           <img
-            style={{ display: 'block', width: '100%' }}
+            style={{ display: 'block', width: '148px' }}
             src={data.project.logoLarge || '/images/placeholder.jpeg'}
             alt=""
           />
         </Box>
 
         <Box flex="auto" padding={3} position="relative">
-          <Typography fontSize="20px" fontWeight="bold">
+          <Typography fontWeight="600" variant="subtitle1">
             {data.project.name}
           </Typography>
-          <Typography
-            color="#667085"
-            sx={{
-              position: {
-                xs: 'none',
-                lg: 'absolute',
-              },
-              top: '24px',
-              right: '36px',
-            }}
-          >
-            Project#{data.project.number}
-          </Typography>
-          <Grid container spacing={2} marginTop={3}>
-            <Grid item xs={6} sm={6} md={6} lg={4}>
+
+          <Grid item>
+            <Box>
+              <Typography
+                display="inline-block"
+                marginBottom={1}
+                fontWeight="400"
+                variant="body2"
+                color="#666F85"
+              >
+                Role:&emsp;
+              </Typography>
+
+              <Typography
+                display="inline-block"
+                fontWeight="400"
+                variant="body2"
+                color="#36AFF9"
+              >
+                {data.projectRole.join(', ') || 'Unknown'}
+              </Typography>
+            </Box>
+          </Grid>
+          <Grid container spacing={2}>
+            <Grid item>
               <Box>
-                <Typography
-                  marginBottom={1}
-                  sx={{
-                    fontSize: '16px',
-                    fontWeight: 'bold',
-                  }}
-                >
-                  Project Role
-                </Typography>
                 <Typography fontSize="14px" color="#667085">
-                  {data.projectRole.join(', ') || 'Unknown'}
-                </Typography>
-              </Box>
-            </Grid>
-            <Grid item xs={6} sm={6} md={6} lg={4}>
-              <Box>
-                <Typography
-                  marginBottom={1}
-                  sx={{
-                    fontSize: '16px',
-                    fontWeight: 'bold',
-                  }}
-                >
-                  Started at
-                </Typography>
-                <Typography fontSize="14px" color="#667085">
-                  {data.createdAt.split('T')[0]}
-                </Typography>
-              </Box>
-            </Grid>
-            <Grid item xs={6} sm={6} md={6} lg={4}>
-              <Box>
-                <Typography
-                  marginBottom={1}
-                  sx={{
-                    fontSize: '16px',
-                    fontWeight: 'bold',
-                  }}
-                >
-                  Ended at
-                </Typography>
-                {/* todo add end date and feature */}
-                <Typography fontSize="14px" color="#667085">
-                  -
+                  {`${data.createdAt.split('T')[0]} - ${
+                    data.endedAt ? data.endedAt.split('T')[0] : 'to date'
+                  }`}
                 </Typography>
               </Box>
             </Grid>
           </Grid>
+          <Box display="flex" justifyContent="flex-end">
+            <Typography
+              display="inline-block"
+              fontWeight="500"
+              variant="body1"
+              color="#101828"
+            >
+              more➜
+            </Typography>
+          </Box>
         </Box>
       </Box>
     </Link>

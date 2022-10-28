@@ -566,7 +566,7 @@ function BuidlerDetails(props) {
                 id="panel1a-header"
               >
                 <Typography fontWeight="bold" variant="h6">
-                  all remuneration
+                  All remuneration
                   <Box
                     marginLeft={1}
                     width="16px"
@@ -575,7 +575,7 @@ function BuidlerDetails(props) {
                   />
                 </Typography>
                 <Typography sx={{ color: 'text.secondary' }}>
-                  I am an accordion
+                  record list
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
@@ -697,7 +697,7 @@ function BuidlerDetails(props) {
                 Project
               </Typography>
             </Box>
-            <Box display="flex" marginTop={4}>
+            <Box display="flex" marginTop={2}>
               {projects.length ? (
                 <Grid container spacing={4}>
                   {projects.map((project) => {
@@ -725,13 +725,13 @@ function BuidlerDetails(props) {
             </Box>
           </Box>
 
-          <Box marginTop={3}>
+          <Box marginTop={3} marginBottom={3}>
             <Box>
               <Typography fontWeight="600" variant="body1" marginBottom={2}>
                 Working Group
               </Typography>
             </Box>
-            <Box display="flex" marginTop={4}>
+            <Box display="flex" marginTop={2}>
               {workingGroupsData.length ? (
                 <Box width="100%">
                   <Grid container spacing={3}>
