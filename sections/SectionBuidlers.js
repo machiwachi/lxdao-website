@@ -9,9 +9,15 @@ import Container from '@/components/Container';
 import Button from '@/components/Button';
 import StyledTooltip from '@/components/StyledToolTip';
 import Tag from '@/components/Tag';
+import Skills from '@/components/Skills';
 
-const BudilerTooltip = ({ buidler, ...rest }) => {
-  console.log('buidler: ', buidler);
+const BudilerTooltip = ({
+  buidler,
+  key,
+  active,
+  handleBuidlerCardHover,
+  handleBuidlerCardLeave,
+}) => {
   const BuidlerDetails = ({ name, description, address, role, skills }) => {
     return (
       <Box>
@@ -33,14 +39,14 @@ const BudilerTooltip = ({ buidler, ...rest }) => {
         >
           {description}
         </Typography>
-        {role.length && (
+        {role?.length && (
           <Box display="flex" flexWrap="wrap" marginBottom="25px">
             {role.map((roleItem, index) => {
               return <Tag key={index} text={roleItem} />;
             })}
           </Box>
         )}
-        {skills.length && (
+        {skills?.length && (
           <>
             <Typography
               variant="body1"
@@ -51,10 +57,8 @@ const BudilerTooltip = ({ buidler, ...rest }) => {
             >
               Skills
             </Typography>
-            <Box display="flex" flexWrap="wrap">
-              {role.map((roleItem, index) => {
-                return <Tag key={index} text={roleItem} />;
-              })}
+            <Box display="flex" flexWrap="wrap" marginBottom={3}>
+              <Skills skills={skills} />
             </Box>
           </>
         )}
@@ -78,7 +82,20 @@ const BudilerTooltip = ({ buidler, ...rest }) => {
       title={<BuidlerDetails {...buidler} />}
       placement="bottom-start"
     >
-      <Box {...rest} width="180px" height="180px">
+      <Box
+        key={key}
+        width="180px"
+        height="180px"
+        onMouseOver={handleBuidlerCardHover}
+        onMouseLeave={handleBuidlerCardLeave}
+        position="relative"
+      >
+        <Box
+          width="180px"
+          height="180px"
+          sx={{ position: 'absolute', top: 0, left: 0 }}
+          backgroundColor={active ? 'transpent' : 'rgba(0,0,0,0.2)'}
+        />
         <Link
           href={`/buidlers/${buidler.address}`}
           target="_blank"
@@ -117,6 +134,14 @@ const SectionBuidlers = () => {
     }
   }, []);
 
+  const handleBuidlerHover = (index) => {
+    setActiveBuidlerIndex(index);
+  };
+
+  const handleBuidlerLeave = () => {
+    setActiveBuidlerIndex(null);
+  };
+
   return (
     <Box backgroundColor="#000000">
       <Container paddingY={{ md: '112px', xs: 8 }}>
@@ -140,7 +165,19 @@ const SectionBuidlers = () => {
         </Typography>
         <Box display="flex" flexWrap="wrap">
           {buidlers.map((buidler, index) => {
-            return <BudilerTooltip buidler={buidler} key={index} />;
+            return (
+              <BudilerTooltip
+                handleBuidlerCardHover={() => {
+                  handleBuidlerHover(index);
+                }}
+                handleBuidlerCardLeave={() => {
+                  handleBuidlerLeave(index);
+                }}
+                buidler={buidler}
+                key={index}
+                active={activeBuidlerIndex === index}
+              />
+            );
           })}
         </Box>
         <Button
