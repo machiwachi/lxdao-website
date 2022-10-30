@@ -8,6 +8,12 @@ import { AlertProvider } from '@/context/AlertContext';
 import { wagmiClient, chains } from '@/components/ConnectWallet';
 import AlertPopup from '@/components/AlertPopup';
 
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/effect-cards';
+
+import '@/common/style.css';
+
 // eslint-disable-next-line react/prop-types
 function MyApp({ Component, pageProps }) {
   return (
