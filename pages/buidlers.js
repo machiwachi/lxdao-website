@@ -169,8 +169,8 @@ export default function Home() {
     if (trimmedRole) {
       params.push('role=' + trimmedRole);
     }
-    // params.push('current=' + (currentPage || current));
-    params.push('per_page=' + 6 * (currentPage || current));
+    params.push('page=' + (currentPage || current));
+    params.push('per_page=6');
     params.push('status=ACTIVE');
     query += params.join('&');
 
@@ -192,13 +192,8 @@ export default function Home() {
       records.forEach((record) => {
         tempList.push(record);
       });
-      if (list.length === tempList.length) {
-        setHasMore(false);
-      } else {
-        setHasMore(true);
-      }
-
-      setList(tempList);
+      setHasMore(tempList.length === 6);
+      setList([...list, ...tempList]);
     } catch (err) {
       console.error(err);
     }

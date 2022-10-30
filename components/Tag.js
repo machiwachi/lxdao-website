@@ -10,10 +10,8 @@ function Tag(props) {
         marginRight: '8px',
         marginBottom: '4px',
         wordBreak: 'break-all',
-        background: props.background
-          ? props.background
-          : 'rgba(102,111,133,0.1)',
-        color: props.color ? props.color : '#666F85',
+        background: props.background || 'rgba(102,111,133,0.1)',
+        color: props.color || '#666F85',
       }}
     >
       {props.text}
