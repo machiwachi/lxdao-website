@@ -143,7 +143,6 @@ function BuidlerDetails(props) {
     if (!signer) {
       return;
     }
-
     if (isConnected && address === record.address) {
       await getToken(address);
     }
@@ -308,10 +307,21 @@ function BuidlerDetails(props) {
             Welcome LXDAO. Please fill up the form first, and your Buddy will
             enable your Mint access on the Onboarding Session. Thanks.
           </Alert>
-          <Box marginTop={2} marginBottom={2}>
-            <Button disabled={true} variant="outlined">
+          <Box
+            display="flex"
+            justifyContent="center"
+            marginTop={6}
+            marginBottom={2}
+          >
+            <LXButton width="200px" disabled={true} variant="gradient">
               {minting ? 'Minting Builder Card...' : 'Mint Builder Card'}
-            </Button>
+            </LXButton>
+          </Box>
+          <Box display="flex" justifyContent="center" marginBottom={6}>
+            <Typography variant="body1" fontWeight="400">
+              We will arrange on-boarding as soon as possible and help you mint
+              buidler card
+            </Typography>
           </Box>
         </Box>
       )}
@@ -320,18 +330,21 @@ function BuidlerDetails(props) {
           <Alert severity="info">
             Welcome LXDAO. Your Buidler Card is Ready to Mint.
           </Alert>
-          <Box marginTop={2} marginBottom={2}>
+          <Box
+            display="flex"
+            justifyContent="center"
+            marginTop={6}
+            marginBottom={2}
+          >
             <LXButton
+              width="220px"
+              variant="gradient"
               onClick={() => {
                 mint();
               }}
             >
               {minting ? 'Minting Builder Card...' : 'Mint Builder Card'}
             </LXButton>
-          </Box>
-          <Box display="flex" justifyContent="center">
-            We will arrange on-boarding as soon as possible and help you mint
-            buidler card
           </Box>
         </Box>
       )}

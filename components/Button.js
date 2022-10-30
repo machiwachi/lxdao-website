@@ -26,7 +26,9 @@ const Button = ({ variant, children, ...rest }) => (
         variant === 'outlined'
           ? '#ffffff'
           : variant === 'gradient'
-          ? 'linear-gradient(90deg, #305FE8 0%, #3AD9E3 100%)'
+          ? rest.disabled
+            ? 'linear-gradient(89.57deg, rgba(41,117,223,0.5) 0.27%, rgba(58,207,227,0.5) 105.82%)'
+            : 'linear-gradient(90deg, #305FE8 0%, #3AD9E3 100%)'
           : '#000000',
     }}
     {...rest}
