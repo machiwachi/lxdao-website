@@ -416,6 +416,13 @@ const SectionWorkSteps = () => (
         stepIcon="/icons/success.svg"
         stepTitle="Fund allocation"
         stepDes="After the product is perfected, the fund is allocated according to the contribution.After the product is perfected, the fund is allocated according to the contributionAfter the product is perfected, the fund is allocated according to the contribution"
+        rightSection={
+          <Box
+            component="img"
+            width="450px"
+            src="/images/workstep-success.png"
+          />
+        }
       />
     </Box>
   </Box>
