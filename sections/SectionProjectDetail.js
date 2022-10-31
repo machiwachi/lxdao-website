@@ -306,12 +306,13 @@ const SectionProjectDetail = ({ projectId }) => {
     return (
       <Card
         sx={{
-          minWidth: '180px',
+          minWidth: '172px',
           height: '132px',
           background: '#FFFFFF',
           border: '0.5px solid #D0D5DD',
           borderRadius: '6px',
           marginRight: isRight ? 3 : 0,
+          boxShadow: 'none',
         }}
       >
         <CardContent>
@@ -343,6 +344,7 @@ const SectionProjectDetail = ({ projectId }) => {
       id="Project-Detail-Section"
       maxWidth="1200px"
       minHeight="calc(100vh - 280px)"
+      width="auto"
     >
       <Grid
         container
@@ -350,7 +352,7 @@ const SectionProjectDetail = ({ projectId }) => {
         flexDirection={{ md: 'row', xs: 'column' }}
         width={{ xs: '100%' }}
       >
-        <Grid item xs={10} md={4} margin={{ xs: 'auto' }}>
+        <Grid item md={4} lg={4} margin={{ xs: 'auto' }}>
           <Box
             sx={{
               background: '#FFFFFF',
@@ -512,9 +514,9 @@ const SectionProjectDetail = ({ projectId }) => {
             )}
           </Box>
         </Grid>
-        <Grid item md={8} xs={10} justify="flex-start">
+        <Grid item md={8} lg={8} justify="flex-start">
           <Stack spacing={3.5}>
-            <Box sx={{ display: 'flex' }} marginBottom={3}>
+            <Box display="flex" flexWrap="wrap" marginBottom={3}>
               {cardData.map((card, i) =>
                 cardItem(card, i < cardData.length - 1)
               )}
@@ -778,7 +780,11 @@ const SectionProjectDetail = ({ projectId }) => {
                       </Box>
                     </Box>
                   </Box>
-                  <Typography color="#36AFF9" fontSize="21px" fontWeight={600}>
+                  <Typography
+                    color="#36AFF9"
+                    variant="subtitle1"
+                    fontWeight={600}
+                  >
                     →
                   </Typography>
                 </Box>

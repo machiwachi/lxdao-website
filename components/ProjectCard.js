@@ -60,6 +60,9 @@ const ProjectCard = ({ project, index }) => {
         cursor: 'pointer',
         overflow: 'visible',
         width: '100%',
+        boxShadow: 'none',
+        border: '0.5px solid #D0D5DD',
+        borderRadius: '6px',
       }}
       onClick={() => {
         router.push({
@@ -98,14 +101,11 @@ const ProjectCard = ({ project, index }) => {
           <Typography
             sx={{
               marginBottom: '18px',
-              fontFamily: 'Inter',
-              fontStyle: 'normal',
               fontWeight: 600,
-              fontSize: '21px',
-              lineHeight: '25px',
               color: '#101828',
             }}
             textAlign="left"
+            variant="subtitle1"
           >
             {project.name}
           </Typography>
@@ -190,73 +190,76 @@ const ProjectCard = ({ project, index }) => {
           sx={{ marginTop: 1 }}
         />
       )}
-      <Typography
-        color="#101828"
-        variant="body1"
-        textAlign="left"
-        marginTop={4}
-        marginBottom={2}
-      >
-        Builder
-      </Typography>
-      <Box
-        display="flex"
-        gap="10px"
-        flexWrap="wrap"
-        justifyContent="flex-start"
-      >
-        {project.buidlersOnProject &&
-          project.buidlersOnProject.map((buidler, index) => {
-            if (buidler.status !== 'ACTIVE') {
-              return null;
-            }
-            return (
-              <Link href={`/buidlers/${buidler?.buidler?.address}`}>
-                <Box
-                  width={60}
-                  height={60}
-                  marginRight="10px"
-                  key={index}
-                  sx={{
-                    position: 'relative',
-                    border: '0.5px solid #D0D5DD',
-                    borderRadius: '2px',
-                  }}
-                >
-                  <Avatar
+      {project.buidlersOnProject && (
+        <>
+          <Typography
+            color="#101828"
+            variant="body1"
+            textAlign="left"
+            marginTop={4}
+            marginBottom={2}
+          >
+            Builder
+          </Typography>
+          <Box
+            display="flex"
+            gap="10px"
+            flexWrap="wrap"
+            justifyContent="flex-start"
+          >
+            {project.buidlersOnProject.map((buidler, index) => {
+              if (buidler.status !== 'ACTIVE') {
+                return null;
+              }
+              return (
+                <Link href={`/buidlers/${buidler?.buidler?.address}`}>
+                  <Box
+                    width={60}
+                    height={60}
+                    marginRight="10px"
                     key={index}
-                    alt={buidler?.buidler?.name}
-                    src={buidler?.buidler?.avatar}
                     sx={{
-                      cursor: 'pointer',
-                      position: 'absolute',
-                      zIndex: 2,
-                      margin: '10px',
-                      left: 0,
+                      position: 'relative',
+                      border: '0.5px solid #D0D5DD',
+                      borderRadius: '2px',
                     }}
-                  />
-                  {buidler?.projectRole.includes('Project Manager') && (
-                    <Typography
-                      position="absolute"
+                  >
+                    <Avatar
+                      key={index}
+                      alt={buidler?.buidler?.name}
+                      src={buidler?.buidler?.avatar}
                       sx={{
+                        cursor: 'pointer',
+                        position: 'absolute',
+                        zIndex: 2,
+                        margin: '10px',
                         left: 0,
-                        top: 0,
-                        fontSize: '12px',
-                        lineHeight: '15px',
-                        color: '#fff',
-                        background: '#36AFF9',
-                        width: '30px',
-                        zIndex: 3,
                       }}
-                    >
-                      PM
-                    </Typography>
-                  )}
-                </Box>
-              </Link>
-            );
-          })}
-      </Box>
+                    />
+                    {buidler?.projectRole.includes('Project Manager') && (
+                      <Typography
+                        position="absolute"
+                        sx={{
+                          left: 0,
+                          top: 0,
+                          fontSize: '12px',
+                          lineHeight: '15px',
+                          color: '#fff',
+                          background: '#36AFF9',
+                          width: '30px',
+                          zIndex: 3,
+                        }}
+                      >
+                        PM
+                      </Typography>
+                    )}
+                  </Box>
+                </Link>
+              );
+            })}
+          </Box>
+        </>
+      )}
     </Card>
   );
 };
