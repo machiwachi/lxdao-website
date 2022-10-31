@@ -183,8 +183,8 @@ const SectionProjectDetail = ({ projectId }) => {
   const LabelText = ({ label }) => {
     return (
       <Typography
+        variant="body1"
         color="#666F85"
-        fontSize="16px"
         textAlign="left"
         marginBottom={1.5}
       >
@@ -306,12 +306,14 @@ const SectionProjectDetail = ({ projectId }) => {
     return (
       <Card
         sx={{
-          minWidth: '180px',
+          minWidth: '172px',
           height: '132px',
           background: '#FFFFFF',
           border: '0.5px solid #D0D5DD',
           borderRadius: '6px',
           marginRight: isRight ? 3 : 0,
+          marginBottom: 3,
+          boxShadow: 'none',
         }}
       >
         <CardContent>
@@ -334,6 +336,63 @@ const SectionProjectDetail = ({ projectId }) => {
       </Card>
     );
   };
+
+  const forumdata = [
+    {
+      name: 'About the 000 GCLX category',
+      operate: [
+        { name: 'Views', num: 18 },
+        { name: 'Replies', num: 0 },
+        { name: 'Activity', num: '12d' },
+      ],
+    },
+    {
+      name: 'About the 000 GCLX category1',
+      operate: [
+        { name: 'Views', num: 18 },
+        { name: 'Replies', num: 0 },
+        { name: 'Activity', num: '13d' },
+      ],
+    },
+  ];
+  const operateItem = (item) => (
+    <Box display="flex" gap="3px" marginRight={2}>
+      <Typography variant="body2" marginRight={0.5} color="#666F85">
+        {item.name}
+      </Typography>
+      <Typography color="#36AFF9" variant="body2">
+        {item.num}
+      </Typography>
+    </Box>
+  );
+  const forumItem = (item) => (
+    <Box
+      sx={{
+        padding: '22px 23px',
+        width: '100%',
+        height: '88px',
+        background: '#FFFFFF',
+        border: '0.5px solid #D0D5DD',
+        borderRadius: '6px',
+      }}
+      marginBottom={2}
+      display="flex"
+      justifyContent="space-between"
+    >
+      <Box>
+        <Typography variant="body1" align="left" fontWeight={600}>
+          {item.name}
+        </Typography>
+        <Box display="flex" alignItems="center">
+          {item.operate.map((item_) => operateItem(item_))}
+        </Box>
+      </Box>
+      <Typography color="#36AFF9" variant="subtitle1" fontWeight={600}>
+        →
+      </Typography>
+    </Box>
+  );
+
   if (!project) return null;
   return (
     <Container
@@ -343,6 +402,7 @@ const SectionProjectDetail = ({ projectId }) => {
       id="Project-Detail-Section"
       maxWidth="1200px"
       minHeight="calc(100vh - 280px)"
+      width="auto"
     >
       <Grid
         container
@@ -350,7 +410,7 @@ const SectionProjectDetail = ({ projectId }) => {
         flexDirection={{ md: 'row', xs: 'column' }}
         width={{ xs: '100%' }}
       >
-        <Grid item xs={10} md={4} margin={{ xs: 'auto' }}>
+        <Grid item md={4} lg={4} margin={{ xs: 'auto' }}>
           <Box
             sx={{
               background: '#FFFFFF',
@@ -399,7 +459,9 @@ const SectionProjectDetail = ({ projectId }) => {
               marginTop={3}
               marginBottom={3}
             ></Box>
-            <Typography align="left">{project.description}</Typography>
+            <Typography align="left" variant="body1" color="#666F85">
+              {project.description}
+            </Typography>
             <Box
               align="left"
               display="flex"
@@ -457,11 +519,7 @@ const SectionProjectDetail = ({ projectId }) => {
               {project.launchDate && (
                 <Box display="flex" justifyContent="center">
                   <LabelText label="Launch Date" />
-                  <Typography
-                    fontSize={{ md: '16px', xs: '14px' }}
-                    color="#000000"
-                    marginLeft={2}
-                  >
+                  <Typography variant="body1" color="#101828" marginLeft={2}>
                     {format(new Date(project.launchDate), 'yyyy-MM-dd')}
                   </Typography>
                 </Box>
@@ -470,14 +528,13 @@ const SectionProjectDetail = ({ projectId }) => {
                 <Typography
                   fontSize={{ md: '14px', xs: '12px' }}
                   width="97px"
-                  height="23.92px"
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    textAlign: 'center',
                     color: '#4DCC9E',
                     background: 'rgba(77, 204, 158, 0.1)',
                     display: 'block',
+                    lineHeight: '23.92px',
                   }}
                 >
                   {PROJECT_STATUS[project.status]}
@@ -512,9 +569,9 @@ const SectionProjectDetail = ({ projectId }) => {
             )}
           </Box>
         </Grid>
-        <Grid item md={8} xs={10} justify="flex-start">
-          <Stack spacing={3.5}>
-            <Box sx={{ display: 'flex' }} marginBottom={3}>
+        <Grid item md={8} lg={8} justify="flex-start">
+          <Stack>
+            <Box display="flex" flexWrap="wrap">
               {cardData.map((card, i) =>
                 cardItem(card, i < cardData.length - 1)
               )}
@@ -530,7 +587,7 @@ const SectionProjectDetail = ({ projectId }) => {
               }}
               marginBottom={3}
             >
-              <Typography variant="body1" marginBottom={2}>
+              <Typography variant="body1" marginBottom={2} textAlign="left">
                 Buidlers
               </Typography>
               <Box
@@ -540,9 +597,6 @@ const SectionProjectDetail = ({ projectId }) => {
               >
                 <Box display="flex">
                   {project.buidlersOnProject.map((buidler, index) => {
-                    if (buidler.status !== 'ACTIVE') {
-                      return null;
-                    }
                     return (
                       <Tooltip
                         key={index}
@@ -594,19 +648,33 @@ const SectionProjectDetail = ({ projectId }) => {
                                 cursor: 'pointer',
                                 position: 'absolute',
                                 zIndex: 2,
-                                margin: '10px',
-                                left: 0,
+                                width: '100%',
+                                height: '100%',
                               }}
                               onMouseOver={() =>
                                 handleDisplayBuidlerTooltip(buidler, 'open')
                               }
                             />
+                            {buidler.status == 'PENDING' && (
+                              <Box
+                                position="absolute"
+                                width="100%"
+                                height="100%"
+                                sx={{
+                                  background: 'rgba(0, 0, 0, 0.5)',
+                                  borderRadius: '2px',
+                                  top: 0,
+                                  left: 0,
+                                  zIndex: 3,
+                                }}
+                              ></Box>
+                            )}
                           </Box>
                         </Link>
                       </Tooltip>
                     );
                   })}
-                  {!showInviteButton && (
+                  {!showInviteButton && address && (
                     <Box
                       width="60px"
                       height="60px"
@@ -730,58 +798,11 @@ const SectionProjectDetail = ({ projectId }) => {
                 borderRadius: '6px',
               }}
             >
-              <Typography variant="body1" marginBottom={2}>
+              <Typography variant="body1" marginBottom={2} textAlign="left">
                 Forum
               </Typography>
               <Box>
-                <Box
-                  sx={{
-                    padding: '22px 23px',
-                    width: '100%',
-                    height: '88px',
-                    background: '#FFFFFF',
-                    border: '0.5px solid #D0D5DD',
-                    borderRadius: '6px',
-                  }}
-                  marginBottom={2}
-                  display="flex"
-                  justifyContent="space-between"
-                >
-                  <Box>
-                    <Typography variant="body1" align="left" fontWeight={600}>
-                      About the 000 GCLX category
-                    </Typography>
-                    <Box display="flex" alignItems="center">
-                      <Box display="flex" gap="3px" marginRight={2}>
-                        <Typography variant="body2" marginRight={0.5}>
-                          Views
-                        </Typography>
-                        <Typography color="#36AFF9" variant="body2">
-                          18
-                        </Typography>
-                      </Box>
-                      <Box display="flex" gap="3px" marginRight={2}>
-                        <Typography variant="body2" marginRight={0.5}>
-                          Replies{' '}
-                        </Typography>
-                        <Typography color="#36AFF9" variant="body2">
-                          0
-                        </Typography>
-                      </Box>
-                      <Box display="flex" gap="3px" marginRight={2}>
-                        <Typography variant="body2" marginRight={0.5}>
-                          Activity{' '}
-                        </Typography>
-                        <Typography color="#36AFF9" variant="body2">
-                          12d
-                        </Typography>
-                      </Box>
-                    </Box>
-                  </Box>
-                  <Typography color="#36AFF9" fontSize="21px" fontWeight={600}>
-                    →
-                  </Typography>
-                </Box>
+                {forumdata && forumdata.map((forum) => forumItem(forum))}
               </Box>
               <Box
                 width="200px"
