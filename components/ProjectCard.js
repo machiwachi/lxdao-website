@@ -208,15 +208,11 @@ const ProjectCard = ({ project, index }) => {
             justifyContent="flex-start"
           >
             {project.buidlersOnProject.map((buidler, index) => {
-              if (buidler.status !== 'ACTIVE') {
-                return null;
-              }
               return (
                 <Link href={`/buidlers/${buidler?.buidler?.address}`}>
                   <Box
                     width={60}
                     height={60}
-                    marginRight="10px"
                     key={index}
                     sx={{
                       position: 'relative',
@@ -232,8 +228,8 @@ const ProjectCard = ({ project, index }) => {
                         cursor: 'pointer',
                         position: 'absolute',
                         zIndex: 2,
-                        margin: '10px',
-                        left: 0,
+                        width: '100%',
+                        height: '100%',
                       }}
                     />
                     {buidler?.projectRole.includes('Project Manager') && (
@@ -252,6 +248,20 @@ const ProjectCard = ({ project, index }) => {
                       >
                         PM
                       </Typography>
+                    )}
+                    {buidler.status == 'PENDING' && (
+                      <Box
+                        position="absolute"
+                        width="100%"
+                        height="100%"
+                        sx={{
+                          background: 'rgba(0, 0, 0, 0.5)',
+                          borderRadius: '2px',
+                          top: 0,
+                          left: 0,
+                          zIndex: 3,
+                        }}
+                      ></Box>
                     )}
                   </Box>
                 </Link>
