@@ -7,11 +7,11 @@ function Tag(props) {
       sx={{
         borderRadius: '2px',
         padding: '2px 6px',
-        marginLeft: `${props.index === 0 ? 0 : '8px'}`,
+        marginRight: '8px',
         marginBottom: '4px',
         wordBreak: 'break-all',
-        background: 'rgba(102,111,133,0.1)',
-        color: '#666F85',
+        background: props.background || 'rgba(102,111,133,0.1)',
+        color: props.color || '#666F85',
       }}
     >
       {props.text}

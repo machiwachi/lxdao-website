@@ -11,7 +11,7 @@ import Tag from '@/components/Tag';
 import Skills from '@/components/Skills';
 import BuidlerContacts from '@/components/BuidlerContacts';
 import Button from '@/components/Button';
-
+import Masonry from '@mui/lab/Masonry';
 import { convertIpfsGateway } from '@/utils/utility';
 
 export function BuidlerCard(props) {
@@ -69,7 +69,7 @@ export function BuidlerCard(props) {
             >
               {record.name}
             </Typography>
-            <Box width="36px" height="36px">
+            <Box height="36px">
               <BuidlerContacts contacts={record.contacts} />
             </Box>
           </Box>
@@ -87,15 +87,13 @@ export function BuidlerCard(props) {
         </Box>
 
         <Box display="flex" flexWrap="wrap" marginTop={2}>
-          {record.role.map((item, index) => {
-            return <Tag key={item} index={index} text={item}></Tag>;
+          {record.role.map((item) => {
+            return <Tag key={item} text={item}></Tag>;
           })}
         </Box>
-        {skills.length === 0 ? (
-          ''
-        ) : (
+        {skills.length > 0 && (
           <Box marginTop={2}>
-            <Typography fontWeight="bold" marginBottom={2} variant="body1">
+            <Typography fontWeight="600" marginBottom={2} variant="body1">
               Skills
             </Typography>
             <Box display="flex" flexWrap="wrap">
@@ -104,11 +102,9 @@ export function BuidlerCard(props) {
           </Box>
         )}
         {record.projects.filter((project) => project.status !== 'PENDING')
-          .length === 0 ? (
-          ''
-        ) : (
+          .length > 0 && (
           <Box marginTop={2}>
-            <Typography fontWeight="bold" marginBottom={2} variant="body1">
+            <Typography fontWeight="600" marginBottom={2} variant="body1">
               Projects
             </Typography>
             <Box display="flex">
@@ -150,11 +146,19 @@ const roleNames = [
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [list, setList] = useState([]);
   const [search, setSearch] = useState('');
   const [role, setRole] = useState('');
+  const [current, setCurrent] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
 
-  const searchList = async (search = '', role = '') => {
+  const searchList = async (
+    search = '',
+    role = '',
+    currentPage = 0,
+    isAddMore = false
+  ) => {
     let query = `/buidler?`;
     let params = [];
     const trimmedSearch = search.trim();
@@ -165,11 +169,16 @@ export default function Home() {
     if (trimmedRole) {
       params.push('role=' + trimmedRole);
     }
-    params.push('per_page=50');
+    params.push('page=' + (currentPage || current));
+    params.push('per_page=6');
     params.push('status=ACTIVE');
     query += params.join('&');
 
-    setLoading(true);
+    if (!isAddMore) {
+      setLoading(true);
+    } else {
+      setLoadingMore(true);
+    }
     try {
       const res = await API.get(query);
       const result = res.data;
@@ -183,12 +192,16 @@ export default function Home() {
       records.forEach((record) => {
         tempList.push(record);
       });
-
-      setList(tempList);
+      setHasMore(tempList.length === 6);
+      setList([...list, ...tempList]);
     } catch (err) {
       console.error(err);
     }
-    setLoading(false);
+    if (!isAddMore) {
+      setLoading(false);
+    } else {
+      setLoadingMore(false);
+    }
   };
 
   // todo Muxin add pagination later with many buidlers
@@ -239,8 +252,9 @@ export default function Home() {
             <DebouncedInput
               value={search}
               onChange={(value) => {
+                setCurrent(1);
                 setSearch(value);
-                searchList(value, role);
+                searchList(value, role, 1);
               }}
               label="Search"
               placeholder="Search buidlers"
@@ -252,8 +266,9 @@ export default function Home() {
               label="Role"
               dropdown={roleNames}
               onChange={(value) => {
+                setCurrent(1);
                 setRole(value);
-                searchList(search, value);
+                searchList(search, value, 1);
               }}
             />
           </Grid>
@@ -279,15 +294,39 @@ export default function Home() {
                 </Typography>
               </Box>
             ) : (
-              <Grid container spacing={3}>
-                {list.map((item) => {
-                  return (
-                    <Grid key={item.id} item xs={12} md={6} lg={4}>
-                      <BuidlerCard record={item} />
-                    </Grid>
-                  );
-                })}
-              </Grid>
+              <Box marginLeft={{ xs: 2, md: 0 }}>
+                <Masonry columns={{ lg: 3, md: 2, xs: 1 }} spacing={2}>
+                  {list.map((item) => {
+                    return (
+                      <Grid key={item.id} item xs={12} md={6} lg={4}>
+                        <BuidlerCard record={item} />
+                      </Grid>
+                    );
+                  })}
+                </Masonry>
+                <Box
+                  marginTop={{ md: 6, xs: 3 }}
+                  display="flex"
+                  justifyContent="center"
+                  gap={2}
+                >
+                  {loadingMore ? (
+                    <Box marginTop={10} display="flex" justifyContent="center">
+                      <CircularProgress />
+                    </Box>
+                  ) : hasMore ? (
+                    <Button
+                      variant="outlined"
+                      onClick={() => {
+                        setCurrent(current + 1);
+                        searchList(search, role, current + 1, true);
+                      }}
+                    >
+                      View More
+                    </Button>
+                  ) : null}
+                </Box>
+              </Box>
             )}
           </Box>
         )}

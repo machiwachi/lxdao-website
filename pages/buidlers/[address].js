@@ -13,7 +13,19 @@ import {
   DialogTitle,
   DialogContent,
   Alert,
+  Divider,
+  TableContainer,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Paper,
+  AccordionDetails,
+  AccordionSummary,
+  Accordion,
 } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CloseIcon from '@mui/icons-material/Close';
 import { useRouter } from 'next/router';
 import _ from 'lodash';
@@ -35,6 +47,10 @@ import Tag from '@/components/Tag';
 import showMessage from '@/components/showMessage';
 import Project from '@/components/Project';
 import { convertIpfsGateway } from '@/utils/utility';
+import LXButton from '@/components/Button';
+import WorkingGroupCard from '@/components/WorkingGroupCard';
+
+import workingGroupsData from '@/common/content/workingGroups';
 
 function totalLXPoints(record) {
   if (!record.lxPoints) {
@@ -52,51 +68,37 @@ function totalLXPoints(record) {
   }, 0);
 }
 
-function LXPointsTimeline({ points }) {
+function LXPointsTable({ points }) {
   return (
-    <Box marginTop={3} marginLeft={2}>
-      {points.map((point, index) => {
-        const isLastOne = index === points.length - 1;
-        return (
-          <Box
-            key={index}
-            paddingLeft={3}
-            paddingBottom={3}
-            sx={{
-              position: 'relative',
-              '&::before': {
-                position: 'absolute',
-                content: '" "',
-                top: '8px',
-                left: 0,
-                width: '6px',
-                height: '6px',
-                backgroundColor: '#D0D5DD',
-                borderRadius: '50%',
-              },
-              '&::after': {
-                position: 'absolute',
-                display: isLastOne ? 'none' : 'block',
-                content: '" "',
-                top: '12px',
-                left: '2px',
-                bottom: '-10px',
-                width: '2px',
-                backgroundColor: '#D0D5DD',
-              },
-            }}
-          >
-            <Typography>
-              {point.reason} ({point.operator}
-              {point.value})
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {point.createdAt}
-            </Typography>
-          </Box>
-        );
-      })}
-    </Box>
+    <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell align="left">remuneration</TableCell>
+            <TableCell align="left">reason</TableCell>
+            <TableCell align="left">source</TableCell>
+            <TableCell align="left">release time</TableCell>
+            <TableCell align="right">transaction link</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {points.map((point) => (
+            <TableRow
+              key={point.id}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            >
+              <TableCell component="th" scope="row">
+                {point.value}
+              </TableCell>
+              <TableCell align="right">{point.reason}</TableCell>
+              <TableCell align="right">{point.source}</TableCell>
+              <TableCell align="right">{point.createdAt}</TableCell>
+              <TableCell align="right">view</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 }
 
@@ -108,7 +110,13 @@ function ipfsToBytes(ipfsURI) {
 
 function BuidlerDetails(props) {
   const record = props.record;
-
+  record.lxPoints = [
+    { id: 1, value: 12 },
+    { id: 2, value: 12 },
+    { id: 3, value: 15 },
+    { id: 4, value: 12 },
+    { id: 5, value: 12 },
+  ];
   const { address, isConnected } = useAccount();
   const { data: signer } = useSigner();
   const contract = useContract({
@@ -118,7 +126,6 @@ function BuidlerDetails(props) {
 
   const router = useRouter();
 
-  const [details, setDetails] = useState('buidlerCard');
   const [visible, setVisible] = useState(false);
   const [minting, setMinting] = useState(false);
   const [updating, setUpdating] = useState(false);
@@ -136,7 +143,6 @@ function BuidlerDetails(props) {
     if (!signer) {
       return;
     }
-
     if (isConnected && address === record.address) {
       await getToken(address);
     }
@@ -241,6 +247,10 @@ function BuidlerDetails(props) {
   const buddies = record.buddies.map((buddy) => buddy.address);
   const isBuddyChecking = buddies.includes(address);
 
+  const createdAt =
+    record.createdAt &&
+    new Date(Date.parse(record.createdAt)).toDateString().split(' ');
+
   return (
     <Container>
       {address === record.address &&
@@ -293,14 +303,25 @@ function BuidlerDetails(props) {
         )}
       {address === record.address && record.status === 'PENDING' && (
         <Box marginTop={4}>
-          <Alert severity="info">
+          <Alert severity="success">
             Welcome LXDAO. Please fill up the form first, and your Buddy will
             enable your Mint access on the Onboarding Session. Thanks.
           </Alert>
-          <Box marginTop={2} marginBottom={2}>
-            <Button disabled={true} variant="outlined">
+          <Box
+            display="flex"
+            justifyContent="center"
+            marginTop={6}
+            marginBottom={2}
+          >
+            <LXButton width="200px" disabled={true} variant="gradient">
               {minting ? 'Minting Builder Card...' : 'Mint Builder Card'}
-            </Button>
+            </LXButton>
+          </Box>
+          <Box display="flex" justifyContent="center" marginBottom={6}>
+            <Typography variant="body1" fontWeight="400">
+              We will arrange on-boarding as soon as possible and help you mint
+              buidler card
+            </Typography>
           </Box>
         </Box>
       )}
@@ -309,15 +330,21 @@ function BuidlerDetails(props) {
           <Alert severity="info">
             Welcome LXDAO. Your Buidler Card is Ready to Mint.
           </Alert>
-          <Box marginTop={2} marginBottom={2}>
-            <Button
+          <Box
+            display="flex"
+            justifyContent="center"
+            marginTop={6}
+            marginBottom={2}
+          >
+            <LXButton
+              width="220px"
+              variant="gradient"
               onClick={() => {
                 mint();
               }}
-              variant="outlined"
             >
               {minting ? 'Minting Builder Card...' : 'Mint Builder Card'}
-            </Button>
+            </LXButton>
           </Box>
         </Box>
       )}
@@ -366,189 +393,172 @@ function BuidlerDetails(props) {
       )}
       <Box
         display="flex"
-        marginTop={6}
         flexDirection={{
-          md: 'row',
           xs: 'column',
+          md: 'row',
         }}
       >
-        <Box marginRight={6}>
+        {/* left section*/}
+        <Box width="300px">
           <Box
-            width="150px"
-            height="150px"
-            borderRadius="50%"
-            overflow="hidden"
-          >
-            <img
-              style={{ display: 'block', width: 150 }}
-              src={
-                convertIpfsGateway(record.avatar) || '/images/placeholder.jpeg'
-              }
-              alt=""
-            />
-          </Box>
-          <Box textAlign="center" marginTop={4}>
-            {address === record.address ? (
-              <Button
-                onClick={() => {
-                  setVisible(true);
-                }}
-                size="small"
-                variant="outlined"
-              >
-                Edit
-              </Button>
-            ) : null}
-            {address === record.address &&
-            record.role.includes('Onboarding Committee') ? (
-              <Button
-                style={{
-                  marginLeft: 8,
-                }}
-                onClick={async () => {
-                  const newAddress = window.prompt('New joiner address');
-                  const data = await API.post(`/buidler`, {
-                    address: newAddress,
-                  });
-                  const result = data?.data;
-                  if (result.status === 'SUCCESS') {
-                    alert('created!');
-                  }
-                }}
-                size="small"
-                variant="outlined"
-              >
-                Onboarding
-              </Button>
-            ) : null}
-          </Box>
-        </Box>
-        <Box flex="1 1 auto">
-          <Box
-            marginTop={4}
-            marginBottom={6}
+            border="0.5px solid #D0D5DD"
+            borderRadius="6px"
             display="flex"
-            flexWrap="wrap"
-            alignItems="flex-start"
+            padding={3}
           >
-            <Box flex="1 1 40%" marginBottom={2}>
-              <Typography variant="h4" fontWeight="bold" marginBottom={2}>
+            <Box>
+              <Box
+                width="252px"
+                height="252px"
+                border="0.5px solid #D0D5DD"
+                borderRadius="6px"
+                overflow="hidden"
+              >
+                <img
+                  style={{ display: 'block', width: 252 }}
+                  src={
+                    convertIpfsGateway(record.avatar) ||
+                    '/images/placeholder.jpeg'
+                  }
+                  alt=""
+                />
+              </Box>
+              <Typography
+                variant="h5"
+                fontWeight="500"
+                textAlign="center"
+                marginTop={3}
+                marginBottom={1}
+              >
                 {record.name}
               </Typography>
-              <Typography>{record.description}</Typography>
-            </Box>
-            <Box
-              flex="1 1 auto"
-              display="flex"
-              marginTop={2}
-              flexWrap="wrap"
-              flexDirection={{ xs: 'column', md: 'row' }}
-            >
-              <Box
-                marginRight={4}
-                paddingRight={4}
-                marginBottom={4}
-                borderRight={{
-                  md: '1px solid #D0D5DD',
-                }}
-                marginLeft={{ xs: 0, md: 'auto' }}
-              >
-                <BuidlerContacts space={4} contacts={record.contacts} />
-              </Box>
-              <Box>
+              <Box display="flex" justifyContent="center">
                 <CopyText
+                  textAlign="center"
                   copyTextOriginal={record.address}
                   copyText={formatAddress(record.address)}
                 />
               </Box>
+              <Divider
+                sx={{
+                  marginTop: '24px',
+                  borderColor: '#E5E5E5',
+                }}
+              />
+              {record.description && (
+                <Box marginTop={3}>
+                  <Typography>{record.description}</Typography>
+                </Box>
+              )}
+              {record.role?.length > 0 && (
+                <Grid marginTop={3} item>
+                  <Box display="flex" flexWrap="wrap">
+                    {record.role.map((item) => {
+                      return <Tag key={item} text={item} />;
+                    })}
+                  </Box>
+                </Grid>
+              )}
+              {record.contacts && (
+                <Box
+                  marginTop={2}
+                  display="flex"
+                  flexWrap="wrap"
+                  alignItems="flex-start"
+                  width="176px"
+                >
+                  <BuidlerContacts
+                    sx={{ flexWrap: 'wrap' }}
+                    contacts={record.contacts}
+                  />
+                </Box>
+              )}
+              {record.role?.length > 0 &&
+                record.description &&
+                record.contacts && (
+                  <Divider
+                    sx={{
+                      marginTop: '24px',
+                      borderColor: '#E5E5E5',
+                    }}
+                  />
+                )}
+              {createdAt.length === 4 && (
+                <Box paddingTop={3} display="flex" justifyContent="center">
+                  <Typography>{`Joined ${createdAt[1]} ${createdAt[3]}`}</Typography>
+                </Box>
+              )}
+              <Divider
+                sx={{
+                  marginTop: '24px',
+                  borderColor: '#E5E5E5',
+                }}
+              />
+              <Box textAlign="center" marginTop={4}>
+                {address === record.address ? (
+                  <Button
+                    onClick={() => {
+                      setVisible(true);
+                    }}
+                    size="small"
+                    variant="outlined"
+                  >
+                    Edit
+                  </Button>
+                ) : null}
+                {address === record.address &&
+                record.role.includes('Onboarding Committee') ? (
+                  <Button
+                    style={{
+                      marginLeft: 8,
+                    }}
+                    onClick={async () => {
+                      const newAddress = window.prompt('New joiner address');
+                      const data = await API.post(`/buidler`, {
+                        address: newAddress,
+                      });
+                      const result = data?.data;
+                      if (result.status === 'SUCCESS') {
+                        alert('created!');
+                      }
+                    }}
+                    size="small"
+                    variant="outlined"
+                  >
+                    Onboarding
+                  </Button>
+                ) : null}
+              </Box>
             </Box>
           </Box>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6} md={4}>
-              <Typography fontWeight="bold" variant="h6" marginBottom={2}>
-                Role
-              </Typography>
-              <Box display="flex" flexWrap="wrap">
-                {record.role.map((item) => {
-                  return <Tag key={item} text={item} />;
-                })}
-              </Box>
-            </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <Typography fontWeight="bold" variant="h6" marginBottom={2}>
-                Skills
-              </Typography>
-              <Box display="flex" flexWrap="wrap">
-                <Skills skills={record.skills} />
-              </Box>
-            </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <Typography fontWeight="bold" variant="h6" marginBottom={2}>
-                Interests
-              </Typography>
-              <Box display="flex" flexWrap="wrap">
-                {record.interests.map((item) => {
-                  return <Tag key={item} text={item} />;
-                })}
-              </Box>
-            </Grid>
-          </Grid>
-        </Box>
-      </Box>
-      <Box marginTop={10}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs value="project">
-            <Tab
-              label={`Project ${
-                record.projects.filter((project) => project.status === 'ACTIVE')
-                  .length
-              }`}
-              value="project"
-            />
-          </Tabs>
-        </Box>
-        <Box display="flex" marginTop={4}>
-          {projects.length ? (
-            <Grid container spacing={4}>
-              {projects.map((project) => {
-                return (
-                  <Grid item xs={12} md={6} key={project.id}>
-                    <Project data={project} />
-                  </Grid>
-                );
-              })}
-            </Grid>
-          ) : (
-            <Box
-              display="flex"
-              flexDirection="column"
-              width="100%"
-              alignItems="center"
-              paddingY={4}
-            >
-              <img width="80px" src="/icons/no-records.png" />
-              <Typography marginTop={4} color="#D0D5DD" fontSize="16px">
-                You have not participated in any project
-              </Typography>
-            </Box>
-          )}
-        </Box>
-      </Box>
-      <Box marginTop={10}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs
-            value={details}
-            onChange={(event, value) => {
-              setDetails(value);
-            }}
+          <Box
+            marginTop={3}
+            border="0.5px solid #D0D5DD"
+            borderRadius="6px"
+            display="flex"
+            padding="20px 24px"
           >
-            <Tab label="Buidler Card" value="buidlerCard" />
-            <Tab label="My LXPoints" value="lxPoints" />
-          </Tabs>
-        </Box>
-        <Box paddingY={2}>
-          {details === 'buidlerCard' && (
-            <Box>
+            <Box display="flex" alignItems="center">
+              Buddy
+            </Box>
+            {record.buddies?.length > 0 && (
+              <Box
+                width="76.95px"
+                height="80px"
+                borderRadius="6px"
+                overflow="hidden"
+              >
+                <img
+                  style={{ display: 'block', width: 80 }}
+                  src={record.buddies[0].avatar || '/images/placeholder.jpeg'}
+                  alt=""
+                />
+              </Box>
+            )}
+          </Box>
+
+          {record.status === 'ACTIVE' ? (
+            <Box marginTop={2}>
               <img
                 crossOrigin="anonymous"
                 style={{ display: 'block', width: 300 }}
@@ -556,37 +566,215 @@ function BuidlerDetails(props) {
                 alt=""
               />
             </Box>
-          )}
-          {details === 'lxPoints' && (
-            <Box
-              display="flex"
-              marginTop={4}
-              marginBottom={4}
-              flexDirection={{
-                xs: 'column',
-                md: 'row',
-              }}
-            >
-              <Box marginRight={3} marginBottom={3}>
+          ) : null}
+        </Box>
+        {/* right senction */}
+        <Box flex="1" width="calc(100% - 29px)" marginLeft="29px">
+          <Box display="flex" flexDirection="column">
+            <Accordion padding={4} maxHeight="363px">
+              <AccordionSummary
+                height="128px"
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
                 <Typography fontWeight="bold" variant="h6">
-                  Accumulated LXPoints
+                  All remuneration
+                  <Box
+                    marginLeft={1}
+                    width="16px"
+                    component={'img'}
+                    src={`/icons/help-fill.svg`}
+                  />
                 </Typography>
-                <Typography marginTop={2} fontSize="48px" fontWeight="bold">
-                  {totalLXPoints(record)}
+                <Typography sx={{ color: 'text.secondary' }}>
+                  record list
                 </Typography>
-              </Box>
-              {record.lxPoints && record.lxPoints.length > 0 && (
-                <Box>
-                  <Typography fontWeight="bold" variant="h6">
-                    Reason
+              </AccordionSummary>
+              <AccordionDetails>
+                <LXPointsTable maxHeight="235px" points={record.lxPoints} />
+              </AccordionDetails>
+            </Accordion>
+          </Box>
+
+          <Box flex="1 1" marginTop={3}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <Box
+                  border="0.5px solid #D0D5DD"
+                  borderRadius="6px"
+                  padding="22px 17px 18.66px 31px"
+                >
+                  <Box display="flex" justifyContent="space-between">
+                    <Typography
+                      fontWeight="600"
+                      variant="body1"
+                      marginBottom={2}
+                      display="inline-block"
+                    >
+                      Skills
+                    </Typography>
+                    <Box display="inline-block">
+                      <Typography
+                        fontWeight="400"
+                        variant="body2"
+                        display="inline-block"
+                      >
+                        <Box
+                          width="10px"
+                          height="10px"
+                          borderRadius="50%"
+                          display="inline-block"
+                          marginRight={1}
+                          marginLeft={1}
+                          sx={{ background: '#009FFF' }}
+                        ></Box>
+                        Senior
+                      </Typography>
+                      <Typography
+                        fontWeight="400"
+                        variant="body2"
+                        display="inline-block"
+                      >
+                        <Box
+                          width="10px"
+                          height="10px"
+                          borderRadius="50%"
+                          display="inline-block"
+                          marginRight={1}
+                          marginLeft={1}
+                          sx={{ background: 'rgba(0,159,255,0.7)' }}
+                        ></Box>
+                        intermediate
+                      </Typography>
+                      <Typography
+                        fontWeight="400"
+                        variant="body2"
+                        display="inline-block"
+                      >
+                        <Box
+                          width="10px"
+                          height="10px"
+                          borderRadius="50%"
+                          display="inline-block"
+                          marginRight={1}
+                          marginLeft={1}
+                          sx={{ background: 'rgba(0,159,255,0.4)' }}
+                        ></Box>
+                        jonior
+                      </Typography>
+                    </Box>
+                  </Box>
+                  <Box display="flex" flexWrap="wrap">
+                    <Skills skills={record.skills} />
+                  </Box>
+                </Box>
+              </Grid>
+              <Grid item xs={12} sm={6} height="100%" sx={{ height: '100%' }}>
+                <Box
+                  border="0.5px solid #D0D5DD"
+                  borderRadius="6px"
+                  padding="22px 17px 26.66px 31px"
+                  sx={{ height: '100%' }}
+                >
+                  <Box>
+                    <Typography
+                      fontWeight="600"
+                      variant="body1"
+                      marginBottom={2}
+                      display="inline-block"
+                    >
+                      Interests
+                    </Typography>
+                  </Box>
+                  <Box display="flex" flexWrap="wrap">
+                    {record.interests.map((item) => {
+                      return (
+                        <Tag
+                          background="rgba(255,184,0,0.1)"
+                          color="#FFB800"
+                          key={item}
+                          text={item}
+                        />
+                      );
+                    })}
+                  </Box>
+                </Box>
+              </Grid>
+            </Grid>
+          </Box>
+
+          <Box marginTop={3}>
+            <Box>
+              <Typography fontWeight="600" variant="body1" marginBottom={2}>
+                Project
+              </Typography>
+            </Box>
+            <Box display="flex" marginTop={2}>
+              {projects.length ? (
+                <Grid container spacing={4}>
+                  {projects.map((project) => {
+                    return (
+                      <Grid item xs={12} md={6} key={project.id}>
+                        <Project data={project} />
+                      </Grid>
+                    );
+                  })}
+                </Grid>
+              ) : (
+                <Box
+                  display="flex"
+                  flexDirection="column"
+                  width="100%"
+                  alignItems="center"
+                  paddingY={4}
+                >
+                  <img width="80px" src="/icons/no-records.png" />
+                  <Typography marginTop={4} color="#D0D5DD" fontSize="16px">
+                    You have not participated in any project
                   </Typography>
-                  <LXPointsTimeline points={record.lxPoints} />
                 </Box>
               )}
             </Box>
-          )}
+          </Box>
+
+          <Box marginTop={3} marginBottom={3}>
+            <Box>
+              <Typography fontWeight="600" variant="body1" marginBottom={2}>
+                Working Group
+              </Typography>
+            </Box>
+            <Box display="flex" marginTop={2}>
+              {workingGroupsData.length ? (
+                <Box width="100%">
+                  <Grid container spacing={3}>
+                    {workingGroupsData.length > 0 &&
+                      workingGroupsData.map((group, index) => {
+                        return (
+                          <WorkingGroupCard hasBorder key={index} {...group} />
+                        );
+                      })}
+                  </Grid>
+                </Box>
+              ) : (
+                <Box
+                  display="flex"
+                  flexDirection="column"
+                  width="100%"
+                  alignItems="center"
+                  paddingY={4}
+                >
+                  <img width="80px" src="/icons/no-records.png" />
+                  <Typography marginTop={4} color="#D0D5DD" fontSize="16px">
+                    You have not participated in any project
+                  </Typography>
+                </Box>
+              )}
+            </Box>
+          </Box>
         </Box>
       </Box>
+
       <Dialog
         fullWidth={true}
         maxWidth={'sm'}
