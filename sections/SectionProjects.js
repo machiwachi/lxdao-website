@@ -13,6 +13,8 @@ import ProjectCard from '@/components/ProjectCard';
 
 const SectionProjects = () => {
   const [projects, setProjects] = useState([]);
+  const [page, setPage] = useState(1);
+  const [finished, seFinished] = useState(false);
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
   const router = useRouter();
@@ -20,29 +22,19 @@ const SectionProjects = () => {
   const isHomepage = route === '/';
 
   useEffect(() => {
-    API.get(`/project?page=1&per_page=12`)
-      .then((res) => {
-        if (res?.data?.status === 'SUCCESS') {
-          setProjects(res?.data?.data);
-        } else {
-          // todo Muxin common error handling, function invocation
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    loadList();
   }, []);
 
   const realProjects = isHomepage ? getRandom(projects, 3) : projects;
 
   const searchList = async (search = '') => {
-    let query = `/project?`;
+    let query = `/project?page=1&`;
     let params = [];
     const trimmedSearch = search.trim();
     if (trimmedSearch) {
       params.push('search=' + trimmedSearch);
     }
-    params.push('per_page=50');
+    params.push('per_page=6');
     query += params.join('&');
 
     setLoading(true);
@@ -60,11 +52,34 @@ const SectionProjects = () => {
         tempList.push(record);
       });
 
-      setList(tempList);
+      setProjects(tempList);
     } catch (err) {
       console.error(err);
     }
-    setLoading(false);
+  };
+
+  const loadList = async (_page = 1) => {
+    if (finished) {
+      return;
+    }
+    setLoading(true);
+    API.get(`/project?page=${_page}&per_page=6`)
+      .then((res) => {
+        if (res?.data?.status === 'SUCCESS') {
+          if (res?.data?.data?.length < 6) {
+            seFinished(true);
+          }
+          let _project = [...projects];
+          _project = _project.concat(res?.data?.data);
+          setProjects(_project);
+          setLoading(false);
+        } else {
+          // todo Muxin common error handling, function invocation
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   return (
@@ -73,6 +88,7 @@ const SectionProjects = () => {
       textAlign="center"
       id="Projects-Section"
       maxWidth="1200px"
+      width="auto"
     >
       <Typography variant="h4">Projects</Typography>
       <Typography fontSize="20px" marginTop={2}>
@@ -154,7 +170,25 @@ const SectionProjects = () => {
             View More
           </Button>
         </Box>
-      ) : null}
+      ) : finished ? null : (
+        <Box
+          marginTop={{ md: 8, xs: 4 }}
+          display="flex"
+          justifyContent="center"
+          gap={2}
+        >
+          <Button
+            variant="outlined"
+            onClick={() => {
+              let pp = page + 1;
+              setPage(pp);
+              loadList(pp);
+            }}
+          >
+            View More
+          </Button>
+        </Box>
+      )}
     </Container>
   );
 };
