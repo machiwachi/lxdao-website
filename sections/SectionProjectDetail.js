@@ -410,7 +410,7 @@ const SectionProjectDetail = ({ projectId }) => {
         flexDirection={{ md: 'row', xs: 'column' }}
         width={{ xs: '100%' }}
       >
-        <Grid item md={4} lg={4} margin={{ xs: 'auto' }}>
+        <Grid item md={4} lg={4} margin={{ xs: '0 auto' }}>
           <Box
             sx={{
               background: '#FFFFFF',
