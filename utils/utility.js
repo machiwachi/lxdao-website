@@ -97,3 +97,23 @@ export function removeEmpty(obj) {
     Object.entries(obj || {}).filter(([_, v]) => v != null && v != '')
   );
 }
+
+// https://stackoverflow.com/questions/14446511/most-efficient-method-to-groupby-on-an-array-of-objects
+export function groupBy(data, key) {
+  return data.reduce((acc, cur) => {
+    acc[cur[key]] = acc[cur[key]] || [];
+    // if the key is new, initiate its value to an array, otherwise keep its own array value
+    acc[cur[key]].push(cur);
+    return acc;
+  }, []);
+}
+
+export function stringCut(str, len) {
+  let _str = '';
+  if (str && str.length > len) {
+    _str = `${str.substr(0, len)}...`;
+  } else {
+    _str = str;
+  }
+  return _str;
+}
