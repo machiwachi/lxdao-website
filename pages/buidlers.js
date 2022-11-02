@@ -171,7 +171,6 @@ export default function Home() {
     }
     params.push('page=' + (currentPage || current));
     params.push('per_page=6');
-    params.push('status=ACTIVE');
     query += params.join('&');
 
     if (!isAddMore) {
