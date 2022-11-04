@@ -90,10 +90,9 @@ const SectionProjects = () => {
       maxWidth="1200px"
       width="auto"
     >
-      <Typography variant="h4">Projects</Typography>
+      <Typography variant="h4">LXDAO Buidlers</Typography>
       <Typography fontSize="20px" marginTop={2}>
-        We buidl good, valuable, and useful things.If you have a perfect idea
-        want to become true, please write a proposal first.
+      Welcome to Join Us, let's buidl more valuable Web3 products together!
       </Typography>
       <Box
         sx={{
@@ -170,7 +169,7 @@ const SectionProjects = () => {
             View More
           </Button>
         </Box>
-      ) : finished ? null : (
+      ) : finished||realProjects.length<=0 ? null : (
         <Box
           marginTop={{ md: 8, xs: 4 }}
           display="flex"

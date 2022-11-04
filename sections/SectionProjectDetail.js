@@ -314,10 +314,11 @@ const SectionProjectDetail = ({ projectId }) => {
           marginRight: isRight ? 3 : 0,
           marginBottom: 3,
           boxShadow: 'none',
+          fontWeight: 600
         }}
       >
         <CardContent>
-          <Typography textAlign="left" variant="body1">
+          <Typography textAlign="left" variant="body1" fontWeight="600">
             {item.title}
           </Typography>
           <Box
@@ -325,10 +326,11 @@ const SectionProjectDetail = ({ projectId }) => {
               display: 'flex',
               alignItems: 'center',
               height: '32px',
+              marginTop:'16px'
             }}
           >
             <img src={item.url} style={{ height: '100%' }} />
-            <Typography sx={{ fontWeight: 600, fontSize: '32px' }}>
+            <Typography sx={{ fontSize: '32px' }} fontWeight="600">
               {item.value}
             </Typography>
           </Box>
@@ -428,7 +430,7 @@ const SectionProjectDetail = ({ projectId }) => {
               <img
                 style={{
                   width: '100%',
-                  boxShadow: '0px 4px 10px 3px rgba(0, 0, 0, 0.04)',
+                  border:'1px solid #eee'
                 }}
                 src={project.logoLarge}
               />
@@ -436,7 +438,7 @@ const SectionProjectDetail = ({ projectId }) => {
                 sx={{
                   position: 'absolute',
                   left: '1px',
-                  bottom: '4px',
+                  bottom: '0px',
                   background: '#36AFF9',
                   borderRadius: '2px',
                   fontSize: '12px',
@@ -449,7 +451,7 @@ const SectionProjectDetail = ({ projectId }) => {
                 {'#' + project.number}
               </Typography>
             </Link>
-            <Typography variant="h5">{project.name}</Typography>
+            <Typography variant="h5" fontWeight="600" marginTop={3}>{project.name}</Typography>
             <Box
               sx={{
                 width: '100%',
@@ -587,7 +589,7 @@ const SectionProjectDetail = ({ projectId }) => {
               }}
               marginBottom={3}
             >
-              <Typography variant="body1" marginBottom={2} textAlign="left">
+              <Typography variant="body1" fontWeight="600" marginBottom={2} textAlign="left">
                 Buidlers
               </Typography>
               <Box
@@ -798,7 +800,7 @@ const SectionProjectDetail = ({ projectId }) => {
                 borderRadius: '6px',
               }}
             >
-              <Typography variant="body1" marginBottom={2} textAlign="left">
+              <Typography variant="body1" fontWeight="600" marginBottom={2} textAlign="left">
                 Forum
               </Typography>
               <Box>
