@@ -28,7 +28,6 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CloseIcon from '@mui/icons-material/Close';
 import { useRouter } from 'next/router';
 import _ from 'lodash';
-import SyncIcon from '@mui/icons-material/Sync';
 import { useContract, useAccount, useSigner } from 'wagmi';
 import * as bs58 from 'bs58';
 
@@ -609,23 +608,23 @@ function BuidlerDetails(props) {
                   borderColor: '#E5E5E5',
                 }}
               />
-              <Box textAlign="center" marginTop={4}>
+              <Box display="flex" justifyContent="center" marginTop={3}>
                 {address === record.address ? (
-                  <Button
+                  <LXButton
                     onClick={() => {
                       setVisible(true);
                     }}
                     size="small"
+                    width="88px"
                     variant="outlined"
                   >
                     Edit
-                  </Button>
+                  </LXButton>
                 ) : null}
                 {address === record.address &&
                   !!ipfsURLOnChain &&
                   ipfsURLOnChain !== record.ipfsURI && (
-                    <Button
-                      sx={{ marginLeft: '8px', color: '#36AFF9' }}
+                    <LXButton
                       onClick={async () => {
                         setSyncing(true);
                         try {
@@ -654,12 +653,15 @@ function BuidlerDetails(props) {
                         }
                         setSyncing(false);
                       }}
+                      marginLeft="8px"
+                      color="#36AFF9"
                       size="small"
+                      width="88px"
                       variant="outlined"
                       disabled={syncing}
                     >
                       {syncing ? 'Syncing...' : 'Sync'}
-                    </Button>
+                    </LXButton>
                   )}
                 {address === record.address &&
                 record.role.includes('Onboarding Committee') ? (
@@ -691,6 +693,7 @@ function BuidlerDetails(props) {
             border="0.5px solid #D0D5DD"
             borderRadius="6px"
             display="flex"
+            justifyContent="space-between"
             padding="20px 24px"
           >
             <Box display="flex" alignItems="center">
@@ -806,7 +809,7 @@ function BuidlerDetails(props) {
                 <Box
                   border="0.5px solid #D0D5DD"
                   borderRadius="6px"
-                  padding="22px 17px 18.66px 31px"
+                  padding="22px 17px 26.66px 31px"
                 >
                   <Box display="flex" justifyContent="space-between">
                     <Typography
@@ -929,13 +932,31 @@ function BuidlerDetails(props) {
                   display="flex"
                   flexDirection="column"
                   width="100%"
+                  height="148px"
                   alignItems="center"
-                  paddingY={4}
+                  border="0.5px solid #D0D5DD"
+                  borderRadius="6px"
                 >
-                  <img width="80px" src="/icons/no-records.png" />
-                  <Typography marginTop={4} color="#D0D5DD" fontSize="16px">
-                    You have not participated in any project
+                  <Typography
+                    marginTop={4}
+                    marginBottom="21px"
+                    color="#D0D5DD"
+                    variant="body1"
+                    fontWeight="400"
+                  >
+                    You have not participated in the project, Go and choose one
+                    to join.
                   </Typography>
+                  <LXButton size="small" variant="outlined">
+                    <Link
+                      href={`/projects`}
+                      sx={{
+                        textDecoration: 'none',
+                      }}
+                    >
+                      View Product List
+                    </Link>
+                  </LXButton>
                 </Box>
               )}
             </Box>
@@ -964,13 +985,30 @@ function BuidlerDetails(props) {
                   display="flex"
                   flexDirection="column"
                   width="100%"
+                  height="148px"
                   alignItems="center"
-                  paddingY={4}
+                  border="0.5px solid #D0D5DD"
+                  borderRadius="6px"
                 >
-                  <img width="80px" src="/icons/no-records.png" />
-                  <Typography marginTop={4} color="#D0D5DD" fontSize="16px">
-                    You have not participated in any project
+                  <Typography
+                    marginTop={4}
+                    marginBottom="21px"
+                    color="#D0D5DD"
+                    variant="body1"
+                    fontWeight="400"
+                  >
+                    You haven't joined the workgroup, go and choose one to join
                   </Typography>
+                  <LXButton size="small" variant="outlined">
+                    <Link
+                      href={`https://lxdao.notion.site/95fde886aef24c9ca63b8bae95fa8456`}
+                      sx={{
+                        textDecoration: 'none',
+                      }}
+                    >
+                      View Working Group
+                    </Link>
+                  </LXButton>
                 </Box>
               )}
             </Box>

@@ -117,3 +117,14 @@ export function stringCut(str, len) {
   }
   return _str;
 }
+
+export function removeItem(array, item) {
+  let tempArray = [...array];
+  let index = tempArray.indexOf(item);
+
+  if (index >= 0) {
+    tempArray.splice(index, 1);
+    return tempArray;
+  }
+  return tempArray;
+}
