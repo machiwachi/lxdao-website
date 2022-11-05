@@ -5,9 +5,9 @@ import Box from '@mui/material/Box';
 const Container = ({ children, minHeight, ...rest }) => (
   <Box
     minHeight={minHeight}
-    width="1216px"
+    maxWidth="1216px"
     boxSizing="border-box"
-    marginX={'auto'}
+    marginX={{ lg: 'auto', md: '20px', xs: '20px' }}
     {...rest}
   >
     {children}

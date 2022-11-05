@@ -70,7 +70,7 @@ export const removeLocalStorage = (name) => {
 export function getEtherScanDomain() {
   return process.env.NEXT_PUBLIC_CHAIN_ID === '1'
     ? 'etherscan.io'
-    : 'rinkeby.etherscan.io';
+    : 'goerli.etherscan.io';
 }
 
 export function getOpenSeaDomain() {

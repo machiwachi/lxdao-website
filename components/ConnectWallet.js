@@ -24,7 +24,7 @@ import showMessage from '@/components/showMessage';
 import '@rainbow-me/rainbowkit/styles.css';
 
 const { chains, provider } = configureChains(
-  [chain.mainnet, chain.rinkeby],
+  [chain.mainnet, chain.goerli],
   [alchemyProvider({ apiKey: process.env.ALCHEMY_ID }), publicProvider()]
 );
 
@@ -110,9 +110,9 @@ const ConnectWalletButton = () => {
         });
         disconnect();
       } else if (signatureMessage) {
-          await signMessageAsync({
-            message: signatureMessage,
-          });
+        await signMessageAsync({
+          message: signatureMessage,
+        });
       }
     } catch (err) {
       showMessage({

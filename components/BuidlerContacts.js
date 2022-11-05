@@ -51,6 +51,7 @@ function BuidlerContacts({ contacts, space }) {
         .map((key, index) => {
           return (
             <Tooltip title={key} key={index} placement="top">
+              {/* <Box width="36px" height="36px"> */}
               <Typography
                 target="_blank"
                 component="a"
@@ -58,6 +59,13 @@ function BuidlerContacts({ contacts, space }) {
                 color="primary"
                 marginLeft={index === 0 ? 0 : space || 1}
                 marginRight={1}
+                sx={{
+                  width: '36px',
+                  borderRadius: '100px',
+                  height: '36px',
+                  padding: '8px',
+                  background: '#FAFAFA',
+                }}
               >
                 <Box
                   width="20px"
@@ -68,6 +76,7 @@ function BuidlerContacts({ contacts, space }) {
                   }}
                 />
               </Typography>
+              {/* </Box> */}
             </Tooltip>
           );
         })}

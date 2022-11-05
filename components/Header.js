@@ -35,7 +35,7 @@ const Header = () => {
     setGovernance(null);
   };
 
-  const list = () => (
+  const HiddenMenu = () => (
     <Box
       role="presentation"
       onClick={toggleDrawer(false)}
@@ -106,9 +106,9 @@ const Header = () => {
       display="flex"
       alignItems="center"
       justifyContent="space-between"
-      height={{ md: '128px', xs: '64px' }}
+      height={{ md: '128px', sm: '120px', xs: '120px' }}
       maxWidth="100%"
-      paddingX="110px"
+      paddingX={{ md: '110px', sm: '20px', xs: '20px' }}
     >
       <Box
         onClick={() => {
@@ -117,11 +117,15 @@ const Header = () => {
         sx={{ cursor: 'pointer' }}
         display="flex"
       >
-        <Box width="120px" component={'img'} src={'/icons/lxdao-logo.svg'} />
+        <Box
+          width={{ md: '120px', sm: '120px', xs: '80px' }}
+          component={'img'}
+          src={'/icons/lxdao-logo.svg'}
+        />
       </Box>
       <Box
         gap={4}
-        display={{ md: 'flex', xs: 'none' }}
+        display={{ md: 'flex', sm: 'none', xs: 'none' }}
         fontSize={2}
         lineHeight={3}
       >
@@ -213,7 +217,7 @@ const Header = () => {
       <ConnectWalletButton />
       <MenuIcon
         sx={{
-          display: { md: 'none', xs: 'block' },
+          display: { md: 'none', sm: 'block', xs: 'block' },
           cursor: 'pointer',
         }}
         onClick={toggleDrawer(true)}
@@ -224,7 +228,7 @@ const Header = () => {
         onClose={toggleDrawer(false)}
         onOpen={toggleDrawer(true)}
       >
-        {list()}
+        <HiddenMenu />
       </SwipeableDrawer>
     </Box>
   );
