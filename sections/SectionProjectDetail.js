@@ -311,8 +311,6 @@ const SectionProjectDetail = ({ projectId }) => {
           background: '#FFFFFF',
           border: '0.5px solid #D0D5DD',
           borderRadius: '6px',
-          marginRight: isRight ? 3 : 0,
-          marginBottom: 3,
           boxShadow: 'none',
           fontWeight: 600,
         }}
@@ -601,7 +599,13 @@ const SectionProjectDetail = ({ projectId }) => {
         </Grid>
         <Grid item md={8} lg={8} justify="flex-start">
           <Stack>
-            <Box display="flex" flexWrap="wrap">
+            <Box
+              display="flex"
+              flexWrap="wrap"
+              justifyContent={{ xs: 'center', md: 'flex-start' }}
+              gap={{ xs: 1, md: 3 }}
+              marginBottom={3}
+            >
               {cardData.map((card, i) =>
                 cardItem(card, i < cardData.length - 1)
               )}
