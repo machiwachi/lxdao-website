@@ -1,11 +1,11 @@
 import React from 'react';
-// import { Swiper, SwiperSlide } from 'swiper/react';
-// import { EffectCards } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { EffectCards } from 'swiper';
 import { Box, Typography, Link } from '@mui/material';
 
 import SimpleProjectCard from '@/components/SimpleProjectCard';
 
-const WorkDetailItem = ({ title, data }) => {
+const WorkDetailItem = ({ title, data, ...rest }) => {
   return (
     <Box
       display="flex"
@@ -15,6 +15,7 @@ const WorkDetailItem = ({ title, data }) => {
       sx={{ backgroundColor: '#ffffff' }}
       borderRadius="6px"
       gap="100px"
+      {...rest}
     >
       <Box display="flex" flexDirection="column" gap={1}>
         <Typography
@@ -81,8 +82,8 @@ const WorkDetailSection = ({
       </Typography>
       <Box display="flex" gap={2} flexDirection="column">
         {data.length &&
-          data.map((item) => (
-            <WorkDetailItem title={item.content} data={item.data} />
+          data.map((item, index) => (
+            <WorkDetailItem key={index} title={item.content} data={item.data} />
           ))}
       </Box>
       <Link
@@ -277,6 +278,69 @@ const voteData = [
   },
 ];
 
+const projectData = [
+  {
+    number: '000',
+    name: 'GCLX',
+    description:
+      'MyFirstNFT is a non-profit instructional project for Web3 newbies. Get a FREE NFT while learning about Web3...',
+    logo: '/images/projects/mfnft-logo.png',
+    banner: '/images/projects/mfnft-banner.png',
+    buidlers: [
+      {
+        avatar:
+          'https://cloudflare-ipfs.com/ipfs/bafkreibswn22ifwqcf246axiwhnrjzgbnvvodaiqntxc3u5xulzesp33fu',
+        address: '0x17c57bD297175e5711Ee3Daf045252B588f3162F',
+      },
+      {
+        avatar:
+          'https://cloudflare-ipfs.com/ipfs/bafkreic2j7csesqbd5eorfykeim7ejgdsjar4ddd63upisx5sagdfrbfuq',
+        address: '0x86DBe1f56dC3053b26522de1B38289E39AFCF884',
+      },
+    ],
+  },
+  {
+    number: '001',
+    name: 'My First NFT',
+    description:
+      'MyFirstNFT is a non-profit instructional project for Web3 newbies. Get a FREE NFT while learning about Web3...',
+    logo: '/images/projects/mfnft-logo.png',
+    banner: '/images/projects/mfnft-banner.png',
+    buidlers: [
+      {
+        avatar:
+          'https://cloudflare-ipfs.com/ipfs/bafkreibswn22ifwqcf246axiwhnrjzgbnvvodaiqntxc3u5xulzesp33fu',
+        address: '0x17c57bD297175e5711Ee3Daf045252B588f3162F',
+      },
+      {
+        avatar:
+          'https://cloudflare-ipfs.com/ipfs/bafkreic2j7csesqbd5eorfykeim7ejgdsjar4ddd63upisx5sagdfrbfuq',
+        address: '0x86DBe1f56dC3053b26522de1B38289E39AFCF884',
+      },
+    ],
+  },
+  {
+    number: '002',
+    name: 'MetaPavo',
+    description:
+      'MyFirstNFT is a non-profit instructional project for Web3 newbies. Get a FREE NFT while learning about Web3...',
+    logo: '/images/projects/mfnft-logo.png',
+    banner: '/images/projects/mfnft-banner.png',
+    buidlers: [
+      {
+        avatar:
+          'https://cloudflare-ipfs.com/ipfs/bafkreibswn22ifwqcf246axiwhnrjzgbnvvodaiqntxc3u5xulzesp33fu',
+        address: '0x17c57bD297175e5711Ee3Daf045252B588f3162F',
+      },
+      {
+        avatar:
+          'https://cloudflare-ipfs.com/ipfs/bafkreic2j7csesqbd5eorfykeim7ejgdsjar4ddd63upisx5sagdfrbfuq',
+        address: '0x86DBe1f56dC3053b26522de1B38289E39AFCF884',
+      },
+    ],
+  },
+];
+
 const SectionWorkSteps = () => (
   <Box width="100%">
     <Box textAlign="center" marginTop="112px" marginBottom="95px">
@@ -327,7 +391,24 @@ const SectionWorkSteps = () => (
         stepIcon="/icons/buidling.svg"
         stepTitle="BUIDLING"
         stepDes="buidling buidling buidling buidling buidling buidling buidling buidling buidling buidling"
-        rightSection={<SimpleProjectCard />}
+        rightSection={
+          <Box>
+            <Swiper
+              effect={'cards'}
+              grabCursor={true}
+              modules={[EffectCards]}
+              className="mySwiper"
+            >
+              {projectData.map((data, index) => {
+                return (
+                  <SwiperSlide key={index}>
+                    <SimpleProjectCard data={data} />
+                  </SwiperSlide>
+                );
+              })}
+            </Swiper>
+          </Box>
+        }
       />
       <WorkStep
         leftBgColor="#ffffff"
@@ -335,6 +416,13 @@ const SectionWorkSteps = () => (
         stepIcon="/icons/success.svg"
         stepTitle="Fund allocation"
         stepDes="After the product is perfected, the fund is allocated according to the contribution.After the product is perfected, the fund is allocated according to the contributionAfter the product is perfected, the fund is allocated according to the contribution"
+        rightSection={
+          <Box
+            component="img"
+            width="450px"
+            src="/images/workstep-success.png"
+          />
+        }
       />
     </Box>
   </Box>

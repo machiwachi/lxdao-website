@@ -5,7 +5,7 @@ import Layout from '@/components/Layout';
 import SectionHero from '@/sections/SectionHomepageHero';
 import SectionMission from '@/sections/SectionMission';
 import SectionWorkSteps from '@/sections/SectionWorkSteps';
-import SectionProjects from '@/sections/SectionProjects';
+import SectionHomepageProjects from '@/sections/SectionHomepageProjects';
 import SectionBuidlers from '@/sections/SectionBuidlers';
 import SectionWorkingGroup from '@/sections/SectionWorkingGroup';
 import SectionActivities from '@/sections/SectionActivities';
@@ -28,7 +28,7 @@ export default function Home() {
       <SectionHero />
       <SectionMission />
       <SectionWorkSteps />
-      <SectionProjects />
+      <SectionHomepageProjects />
       <SectionBuidlers />
       <SectionWorkingGroup />
       <SectionActivities />

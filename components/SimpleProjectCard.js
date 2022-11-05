@@ -1,33 +1,13 @@
 import React from 'react';
 import { Box, Typography, Link } from '@mui/material';
 
-const data = {
-  number: '001',
-  name: 'My First NFT',
-  description:
-    'MyFirstNFT is a non-profit instructional project for Web3 newbies. Get a FREE NFT while learning about Web3...',
-  logo: '/images/projects/mfnft-logo.png',
-  banner: '/images/projects/mfnft-banner.png',
-  buidlers: [
-    {
-      avatar:
-        'https://cloudflare-ipfs.com/ipfs/bafkreibswn22ifwqcf246axiwhnrjzgbnvvodaiqntxc3u5xulzesp33fu',
-      address: '0x17c57bD297175e5711Ee3Daf045252B588f3162F',
-    },
-    {
-      avatar:
-        'https://cloudflare-ipfs.com/ipfs/bafkreic2j7csesqbd5eorfykeim7ejgdsjar4ddd63upisx5sagdfrbfuq',
-      address: '0x86DBe1f56dC3053b26522de1B38289E39AFCF884',
-    },
-  ],
-};
-
-const SimpleProjectCard = () => (
+const SimpleProjectCard = ({ data, key }) => (
   <Box
     width="356px"
     sx={{ background: '#ffffff' }}
     border="0.5px solid #D0D5DD"
     borderRadius="6px"
+    key={key}
   >
     <Box height="146px" width="100%" component={'img'} src={data.banner} />
     <Box padding="10px 20px 20px 20px">
