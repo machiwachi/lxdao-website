@@ -184,9 +184,9 @@ const SectionProjectDetail = ({ projectId }) => {
     return (
       <Typography
         variant="body1"
+        lineHeight="24px"
         color="#666F85"
         textAlign="left"
-        marginBottom={1.5}
       >
         {label}
       </Typography>
@@ -287,17 +287,17 @@ const SectionProjectDetail = ({ projectId }) => {
       value: '1.0k',
     },
     {
-      title: 'items',
+      title: 'owners',
       url: '',
-      value: '1.0k',
+      value: '501',
     },
     {
-      title: 'items',
+      title: 'floor price',
       url: '/icons/eth.svg',
       value: '0.05',
     },
     {
-      title: 'items',
+      title: 'total volume',
       url: '/icons/eth.svg',
       value: '300',
     },
@@ -314,11 +314,17 @@ const SectionProjectDetail = ({ projectId }) => {
           marginRight: isRight ? 3 : 0,
           marginBottom: 3,
           boxShadow: 'none',
-          fontWeight: 600
+          fontWeight: 600,
         }}
       >
         <CardContent>
-          <Typography textAlign="left" variant="body1" fontWeight="600">
+          <Typography
+            textAlign="left"
+            variant="body1"
+            fontWeight="600"
+            textTransform="capitalize"
+            color="#101828"
+          >
             {item.title}
           </Typography>
           <Box
@@ -326,10 +332,13 @@ const SectionProjectDetail = ({ projectId }) => {
               display: 'flex',
               alignItems: 'center',
               height: '32px',
-              marginTop:'16px'
+              marginTop: '16px',
             }}
           >
-            <img src={item.url} style={{ height: '100%' }} />
+            <img
+              src={item.url}
+              style={{ height: '100%', left: '-6px', position: 'relative' }}
+            />
             <Typography sx={{ fontSize: '32px' }} fontWeight="600">
               {item.value}
             </Typography>
@@ -425,12 +434,18 @@ const SectionProjectDetail = ({ projectId }) => {
             <Link
               href={project?.links.website || ''}
               target="_blank"
-              sx={{ position: 'relative' }}
+              sx={{
+                position: 'relative',
+                display: 'block',
+                maxWidth: '100%',
+                maxHeight: '100%',
+              }}
             >
               <img
                 style={{
                   width: '100%',
-                  border:'1px solid #eee'
+                  border: '0.5px solid #D0D5DD',
+                  borderRadius: '6px',
                 }}
                 src={project.logoLarge}
               />
@@ -451,7 +466,14 @@ const SectionProjectDetail = ({ projectId }) => {
                 {'#' + project.number}
               </Typography>
             </Link>
-            <Typography variant="h5" fontWeight="600" marginTop={3}>{project.name}</Typography>
+            <Typography
+              variant="h5"
+              fontWeight="600"
+              marginTop={3}
+              lineHeight="28px"
+            >
+              {project.name}
+            </Typography>
             <Box
               sx={{
                 width: '100%',
@@ -521,7 +543,13 @@ const SectionProjectDetail = ({ projectId }) => {
               {project.launchDate && (
                 <Box display="flex" justifyContent="center">
                   <LabelText label="Launch Date" />
-                  <Typography variant="body1" color="#101828" marginLeft={2}>
+                  <Typography
+                    variant="body1"
+                    lineHeight="24px"
+                    color="#101828"
+                    fontWeight={600}
+                    marginLeft={2}
+                  >
                     {format(new Date(project.launchDate), 'yyyy-MM-dd')}
                   </Typography>
                 </Box>
@@ -589,7 +617,12 @@ const SectionProjectDetail = ({ projectId }) => {
               }}
               marginBottom={3}
             >
-              <Typography variant="body1" fontWeight="600" marginBottom={2} textAlign="left">
+              <Typography
+                variant="body1"
+                fontWeight="600"
+                marginBottom={2}
+                textAlign="left"
+              >
                 Buidlers
               </Typography>
               <Box
@@ -800,7 +833,12 @@ const SectionProjectDetail = ({ projectId }) => {
                 borderRadius: '6px',
               }}
             >
-              <Typography variant="body1" fontWeight="600" marginBottom={2} textAlign="left">
+              <Typography
+                variant="body1"
+                fontWeight="600"
+                marginBottom={2}
+                textAlign="left"
+              >
                 Forum
               </Typography>
               <Box>
@@ -813,7 +851,6 @@ const SectionProjectDetail = ({ projectId }) => {
                 justifyContent="center"
                 alignItems="center"
                 margin="auto"
-                fontWeight={500}
                 sx={{
                   background: '#FFFFFF',
                   border: '1px solid #D0D5DD',
@@ -822,7 +859,14 @@ const SectionProjectDetail = ({ projectId }) => {
                   borderRadius: '6px',
                 }}
               >
-                View More
+                <Typography
+                  variant="body1"
+                  fontWeight={500}
+                  color="#0D1320"
+                  textTransform="capitalize"
+                >
+                  View More
+                </Typography>
               </Box>
             </Box>
           </Stack>
