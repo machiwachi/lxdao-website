@@ -1,7 +1,7 @@
 import React from 'react';
 import Mailchimp from 'react-mailchimp-form';
 import styled from 'styled-components';
-import { Box, Typography, Link } from '@mui/material';
+import { Box, Typography, Link, Grid } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 import Container from './Container';
@@ -15,7 +15,7 @@ const SignupFormWrapper = styled.div`
   }
 
   & input {
-    width: 290px;
+    width: 270px;
     height: 48px;
     padding: 12px 14px;
     margin-right: 16px;
@@ -65,40 +65,59 @@ const Footer = () => {
   const theme = useTheme();
   return (
     <Box sx={{ background: '#F1F1F1' }} width="100%">
-      <Container paddingY={{ md: '112px' }} margin="0 auto">
-        <Box display="flex" justifyContent="space-between">
-          <NavList
-            title="Development"
-            items={[
-              { name: 'Github', link: 'https://github.com/lxdao-official' },
-              {
-                name: 'Developer Guild',
-                link: 'https://github.com/lxdao-official/LXDAO-Developer-Guide',
-              },
-            ]}
-          />
-          <NavList
-            title="Buidl Together"
-            items={[
-              { name: 'Join Us', link: '/join-us' },
-              {
-                name: 'Make a proposal',
-                link: 'https://www.notion.so/lxdao/How-do-we-work-93038c708217465384cc7d9f377547c5',
-              },
-            ]}
-          />
-          <NavList
-            title="Resources"
-            title="Buidl Together"
-            items={[
-              { name: 'Forum', link: 'https://forum.lxdao.io/' },
-              {
-                name: 'Notion',
-                link: 'https://www.notion.so/lxdao/LXDAO-WIP-e6c82cfdae8b4ded98507538a9703dbc',
-              },
-            ]}
-          />
-          <Box display="flex" gap="24px" flexDirection="column">
+      <Container paddingY={{ md: '112px', xs: '44px' }} margin="0 auto">
+        <Box
+          display="flex"
+          flexDirection={{ lg: 'row', md: 'column', xs: 'column' }}
+        >
+          <Grid container spacing={{ lg: 6, md: 12, xs: 12 }} flex={2}>
+            <Grid item lg={4} md={4} xs={6}>
+              <NavList
+                title="Development"
+                items={[
+                  {
+                    name: 'Github',
+                    link: 'https://github.com/lxdao-official',
+                  },
+                  {
+                    name: 'Developer Guild',
+                    link: 'https://github.com/lxdao-official/LXDAO-Developer-Guide',
+                  },
+                ]}
+              />
+            </Grid>
+            <Grid item lg={4} md={4} xs={6}>
+              <NavList
+                title="Buidl Together"
+                items={[
+                  { name: 'Join Us', link: '/join-us' },
+                  {
+                    name: 'Make a proposal',
+                    link: 'https://www.notion.so/lxdao/How-do-we-work-93038c708217465384cc7d9f377547c5',
+                  },
+                ]}
+              />
+            </Grid>
+            <Grid item lg={4} md={4} xs={6}>
+              <NavList
+                title="Resources"
+                items={[
+                  { name: 'Forum', link: 'https://forum.lxdao.io/' },
+                  {
+                    name: 'Notion',
+                    link: 'https://www.notion.so/lxdao/LXDAO-WIP-e6c82cfdae8b4ded98507538a9703dbc',
+                  },
+                ]}
+              />
+            </Grid>
+          </Grid>
+          <Box
+            display="flex"
+            gap="24px"
+            flexDirection="column"
+            marginTop={{ lg: 0, md: 8, xs: 8 }}
+            flex={1}
+          >
             <Box
               width="147px"
               component={'img'}
