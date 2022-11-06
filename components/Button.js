@@ -21,7 +21,6 @@ const Button = ({ variant, children, ...rest }) => (
       fontSize: '16px',
       lineHeight: '24px',
       fontWeight: '600',
-      boxShadow: '0px 1px 2px rgba(16, 24, 40, 0.05)',
       background:
         variant === 'outlined'
           ? '#ffffff'

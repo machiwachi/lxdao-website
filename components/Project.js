@@ -15,13 +15,9 @@ function Project({ data }) {
         display="flex"
         border="0.5px solid #D0D5DD"
         borderRadius="6px"
-        boxShadow={1}
         overflow="hidden"
         height="100%"
-        flexDirection={{
-          xs: 'column',
-          sm: 'row',
-        }}
+        flexDirection="row"
       >
         <Box flex="0 0 148px">
           <img
@@ -73,9 +69,9 @@ function Project({ data }) {
             <Grid item>
               <Box>
                 <Typography fontSize="14px" color="#667085">
-                  {`${data.createdAt.split('T')[0]} - ${
-                    data.endedAt ? data.endedAt.split('T')[0] : 'to date'
-                  }`}
+                  {`${data.startAt ? data.startAt.split('T')[0] : ''} ${
+                    data.startAt || data.endedAt ? '-' : ''
+                  } ${data.endedAt ? data.endedAt.split('T')[0] : ''}`}
                 </Typography>
               </Box>
             </Grid>
@@ -87,7 +83,7 @@ function Project({ data }) {
               variant="body1"
               color="#101828"
             >
-              more➜
+              More ➜
             </Typography>
           </Box>
         </Box>

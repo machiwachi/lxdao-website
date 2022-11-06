@@ -48,14 +48,11 @@ import { convertIpfsGateway, groupBy, stringCut } from '@/utils/utility';
 import LXButton from '@/components/Button';
 import WorkingGroupCard from '@/components/WorkingGroupCard';
 
-import workingGroupsData from '@/common/content/workingGroups';
-import lxPoints from '@/common/content/lxPoints';
-
 function totalLXPoints(record) {
-  if (!lxPoints) {
+  if (!record.lxPoints || !record.lxPoints.length) {
     return 0;
   }
-  var lxPointsGroup = groupBy(lxPoints, 'unit');
+  var lxPointsGroup = groupBy(record.lxPoints, 'unit');
   return Object.keys(lxPointsGroup)
     .map((key) => {
       const total = lxPointsGroup[key].reduce((total, point) => {
@@ -74,8 +71,16 @@ function totalLXPoints(record) {
 
 function LXPointsTable({ points }) {
   return (
-    <TableContainer component={Paper} sx={{ boxShadow: 'none' }}>
-      <Table sx={{ width: { md: 887, sm: 390 } }} aria-label="simple table">
+    <TableContainer
+      component={Paper}
+      sx={{
+        '&.MuiPaper-root': {
+          overflowX: 'unset',
+        },
+        boxShadow: 'none',
+      }}
+    >
+      <Table aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell sx={{ paddingLeft: 0 }} width="15%" align="left">
@@ -83,7 +88,7 @@ function LXPointsTable({ points }) {
                 Remuneration
               </Typography>
             </TableCell>
-            <TableCell width={{ sm: 0, md: '20%' }} align="left">
+            <TableCell width="20%" align="left">
               <Typography color="#666F85" variant="body2" fontWeight="400">
                 Reason
               </Typography>
@@ -94,12 +99,26 @@ function LXPointsTable({ points }) {
               </Typography>
             </TableCell>
             <TableCell width="15%" align="left">
-              <Typography color="#666F85" variant="body2" fontWeight="400">
+              <Typography
+                sx={{
+                  width: '89px',
+                }}
+                color="#666F85"
+                variant="body2"
+                fontWeight="400"
+              >
                 Release Time
               </Typography>
             </TableCell>
             <TableCell sx={{ paddingRight: 0 }} width="15%" align="right">
-              <Typography color="#666F85" variant="body2" fontWeight="400">
+              <Typography
+                sx={{
+                  width: '110px',
+                }}
+                color="#666F85"
+                variant="body2"
+                fontWeight="400"
+              >
                 Transaction Link
               </Typography>
             </TableCell>
@@ -125,8 +144,17 @@ function LXPointsTable({ points }) {
               </TableCell>
               <TableCell sx={{ color: '#101828' }} align="left">
                 <Tooltip title={point.reason}>
-                  <Typography variant="body2" fontWeight="400">
-                    {stringCut(point.reason, 60)}
+                  <Typography
+                    sx={{
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                      maxWidth: { xs: '150px', sm: '300px' },
+                    }}
+                    variant="body2"
+                    fontWeight="400"
+                  >
+                    {point.reason}
                   </Typography>
                 </Tooltip>
               </TableCell>
@@ -134,7 +162,15 @@ function LXPointsTable({ points }) {
                 {point.source}
               </TableCell>
               <TableCell sx={{ color: '#101828' }} align="left">
-                {point.createdAt.split('T')[0]}
+                <Typography
+                  sx={{
+                    width: '89px',
+                  }}
+                  variant="body2"
+                  fontWeight="400"
+                >
+                  {point.createdAt.split('T')[0]}
+                </Typography>
               </TableCell>
               <TableCell sx={{ paddingRight: 0 }} align="right">
                 <Link
@@ -142,7 +178,14 @@ function LXPointsTable({ points }) {
                   sx={{ textDecoration: 'none' }}
                   href={`https://${getEtherScanDomain()}/tx/${point.hash}`}
                 >
-                  <Typography color="#36AFF9" variant="body1" fontWeight="400">
+                  <Typography
+                    sx={{
+                      width: '110px',
+                    }}
+                    color="#36AFF9"
+                    variant="body1"
+                    fontWeight="400"
+                  >
                     View
                   </Typography>
                 </Link>
@@ -199,7 +242,6 @@ function BuidlerDetails(props) {
   const getToken = async (address) => {
     let result = await contract.balanceOf(address);
     if (result.toNumber() === 0) {
-      console.log('has no token.');
       return;
     }
 
@@ -511,25 +553,27 @@ function BuidlerDetails(props) {
           xs: 'column',
           md: 'row',
         }}
+        gap="24px"
       >
         {/* left section*/}
-        <Box width="300px">
+        <Box width={{ md: '300px', sm: '350px' }}>
           <Box
             border="0.5px solid #D0D5DD"
             borderRadius="6px"
             display="flex"
             padding={3}
           >
-            <Box>
+            <Box width="100%">
               <Box
                 width="252px"
                 height="252px"
                 border="0.5px solid #D0D5DD"
                 borderRadius="6px"
                 overflow="hidden"
+                margin="auto"
               >
                 <img
-                  style={{ display: 'block', width: 252 }}
+                  style={{ display: 'block', width: 252, height: 252 }}
                   src={
                     convertIpfsGateway(record.avatar) ||
                     '/images/placeholder.jpeg'
@@ -602,20 +646,26 @@ function BuidlerDetails(props) {
                   <Typography>{`Joined ${createdAt[1]} ${createdAt[3]}`}</Typography>
                 </Box>
               )}
-              <Divider
-                sx={{
-                  marginTop: '24px',
-                  borderColor: '#E5E5E5',
-                }}
-              />
-              <Box display="flex" justifyContent="center" marginTop={3}>
+              {address === record.address && (
+                <Divider
+                  sx={{
+                    marginTop: 2,
+                    marginBottom: 3,
+                    borderColor: '#E5E5E5',
+                  }}
+                />
+              )}
+              <Box
+                display="flex"
+                justifyContent="center"
+                flexWrap="wrap"
+                gap={1}
+              >
                 {address === record.address ? (
                   <LXButton
                     onClick={() => {
                       setVisible(true);
                     }}
-                    size="small"
-                    width="88px"
                     variant="outlined"
                   >
                     Edit
@@ -653,10 +703,7 @@ function BuidlerDetails(props) {
                         }
                         setSyncing(false);
                       }}
-                      marginLeft="8px"
                       color="#36AFF9"
-                      size="small"
-                      width="88px"
                       variant="outlined"
                       disabled={syncing}
                     >
@@ -665,10 +712,7 @@ function BuidlerDetails(props) {
                   )}
                 {address === record.address &&
                 record.role.includes('Onboarding Committee') ? (
-                  <Button
-                    style={{
-                      marginLeft: 8,
-                    }}
+                  <LXButton
                     onClick={async () => {
                       const newAddress = window.prompt('New joiner address');
                       const data = await API.post(`/buidler`, {
@@ -679,11 +723,10 @@ function BuidlerDetails(props) {
                         alert('created!');
                       }
                     }}
-                    size="small"
                     variant="outlined"
                   >
                     Onboarding
-                  </Button>
+                  </LXButton>
                 ) : null}
               </Box>
             </Box>
@@ -701,13 +744,14 @@ function BuidlerDetails(props) {
             </Box>
             {record.buddies?.length > 0 && (
               <Box
-                width="76.95px"
+                width="80px"
                 height="80px"
+                border="0.5px solid #D0D5DD"
                 borderRadius="6px"
                 overflow="hidden"
               >
                 <img
-                  style={{ display: 'block', width: 80 }}
+                  style={{ display: 'block', width: 80, height: 80 }}
                   src={record.buddies[0].avatar || '/images/placeholder.jpeg'}
                   alt=""
                 />
@@ -716,10 +760,13 @@ function BuidlerDetails(props) {
           </Box>
 
           {record.status === 'ACTIVE' ? (
-            <Box marginTop={2}>
+            <Box marginTop={2} width={{ lg: '300px', xs: '350px' }}>
               <img
                 crossOrigin="anonymous"
-                style={{ display: 'block', width: 300 }}
+                style={{
+                  display: 'block',
+                  maxWidth: '100%',
+                }}
                 src={`https://api.lxdao.io/buidler/${record.address}/card`}
                 alt=""
               />
@@ -727,13 +774,13 @@ function BuidlerDetails(props) {
           ) : null}
         </Box>
         {/* right senction */}
-        <Box flex="1" width="calc(100% - 29px)" marginLeft="29px">
+        <Box boxSizing="border-box" flex="1">
           <Box display="flex" flexDirection="column">
             <Accordion
               onChange={handleAccordionOnChange}
               sx={{
                 '&.Mui-expanded': {
-                  minHeight: 128,
+                  minHeight: { md: 128, sm: 200 },
                 },
                 '&.MuiPaper-root': {
                   border: '0.5px solid #D0D5DD',
@@ -742,22 +789,26 @@ function BuidlerDetails(props) {
               }}
             >
               <AccordionSummary
-                height="128px"
+                height={{ md: '128px', sm: '200px' }}
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1a-content"
                 id="panel1a-header"
                 sx={{
                   '&.MuiAccordionSummary-root': {
-                    height: '128px !important',
-                    'border-radius': '6px',
+                    height: { sm: '128px !important', xs: '200px !important' },
+                    borderRadius: '6px',
+                    '.MuiAccordionSummary-expandIconWrapper': {
+                      marginTop: { sm: 0, xs: '84px' },
+                    },
                   },
                 }}
               >
                 <Box
                   width="100%"
                   display="flex"
-                  alignItems="center"
+                  alignItems={{ xs: 'flex-start', md: 'center' }}
                   justifyContent="space-between"
+                  flexDirection={{ xs: 'column', md: 'row' }}
                 >
                   <Box>
                     <Typography fontWeight="500" variant="body1">
@@ -772,142 +823,156 @@ function BuidlerDetails(props) {
                       {totalLXPoints(record)}
                     </Typography>
                   </Box>
-                  <Typography fontWeight="500" variant="body1">
-                    {accordionOpen ? 'Put Away' : 'Record List'}
-                  </Typography>
+                  <Box
+                    textAlign={{ xs: 'right' }}
+                    width={{ xs: '100%', md: 'auto' }}
+                    paddingTop={{ xs: '24px', md: 0 }}
+                  >
+                    <Typography fontWeight="500" variant="body1">
+                      {accordionOpen ? 'Put Away' : 'Record List'}
+                    </Typography>
+                  </Box>
                 </Box>
               </AccordionSummary>
               <AccordionDetails
                 sx={{
                   '&.MuiAccordionDetails-root': {
                     height: '235px !important',
-                    padding: '8px 32px 32px 32px',
-                    'overflow-y': 'auto',
+                    padding: { sm: '8px 32px 32px 32px', xs: '8px' },
+                    overflowY: 'auto',
+                    overflowX:
+                      record?.lxPoints?.length === 0 ? 'hidden' : 'auto',
                     '&::-webkit-scrollbar': {
                       width: '10px',
+                      height: '10px',
                       background: 'transparent',
                     },
                     '&::-webkit-scrollbar-thumb': {
-                      'border-radius': '10px',
+                      borderRadius: '10px',
                       background: '#dfdfdf',
                     },
                     '&::scrollbar-track': {
-                      'border-radius': 0,
+                      borderRadius: 0,
                       background: '#dfdfdf',
                     },
                   },
                 }}
               >
-                <LXPointsTable maxHeight="235px" points={lxPoints} />
+                <LXPointsTable maxHeight="235px" points={record.lxPoints} />
               </AccordionDetails>
             </Accordion>
           </Box>
 
           <Box flex="1 1" marginTop={3}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <Box
-                  border="0.5px solid #D0D5DD"
-                  borderRadius="6px"
-                  padding="22px 17px 26.66px 31px"
-                >
-                  <Box display="flex" justifyContent="space-between">
+            <Box
+              sx={{
+                display: 'grid',
+                gap: 3,
+                gridTemplateColumns: {
+                  xs: 'repeat(1, 1fr)',
+                  sm: 'repeat(2, 1fr)',
+                },
+              }}
+            >
+              <Box
+                border="0.5px solid #D0D5DD"
+                borderRadius="6px"
+                padding="22px 17px 26.66px 31px"
+              >
+                <Box display="flex" justifyContent="space-between">
+                  <Typography
+                    fontWeight="600"
+                    variant="body1"
+                    marginBottom={2}
+                    display="inline-block"
+                  >
+                    Skills
+                  </Typography>
+                  <Box display="inline-block">
                     <Typography
-                      fontWeight="600"
-                      variant="body1"
-                      marginBottom={2}
+                      fontWeight="400"
+                      variant="body2"
                       display="inline-block"
                     >
-                      Skills
+                      <Box
+                        width="10px"
+                        height="10px"
+                        borderRadius="50%"
+                        display="inline-block"
+                        marginRight={1}
+                        marginLeft={1}
+                        sx={{ background: '#009FFF' }}
+                      ></Box>
+                      Senior
                     </Typography>
-                    <Box display="inline-block">
-                      <Typography
-                        fontWeight="400"
-                        variant="body2"
-                        display="inline-block"
-                      >
-                        <Box
-                          width="10px"
-                          height="10px"
-                          borderRadius="50%"
-                          display="inline-block"
-                          marginRight={1}
-                          marginLeft={1}
-                          sx={{ background: '#009FFF' }}
-                        ></Box>
-                        Senior
-                      </Typography>
-                      <Typography
-                        fontWeight="400"
-                        variant="body2"
-                        display="inline-block"
-                      >
-                        <Box
-                          width="10px"
-                          height="10px"
-                          borderRadius="50%"
-                          display="inline-block"
-                          marginRight={1}
-                          marginLeft={1}
-                          sx={{ background: 'rgba(0,159,255,0.7)' }}
-                        ></Box>
-                        intermediate
-                      </Typography>
-                      <Typography
-                        fontWeight="400"
-                        variant="body2"
-                        display="inline-block"
-                      >
-                        <Box
-                          width="10px"
-                          height="10px"
-                          borderRadius="50%"
-                          display="inline-block"
-                          marginRight={1}
-                          marginLeft={1}
-                          sx={{ background: 'rgba(0,159,255,0.4)' }}
-                        ></Box>
-                        jonior
-                      </Typography>
-                    </Box>
-                  </Box>
-                  <Box display="flex" flexWrap="wrap">
-                    <Skills skills={record.skills} />
-                  </Box>
-                </Box>
-              </Grid>
-              <Grid item xs={12} sm={6} height="100%" sx={{ height: '100%' }}>
-                <Box
-                  border="0.5px solid #D0D5DD"
-                  borderRadius="6px"
-                  padding="22px 17px 26.66px 31px"
-                  sx={{ height: '100%' }}
-                >
-                  <Box>
                     <Typography
-                      fontWeight="600"
-                      variant="body1"
-                      marginBottom={2}
+                      fontWeight="400"
+                      variant="body2"
                       display="inline-block"
                     >
-                      Interests
+                      <Box
+                        width="10px"
+                        height="10px"
+                        borderRadius="50%"
+                        display="inline-block"
+                        marginRight={1}
+                        marginLeft={1}
+                        sx={{ background: 'rgba(0,159,255,0.7)' }}
+                      ></Box>
+                      intermediate
+                    </Typography>
+                    <Typography
+                      fontWeight="400"
+                      variant="body2"
+                      display="inline-block"
+                    >
+                      <Box
+                        width="10px"
+                        height="10px"
+                        borderRadius="50%"
+                        display="inline-block"
+                        marginRight={1}
+                        marginLeft={1}
+                        sx={{ background: 'rgba(0,159,255,0.4)' }}
+                      ></Box>
+                      jonior
                     </Typography>
                   </Box>
-                  <Box display="flex" flexWrap="wrap">
-                    {record.interests.map((item) => {
-                      return (
-                        <Tag
-                          background="rgba(255,184,0,0.1)"
-                          color="#FFB800"
-                          key={item}
-                          text={item}
-                        />
-                      );
-                    })}
-                  </Box>
                 </Box>
-              </Grid>
-            </Grid>
+                <Box display="flex" flexWrap="wrap">
+                  <Skills skills={record.skills} />
+                </Box>
+              </Box>
+              <Box
+                border="0.5px solid #D0D5DD"
+                borderRadius="6px"
+                padding="22px 17px 26.66px 31px"
+                sx={{ height: '100%' }}
+              >
+                <Box>
+                  <Typography
+                    fontWeight="600"
+                    variant="body1"
+                    marginBottom={2}
+                    display="inline-block"
+                  >
+                    Interests
+                  </Typography>
+                </Box>
+                <Box display="flex" flexWrap="wrap">
+                  {record.interests.map((item) => {
+                    return (
+                      <Tag
+                        background="rgba(255,184,0,0.1)"
+                        color="#FFB800"
+                        key={item}
+                        text={item}
+                      />
+                    );
+                  })}
+                </Box>
+              </Box>
+            </Box>
           </Box>
 
           <Box marginTop={3}>
@@ -936,10 +1001,11 @@ function BuidlerDetails(props) {
                   alignItems="center"
                   border="0.5px solid #D0D5DD"
                   borderRadius="6px"
+                  padding={2}
                 >
                   <Typography
-                    marginTop={4}
-                    marginBottom="21px"
+                    marginTop={{ xs: 0, sm: 2 }}
+                    marginBottom={{ xs: '16px', sm: '21px' }}
                     color="#D0D5DD"
                     variant="body1"
                     fontWeight="400"
@@ -969,11 +1035,11 @@ function BuidlerDetails(props) {
               </Typography>
             </Box>
             <Box display="flex" marginTop={2}>
-              {workingGroupsData.length ? (
+              {record?.workingGroups?.length ? (
                 <Box width="100%">
                   <Grid container spacing={3}>
-                    {workingGroupsData.length > 0 &&
-                      workingGroupsData.map((group, index) => {
+                    {record?.workingGroups?.length > 0 &&
+                      record?.workingGroups?.map((group, index) => {
                         return (
                           <WorkingGroupCard hasBorder key={index} {...group} />
                         );
@@ -989,10 +1055,11 @@ function BuidlerDetails(props) {
                   alignItems="center"
                   border="0.5px solid #D0D5DD"
                   borderRadius="6px"
+                  padding={2}
                 >
                   <Typography
-                    marginTop={4}
-                    marginBottom="21px"
+                    marginTop={{ xs: 0, sm: 2 }}
+                    marginBottom={{ xs: '16px', sm: '21px' }}
                     color="#D0D5DD"
                     variant="body1"
                     fontWeight="400"
