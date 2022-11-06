@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Typography, Grid, Link } from '@mui/material';
-
+import { removeItem } from '@/utils/utility';
 function Project({ data }) {
   return (
     <Link
@@ -47,14 +47,25 @@ function Project({ data }) {
               >
                 Role:&emsp;
               </Typography>
-
+              {data.projectRole?.includes('Project Manager') ? (
+                <Typography
+                  display="inline-block"
+                  fontWeight="400"
+                  variant="body2"
+                  color="#36AFF9"
+                >
+                  Project Manager
+                </Typography>
+              ) : null}
               <Typography
                 display="inline-block"
                 fontWeight="400"
                 variant="body2"
                 color="#36AFF9"
               >
-                {data.projectRole.join(', ') || 'Unknown'}
+                {data.projectRole?.length === 0
+                  ? 'Unknown'
+                  : removeItem(data.projectRole, 'Project Manager').join(', ')}
               </Typography>
             </Box>
           </Grid>

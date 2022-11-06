@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 
 // eslint-disable-next-line react/prop-types
 const Button = ({ variant, children, ...rest }) => (
@@ -13,7 +13,7 @@ const Button = ({ variant, children, ...rest }) => (
         backgroundColor:
           variant === 'outlined' ? 'rgba(0, 0, 0, 0.05)' : 'rgba(0, 0, 0, 0.8)',
       },
-      color: variant === 'outlined' ? '#000000' : '#ffffff',
+      color: variant === 'outlined' ? rest.color || '#000000' : '#ffffff',
       borderRadius: '6px',
       border: variant === 'outlined' ? '1px solid #D0D5DD' : 'none',
       outline: 'none',

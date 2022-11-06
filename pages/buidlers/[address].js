@@ -6,8 +6,6 @@ import {
   Typography,
   Link,
   Button,
-  Tabs,
-  Tab,
   Grid,
   Dialog,
   DialogTitle,
@@ -24,12 +22,12 @@ import {
   AccordionDetails,
   AccordionSummary,
   Accordion,
+  Tooltip,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CloseIcon from '@mui/icons-material/Close';
 import { useRouter } from 'next/router';
 import _ from 'lodash';
-import SyncIcon from '@mui/icons-material/Sync';
 import { useContract, useAccount, useSigner } from 'wagmi';
 import * as bs58 from 'bs58';
 
@@ -46,54 +44,109 @@ import BuidlerContacts from '@/components/BuidlerContacts';
 import Tag from '@/components/Tag';
 import showMessage from '@/components/showMessage';
 import Project from '@/components/Project';
-import { convertIpfsGateway } from '@/utils/utility';
+import { convertIpfsGateway, groupBy, stringCut } from '@/utils/utility';
 import LXButton from '@/components/Button';
 import WorkingGroupCard from '@/components/WorkingGroupCard';
 
 import workingGroupsData from '@/common/content/workingGroups';
+import lxPoints from '@/common/content/lxPoints';
 
 function totalLXPoints(record) {
-  if (!record.lxPoints) {
+  if (!lxPoints) {
     return 0;
   }
-
-  return record.lxPoints.reduce((total, point) => {
-    if (point.operator === '+') {
-      return total + point.value;
-    }
-    if (point.operator === '-') {
-      return total - point.value;
-    }
-    return total;
-  }, 0);
+  var lxPointsGroup = groupBy(lxPoints, 'unit');
+  return Object.keys(lxPointsGroup)
+    .map((key) => {
+      const total = lxPointsGroup[key].reduce((total, point) => {
+        if (point.operator === '+') {
+          return total + point.value;
+        }
+        if (point.operator === '-') {
+          return total - point.value;
+        }
+        return total;
+      }, 0);
+      return `${total}${key}`;
+    })
+    .join(' + ');
 }
 
 function LXPointsTable({ points }) {
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+    <TableContainer component={Paper} sx={{ boxShadow: 'none' }}>
+      <Table sx={{ width: { md: 887, sm: 390 } }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell align="left">remuneration</TableCell>
-            <TableCell align="left">reason</TableCell>
-            <TableCell align="left">source</TableCell>
-            <TableCell align="left">release time</TableCell>
-            <TableCell align="right">transaction link</TableCell>
+            <TableCell sx={{ paddingLeft: 0 }} width="15%" align="left">
+              <Typography color="#666F85" variant="body2" fontWeight="400">
+                Remuneration
+              </Typography>
+            </TableCell>
+            <TableCell width={{ sm: 0, md: '20%' }} align="left">
+              <Typography color="#666F85" variant="body2" fontWeight="400">
+                Reason
+              </Typography>
+            </TableCell>
+            <TableCell width="15%" align="left">
+              <Typography color="#666F85" variant="body2" fontWeight="400">
+                Source
+              </Typography>
+            </TableCell>
+            <TableCell width="15%" align="left">
+              <Typography color="#666F85" variant="body2" fontWeight="400">
+                Release Time
+              </Typography>
+            </TableCell>
+            <TableCell sx={{ paddingRight: 0 }} width="15%" align="right">
+              <Typography color="#666F85" variant="body2" fontWeight="400">
+                Transaction Link
+              </Typography>
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {points.map((point) => (
             <TableRow
               key={point.id}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              sx={{
+                '&:last-child td, &:last-child th': { border: 0 },
+                borderBottom: '0.5px solid #E5E5E5',
+              }}
             >
-              <TableCell component="th" scope="row">
-                {point.value}
+              <TableCell
+                sx={{ color: '#101828', paddingLeft: 0 }}
+                component="th"
+                scope="row"
+              >
+                <Typography variant="body1" fontWeight="600">
+                  {`${point.value} ${point.unit}`}
+                </Typography>
               </TableCell>
-              <TableCell align="right">{point.reason}</TableCell>
-              <TableCell align="right">{point.source}</TableCell>
-              <TableCell align="right">{point.createdAt}</TableCell>
-              <TableCell align="right">view</TableCell>
+              <TableCell sx={{ color: '#101828' }} align="left">
+                <Tooltip title={point.reason}>
+                  <Typography variant="body2" fontWeight="400">
+                    {stringCut(point.reason, 60)}
+                  </Typography>
+                </Tooltip>
+              </TableCell>
+              <TableCell sx={{ color: '#101828' }} align="left">
+                {point.source}
+              </TableCell>
+              <TableCell sx={{ color: '#101828' }} align="left">
+                {point.createdAt.split('T')[0]}
+              </TableCell>
+              <TableCell sx={{ paddingRight: 0 }} align="right">
+                <Link
+                  target="_blank"
+                  sx={{ textDecoration: 'none' }}
+                  href={`https://${getEtherScanDomain()}/tx/${point.hash}`}
+                >
+                  <Typography color="#36AFF9" variant="body1" fontWeight="400">
+                    View
+                  </Typography>
+                </Link>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -110,13 +163,6 @@ function ipfsToBytes(ipfsURI) {
 
 function BuidlerDetails(props) {
   const record = props.record;
-  record.lxPoints = [
-    { id: 1, value: 12 },
-    { id: 2, value: 12 },
-    { id: 3, value: 15 },
-    { id: 4, value: 12 },
-    { id: 5, value: 12 },
-  ];
   const { address, isConnected } = useAccount();
   const { data: signer } = useSigner();
   const contract = useContract({
@@ -130,7 +176,8 @@ function BuidlerDetails(props) {
   const [minting, setMinting] = useState(false);
   const [updating, setUpdating] = useState(false);
   const [syncing, setSyncing] = useState(false);
-
+  const [txOpen, setTxOpen] = useState(false);
+  const [txResOpen, setTxResOpen] = useState(false);
   const [tx, setTx] = useState(null);
   const [txRes, setTxRes] = useState(null);
 
@@ -138,6 +185,7 @@ function BuidlerDetails(props) {
   const [tokenId, setTokenId] = useState(null);
   // ipfsURL on chain
   const [ipfsURLOnChain, setIpfsURLOnChain] = useState(null);
+  const [accordionOpen, setAccordionOpen] = useState(false);
 
   useEffect(async () => {
     if (!signer) {
@@ -179,9 +227,11 @@ function BuidlerDetails(props) {
       const bytes = ipfsToBytes(ipfsURI);
       const tx = await contract.mint(bytes, signature);
       setTx(tx);
+      setTxOpen(true);
       const response = await tx.wait();
       setTxRes(response);
-
+      setTxOpen(false);
+      setTxResOpen(true);
       if (response) {
         await API.post('/buidler/activate');
         props.refresh();
@@ -251,56 +301,12 @@ function BuidlerDetails(props) {
     record.createdAt &&
     new Date(Date.parse(record.createdAt)).toDateString().split(' ');
 
+  const handleAccordionOnChange = (e, value) => {
+    setAccordionOpen(value);
+  };
+
   return (
     <Container>
-      {address === record.address &&
-        !!ipfsURLOnChain &&
-        ipfsURLOnChain !== record.ipfsURI && (
-          <Box marginTop={4}>
-            <Alert severity="info">
-              We found your latest information not synced on the Ethereum,
-              please click{' '}
-              <Button
-                onClick={async () => {
-                  setSyncing(true);
-                  try {
-                    const syncInfoRes = await API.post(
-                      `/buidler/${address}/syncInfo`
-                    );
-                    if (syncInfoRes?.data?.status !== 'SUCCESS') {
-                      throw new Error(syncInfoRes?.data.message);
-                    }
-                    const { signature, ipfsURI } =
-                      syncInfoRes?.data?.data || {};
-                    const tx = await contract.updateMetadata(
-                      tokenId,
-                      ipfsToBytes(ipfsURI),
-                      signature
-                    );
-                    await tx.wait();
-                    await getToken(address);
-                    // todo add tx to the page
-                  } catch (err) {
-                    showMessage({
-                      type: 'error',
-                      title: 'Failed to update metadata',
-                      body: err.message,
-                    });
-                  }
-                  setSyncing(false);
-                }}
-                size="small"
-                variant="outlined"
-                disabled={syncing}
-              >
-                <SyncIcon fontSize="small"></SyncIcon>{' '}
-                {syncing ? 'Syncing...' : 'Sync My Profile'}
-              </Button>
-              . You need to pay for the Gas fee, we suggest you finish every
-              update and then sync them together.
-            </Alert>
-          </Box>
-        )}
       {address === record.address && record.status === 'PENDING' && (
         <Box marginTop={4}>
           <Alert severity="success">
@@ -364,32 +370,140 @@ function BuidlerDetails(props) {
         </Box>
       )}
       {tx && (
-        <Alert severity="info">
-          Minting, tx:{' '}
-          <Link
-            marginBottom={2}
-            target="_blank"
-            href={`https://${getEtherScanDomain()}/tx/${tx.hash}`}
+        <Dialog
+          maxWidth="383px"
+          onClose={(event) => {
+            setTxOpen(false);
+          }}
+          open={txOpen}
+        >
+          <Box
+            sx={{
+              borderadius: '6px',
+              background: '#fff',
+              width: '383px',
+              height: '232px',
+              padding: '32px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+            }}
           >
-            {tx.hash}
-          </Link>
-        </Alert>
+            <Box component={'img'} src={'/icons/setting.svg'} />
+            <Typography
+              variant="body1"
+              fontWeight="500"
+              textAlign="center"
+              color="#000"
+              marginTop={2}
+              marginBottom={2}
+            >
+              Minting...
+            </Typography>
+            <Box
+              sx={{
+                display: 'inline-block',
+                fontWeight: '400',
+                color: '#666F85',
+              }}
+            >
+              tx:{' '}
+              <Link
+                target="_blank"
+                sx={{ wordBreak: 'break-all' }}
+                href={`https://${getEtherScanDomain()}/tx/${tx.hash}`}
+              >
+                {tx.hash}
+              </Link>
+            </Box>
+          </Box>
+        </Dialog>
       )}
 
       {txRes && (
-        <Box marginBottom={2}>
-          <Alert severity="success">
-            Minted successfully, check on{' '}
-            <Link
-              target="_blank"
-              color={'inherit'}
-              href={`https://${getOpenSeaDomain()}/account`}
+        <Dialog
+          maxWidth="383px"
+          onClose={(event) => {
+            setTxResOpen(false);
+          }}
+          open={txResOpen}
+        >
+          <Box
+            sx={{
+              borderadius: '6px',
+              background: '#fff',
+              width: '383px',
+              height: '532.8px',
+              padding: '32px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+            }}
+          >
+            <Box component={'img'} src={'/icons/check.svg'} />
+            <Typography
+              variant="body1"
+              fontWeight="500"
+              color="#000"
+              textAlign="left"
+              marginTop={2}
             >
-              OpenSea
-            </Link>
-            . Please refresh the page.
-          </Alert>
-        </Box>
+              Congratulations, LXDAO Buidler card Mint succeeded！
+            </Typography>
+            <Box marginTop={3} marginBottom={3} margin="auto">
+              <img
+                crossOrigin="anonymous"
+                style={{ display: 'block', width: 271 }}
+                src={`https://api.lxdao.io/buidler/${record.address}/card`}
+                alt=""
+              />
+            </Box>
+            <Box
+              sx={{ display: 'inline-block', color: '#666F85' }}
+              marginBottom={3}
+            >
+              Go To{' '}
+              <Link
+                target="_blank"
+                sx={{ wordBreak: 'break-all' }}
+                href={`https://${getOpenSeaDomain()}/account`}
+              >
+                OpenSea
+              </Link>{' '}
+              To View
+            </Box>
+            <Box
+              sx={{
+                display: 'inline-block',
+                fontWeight: '400',
+                color: '#666F85',
+              }}
+              marginBottom={3}
+            >
+              tx:{' '}
+              <Link
+                target="_blank"
+                sx={{ wordBreak: 'break-all' }}
+                href={`https://${getEtherScanDomain()}/tx/${
+                  txRes.transactionHash
+                }`}
+              >
+                {txRes.transactionHash}
+              </Link>
+            </Box>
+            <Box width="100%" display="flex" justifyContent="flex-end">
+              <LXButton
+                width="94px"
+                variant="gradient"
+                onClick={() => {
+                  handleTxResClose();
+                }}
+              >
+                OK
+              </LXButton>
+            </Box>
+          </Box>
+        </Dialog>
       )}
       <Box
         display="flex"
@@ -494,18 +608,61 @@ function BuidlerDetails(props) {
                   borderColor: '#E5E5E5',
                 }}
               />
-              <Box textAlign="center" marginTop={4}>
+              <Box display="flex" justifyContent="center" marginTop={3}>
                 {address === record.address ? (
-                  <Button
+                  <LXButton
                     onClick={() => {
                       setVisible(true);
                     }}
                     size="small"
+                    width="88px"
                     variant="outlined"
                   >
                     Edit
-                  </Button>
+                  </LXButton>
                 ) : null}
+                {address === record.address &&
+                  !!ipfsURLOnChain &&
+                  ipfsURLOnChain !== record.ipfsURI && (
+                    <LXButton
+                      onClick={async () => {
+                        setSyncing(true);
+                        try {
+                          const syncInfoRes = await API.post(
+                            `/buidler/${address}/syncInfo`
+                          );
+                          if (syncInfoRes?.data?.status !== 'SUCCESS') {
+                            throw new Error(syncInfoRes?.data.message);
+                          }
+                          const { signature, ipfsURI } =
+                            syncInfoRes?.data?.data || {};
+                          const tx = await contract.updateMetadata(
+                            tokenId,
+                            ipfsToBytes(ipfsURI),
+                            signature
+                          );
+                          await tx.wait();
+                          await getToken(address);
+                          // todo add tx to the page
+                        } catch (err) {
+                          showMessage({
+                            type: 'error',
+                            title: 'Failed to update metadata',
+                            body: err.message,
+                          });
+                        }
+                        setSyncing(false);
+                      }}
+                      marginLeft="8px"
+                      color="#36AFF9"
+                      size="small"
+                      width="88px"
+                      variant="outlined"
+                      disabled={syncing}
+                    >
+                      {syncing ? 'Syncing...' : 'Sync'}
+                    </LXButton>
+                  )}
                 {address === record.address &&
                 record.role.includes('Onboarding Committee') ? (
                   <Button
@@ -536,6 +693,7 @@ function BuidlerDetails(props) {
             border="0.5px solid #D0D5DD"
             borderRadius="6px"
             display="flex"
+            justifyContent="space-between"
             padding="20px 24px"
           >
             <Box display="flex" alignItems="center">
@@ -571,28 +729,76 @@ function BuidlerDetails(props) {
         {/* right senction */}
         <Box flex="1" width="calc(100% - 29px)" marginLeft="29px">
           <Box display="flex" flexDirection="column">
-            <Accordion padding={4} maxHeight="363px">
+            <Accordion
+              onChange={handleAccordionOnChange}
+              sx={{
+                '&.Mui-expanded': {
+                  minHeight: 128,
+                },
+                '&.MuiPaper-root': {
+                  border: '0.5px solid #D0D5DD',
+                  boxShadow: 'none',
+                },
+              }}
+            >
               <AccordionSummary
                 height="128px"
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1a-content"
                 id="panel1a-header"
+                sx={{
+                  '&.MuiAccordionSummary-root': {
+                    height: '128px !important',
+                    'border-radius': '6px',
+                  },
+                }}
               >
-                <Typography fontWeight="bold" variant="h6">
-                  All remuneration
-                  <Box
-                    marginLeft={1}
-                    width="16px"
-                    component={'img'}
-                    src={`/icons/help-fill.svg`}
-                  />
-                </Typography>
-                <Typography sx={{ color: 'text.secondary' }}>
-                  record list
-                </Typography>
+                <Box
+                  width="100%"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="space-between"
+                >
+                  <Box>
+                    <Typography fontWeight="500" variant="body1">
+                      All Remuneration
+                    </Typography>
+                    <Typography
+                      marginTop={1}
+                      fontWeight="600"
+                      variant="h5"
+                      color="#36AFF9"
+                    >
+                      {totalLXPoints(record)}
+                    </Typography>
+                  </Box>
+                  <Typography fontWeight="500" variant="body1">
+                    {accordionOpen ? 'Put Away' : 'Record List'}
+                  </Typography>
+                </Box>
               </AccordionSummary>
-              <AccordionDetails>
-                <LXPointsTable maxHeight="235px" points={record.lxPoints} />
+              <AccordionDetails
+                sx={{
+                  '&.MuiAccordionDetails-root': {
+                    height: '235px !important',
+                    padding: '8px 32px 32px 32px',
+                    'overflow-y': 'auto',
+                    '&::-webkit-scrollbar': {
+                      width: '10px',
+                      background: 'transparent',
+                    },
+                    '&::-webkit-scrollbar-thumb': {
+                      'border-radius': '10px',
+                      background: '#dfdfdf',
+                    },
+                    '&::scrollbar-track': {
+                      'border-radius': 0,
+                      background: '#dfdfdf',
+                    },
+                  },
+                }}
+              >
+                <LXPointsTable maxHeight="235px" points={lxPoints} />
               </AccordionDetails>
             </Accordion>
           </Box>
@@ -603,7 +809,7 @@ function BuidlerDetails(props) {
                 <Box
                   border="0.5px solid #D0D5DD"
                   borderRadius="6px"
-                  padding="22px 17px 18.66px 31px"
+                  padding="22px 17px 26.66px 31px"
                 >
                   <Box display="flex" justifyContent="space-between">
                     <Typography
@@ -726,13 +932,31 @@ function BuidlerDetails(props) {
                   display="flex"
                   flexDirection="column"
                   width="100%"
+                  height="148px"
                   alignItems="center"
-                  paddingY={4}
+                  border="0.5px solid #D0D5DD"
+                  borderRadius="6px"
                 >
-                  <img width="80px" src="/icons/no-records.png" />
-                  <Typography marginTop={4} color="#D0D5DD" fontSize="16px">
-                    You have not participated in any project
+                  <Typography
+                    marginTop={4}
+                    marginBottom="21px"
+                    color="#D0D5DD"
+                    variant="body1"
+                    fontWeight="400"
+                  >
+                    You have not participated in the project, Go and choose one
+                    to join.
                   </Typography>
+                  <LXButton size="small" variant="outlined">
+                    <Link
+                      href={`/projects`}
+                      sx={{
+                        textDecoration: 'none',
+                      }}
+                    >
+                      View Product List
+                    </Link>
+                  </LXButton>
                 </Box>
               )}
             </Box>
@@ -761,13 +985,30 @@ function BuidlerDetails(props) {
                   display="flex"
                   flexDirection="column"
                   width="100%"
+                  height="148px"
                   alignItems="center"
-                  paddingY={4}
+                  border="0.5px solid #D0D5DD"
+                  borderRadius="6px"
                 >
-                  <img width="80px" src="/icons/no-records.png" />
-                  <Typography marginTop={4} color="#D0D5DD" fontSize="16px">
-                    You have not participated in any project
+                  <Typography
+                    marginTop={4}
+                    marginBottom="21px"
+                    color="#D0D5DD"
+                    variant="body1"
+                    fontWeight="400"
+                  >
+                    You haven't joined the workgroup, go and choose one to join
                   </Typography>
+                  <LXButton size="small" variant="outlined">
+                    <Link
+                      href={`https://lxdao.notion.site/95fde886aef24c9ca63b8bae95fa8456`}
+                      sx={{
+                        textDecoration: 'none',
+                      }}
+                    >
+                      View Working Group
+                    </Link>
+                  </LXButton>
                 </Box>
               )}
             </Box>
