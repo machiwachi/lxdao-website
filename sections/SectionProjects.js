@@ -90,8 +90,21 @@ const SectionProjects = () => {
       maxWidth="1200px"
       width="auto"
     >
-      <Typography variant="h4">Projects</Typography>
-      <Typography fontSize="20px" marginTop={2}>
+      <Typography
+        fontWeight={600}
+        sx={{
+          fontSize: { xs: '30px', md: '70px' },
+          lineHeight: { md: '70px' },
+        }}
+      >
+        LXDAO Buidlers
+      </Typography>
+      <Typography
+        fontSize="20px"
+        lineHeight="24px"
+        marginTop={3}
+        color="#666F85"
+      >
         We buidl good, valuable, and useful things.If you have a perfect idea
         want to become true, please write a proposal first.
       </Typography>
@@ -121,7 +134,7 @@ const SectionProjects = () => {
         }}
         onClick={() => {}}
       >
-        buld your OWN
+        buidl your OWN
       </Box>
       <Box marginTop={8}>
         <DebouncedInput
@@ -132,7 +145,7 @@ const SectionProjects = () => {
           }}
           label="Search"
           placeholder="Search project"
-          sx={{ width: '389px', height: '54px' }}
+          sx={{ maxWidth: '389px', height: '54px' }}
         />
       </Box>
       <Box marginTop={6}>
@@ -170,7 +183,7 @@ const SectionProjects = () => {
             View More
           </Button>
         </Box>
-      ) : finished ? null : (
+      ) : finished || realProjects.length <= 0 ? null : (
         <Box
           marginTop={{ md: 8, xs: 4 }}
           display="flex"
