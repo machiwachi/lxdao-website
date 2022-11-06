@@ -202,7 +202,7 @@ const ProjectCard = ({ project, index }) => {
             marginTop={4}
             marginBottom={2}
           >
-            Builder
+            Buidler
           </Typography>
           <Box
             display="flex"
