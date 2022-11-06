@@ -97,7 +97,7 @@ const SectionProjects = () => {
           lineHeight: { md: '70px' },
         }}
       >
-        LXDAO Buidlers
+        LXDAO Projects
       </Typography>
       <Typography
         fontSize="20px"

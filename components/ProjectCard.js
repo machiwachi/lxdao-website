@@ -78,6 +78,8 @@ const ProjectCard = ({ project, index }) => {
               style={{
                 width: '60px',
                 height: '60px',
+                border: '0.5px solid #D0D5DD',
+                borderRadius:'50%'
               }}
             />
             <Typography
@@ -190,12 +192,13 @@ const ProjectCard = ({ project, index }) => {
           sx={{ marginTop: 1 }}
         />
       )}
-      {project.buidlersOnProject && (
+      {project.buidlersOnProject.length>0? (
         <>
           <Typography
             color="#101828"
             variant="body1"
             textAlign="left"
+            fontWeight={600}
             marginTop={4}
             marginBottom={2}
           >
@@ -269,7 +272,7 @@ const ProjectCard = ({ project, index }) => {
             })}
           </Box>
         </>
-      )}
+      ):null}
     </Card>
   );
 };

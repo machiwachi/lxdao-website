@@ -451,7 +451,7 @@ const SectionProjectDetail = ({ projectId }) => {
                 sx={{
                   position: 'absolute',
                   left: '1px',
-                  bottom: '0px',
+                  bottom: '6px',
                   background: '#36AFF9',
                   borderRadius: '2px',
                   fontSize: '12px',
