@@ -53,6 +53,7 @@ const SectionProjectDetail = ({ projectId }) => {
   const [openJoinTooltip, setOpenJoinTooltip] = useState(false);
   const [showJoinButton, setShowJoinButton] = useState(true);
   const [showInviteButton, setShowInviteButton] = useState(false);
+  const [showInviteSearchButton, setShowInviteSearchButton] = useState(false);
   const [showAcceptButton, setShowAcceptButton] = useState(false);
   const [loading, setLoading] = useState(true);
   const [currentBuidlerOnProjectInfo, setCurrentBuidlerOnProjectInfo] =
@@ -555,14 +556,14 @@ const SectionProjectDetail = ({ projectId }) => {
               <Box align="center">
                 <Typography
                   fontSize={{ md: '14px', xs: '12px' }}
-                  width="97px"
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
                     color: '#4DCC9E',
                     background: 'rgba(77, 204, 158, 0.1)',
-                    display: 'block',
+                    display: 'initial',
                     lineHeight: '23.92px',
+                    padding: '4px 12px',
                   }}
                 >
                   {PROJECT_STATUS[project.status]}
@@ -713,7 +714,7 @@ const SectionProjectDetail = ({ projectId }) => {
                       </Tooltip>
                     );
                   })}
-                  {!showInviteButton && address && (
+                  {showInviteButton && !showInviteSearchButton && address && (
                     <Box
                       width="60px"
                       height="60px"
@@ -727,7 +728,7 @@ const SectionProjectDetail = ({ projectId }) => {
                         borderRadius: '2px',
                         color: '#D0D5DD',
                       }}
-                      onClick={() => setShowInviteButton(true)}
+                      onClick={() => setShowInviteSearchButton(true)}
                     >
                       <img src="/icons/add.svg" />
                     </Box>
@@ -740,7 +741,7 @@ const SectionProjectDetail = ({ projectId }) => {
                 )}
               </Box>
 
-              {showInviteButton && (
+              {showInviteSearchButton && (
                 <Box marginTop={3} maxWidth="700px" display="flex" gap="10px">
                   <Autocomplete
                     sx={{ width: '300px', height: '56px' }}
