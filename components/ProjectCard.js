@@ -99,10 +99,10 @@ const ProjectCard = ({ project, index }) => {
             </Typography>
           </Box>
         </Box>
-        <Box>
+        <Box textAlign="left">
           <Typography
             sx={{
-              marginBottom: '18px',
+              marginBottom: { xs: '8px',md: '16px' },
               fontWeight: 600,
               color: '#101828',
             }}
@@ -113,7 +113,7 @@ const ProjectCard = ({ project, index }) => {
           </Typography>
           <Box
             display="flex"
-            gap={{ md: '8px',xs: '4px' }}
+            gap={{ md: '8px', xs: '4px' }}
             flexWrap="wrap"
             justifyContent="flex-start"
             height={60}
