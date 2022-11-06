@@ -8,7 +8,7 @@ import workingGroupsData from '@/common/content/workingGroups';
 
 const SectionWorkingGroup = () => (
   <Box width="100%" backgroundColor="#36AFF9">
-    <Container paddingY={{ md: '112px' }} margin="0 auto">
+    <Container paddingY={{ md: '112px', xs: 8 }} margin="0 auto">
       <Typography
         variant="h2"
         lineHeight="58px"

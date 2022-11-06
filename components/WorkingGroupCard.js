@@ -3,7 +3,7 @@ import { Typography, Box, Link, Grid } from '@mui/material';
 
 const WorkingGroupCard = ({ image, name, link, hasBorder }) => {
   return (
-    <Grid item xs={6} sm={6} md={6} lg={6}>
+    <Grid item xs={12} sm={6} md={4} lg={4}>
       <Link href={link} sx={{ textDecoration: 'none' }}>
         <Box
           backgroundColor="#F5F5F5"
