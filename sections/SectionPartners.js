@@ -9,11 +9,26 @@ const partnersData = [
     logo: '/images/partners/nextdao-logo.svg',
     link: 'https://twitter.com/theNextDAO',
   },
+  {
+    name: 'NextDAO',
+    logo: '/images/partners/nextdao-logo.svg',
+    link: 'https://twitter.com/theNextDAO',
+  },
+  {
+    name: 'NextDAO',
+    logo: '/images/partners/nextdao-logo.svg',
+    link: 'https://twitter.com/theNextDAO',
+  },
+  {
+    name: 'NextDAO',
+    logo: '/images/partners/nextdao-logo.svg',
+    link: 'https://twitter.com/theNextDAO',
+  },
 ];
 
 const SectionPartners = () => (
   <Box width="100%">
-    <Container paddingY={{ md: '112px' }} margin="0 auto">
+    <Container paddingY={{ md: '112px', xs: 8 }} margin="0 auto">
       <Box
         width="100%"
         display="flex"
@@ -25,7 +40,12 @@ const SectionPartners = () => (
         <Typography variant="h2" lineHeight="58px" fontWeight={600}>
           Our Partners
         </Typography>
-        <Box display="flex" gap={3}>
+        <Box
+          display="flex"
+          gap={3}
+          flexWrap="wrap"
+          justifyContent={{ md: 'center', sm: 'center', xs: 'center' }}
+        >
           {partnersData.map((partner, index) => {
             return (
               <Link href={partner.link} target="_blank" key={index}>
