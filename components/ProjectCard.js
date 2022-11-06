@@ -79,7 +79,7 @@ const ProjectCard = ({ project, index }) => {
                 width: '60px',
                 height: '60px',
                 border: '0.5px solid #D0D5DD',
-                borderRadius:'50%'
+                borderRadius: '50%',
               }}
             />
             <Typography
@@ -113,27 +113,25 @@ const ProjectCard = ({ project, index }) => {
           </Typography>
           <Box
             display="flex"
-            gap="8px"
+            gap={{ md: '8px',xs: '4px' }}
             flexWrap="wrap"
             justifyContent="flex-start"
             height={60}
           >
-            <Box>
-              {project.status && (
-                <Chip
-                  size="small"
-                  label={project.status}
-                  variant="outlined"
-                  sx={{
-                    borderRadius: '4px',
-                    fontSize: '12px',
-                    background: 'rgba(77, 204, 158, 0.1)',
-                    color: '#4DCC9E',
-                    border: 'none',
-                  }}
-                />
-              )}
-            </Box>
+            {project.status && (
+              <Chip
+                size="small"
+                label={project.status}
+                variant="outlined"
+                sx={{
+                  borderRadius: '4px',
+                  fontSize: { xs: '8px', md: '12px' },
+                  background: 'rgba(77, 204, 158, 0.1)',
+                  color: '#4DCC9E',
+                  border: 'none',
+                }}
+              />
+            )}
             {project.tags &&
               project.tags.map((tag, index) => {
                 return (
@@ -144,6 +142,7 @@ const ProjectCard = ({ project, index }) => {
                     variant="outlined"
                     sx={{
                       borderRadius: '4px',
+                      fontSize: { sx: '10px', md: '12px' },
                       border: 'none',
                       fontSize: '12px',
                       color: '#36AFF9',
@@ -158,14 +157,14 @@ const ProjectCard = ({ project, index }) => {
       <Box
         sx={{
           width: '100%',
-          height: '200px',
+          height: 'auto',
           background: '#FFFFFF',
           border: '0.5px solid #D0D5DD',
           boxShadow: '0px 6px 60px rgba(0, 0, 0, 0.06)',
           borderRadius: '6px',
         }}
       >
-        <img style={{ width: '100%' }} src={project.banner} />
+        <img style={{ width: '100%', display: 'block' }} src={project.banner} />
       </Box>
       {project.description ? (
         <Typography
@@ -192,7 +191,7 @@ const ProjectCard = ({ project, index }) => {
           sx={{ marginTop: 1 }}
         />
       )}
-      {project.buidlersOnProject.length>0? (
+      {project.buidlersOnProject.length > 0 ? (
         <>
           <Typography
             color="#101828"
@@ -272,7 +271,7 @@ const ProjectCard = ({ project, index }) => {
             })}
           </Box>
         </>
-      ):null}
+      ) : null}
     </Card>
   );
 };

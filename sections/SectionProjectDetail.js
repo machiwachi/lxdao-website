@@ -55,7 +55,8 @@ const SectionProjectDetail = ({ projectId }) => {
   const [showInviteButton, setShowInviteButton] = useState(false);
   const [showInviteSearchButton, setShowInviteSearchButton] = useState(false);
   const [showAcceptButton, setShowAcceptButton] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [inviteLoading, setInviteLoading] = useState(false);
+  const [acceptLoading, setAcceptLoading] = useState(false);
   const [currentBuidlerOnProjectInfo, setCurrentBuidlerOnProjectInfo] =
     useState({ id: null, ipfsURI: '' });
   const [projectRoleValue, setProjectRoleValue] = useState([]);
@@ -225,6 +226,7 @@ const SectionProjectDetail = ({ projectId }) => {
         ...inviteBuidlerErrors,
         ...cloneInviteBuidlerErrors,
       });
+      setInviteLoading(false)
       return;
     }
     if (projectRoleValue.length < 1) {
@@ -234,6 +236,7 @@ const SectionProjectDetail = ({ projectId }) => {
         ...inviteBuidlerErrors,
         ...cloneInviteBuidlerErrors,
       });
+      setInviteLoading(false)
       return;
     }
     if (selectedBuidler && projectRoleValue.length > 0) {
@@ -249,7 +252,9 @@ const SectionProjectDetail = ({ projectId }) => {
         projectRole: projectRoleValue,
       })
         .then((res) => {
+          setInviteLoading(false)
           if (res?.data?.status === 'SUCCESS') {
+            getProjectData()
             setAlert(
               'Invite buidler successfully, please wait for the buidler to accept the invitation',
               'success'
@@ -259,6 +264,7 @@ const SectionProjectDetail = ({ projectId }) => {
           }
         })
         .catch((err) => {
+          setInviteLoading(false)
           setAlert('something went wrong', 'error');
         });
     }
@@ -267,6 +273,7 @@ const SectionProjectDetail = ({ projectId }) => {
   const handleAcceptInvitation = () => {
     API.post(`/buidler/joinProject`, currentBuidlerOnProjectInfo)
       .then((res) => {
+        setAcceptLoading(false)
         if (res?.data?.status === 'SUCCESS') {
           setAlert(
             'Congratulations on your successful participation in this project!',
@@ -277,6 +284,7 @@ const SectionProjectDetail = ({ projectId }) => {
         }
       })
       .catch((err) => {
+        setAcceptLoading(false)
         setAlert('something went wrong', 'error');
       });
   };
@@ -735,14 +743,14 @@ const SectionProjectDetail = ({ projectId }) => {
                   )}
                 </Box>
                 {showAcceptButton && (
-                  <Button variant="gradient" onClick={handleAcceptInvitation}>
-                    Accept Invitation
+                  <Button variant="gradient" onClick={handleAcceptInvitation} loading={acceptLoading}>
+                    {acceptLoading?'loading...':'Accept Invitation'}
                   </Button>
                 )}
               </Box>
 
               {showInviteSearchButton && (
-                <Box marginTop={3} maxWidth="700px" display="flex" gap="10px">
+                <Box marginTop={3} maxWidth="700px" display="flex" gap="10px" flexWrap="wrap">
                   <Autocomplete
                     sx={{ width: '300px', height: '56px' }}
                     options={activeBuidlerList.map((option) => option.name)}
@@ -788,6 +796,7 @@ const SectionProjectDetail = ({ projectId }) => {
                       error={inviteBuidlerErrors['role'].error}
                       value={projectRoleValue}
                       MenuProps={MenuProps}
+                      textAlign="left"
                       onChange={(event) => {
                         setProjectRoleValue(event.target.value);
                         if (event.target.value) {
@@ -820,10 +829,12 @@ const SectionProjectDetail = ({ projectId }) => {
                   </FormControl>
                   <Button
                     variant="gradient"
-                    onClick={handleInviteBuidler}
+                    onClick={inviteLoading?()=>{}:handleInviteBuidler}
                     height="56px"
+                    loading={inviteLoading}
+                    loadingPosition="start"
                   >
-                    Invite
+                    {inviteLoading?'loading...':'Invite'}
                   </Button>
                 </Box>
               )}
