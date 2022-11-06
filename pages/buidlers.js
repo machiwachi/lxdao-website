@@ -24,7 +24,6 @@ export function BuidlerCard(props) {
       borderRadius="6px"
       padding={3}
       position="relative"
-      paddingBottom={7}
       height="100%"
     >
       <Link
@@ -47,7 +46,7 @@ export function BuidlerCard(props) {
             marginRight={3}
           >
             <img
-              style={{ display: 'block', width: 80 }}
+              style={{ display: 'block', width: 80, height: 80 }}
               src={
                 convertIpfsGateway(record.avatar) || '/images/placeholder.jpeg'
               }
@@ -69,31 +68,34 @@ export function BuidlerCard(props) {
             >
               {record.name}
             </Typography>
-            <Box height="36px">
+            <Box height={{ sm: '48px', md: '36px' }}>
               <BuidlerContacts contacts={record.contacts} />
             </Box>
           </Box>
         </Box>
-        <Box display="flex" flexWrap="wrap" marginTop={2}>
-          <Typography
-            variant="body1"
-            sx={{
-              lineHeight: '24px',
-              color: '#666F85',
-            }}
-          >
-            {record.description}
-          </Typography>
-        </Box>
-
-        <Box display="flex" flexWrap="wrap" marginTop={2}>
-          {record.role.map((item) => {
-            return <Tag key={item} text={item}></Tag>;
-          })}
-        </Box>
+        {record.description && (
+          <Box display="flex" flexWrap="wrap" marginTop={2}>
+            <Typography
+              variant="body1"
+              sx={{
+                lineHeight: '24px',
+                color: '#666F85',
+              }}
+            >
+              {record.description}
+            </Typography>
+          </Box>
+        )}
+        {record.role.length > 0 ? (
+          <Box display="flex" flexWrap="wrap" marginTop={2}>
+            {record.role.map((item) => {
+              return <Tag key={item} text={item}></Tag>;
+            })}
+          </Box>
+        ) : null}
         {skills.length > 0 && (
           <Box marginTop={2}>
-            <Typography fontWeight="600" marginBottom={2} variant="body1">
+            <Typography fontWeight="600" marginBottom={1} variant="body1">
               Skills
             </Typography>
             <Box display="flex" flexWrap="wrap">
@@ -192,7 +194,8 @@ export default function Home() {
         tempList.push(record);
       });
       setHasMore(tempList.length === 6);
-      setList([...list, ...tempList]);
+
+      isAddMore ? setList([...list, ...tempList]) : setList([...tempList]);
     } catch (err) {
       console.error(err);
     }
@@ -293,12 +296,20 @@ export default function Home() {
                 </Typography>
               </Box>
             ) : (
-              <Box marginLeft={{ xs: 2, md: 0 }}>
-                <Masonry columns={{ lg: 3, md: 2, xs: 1 }} spacing={2}>
+              <Box marginRight={-2}>
+                <Masonry
+                  sx={{
+                    '&.MuiMasonry-root': {
+                      width: { md: '1216px', sm: '800px', xs: '368px' },
+                    },
+                  }}
+                  columns={{ xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
+                  spacing={2}
+                >
                   {list.map((item) => {
                     return (
-                      <Grid key={item.id} item xs={12} md={6} lg={4}>
-                        <BuidlerCard record={item} />
+                      <Grid key={item.id} item xs={12} sm={6} lg={4}>
+                        <BuidlerCard key={item.id} record={item} />
                       </Grid>
                     );
                   })}

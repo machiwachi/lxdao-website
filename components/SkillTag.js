@@ -12,7 +12,7 @@ function SkillTag(props) {
     <Box
       paddingX={1}
       marginRight={1}
-      marginBottom={1}
+      marginTop={1}
       sx={{
         background: levelColors[props.level],
         color: '#fff',
