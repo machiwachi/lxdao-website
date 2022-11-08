@@ -92,6 +92,7 @@ const SectionProjects = () => {
     >
       <Typography
         fontWeight={600}
+        lineHeight="44"
         sx={{
           fontSize: { xs: '30px', md: '70px' },
           lineHeight: { md: '70px' },
@@ -136,7 +137,7 @@ const SectionProjects = () => {
       >
         buidl your OWN
       </Box>
-      <Box marginTop={8}>
+      <Box marginTop={12}>
         <DebouncedInput
           value={search}
           onChange={(value) => {
