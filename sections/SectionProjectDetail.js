@@ -613,7 +613,7 @@ const SectionProjectDetail = ({ projectId }) => {
             <Box
               display="flex"
               flexWrap="wrap"
-              justifyContent="flex-start"
+              justifyContent={{ xs: 'center', md: 'flex-start' }}
               gap={{ xs: 1, md: 3 }}
               marginBottom={3}
             >
