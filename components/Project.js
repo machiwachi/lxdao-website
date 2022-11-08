@@ -57,7 +57,7 @@ function Project({ data }) {
                 display="inline-block"
                 fontWeight="400"
                 variant="body2"
-                color="#36AFF9"
+                color="#666F85"
               >
                 {data.projectRole?.length === 0
                   ? 'Unknown'
