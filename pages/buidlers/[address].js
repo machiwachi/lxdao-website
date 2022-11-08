@@ -556,7 +556,7 @@ function BuidlerDetails(props) {
         gap="24px"
       >
         {/* left section*/}
-        <Box width={{ md: '300px', sm: '350px' }}>
+        <Box width={{ md: '300px', sm: 'auto', xs: '350px' }}>
           <Box
             border="0.5px solid #D0D5DD"
             borderRadius="6px"
@@ -585,6 +585,7 @@ function BuidlerDetails(props) {
                 variant="h5"
                 fontWeight="500"
                 textAlign="center"
+                color="#000"
                 marginTop={3}
                 marginBottom={1}
               >
@@ -760,7 +761,12 @@ function BuidlerDetails(props) {
           </Box>
 
           {record.status === 'ACTIVE' ? (
-            <Box marginTop={2} width={{ lg: '300px', xs: '350px' }}>
+            <Box
+              marginTop={2}
+              width={{ lg: '300px', sm: 'auto', xs: '350px' }}
+              display="flex"
+              justifyContent="center"
+            >
               <img
                 crossOrigin="anonymous"
                 style={{
@@ -799,6 +805,7 @@ function BuidlerDetails(props) {
                     borderRadius: '6px',
                     '.MuiAccordionSummary-expandIconWrapper': {
                       marginTop: { sm: 0, xs: '84px' },
+                      display: record?.lxPoints.length ? 'block' : 'none',
                     },
                   },
                 }}
@@ -811,7 +818,11 @@ function BuidlerDetails(props) {
                   flexDirection={{ xs: 'column', md: 'row' }}
                 >
                   <Box>
-                    <Typography fontWeight="500" variant="body1">
+                    <Typography
+                      fontWeight="600"
+                      variant="body1"
+                      color="#101828"
+                    >
                       All Remuneration
                     </Typography>
                     <Typography
@@ -828,8 +839,16 @@ function BuidlerDetails(props) {
                     width={{ xs: '100%', md: 'auto' }}
                     paddingTop={{ xs: '24px', md: 0 }}
                   >
-                    <Typography fontWeight="500" variant="body1">
-                      {accordionOpen ? 'Put Away' : 'Record List'}
+                    <Typography
+                      fontWeight="500"
+                      variant="body1"
+                      color="#0D1320"
+                    >
+                      {record?.lxPoints.length > 0
+                        ? accordionOpen
+                          ? 'Put Away'
+                          : 'Record List'
+                        : null}
                     </Typography>
                   </Box>
                 </Box>
@@ -977,7 +996,12 @@ function BuidlerDetails(props) {
 
           <Box marginTop={3}>
             <Box>
-              <Typography fontWeight="600" variant="body1" marginBottom={2}>
+              <Typography
+                color="#101828"
+                fontWeight="600"
+                variant="body1"
+                marginBottom={2}
+              >
                 Project
               </Typography>
             </Box>
@@ -1030,7 +1054,12 @@ function BuidlerDetails(props) {
 
           <Box marginTop={3} marginBottom={3}>
             <Box>
-              <Typography fontWeight="600" variant="body1" marginBottom={2}>
+              <Typography
+                color="#101828"
+                fontWeight="600"
+                variant="body1"
+                marginBottom={2}
+              >
                 Working Group
               </Typography>
             </Box>
