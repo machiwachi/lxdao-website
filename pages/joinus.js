@@ -27,7 +27,7 @@ export default function JoinUs() {
   return (
     <div>
       <Layout>
-        <SectionJoinUsHero />
+        <SectionJoinUsHero maxWidth="1216px" />
         {/* todo Muxin later, tell people who we need */}
         <SectionMemberType activeBuidlers={activeBuidlers} />
         <SectionApplicationSteps />

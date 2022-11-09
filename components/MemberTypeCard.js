@@ -66,7 +66,7 @@ const MemberTypeCard = ({
       >
         <Box display="flex" justifyContent="space-between">
           <Typography
-            variant="h6"
+            fontSize={{ sm: '24px', xs: '20px' }}
             fontWeight="600"
             lineHeight="44px"
             textAlign="left"

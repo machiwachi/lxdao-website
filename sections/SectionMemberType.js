@@ -17,13 +17,13 @@ const SectionMemberType = ({ activeBuidlers }) => {
   return (
     <Box backgroundColor="#F9FAFB" width="100%">
       <Container
-        paddingY={{ md: 10, xs: 8 }}
+        paddingY={{ md: 10, xs: 6 }}
         textAlign="center"
         maxWidth="1200px"
         margin="0 auto"
       >
         <Typography
-          fontSize="48px"
+          fontSize={{ sm: '48px', sx: '30px' }}
           fontWeight="600"
           marginBottom={6}
           lineHeight="40px"

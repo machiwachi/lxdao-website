@@ -64,7 +64,7 @@ const SectionApplicationSteps = () => {
   return (
     <Box backgroundColor="#F9FAFB" width="100%">
       <Container
-        paddingY={{ md: '40px', xs: 8 }}
+        paddingY={{ md: 5, xs: 3 }}
         textAlign="center"
         maxWidth="1200px"
         margin="0 auto"
@@ -72,13 +72,14 @@ const SectionApplicationSteps = () => {
         <Box display="flex" flexDirection="column" alignItems="center">
           <Typography
             textTransform="uppercase"
-            fontSize="48px"
+            fontSize={{ sm: '48px', xs: '30px' }}
             fontWeight="600"
             color="#101828"
             marginBottom={10}
             textAlign="center"
+            width={{ sm: 'auto', xs: '300px' }}
           >
-            How to become a LX Buidler
+            How to become a builder？
           </Typography>
           <Box
             display="flex"
@@ -94,48 +95,25 @@ const SectionApplicationSteps = () => {
                     <>
                       <Box
                         position="absolute"
-                        top="160px"
-                        left="218px"
-                        bottom="40px"
-                        alignItems="center"
-                        display={{ lg: 'none', sm: 'block', xs: 'none' }}
-                      >
-                        <Box
-                          height="40px"
-                          position="relative"
-                          right="2px"
-                          borderRight="1px dashed #101828"
-                        />
-                        <Box
-                          position="absolute"
-                          top="1px"
-                          right="0"
-                          width="5px"
-                          height="5px"
-                          borderRadius="100%"
-                          backgroundColor="#000000"
-                        />
-                      </Box>
-
-                      <Box
-                        position="absolute"
                         top="55px"
-                        left="185px"
+                        left="218px"
                         bottom="40px"
                         alignItems="center"
                         display={{ lg: 'block', xs: 'none' }}
                       >
                         <Box
-                          width="5px"
-                          height="5px"
-                          borderRadius="100%"
-                          backgroundColor="#000000"
-                        />
-                        <Box
                           width="140px"
                           position="relative"
                           top="3px"
                           borderTop="1px dashed #101828"
+                        />
+                        <Box
+                          width="5px"
+                          height="5px"
+                          borderRadius="100%"
+                          backgroundColor="#000000"
+                          position="relative"
+                          left="140px"
                         />
                       </Box>
                     </>

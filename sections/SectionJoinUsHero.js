@@ -1,6 +1,7 @@
 import React from 'react';
-import { Box, Container, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import SectionHero from './SectionHero';
+import Container from '@/components/Container';
 
 const SectionJoinUsHero = () => {
   const Title = () => {
@@ -30,21 +31,21 @@ const SectionJoinUsHero = () => {
                 variant="subtitle1"
                 lineHeight="36px"
                 color="#667085"
-                fontSize="21px"
+                textAlign="left"
               >
                 LXDAO is formed by a group of Web3 buidlers who enjoy building
                 high-quality valuable Web3 products. We believe that in ten
-                years, there will be one billion people using Web3 technologies,
+                years,there will be one billion people using Web3 technologies,
                 products and ideas every day. Therefore, as a pioneer, we will
                 use the Web3 approach to buidl and maintain projects to promote
-                the development of Web3 .
+                the development of Web3.
               </Typography>
               <Typography
                 marginTop={3}
                 variant="subtitle1"
                 lineHeight="36px"
                 color="#667085"
-                fontSize="21px"
+                textAlign="left"
               >
                 Our outputs include but are not limited to commercial projects,
                 open source projects, public goods and performance art, etc. We
@@ -55,21 +56,20 @@ const SectionJoinUsHero = () => {
           </Box>
         }
         rightContent={
-          <Box width={{ sm: '420px', xs: '300px' }}>
-            <img src="/images/to-the-moon.svg" width="100%" />
+          <Box width={{ sm: '574px', xs: '350px' }}>
+            <img src="/images/to-the-moon.png" width="100%" />
           </Box>
         }
       />
 
-      <Box
-        width="100%"
+      <Container
         minHeight={{ md: '400px', xs: '660px' }}
         display="flex"
-        flexDirection={{ sm: 'row', xs: 'column' }}
+        flexDirection={{ lg: 'row', xs: 'column-reverse' }}
         justifyContent="center"
         alignItems="center"
         textAlign="center"
-        gap={{ sm: '170px', xs: '40px' }}
+        gap={{ lg: '300px', sm: '100px', xs: '40px' }}
       >
         <Box
           padding="0 36px"
@@ -78,18 +78,18 @@ const SectionJoinUsHero = () => {
           alignItems={{ lg: 'flex-start', xs: 'center' }}
           textAlign={{ lg: 'left', xs: 'center' }}
         >
-          <Box width={{ sm: '400px', xs: '300px' }}>
+          <Box width={{ sm: '400px', xs: '350px' }}>
             <img src="/images/brainstorm.svg" width="100%" />
           </Box>
         </Box>
         <Box>
-          <Box width="592px">
+          <Box width={{ sm: '592px', xs: '350px' }}>
             <Typography
               variant="subtitle1"
               lineHeight="36px"
               color="#667085"
-              fontSize="21px"
               textTransform="capitalize"
+              textAlign="left"
             >
               LXDAO wants to attract people who want to build conscientiously in
               any role, whether you are a programmer, designer, artist,
@@ -97,18 +97,17 @@ const SectionJoinUsHero = () => {
             </Typography>
           </Box>
         </Box>
-      </Box>
+      </Container>
 
-      <Box
-        width="100%"
-        minHeight={{ md: '362px', xs: '660px' }}
+      <Container
+        minHeight={{ md: '362px', xs: '600px' }}
         display="flex"
-        flexDirection={{ sm: 'row', xs: 'column' }}
+        flexDirection={{ lg: 'row', xs: 'column' }}
         justifyContent="center"
         alignItems="center"
         textAlign="center"
-        gap={{ sm: '200px', xs: '40px' }}
-        marginBottom="107px"
+        gap={{ md: '200px', sm: '100px', xs: '40px' }}
+        marginBottom={{ md: 10, sm: 8, xs: 3 }}
       >
         <Box
           display="flex"
@@ -116,13 +115,13 @@ const SectionJoinUsHero = () => {
           alignItems={{ lg: 'flex-start', xs: 'center' }}
           textAlign={{ lg: 'left', xs: 'center' }}
         >
-          <Box width="532px">
+          <Box width={{ sm: '592px', xs: '350px' }}>
             <Typography
               variant="subtitle1"
               lineHeight="36px"
               color="#667085"
-              fontSize="21px"
               textTransform="capitalize"
+              textAlign="left"
             >
               In LXDAO you can buidl many web3 projects with like-minded
               buidlers in the web3 way, you can not only increase your web3
@@ -132,11 +131,11 @@ const SectionJoinUsHero = () => {
           </Box>
         </Box>
         <Box>
-          <Box width={{ sm: '400px', xs: '300px' }}>
+          <Box width={{ sm: '400px', xs: '350px' }}>
             <img src="/images/build-project.svg" width="100%" />
           </Box>
         </Box>
-      </Box>
+      </Container>
     </Box>
   );
 };
