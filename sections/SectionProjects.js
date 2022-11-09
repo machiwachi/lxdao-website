@@ -95,7 +95,6 @@ const SectionProjects = () => {
         lineHeight="44"
         sx={{
           fontSize: { xs: '30px', md: '70px' },
-          lineHeight: { md: '70px' },
         }}
       >
         LXDAO Projects
