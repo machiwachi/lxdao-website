@@ -28,7 +28,7 @@ function Project({ data }) {
         </Box>
 
         <Box flex="auto" padding={3} position="relative">
-          <Typography fontWeight="600" variant="subtitle1">
+          <Typography color="#101828" fontWeight="600" variant="subtitle1">
             {data.project.name}
           </Typography>
 
@@ -57,7 +57,7 @@ function Project({ data }) {
                 display="inline-block"
                 fontWeight="400"
                 variant="body2"
-                color="#36AFF9"
+                color="#666F85"
               >
                 {data.projectRole?.length === 0
                   ? 'Unknown'
@@ -83,7 +83,7 @@ function Project({ data }) {
               variant="body1"
               color="#101828"
             >
-              More ➜
+              More →
             </Typography>
           </Box>
         </Box>

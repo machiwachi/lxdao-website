@@ -62,7 +62,7 @@ export function BuidlerCard(props) {
               variant="h5"
               sx={{
                 lineHeight: '24px',
-                fontWeight: 'bold',
+                fontWeight: '500',
                 color: '#000',
               }}
             >
@@ -95,7 +95,12 @@ export function BuidlerCard(props) {
         ) : null}
         {skills.length > 0 && (
           <Box marginTop={2}>
-            <Typography fontWeight="600" marginBottom={1} variant="body1">
+            <Typography
+              color="#101828"
+              fontWeight="600"
+              marginBottom={1}
+              variant="body1"
+            >
               Skills
             </Typography>
             <Box display="flex" flexWrap="wrap">
@@ -106,7 +111,12 @@ export function BuidlerCard(props) {
         {record.projects.filter((project) => project.status !== 'PENDING')
           .length > 0 && (
           <Box marginTop={2}>
-            <Typography fontWeight="600" marginBottom={2} variant="body1">
+            <Typography
+              color="#101828"
+              fontWeight="600"
+              marginBottom={2}
+              variant="body1"
+            >
               Projects
             </Typography>
             <Box display="flex">
@@ -222,11 +232,17 @@ export default function Home() {
           textAlign={{ lg: 'center', xs: 'center' }}
         >
           <Box textAlign="center" gap={6}>
-            <Typography variant="h1" lineHeight="70px">
+            <Typography
+              fontSize="70px"
+              fontWeight="600"
+              lineHeight="70px"
+              color="#101828"
+            >
               LXDAO Buidlers
             </Typography>
             <Typography
               variant="subtitle1"
+              fontWeight="400"
               lineHeight="30px"
               color="#667085"
               marginTop={4}
@@ -247,7 +263,6 @@ export default function Home() {
             </Link>
           </Button>
         </Box>
-
         <Grid marginTop={10} container spacing={2}>
           <Grid xs={2} />
           <Grid item xs={4}>
@@ -275,71 +290,71 @@ export default function Home() {
             />
           </Grid>
         </Grid>
-
-        {loading ? (
-          <Box marginTop={10} display="flex" justifyContent="center">
-            <CircularProgress />
-          </Box>
-        ) : (
-          <Box marginTop={6.25}>
-            {list.length === 0 ? (
-              <Box
-                display="flex"
-                flexDirection="column"
-                width="100%"
-                alignItems="center"
-                paddingY={4}
+        <Box
+          marginTop={10}
+          display={loading ? 'flex' : 'none'}
+          justifyContent="center"
+        >
+          <CircularProgress />
+        </Box>
+        <Box marginTop={6.25} display={loading ? 'none' : 'block'}>
+          {list.length === 0 ? (
+            <Box
+              display="flex"
+              flexDirection="column"
+              width="100%"
+              alignItems="center"
+              paddingY={4}
+            >
+              <img width="80px" src="/icons/no-records.png" />
+              <Typography marginTop={4} color="#D0D5DD" fontSize="16px">
+                No builders found with the search criteria
+              </Typography>
+            </Box>
+          ) : (
+            <Box marginRight={-2}>
+              <Masonry
+                sx={{
+                  '&.MuiMasonry-root': {
+                    width: { md: '1216px', sm: '800px', xs: '368px' },
+                  },
+                }}
+                columns={{ xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
+                spacing={2}
               >
-                <img width="80px" src="/icons/no-records.png" />
-                <Typography marginTop={4} color="#D0D5DD" fontSize="16px">
-                  No builders found with the search criteria
-                </Typography>
+                {list.map((item) => {
+                  return (
+                    <Grid key={item.id} item xs={12} sm={6} lg={4}>
+                      <BuidlerCard key={item.id} record={item} />
+                    </Grid>
+                  );
+                })}
+              </Masonry>
+              <Box
+                marginTop={{ md: 6, xs: 3 }}
+                display="flex"
+                justifyContent="center"
+                gap={2}
+              >
+                {loadingMore ? (
+                  <Box marginTop={10} display="flex" justifyContent="center">
+                    <CircularProgress />
+                  </Box>
+                ) : hasMore ? (
+                  <Button
+                    variant="outlined"
+                    onClick={() => {
+                      setCurrent(current + 1);
+                      searchList(search, role, current + 1, true);
+                    }}
+                  >
+                    View More
+                  </Button>
+                ) : null}
               </Box>
-            ) : (
-              <Box marginRight={-2}>
-                <Masonry
-                  sx={{
-                    '&.MuiMasonry-root': {
-                      width: { md: '1216px', sm: '800px', xs: '368px' },
-                    },
-                  }}
-                  columns={{ xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
-                  spacing={2}
-                >
-                  {list.map((item) => {
-                    return (
-                      <Grid key={item.id} item xs={12} sm={6} lg={4}>
-                        <BuidlerCard key={item.id} record={item} />
-                      </Grid>
-                    );
-                  })}
-                </Masonry>
-                <Box
-                  marginTop={{ md: 6, xs: 3 }}
-                  display="flex"
-                  justifyContent="center"
-                  gap={2}
-                >
-                  {loadingMore ? (
-                    <Box marginTop={10} display="flex" justifyContent="center">
-                      <CircularProgress />
-                    </Box>
-                  ) : hasMore ? (
-                    <Button
-                      variant="outlined"
-                      onClick={() => {
-                        setCurrent(current + 1);
-                        searchList(search, role, current + 1, true);
-                      }}
-                    >
-                      View More
-                    </Button>
-                  ) : null}
-                </Box>
-              </Box>
-            )}
-          </Box>
-        )}
+            </Box>
+          )}
+        </Box>
       </Container>
     </Layout>
   );
