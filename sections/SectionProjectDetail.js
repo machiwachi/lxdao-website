@@ -226,7 +226,7 @@ const SectionProjectDetail = ({ projectId }) => {
         ...inviteBuidlerErrors,
         ...cloneInviteBuidlerErrors,
       });
-      setInviteLoading(false)
+      setInviteLoading(false);
       return;
     }
     if (projectRoleValue.length < 1) {
@@ -236,7 +236,7 @@ const SectionProjectDetail = ({ projectId }) => {
         ...inviteBuidlerErrors,
         ...cloneInviteBuidlerErrors,
       });
-      setInviteLoading(false)
+      setInviteLoading(false);
       return;
     }
     if (selectedBuidler && projectRoleValue.length > 0) {
@@ -252,9 +252,9 @@ const SectionProjectDetail = ({ projectId }) => {
         projectRole: projectRoleValue,
       })
         .then((res) => {
-          setInviteLoading(false)
+          setInviteLoading(false);
           if (res?.data?.status === 'SUCCESS') {
-            getProjectData()
+            getProjectData();
             setAlert(
               'Invite buidler successfully, please wait for the buidler to accept the invitation',
               'success'
@@ -264,7 +264,7 @@ const SectionProjectDetail = ({ projectId }) => {
           }
         })
         .catch((err) => {
-          setInviteLoading(false)
+          setInviteLoading(false);
           setAlert('something went wrong', 'error');
         });
     }
@@ -273,7 +273,7 @@ const SectionProjectDetail = ({ projectId }) => {
   const handleAcceptInvitation = () => {
     API.post(`/buidler/joinProject`, currentBuidlerOnProjectInfo)
       .then((res) => {
-        setAcceptLoading(false)
+        setAcceptLoading(false);
         if (res?.data?.status === 'SUCCESS') {
           setAlert(
             'Congratulations on your successful participation in this project!',
@@ -284,7 +284,7 @@ const SectionProjectDetail = ({ projectId }) => {
         }
       })
       .catch((err) => {
-        setAcceptLoading(false)
+        setAcceptLoading(false);
         setAlert('something went wrong', 'error');
       });
   };
@@ -421,6 +421,8 @@ const SectionProjectDetail = ({ projectId }) => {
       maxWidth="1200px"
       minHeight="calc(100vh - 280px)"
       width="auto"
+      display="flex"
+      justifyContent="center"
     >
       <Grid
         container
@@ -743,14 +745,24 @@ const SectionProjectDetail = ({ projectId }) => {
                   )}
                 </Box>
                 {showAcceptButton && (
-                  <Button variant="gradient" onClick={handleAcceptInvitation} loading={acceptLoading}>
-                    {acceptLoading?'loading...':'Accept Invitation'}
+                  <Button
+                    variant="gradient"
+                    onClick={handleAcceptInvitation}
+                    loading={acceptLoading}
+                  >
+                    {acceptLoading ? 'loading...' : 'Accept Invitation'}
                   </Button>
                 )}
               </Box>
 
               {showInviteSearchButton && (
-                <Box marginTop={3} maxWidth="700px" display="flex" gap="10px" flexWrap="wrap">
+                <Box
+                  marginTop={3}
+                  maxWidth="700px"
+                  display="flex"
+                  gap="10px"
+                  flexWrap="wrap"
+                >
                   <Autocomplete
                     sx={{ width: '300px', height: '56px' }}
                     options={activeBuidlerList.map((option) => option.name)}
@@ -829,12 +841,12 @@ const SectionProjectDetail = ({ projectId }) => {
                   </FormControl>
                   <Button
                     variant="gradient"
-                    onClick={inviteLoading?()=>{}:handleInviteBuidler}
+                    onClick={inviteLoading ? () => {} : handleInviteBuidler}
                     height="56px"
                     loading={inviteLoading}
                     loadingPosition="start"
                   >
-                    {inviteLoading?'loading...':'Invite'}
+                    {inviteLoading ? 'loading...' : 'Invite'}
                   </Button>
                 </Box>
               )}
