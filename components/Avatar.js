@@ -1,17 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import ImageUploading from 'react-images-uploading';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
 import { convertIpfsGateway } from '../utils/utility';
+import ReactCrop, {
+  centerCrop,
+  makeAspectCrop,
+  Crop,
+  PixelCrop,
+} from 'react-image-crop';
+import { canvasPreview } from './canvasPreview.tsx';
+import 'react-image-crop/dist/ReactCrop.css';
 
 import API from '@/common/API';
+function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
+  return centerCrop(
+    makeAspectCrop(
+      {
+        unit: '%',
+        width: 90,
+      },
+      aspect,
+      mediaWidth,
+      mediaHeight
+    ),
+    mediaWidth,
+    mediaHeight
+  );
+}
 
 function Avatar(props) {
   const [value, setValue] = useState(props.value || '/images/placeholder.jpeg');
   const [uploading, setUploading] = useState(false);
   const [image, setImage] = useState();
 
+  const previewCanvasRef = useRef(null);
+  const imgRef = useRef(null);
+  const [crop, setCrop] = useState(null);
+  const [completedCrop, setCompletedCrop] = useState(null);
+  const [scale, setScale] = useState(1);
+  const [rotate, setRotate] = useState(0);
+  const [aspect, setAspect] = useState(undefined > 16 / 9);
+
   function onChange(imageList) {
+    // setCrop(undefined);
+    // const reader = new FileReader();
+    // reader.addEventListener('load', () =>
+    //   setImage(reader.result?.toString() || '')
+    // );
+    // reader.readAsDataURL(imageList[0]);
+
     setImage(imageList[0].data_url);
     uploadImage(imageList[0].data_url);
   }
@@ -32,6 +70,33 @@ function Avatar(props) {
     setUploading(false);
   }
 
+  function onImageLoad(e) {
+    if (aspect) {
+      const { width, height } = e.currentTarget;
+      setCrop(centerAspectCrop(width, height, aspect));
+    }
+  }
+
+  useEffect(
+    async () => {
+      if (
+        completedCrop?.width &&
+        completedCrop?.height &&
+        imgRef.current &&
+        previewCanvasRef.current
+      ) {
+        canvasPreview(
+          imgRef.current,
+          previewCanvasRef.current,
+          completedCrop,
+          scale,
+          rotate
+        );
+      }
+    },
+    100,
+    [completedCrop, scale, rotate]
+  );
   return (
     <>
       <ImageUploading
@@ -91,6 +156,37 @@ function Avatar(props) {
                   </Box>
                 )}
               </Box>
+              {!!image && (
+                <ReactCrop
+                  crop={crop}
+                  onChange={(_, percentCrop) => setCrop(percentCrop)}
+                  onComplete={(c) => setCompletedCrop(c)}
+                  aspect={aspect}
+                >
+                  <img
+                    ref={imgRef}
+                    alt="Crop me"
+                    src={image}
+                    style={{
+                      transform: `scale(${scale}) rotate(${rotate}deg)`,
+                    }}
+                    onLoad={onImageLoad}
+                  />
+                </ReactCrop>
+              )}
+              <div>
+                {!!completedCrop && (
+                  <canvas
+                    ref={previewCanvasRef}
+                    style={{
+                      border: '1px solid black',
+                      objectFit: 'contain',
+                      width: completedCrop.width,
+                      height: completedCrop.height,
+                    }}
+                  />
+                )}
+              </div>
             </Box>
           );
         }}
