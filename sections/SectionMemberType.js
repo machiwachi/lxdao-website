@@ -17,12 +17,19 @@ const SectionMemberType = ({ activeBuidlers }) => {
   return (
     <Box backgroundColor="#F9FAFB" width="100%">
       <Container
-        paddingY={{ md: '96px', xs: 8 }}
+        paddingY={{ md: 10, xs: 6 }}
         textAlign="center"
         maxWidth="1200px"
         margin="0 auto"
       >
-        <Typography variant="h3" marginBottom={6} textAlign="left">
+        <Typography
+          fontSize={{ sm: '48px', sx: '30px' }}
+          fontWeight="600"
+          marginBottom={6}
+          lineHeight="40px"
+          textAlign="left"
+          textTransform="uppercase"
+        >
           Member Type
         </Typography>
         <Box
@@ -35,14 +42,12 @@ const SectionMemberType = ({ activeBuidlers }) => {
             type="buidler"
             description={
               <>
-                LX Builders are the <strong>most important members</strong> of
-                the LXDAO community. They are responsible for buidling and
-                maintaining the LXDAO projects. Therefore,{' '}
-                <strong>you need to submit an application.</strong>
+                LX Builders are the most important members of the LXDAO
+                community. They are responsible for buidling and maintaining the
+                LXDAO projects. Therefore, you need to submit an application.
                 And the Onboarding committee will review and vote on your
-                application. After onboarding,{' '}
-                <strong>you will get a Buidler SBT Card for free</strong> which
-                cannot be transferred.
+                application. After onboarding, you will get a Buidler SBT Card
+                for free which cannot be transferred.
               </>
             }
             amount={activeBuidlerAmount}
@@ -55,16 +60,12 @@ const SectionMemberType = ({ activeBuidlers }) => {
             type="member"
             description={
               <>
-                <strong>NOT OPENED YET</strong>. LX Community members are the
-                users or fans of the LXDAO projects. As a member of the
-                community,{' '}
-                <strong>
-                  members will receive benefits from LXDAO projects
-                </strong>
-                , for example, VIP privilege for free, airdrop, whitelist, early
-                access, etc.{' '}
-                <strong>Anyone can purchase LX Community member NFT</strong>, a
-                PFP NFT with extra benefits. You can sell or transfer it later.
+                NOT OPENED YET. LX Community members are the users or fans of
+                the LXDAO projects. As a member of the community, members will
+                receive benefits from LXDAO projects , for example, VIP
+                privilege for free, airdrop, whitelist, early access, etc.
+                Anyone can purchase LX Community member NFT, a PFP NFT with
+                extra benefits. You can sell or transfer it later.
               </>
             }
             selected={false}
