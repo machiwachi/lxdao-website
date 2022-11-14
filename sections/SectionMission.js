@@ -45,16 +45,24 @@ const SectionMission = () => (
         display="flex"
         justifyContent="flex-start"
         flexDirection="column"
-        gap="64px"
+        gap={{ md: '64px', sm: '56px', xs: '56px' }}
       >
         <Typography variant="subtitle1" lineHeight="60px" fontWeight={500}>
           Our Mission
         </Typography>
-        <Typography variant="h2" lineHeight="70px" fontWeight={500}>
+        <Typography
+          variant="h2"
+          lineHeight={{ md: '70px', sm: '50px', xs: '50px' }}
+          fontWeight={500}
+        >
           Bringing together buidlers to buidl and maintain “LX” projects for
           Web3, in a sustainable manner.
         </Typography>
-        <Box display="flex" gap={2}>
+        <Box
+          display="flex"
+          flexDirection={{ md: 'row', sm: 'column', xs: 'column' }}
+          gap={2}
+        >
           <DataBox number="12+" name="Buidlers" link="" />
           <DataBox number="6+" name="Projects" link="" />
           <DataBox number="16k+ USDC" name="Treasury" link="" />
