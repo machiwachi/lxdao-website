@@ -1,5 +1,4 @@
 import React from 'react';
-import { useRouter } from 'next/router';
 import styled, { keyframes } from 'styled-components';
 import { Box, Typography, Link } from '@mui/material';
 
@@ -23,15 +22,21 @@ const HightlightText = styled.span`
   font-size: 98px;
   line-height: 100px;
   font-weight: 700;
+  @media screen and (max-width: 900px) {
+    font-size: 4.902rem;
+    line-height: 1.02;
+  }
+  @media screen and (max-width: 600px) {
+    font-size: 3.5625rem;
+    line-height: 1.02;
+  }
 `;
 
 const SectionHomepageHero = () => {
-  const router = useRouter();
-
   const Title = () => {
     return (
       <Box marginTop="112px">
-        <Box display={{ lg: 'block', xs: 'none' }}>
+        <Box>
           <Typography variant="h1">LXDAO is an</Typography>
           <HightlightText>R&amp;D</HightlightText>
           <Typography variant="h1" display="inline">
@@ -57,17 +62,23 @@ const SectionHomepageHero = () => {
         display="flex"
         flexDirection="column"
         gap={6}
-        alignItems={{ lg: 'flex-start', xs: 'center' }}
-        textAlign={{ lg: 'left', xs: 'center' }}
+        alignItems="flex-start"
+        textAlign="left"
       >
         <Title />
-        <Box>
+        <Box display={{ md: 'block', sm: 'none', xs: 'none' }}>
           <Typography variant="subtitle1" lineHeight="36px" color="#667085">
             Our Vision & Consensus - The technologies, concepts and ideas of
             Web3
           </Typography>
           <Typography variant="subtitle1" lineHeight="36px" color="#667085">
             will be used by a billion people in a decade.
+          </Typography>
+        </Box>
+        <Box display={{ md: 'none', sm: 'block', xs: 'block' }}>
+          <Typography variant="subtitle1" lineHeight="36px" color="#667085">
+            Our Vision & Consensus - The technologies, concepts and ideas of
+            Web3 will be used by a billion people in a decade.
           </Typography>
         </Box>
         <Button variant="gradient" width="180px" marginBottom={2}>

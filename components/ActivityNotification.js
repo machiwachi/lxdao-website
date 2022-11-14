@@ -3,7 +3,7 @@ import { Box, Typography, Link } from '@mui/material';
 
 const ActivityNotification = () => (
   <Box
-    width="610px"
+    width={{ md: '610px', sm: '100%', xs: '100%' }}
     borderRadius="6px"
     display="flex"
     gap="11px"
