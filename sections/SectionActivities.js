@@ -21,12 +21,12 @@ const ActivityItem = ({ title, link, date }) => {
     >
       <Typography
         sx={{
-          width: '980px',
           textOverflow: 'ellipsis',
           overflow: 'hidden',
           whiteSpace: 'nowrap',
           wordWrap: 'break-word',
         }}
+        width={{ lg: '980px', md: '750px', sm: '480px', xs: '220px' }}
       >
         {title}
       </Typography>
