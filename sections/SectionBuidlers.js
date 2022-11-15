@@ -11,50 +11,39 @@ import StyledTooltip from '@/components/StyledToolTip';
 import Tag from '@/components/Tag';
 import Skills from '@/components/Skills';
 
-const BuidlerAvatarBox = ({
-  key,
-  handleBuidlerCardHover,
-  handleBuidlerCardLeave,
-  buidler,
-  active,
-  ...rest
-}) => {
+const BuidlerAvatarBox = ({ buidler, active, display }) => {
   return (
-    <Box
-      key={key}
-      sx={{ aspectRatio: '1 / 1' }}
-      onMouseOver={handleBuidlerCardHover}
-      onMouseLeave={handleBuidlerCardLeave}
+    <Link
+      href={`/buidlers/${buidler.address}`}
+      target="_blank"
+      sx={{
+        textDecoration: 'none',
+        aspectRatio: '1 / 1',
+      }}
+      display={display}
+      width={{ lg: '180px', sm: '130px', xs: '130px' }}
+      height={{ lg: '180px', sm: '130px', xs: '130px' }}
       position="relative"
-      width={{ sm: '30%', xs: '30%' }}
-      {...rest}
     >
       <Box
-        width={{ lg: '180px', md: '130px', sm: '100%', xs: '100%' }}
+        width={{ lg: '180px', sm: '130px', xs: '100%' }}
         sx={{ position: 'absolute', top: 0, left: 0, aspectRatio: '1 / 1' }}
         backgroundColor={active ? 'transpent' : 'rgba(0,0,0,0.2)'}
+        display={{ md: 'block', xs: 'none' }}
       />
-      <Link
-        href={`/buidlers/${buidler.address}`}
-        target="_blank"
-        sx={{
-          textDecoration: 'none',
-        }}
-      >
-        <Box
-          component="img"
-          src={buidler.avatar || '/images/placeholder.jpeg'}
-          width={{ lg: '180px', md: '130px', sm: '100%', xs: '100%' }}
-          sx={{ aspectRatio: '1 / 1' }}
-        />
-      </Link>
-    </Box>
+
+      <Box
+        component="img"
+        src={buidler.avatar || '/images/placeholder.jpeg'}
+        width={{ lg: '180px', sm: '130px', xs: '100%' }}
+        sx={{ aspectRatio: '1 / 1' }}
+      />
+    </Link>
   );
 };
 
 const BudilerTooltip = ({
   buidler,
-  key,
   active,
   handleBuidlerCardHover,
   handleBuidlerCardLeave,
@@ -125,13 +114,14 @@ const BudilerTooltip = ({
         title={<BuidlerDetails {...buidler} />}
         placement="bottom-start"
       >
-        <BuidlerAvatarBox
-          key={key}
-          handleBuidlerCardHover={handleBuidlerCardHover}
-          handleBuidlerCardLeave={handleBuidlerCardLeave}
-          buidler={buidler}
-          active={active}
-        />
+        <Box
+          sx={{ aspectRatio: '1 / 1' }}
+          onMouseOver={handleBuidlerCardHover}
+          onMouseLeave={handleBuidlerCardLeave}
+          position="relative"
+        >
+          <BuidlerAvatarBox buidler={buidler} active={active} display="block" />
+        </Box>
       </StyledTooltip>
     </Box>
   );
@@ -165,8 +155,8 @@ const SectionBuidlers = () => {
   };
 
   return (
-    <Box backgroundColor="#000000">
-      <Container paddingY={{ md: '112px', xs: 8 }} width="100%">
+    <Box backgroundColor="#000000" boxSizing="border-box">
+      <Container paddingY={{ md: '112px', xs: 8 }}>
         <Typography
           variant="h2"
           lineHeight="44px"
@@ -185,11 +175,7 @@ const SectionBuidlers = () => {
         >
           Welcome to Join Us, let's buidl more valuable Web3 products together!
         </Typography>
-        <Box
-          display="flex"
-          flexWrap="wrap"
-          width={{ sm: 'calc(100% - 40px)', xs: 'calc(100% - 40px)' }}
-        >
+        <Box display="flex" flexWrap="wrap" width={{ sm: '100%', xs: '100%' }}>
           {buidlers.map((buidler, index) => {
             return (
               <>
@@ -201,7 +187,6 @@ const SectionBuidlers = () => {
                     handleBuidlerLeave(index);
                   }}
                   buidler={buidler}
-                  key={index}
                   active={activeBuidlerIndex === index}
                   display={{ md: 'block', xs: 'none' }}
                 />
