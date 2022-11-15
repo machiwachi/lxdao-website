@@ -3,13 +3,19 @@ import { Box, Typography, Link } from '@mui/material';
 
 const SimpleProjectCard = ({ data, key }) => (
   <Box
-    width="356px"
+    width={{ sm: '356px', xs: '300px' }}
+    height={{ sm: '444px', xs: '375px' }}
     sx={{ background: '#ffffff' }}
     border="0.5px solid #D0D5DD"
     borderRadius="6px"
     key={key}
   >
-    <Box height="146px" width="100%" component={'img'} src={data.banner} />
+    <Box
+      height={{ sm: '146px', xs: '124px' }}
+      width="100%"
+      component={'img'}
+      src={data.banner}
+    />
     <Box padding="10px 20px 20px 20px">
       <Box display="flex" alignItems="center" gap={2}>
         <Box height="48px" width="48px" component={'img'} src={data.logo} />
@@ -25,10 +31,17 @@ const SimpleProjectCard = ({ data, key }) => (
       </Box>
       <Typography
         variant="body1"
-        lineHeight="30px"
+        lineHeight={{ sm: '30px', xs: '26px' }}
         fontWeight={400}
         color="#666F85"
         marginTop={2}
+        sx={{
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          display: '-webkit-box',
+          '-webkit-line-clamp': '3',
+          '-webkit-box-orient': 'vertical',
+        }}
       >
         {data.description}
       </Typography>
@@ -48,8 +61,8 @@ const SimpleProjectCard = ({ data, key }) => (
             return (
               <Link href={`/buidlers/${buidler.address}`} target="_blank">
                 <Box
-                  height="60px"
-                  width="60px"
+                  height={{ sm: '60px', xs: '40px' }}
+                  width={{ sm: '60px', xs: '40px' }}
                   component={'img'}
                   key={index}
                   src={buidler.avatar}
