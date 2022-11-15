@@ -71,7 +71,12 @@ const WorkDetailSection = ({
   bottomButtonLink,
 }) => {
   return (
-    <Box display="flex" flexDirection="column" gap={2}>
+    <Box
+      display="flex"
+      flexDirection="column"
+      gap={2}
+      marginX={{ lg: 0, md: '20px', xs: '20px' }}
+    >
       <Typography
         variant="h5"
         lineHeight="34px"
@@ -123,12 +128,21 @@ const WorkStep = ({
   rightSection,
 }) => {
   return (
-    <Box width="100%" display="flex" height="100vh" position="sticky" top={0}>
+    <Box
+      width="100%"
+      display="flex"
+      flexDirection={{ lg: 'row', md: 'column', xs: 'column' }}
+      position={{ lg: 'sticky', md: 'relative', xs: 'relative' }}
+      top={0}
+    >
       <Box
         display="flex"
         alignItems="center"
         justifyContent="center"
-        flex={1}
+        width={{ lg: '50%', md: '100%', xs: '100%' }}
+        height="100vh"
+        position={{ lg: 'relative', md: 'sticky', xs: 'sticky' }}
+        top={0}
         sx={{ backgroundColor: leftBgColor }}
       >
         <Box maxWidth="360px" display="flex" flexDirection="column" gap="20px">
@@ -155,7 +169,10 @@ const WorkStep = ({
         display="flex"
         alignItems="center"
         justifyContent="center"
-        flex={1}
+        height="100vh"
+        width={{ lg: '50%', md: '100%', xs: '100%' }}
+        position={{ lg: 'relative', md: 'sticky', xs: 'sticky' }}
+        top={0}
         sx={{ backgroundColor: rightBgColor }}
       >
         {rightSection}
@@ -283,7 +300,7 @@ const projectData = [
     number: '000',
     name: 'GCLX',
     description:
-      'MyFirstNFT is a non-profit instructional project for Web3 newbies. Get a FREE NFT while learning about Web3...',
+      'MyFirstNFT is a non-profit instructional project for Web3 newbies. Get a FREE NFT while learning about Web3',
     logo: '/images/projects/mfnft-logo.png',
     banner: '/images/projects/mfnft-banner.png',
     buidlers: [
@@ -303,7 +320,7 @@ const projectData = [
     number: '001',
     name: 'My First NFT',
     description:
-      'MyFirstNFT is a non-profit instructional project for Web3 newbies. Get a FREE NFT while learning about Web3...',
+      'MyFirstNFT is a non-profit instructional project for Web3 newbies. Get a FREE NFT while learning about Web3',
     logo: '/images/projects/mfnft-logo.png',
     banner: '/images/projects/mfnft-banner.png',
     buidlers: [
@@ -323,7 +340,7 @@ const projectData = [
     number: '002',
     name: 'MetaPavo',
     description:
-      'MyFirstNFT is a non-profit instructional project for Web3 newbies. Get a FREE NFT while learning about Web3...',
+      'MyFirstNFT is a non-profit instructional project for Web3 newbies. Get a FREE NFT while learning about Web3',
     logo: '/images/projects/mfnft-logo.png',
     banner: '/images/projects/mfnft-banner.png',
     buidlers: [
@@ -343,11 +360,25 @@ const projectData = [
 
 const SectionWorkSteps = () => (
   <Box width="100%">
-    <Box textAlign="center" marginTop="112px" marginBottom="95px">
-      <Typography variant="subtitle1" lineHeight="60px" fontWeight={500}>
+    <Box
+      textAlign="center"
+      marginTop={{ md: '112px', sm: '48px', xs: '48px' }}
+      marginBottom={{ md: '95px', sm: '48px', xs: '48px' }}
+    >
+      <Typography
+        variant="subtitle1"
+        lineHeight="60px"
+        fontWeight={500}
+        letterSpacing="-0.02em"
+        marginBottom={{ md: 0, sm: '20px', xs: '20px' }}
+      >
         LXDAO & WORK
       </Typography>
-      <Typography variant="h2" lineHeight="68px" fontWeight={800}>
+      <Typography
+        variant="h2"
+        lineHeight={{ md: '68px', sm: '37px', xs: '37px' }}
+        fontWeight={800}
+      >
         How does LXDAO work?
       </Typography>
     </Box>
@@ -419,7 +450,7 @@ const SectionWorkSteps = () => (
         rightSection={
           <Box
             component="img"
-            width="450px"
+            width={{ sm: '450px', xs: '320px' }}
             src="/images/workstep-success.png"
           />
         }

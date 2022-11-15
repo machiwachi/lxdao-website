@@ -11,12 +11,43 @@ import StyledTooltip from '@/components/StyledToolTip';
 import Tag from '@/components/Tag';
 import Skills from '@/components/Skills';
 
+const BuidlerAvatarBox = ({ buidler, active, display }) => {
+  return (
+    <Link
+      href={`/buidlers/${buidler.address}`}
+      target="_blank"
+      sx={{
+        textDecoration: 'none',
+        aspectRatio: '1 / 1',
+      }}
+      display={display}
+      width={{ lg: '180px', sm: '130px', xs: '130px' }}
+      height={{ lg: '180px', sm: '130px', xs: '130px' }}
+      position="relative"
+    >
+      <Box
+        width={{ lg: '180px', sm: '130px', xs: '100%' }}
+        sx={{ position: 'absolute', top: 0, left: 0, aspectRatio: '1 / 1' }}
+        backgroundColor={active ? 'transpent' : 'rgba(0,0,0,0.2)'}
+        display={{ md: 'block', xs: 'none' }}
+      />
+
+      <Box
+        component="img"
+        src={buidler.avatar || '/images/placeholder.jpeg'}
+        width={{ lg: '180px', sm: '130px', xs: '100%' }}
+        sx={{ aspectRatio: '1 / 1' }}
+      />
+    </Link>
+  );
+};
+
 const BudilerTooltip = ({
   buidler,
-  key,
   active,
   handleBuidlerCardHover,
   handleBuidlerCardLeave,
+  ...rest
 }) => {
   const BuidlerDetails = ({ name, description, address, role, skills }) => {
     return (
@@ -78,40 +109,21 @@ const BudilerTooltip = ({
   };
 
   return (
-    <StyledTooltip
-      title={<BuidlerDetails {...buidler} />}
-      placement="bottom-start"
-    >
-      <Box
-        key={key}
-        width="180px"
-        height="180px"
-        onMouseOver={handleBuidlerCardHover}
-        onMouseLeave={handleBuidlerCardLeave}
-        position="relative"
+    <Box {...rest}>
+      <StyledTooltip
+        title={<BuidlerDetails {...buidler} />}
+        placement="bottom-start"
       >
         <Box
-          width="180px"
-          height="180px"
-          sx={{ position: 'absolute', top: 0, left: 0 }}
-          backgroundColor={active ? 'transpent' : 'rgba(0,0,0,0.2)'}
-        />
-        <Link
-          href={`/buidlers/${buidler.address}`}
-          target="_blank"
-          sx={{
-            textDecoration: 'none',
-          }}
+          sx={{ aspectRatio: '1 / 1' }}
+          onMouseOver={handleBuidlerCardHover}
+          onMouseLeave={handleBuidlerCardLeave}
+          position="relative"
         >
-          <Box
-            component="img"
-            src={buidler.avatar || '/images/placeholder.jpeg'}
-            width="180px"
-            height="180px"
-          />
-        </Link>
-      </Box>
-    </StyledTooltip>
+          <BuidlerAvatarBox buidler={buidler} active={active} display="block" />
+        </Box>
+      </StyledTooltip>
+    </Box>
   );
 };
 
@@ -143,7 +155,7 @@ const SectionBuidlers = () => {
   };
 
   return (
-    <Box backgroundColor="#000000">
+    <Box backgroundColor="#000000" boxSizing="border-box">
       <Container paddingY={{ md: '112px', xs: 8 }}>
         <Typography
           variant="h2"
@@ -159,31 +171,38 @@ const SectionBuidlers = () => {
           lineHeight="30px"
           fontWeight={400}
           color="#ffffff"
-          marginBottom="102px"
+          marginBottom={{ md: '102px', xs: '72px' }}
         >
           Welcome to Join Us, let's buidl more valuable Web3 products together!
         </Typography>
-        <Box display="flex" flexWrap="wrap">
+        <Box display="flex" flexWrap="wrap" width={{ sm: '100%', xs: '100%' }}>
           {buidlers.map((buidler, index) => {
             return (
-              <BudilerTooltip
-                handleBuidlerCardHover={() => {
-                  handleBuidlerHover(index);
-                }}
-                handleBuidlerCardLeave={() => {
-                  handleBuidlerLeave(index);
-                }}
-                buidler={buidler}
-                key={index}
-                active={activeBuidlerIndex === index}
-              />
+              <>
+                <BudilerTooltip
+                  handleBuidlerCardHover={() => {
+                    handleBuidlerHover(index);
+                  }}
+                  handleBuidlerCardLeave={() => {
+                    handleBuidlerLeave(index);
+                  }}
+                  buidler={buidler}
+                  active={activeBuidlerIndex === index}
+                  display={{ md: 'block', xs: 'none' }}
+                />
+                <BuidlerAvatarBox
+                  buidler={buidler}
+                  active={activeBuidlerIndex === index}
+                  display={{ md: 'none', xs: 'block' }}
+                />
+              </>
             );
           })}
         </Box>
         <Button
           variant="gradient"
           width="200px"
-          marginTop="96px"
+          marginTop={{ md: '96px', xs: '27px' }}
           onClick={() => {
             router.push('/joinus');
           }}

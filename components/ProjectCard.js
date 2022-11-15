@@ -60,6 +60,7 @@ const ProjectCard = ({ project, index }) => {
         cursor: 'pointer',
         overflow: 'visible',
         width: '100%',
+        height: '100%',
         boxShadow: 'none',
         border: '0.5px solid #D0D5DD',
         borderRadius: '6px',
@@ -102,7 +103,7 @@ const ProjectCard = ({ project, index }) => {
         <Box textAlign="left">
           <Typography
             sx={{
-              marginBottom: { xs: '8px',md: '16px' },
+              marginBottom: { xs: '8px', md: '16px' },
               fontWeight: 600,
               color: '#101828',
             }}
