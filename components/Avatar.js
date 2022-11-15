@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Box, Button, Typography } from '@mui/material';
+import React, { useState, useRef } from 'react';
+import { Box, Button } from '@mui/material';
 import ImageUploading from 'react-images-uploading';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
 import { convertIpfsGateway } from '../utils/utility';
@@ -18,7 +18,6 @@ function Avatar(props) {
 
   function onChange(imageList) {
     setImage(imageList[0].data_url);
-    //uploadImage(imageList[0].data_url);
   }
 
   async function uploadImage(imageUrl) {
@@ -59,7 +58,6 @@ function Avatar(props) {
     return new Promise((resolve, reject) => {
       canvas.toBlob((blob) => {
         if (!blob) {
-          //reject(new Error('Canvas is empty'));
           console.error('Canvas is empty');
           return;
         }
