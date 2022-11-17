@@ -264,7 +264,7 @@ export default function Home() {
           </Button>
         </Box>
         <Grid marginTop={10} container spacing={2}>
-          <Grid xs={2} />
+          <Grid item xs={2} />
           <Grid item xs={4}>
             <DebouncedInput
               value={search}

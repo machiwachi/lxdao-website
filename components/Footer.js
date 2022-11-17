@@ -33,7 +33,11 @@ const SignupFormWrapper = styled.div`
     cursor: pointer;
     line-height: 24px;
   }
-
+  @media (max-width: 600px) {
+    & button {
+      margin-top: 20px;
+    }
+  }
   & .msg-alert > p {
     color: #00fb8c !important;
   }
