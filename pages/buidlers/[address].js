@@ -310,7 +310,7 @@ function BuidlerDetails(props) {
       ...newMetaData,
       role: record.role.length === 0 ? ['Buidler'] : record.role,
       // set the NFT image
-      image: `https://api.lxdao.io/buidler/${record.address}/card`,
+      image: `${process.env.NEXT_PUBLIC_LXDAO_BACKEND_API}/buidler/${record.address}/card`,
     };
     try {
       const response = await API.put(`/buidler/${address}`, {
@@ -496,7 +496,7 @@ function BuidlerDetails(props) {
               <img
                 crossOrigin="anonymous"
                 style={{ display: 'block', width: 271 }}
-                src={`https://api.lxdao.io/buidler/${record.address}/card`}
+                src={`${process.env.NEXT_PUBLIC_LXDAO_BACKEND_API}/buidler/${record.address}/card`}
                 alt=""
               />
             </Box>
@@ -773,7 +773,7 @@ function BuidlerDetails(props) {
                   display: 'block',
                   maxWidth: '100%',
                 }}
-                src={`https://api.lxdao.io/buidler/${record.address}/card`}
+                src={`${process.env.NEXT_PUBLIC_LXDAO_BACKEND_API}/buidler/${record.address}/card`}
                 alt=""
               />
             </Box>

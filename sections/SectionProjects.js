@@ -92,7 +92,7 @@ const SectionProjects = () => {
     >
       <Typography
         fontWeight={600}
-        lineHeight="44"
+        lineHeight="44px"
         sx={{
           fontSize: { xs: '30px', md: '70px' },
         }}

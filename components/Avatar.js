@@ -12,7 +12,7 @@ function Avatar(props) {
   const [value, setValue] = useState(props.value || '/images/placeholder.jpeg');
   const [uploading, setUploading] = useState(false);
   const [image, setImage] = useState();
-  const [croppedImageUrl, setFile] = useState();
+  const [croppedImageUrl, setCroppedImageUrl] = useState();
   const imgRef = useRef(null);
   const [crop, setCrop] = useState(null);
 
@@ -55,7 +55,7 @@ function Avatar(props) {
       crop.height
     );
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       canvas.toBlob((blob) => {
         if (!blob) {
           console.error('Canvas is empty');
@@ -76,12 +76,17 @@ function Avatar(props) {
         completedCrop,
         'newFile.jpeg'
       );
-      setFile(croppedImageUrl_);
+      setCroppedImageUrl(croppedImageUrl_);
     }
   }
   function sureImg() {
-    uploadImage(croppedImageUrl.url);
-    setImage('');
+    let reader = new FileReader();
+    reader.readAsDataURL(croppedImageUrl.blob);
+    reader.onloadend = function () {
+      var base64String = reader.result;
+      uploadImage(base64String);
+      setImage('');
+    };
   }
   return (
     <>
@@ -90,7 +95,7 @@ function Avatar(props) {
         onChange={onChange}
         dataURLKey="data_url"
       >
-        {({ imageList, onImageUpload, onImageUpdate, onImageRemove }) => {
+        {({ onImageUpload }) => {
           return (
             <Box display="flex" gap={4}>
               <Box textAlign="center">
