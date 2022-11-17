@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { Box, Typography, Grid, Card, Chip } from '@mui/material';
-import { makeStyles } from '@mui/styles';
+import { Box, Typography, Grid, CircularProgress } from '@mui/material';
 
 import API from '@/common/API';
 import { getRandom } from '@/utils/utility';
@@ -13,31 +12,41 @@ import ProjectCard from '@/components/ProjectCard';
 
 const SectionProjects = () => {
   const [projects, setProjects] = useState([]);
-  const [page, setPage] = useState(1);
-  const [finished, seFinished] = useState(false);
+  const [current, setCurrent] = useState(1);
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
   const router = useRouter();
   const route = router.route;
   const isHomepage = route === '/';
 
   useEffect(() => {
-    loadList();
+    searchList();
   }, []);
 
   const realProjects = isHomepage ? getRandom(projects, 3) : projects;
 
-  const searchList = async (search = '') => {
-    let query = `/project?page=1&`;
+  const searchList = async (
+    search = '',
+    currentPage = 0,
+    isAddMore = false
+  ) => {
+    let query = `/project?`;
     let params = [];
     const trimmedSearch = search.trim();
     if (trimmedSearch) {
       params.push('search=' + trimmedSearch);
     }
+    params.push('page=' + (currentPage || current));
     params.push('per_page=6');
     query += params.join('&');
 
-    setLoading(true);
+    if (!isAddMore) {
+      setLoading(true);
+    } else {
+      setLoadingMore(true);
+    }
     try {
       const res = await API.get(query);
       const result = res.data;
@@ -51,35 +60,19 @@ const SectionProjects = () => {
       records.forEach((record) => {
         tempList.push(record);
       });
+      setHasMore(tempList.length === 6);
 
-      setProjects(tempList);
+      isAddMore
+        ? setProjects([...projects, ...tempList])
+        : setProjects(tempList);
     } catch (err) {
       console.error(err);
     }
-  };
-
-  const loadList = async (_page = 1) => {
-    if (finished) {
-      return;
+    if (!isAddMore) {
+      setLoading(false);
+    } else {
+      setLoadingMore(false);
     }
-    setLoading(true);
-    API.get(`/project?page=${_page}&per_page=6`)
-      .then((res) => {
-        if (res?.data?.status === 'SUCCESS') {
-          if (res?.data?.data?.length < 6) {
-            seFinished(true);
-          }
-          let _project = [...projects];
-          _project = _project.concat(res?.data?.data);
-          setProjects(_project);
-          setLoading(false);
-        } else {
-          // todo Muxin common error handling, function invocation
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-      });
   };
 
   return (
@@ -140,33 +133,40 @@ const SectionProjects = () => {
         <DebouncedInput
           value={search}
           onChange={(value) => {
+            setCurrent(1);
             setSearch(value);
-            searchList(value);
+            searchList(value, 1);
           }}
           label="Search"
           placeholder="Search project"
           sx={{ maxWidth: '389px', height: '54px' }}
         />
       </Box>
-      <Box marginTop={6}>
-        <Grid container spacing={3} alignItems="stretch">
-          {realProjects.map((project, index) => {
-            return (
-              <Grid
-                key={index}
-                item
-                sm={6}
-                xs={12}
-                md={4}
-                display="flex"
-                alignItems="stretch"
-              >
-                <ProjectCard project={project} index={index} />
-              </Grid>
-            );
-          })}
-        </Grid>
-      </Box>
+      {loading ? (
+        <Box marginTop={10} display="flex" justifyContent="center">
+          <CircularProgress />
+        </Box>
+      ) : (
+        <Box marginTop={6}>
+          <Grid container spacing={3} alignItems="stretch">
+            {realProjects.map((project, index) => {
+              return (
+                <Grid
+                  key={index}
+                  item
+                  sm={6}
+                  xs={12}
+                  md={4}
+                  display="flex"
+                  alignItems="stretch"
+                >
+                  <ProjectCard project={project} index={index} />
+                </Grid>
+              );
+            })}
+          </Grid>
+        </Box>
+      )}
       {isHomepage ? (
         <Box
           marginTop={{ md: 8, xs: 4 }}
@@ -183,23 +183,28 @@ const SectionProjects = () => {
             View More
           </Button>
         </Box>
-      ) : finished || realProjects.length <= 0 ? null : (
+      ) : (
         <Box
           marginTop={{ md: 8, xs: 4 }}
           display="flex"
           justifyContent="center"
           gap={2}
         >
-          <Button
-            variant="outlined"
-            onClick={() => {
-              let pp = page + 1;
-              setPage(pp);
-              loadList(pp);
-            }}
-          >
-            View More
-          </Button>
+          {loadingMore ? (
+            <Box marginTop={10} display="flex" justifyContent="center">
+              <CircularProgress />
+            </Box>
+          ) : hasMore ? (
+            <Button
+              variant="outlined"
+              onClick={() => {
+                setCurrent(current + 1);
+                searchList(search, current + 1, true);
+              }}
+            >
+              View More
+            </Button>
+          ) : null}
         </Box>
       )}
     </Container>
