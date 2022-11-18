@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import { t } from '@lingui/macro';
 import { Box, Typography, Link, Menu, MenuItem } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -9,16 +8,12 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 
-import { scrollToSection } from '@/utils/utility';
-import Container from './Container';
 import { ConnectWalletButton } from '@/components/ConnectWallet';
 
 const Header = () => {
   const [openMenu, setOpenMenu] = useState(false);
-  const [community, setCommunity] = useState(null);
   const [governance, setGovernance] = useState(null);
   const router = useRouter();
-  const route = router.route;
 
   const toggleDrawer = (open) => (event) => {
     if (
@@ -32,18 +27,15 @@ const Header = () => {
     setOpenMenu(open);
   };
 
-  const handleMenuClick = (event, menu) => {
-    menu === 'community'
-      ? setCommunity(event.currentTarget)
-      : setGovernance(event.currentTarget);
+  const handleGovernanceMenuClick = (event) => {
+    setGovernance(event.currentTarget);
   };
 
-  const handleCommunityMenuClose = () => {
-    setCommunity(null);
+  const handleGovernanceMenuClose = () => {
     setGovernance(null);
   };
 
-  const list = () => (
+  const HiddenMenu = () => (
     <Box
       role="presentation"
       onClick={toggleDrawer(false)}
@@ -67,62 +59,6 @@ const Header = () => {
           >
             <Typography sx={{ cursor: 'pointer' }}>Buidlers</Typography>
           </ListItemButton>
-        </ListItem>
-        <ListItem disablePadding>
-          <Link
-            href={`https://forum.lxdao.io/`}
-            target="_blank"
-            color={'inherit'}
-            sx={{
-              textDecoration: 'none',
-            }}
-          >
-            <ListItemButton>
-              <Typography sx={{ cursor: 'pointer' }}>Forum</Typography>
-            </ListItemButton>
-          </Link>
-        </ListItem>
-        <ListItem disablePadding>
-          <Link
-            href={`https://twitter.com/LXDAO_Official`}
-            target="_blank"
-            color={'inherit'}
-            sx={{
-              textDecoration: 'none',
-            }}
-          >
-            <ListItemButton>
-              <Typography sx={{ cursor: 'pointer' }}>Twitter</Typography>
-            </ListItemButton>
-          </Link>
-        </ListItem>
-        <ListItem disablePadding>
-          <Link
-            href={`https://discord.com/invite/HtcDdPgJ7D`}
-            target="_blank"
-            color={'inherit'}
-            sx={{
-              textDecoration: 'none',
-            }}
-          >
-            <ListItemButton>
-              <Typography sx={{ cursor: 'pointer' }}>Discord</Typography>
-            </ListItemButton>
-          </Link>
-        </ListItem>
-        <ListItem disablePadding>
-          <Link
-            href={`https://t.me/LXDAO`}
-            target="_blank"
-            color={'inherit'}
-            sx={{
-              textDecoration: 'none',
-            }}
-          >
-            <ListItemButton>
-              <Typography sx={{ cursor: 'pointer' }}>Telegram</Typography>
-            </ListItemButton>
-          </Link>
         </ListItem>
         <ListItem disablePadding>
           <Link
@@ -152,279 +88,113 @@ const Header = () => {
             </ListItemButton>
           </Link>
         </ListItem>
-        <ListItem disablePadding>
-          <Link
-            href={`https://github.com/lxdao-official/`}
-            target="_blank"
-            color={'inherit'}
-            sx={{
-              textDecoration: 'none',
-            }}
-          >
-            <ListItemButton>
-              <Typography sx={{ cursor: 'pointer' }}>GitHub</Typography>
-            </ListItemButton>
-          </Link>
-        </ListItem>
-        <ListItem disablePadding>
-          <ListItemButton
-            onClick={() => {
-              router.push('/invest');
-            }}
-          >
-            <Typography sx={{ cursor: 'pointer' }}>Invest</Typography>
-          </ListItemButton>
-        </ListItem>
       </List>
     </Box>
   );
 
   return (
-    <Container
+    <Box
       display="flex"
-      justifyContent="space-between"
       alignItems="center"
-      height={{ md: '80px', xs: '64px' }}
-      borderBottom="1px solid #F2F4F7"
-      maxWidth="100%"
+      justifyContent="space-between"
+      height={{ md: '128px', sm: '120px', xs: '120px' }}
+      maxWidth="1216px"
+      marginX={{ lg: 'auto', md: '20px', xs: '20px' }}
     >
-      <Box display="flex" alignItems="center">
+      <Box
+        onClick={() => {
+          router.push('/');
+        }}
+        sx={{ cursor: 'pointer' }}
+        display="flex"
+      >
         <Box
-          onClick={() => {
-            router.push('/');
-          }}
+          width={{ md: '120px', sm: '120px', xs: '80px' }}
+          component={'img'}
+          src={'/icons/lxdao-logo.svg'}
+        />
+      </Box>
+      <Box
+        gap={4}
+        display={{ md: 'flex', sm: 'none', xs: 'none' }}
+        fontSize={2}
+        lineHeight={3}
+      >
+        <Typography
           sx={{ cursor: 'pointer' }}
-          display="flex"
+          onClick={() => {
+            router.push('/projects');
+          }}
         >
-          <Box width="32px" component={'img'} src={'/icons/logo.svg'} />
-          <Typography variant="h5" paddingLeft="10px">{t`LXDAO`}</Typography>
-        </Box>
-
-        <Box gap="24px" marginLeft={7} display={{ md: 'flex', xs: 'none' }}>
-          <Typography
+          Projects
+        </Typography>
+        <Typography
+          sx={{ cursor: 'pointer' }}
+          onClick={() => {
+            router.push('/buidlers');
+          }}
+        >
+          Buidlers
+        </Typography>
+        <Box>
+          <Box
             sx={{ cursor: 'pointer' }}
-            onClick={() => {
-              router.push('/projects');
+            onClick={(event) => {
+              handleGovernanceMenuClick(event);
             }}
+            id="governance-menu-trigger"
           >
-            Projects
-          </Typography>
-          <Typography
-            sx={{ cursor: 'pointer' }}
-            onClick={() => {
-              router.push('/buidlers');
+            <Typography style={{ float: 'left' }}>Governance</Typography>
+            <KeyboardArrowDownIcon />
+          </Box>
+          <Menu
+            id="governance-menu"
+            anchorEl={governance}
+            open={Boolean(governance)}
+            onClose={() => {
+              handleGovernanceMenuClose();
             }}
+            MenuListProps={{ 'aria-labelledby': 'governance-menu-trigger' }}
           >
-            Buidlers
-          </Typography>
-          <Box>
-            <Box
-              sx={{ cursor: 'pointer' }}
-              onClick={(event) => {
-                handleMenuClick(event, 'community');
+            <MenuItem
+              onClick={() => {
+                handleGovernanceMenuClose();
               }}
-              id="community-menu-trigger"
             >
-              <Typography style={{ float: 'left' }}>Community</Typography>
-              <KeyboardArrowDownIcon />
-            </Box>
-            <Menu
-              id="community-menu"
-              anchorEl={community}
-              open={Boolean(community)}
-              onClose={() => {
-                handleCommunityMenuClose();
+              <Link
+                href={`https://forum.lxdao.io/c/governance/weekly/11`}
+                target="_blank"
+                color={'inherit'}
+                sx={{
+                  textDecoration: 'none',
+                }}
+              >
+                Weekly
+              </Link>
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                handleGovernanceMenuClose();
               }}
-              MenuListProps={{ 'aria-labelledby': 'community-menu-trigger' }}
             >
-              <MenuItem
-                onClick={() => {
-                  handleCommunityMenuClose();
+              <Link
+                href={`https://forum.lxdao.io/c/governance/monthly-ama/12`}
+                target="_blank"
+                color={'inherit'}
+                sx={{
+                  textDecoration: 'none',
                 }}
               >
-                <Link
-                  href={`https://forum.lxdao.io/`}
-                  target="_blank"
-                  color={'inherit'}
-                  sx={{
-                    textDecoration: 'none',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '10px',
-                  }}
-                >
-                  <Box
-                    width="20px"
-                    component={'img'}
-                    src={`/icons/forum.svg`}
-                  />
-                  Forum
-                </Link>
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  handleCommunityMenuClose();
-                }}
-              >
-                <Link
-                  href={`https://twitter.com/LXDAO_Official`}
-                  target="_blank"
-                  color={'inherit'}
-                  sx={{
-                    textDecoration: 'none',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '10px',
-                  }}
-                >
-                  <Box
-                    width="20px"
-                    component={'img'}
-                    src={`/icons/twitter.svg`}
-                  />
-                  Twitter
-                </Link>
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  handleCommunityMenuClose();
-                }}
-              >
-                <Link
-                  href={`https://discord.com/invite/HtcDdPgJ7D`}
-                  target="_blank"
-                  color={'inherit'}
-                  sx={{
-                    textDecoration: 'none',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '10px',
-                  }}
-                >
-                  <Box
-                    width="20px"
-                    component={'img'}
-                    src={`/icons/discord.svg`}
-                  />
-                  Discord
-                </Link>
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  handleCommunityMenuClose();
-                }}
-              >
-                <Link
-                  href={`https://t.me/LXDAO`}
-                  target="_blank"
-                  color={'inherit'}
-                  sx={{
-                    textDecoration: 'none',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '10px',
-                  }}
-                >
-                  <Box
-                    width="20px"
-                    component={'img'}
-                    src={`/icons/telegram.svg`}
-                  />
-                  Telegram
-                </Link>
-              </MenuItem>
-            </Menu>
-          </Box>
-          <Box>
-            <Box
-              sx={{ cursor: 'pointer' }}
-              onClick={(event) => {
-                handleMenuClick(event, 'governance');
-              }}
-              id="governance-menu-trigger"
-            >
-              <Typography style={{ float: 'left' }}>Governance</Typography>
-              <KeyboardArrowDownIcon />
-            </Box>
-            <Menu
-              id="governance-menu"
-              anchorEl={governance}
-              open={Boolean(governance)}
-              onClose={() => {
-                handleCommunityMenuClose();
-              }}
-              MenuListProps={{ 'aria-labelledby': 'governance-menu-trigger' }}
-            >
-              <MenuItem
-                onClick={() => {
-                  handleCommunityMenuClose();
-                }}
-              >
-                <Link
-                  href={`https://forum.lxdao.io/c/governance/weekly/11`}
-                  target="_blank"
-                  color={'inherit'}
-                  sx={{
-                    textDecoration: 'none',
-                  }}
-                >
-                  Weekly
-                </Link>
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  handleCommunityMenuClose();
-                }}
-              >
-                <Link
-                  href={`https://forum.lxdao.io/c/governance/monthly-ama/12`}
-                  target="_blank"
-                  color={'inherit'}
-                  sx={{
-                    textDecoration: 'none',
-                  }}
-                >
-                  AMA
-                </Link>
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  handleCommunityMenuClose();
-                }}
-              >
-                <Link
-                  href={`https://github.com/lxdao-official`}
-                  target="_blank"
-                  color={'inherit'}
-                  sx={{
-                    textDecoration: 'none',
-                  }}
-                >
-                  GitHub
-                </Link>
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  handleCommunityMenuClose();
-                }}
-              >
-                <Typography
-                  sx={{ cursor: 'pointer' }}
-                  onClick={() => {
-                    router.push('/invest');
-                  }}
-                >
-                  Invest
-                </Typography>
-              </MenuItem>
-            </Menu>
-          </Box>
+                AMA
+              </Link>
+            </MenuItem>
+          </Menu>
         </Box>
       </Box>
       <ConnectWalletButton />
       <MenuIcon
         sx={{
-          display: { md: 'none', xs: 'block' },
+          display: { md: 'none', sm: 'block', xs: 'block' },
           cursor: 'pointer',
         }}
         onClick={toggleDrawer(true)}
@@ -435,9 +205,9 @@ const Header = () => {
         onClose={toggleDrawer(false)}
         onOpen={toggleDrawer(true)}
       >
-        {list()}
+        <HiddenMenu />
       </SwipeableDrawer>
-    </Container>
+    </Box>
   );
 };
 

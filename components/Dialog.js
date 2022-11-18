@@ -17,6 +17,7 @@ export default function CustomDialog({
   handleConfirm,
   confirmText,
   cancelText,
+  variant,
 }) {
   return (
     <Dialog open={open} onClose={handleClose}>
@@ -31,7 +32,7 @@ export default function CustomDialog({
           <Box padding={3} display="flex" justifyContent="flex-end">
             {cancelText && <Button onClick={handleClose}>{cancelText}</Button>}
             {confirmText && (
-              <Button onClick={handleConfirm} autoFocus>
+              <Button onClick={handleConfirm} variant={variant} autoFocus>
                 {confirmText}
               </Button>
             )}

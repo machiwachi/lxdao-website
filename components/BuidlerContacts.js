@@ -41,33 +41,40 @@ function formatContacts(contacts) {
   return formattedContacts;
 }
 
-function BuidlerContacts({ contacts, space }) {
-  console.log('contacts: ', contacts);
+function BuidlerContacts({ contacts }) {
   const formattedContacts = formatContacts(contacts || {});
   return (
-    <Box display="flex">
-      {Object.keys(formattedContacts).map((key, index) => {
-        return (
-          <Tooltip title={key} key={index} placement="top">
-            <Typography
-              target="_blank"
-              component="a"
-              href={formattedContacts[key]}
-              color="primary"
-              marginLeft={index === 0 ? 0 : space || 1}
-            >
-              <Box
-                width="20px"
-                component={'img'}
-                src={`/icons/${key}.svg`}
+    <Box display="flex" gap={{ sm: 0, md: 1 }}>
+      {Object.keys(formattedContacts)
+        .reverse()
+        .map((key, index) => {
+          return (
+            <Tooltip title={key} key={index} placement="top">
+              <Typography
+                target="_blank"
+                component="a"
+                href={formattedContacts[key]}
+                color="primary"
                 sx={{
-                  display: 'block',
+                  borderRadius: '100px',
+                  height: { sm: '48px', md: '36px' },
+                  width: { sm: '48px', md: '36px' },
+                  padding: '8px',
+                  background: '#FAFAFA',
                 }}
-              />
-            </Typography>
-          </Tooltip>
-        );
-      })}
+              >
+                <Box
+                  width="20px"
+                  component={'img'}
+                  src={`/icons/${key}.svg`}
+                  sx={{
+                    display: 'block',
+                  }}
+                />
+              </Typography>
+            </Tooltip>
+          );
+        })}
     </Box>
   );
 }

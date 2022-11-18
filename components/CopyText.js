@@ -17,8 +17,6 @@ function CopyText({ copyText, copyTextOriginal }) {
     >
       <Tooltip title={copyTip} placement="top">
         <Box
-          marginRight={1}
-          paddingRight={3}
           display="flex"
           sx={{
             cursor: 'pointer',

@@ -2,7 +2,7 @@ import React from 'react';
 import { Box } from '@mui/material';
 
 // eslint-disable-next-line react/prop-types
-const Button = ({ variant, size, children, ...rest }) => (
+const Button = ({ variant, children, ...rest }) => (
   <Box
     display="flex"
     alignItems="center"
@@ -13,17 +13,21 @@ const Button = ({ variant, size, children, ...rest }) => (
         backgroundColor:
           variant === 'outlined' ? 'rgba(0, 0, 0, 0.05)' : 'rgba(0, 0, 0, 0.8)',
       },
-      color: variant === 'outlined' ? '#000000' : '#ffffff',
-      borderRadius: '8px',
-      border: variant === 'outlined' ? '1px solid #000000' : 'none',
+      color: variant === 'outlined' ? rest.color || '#000000' : '#ffffff',
+      borderRadius: '6px',
+      border: variant === 'outlined' ? '1px solid #D0D5DD' : 'none',
       outline: 'none',
-      padding: size === 'large' ? '22px 63px' : '12px 20px',
-      fontWeight: 'bold',
+      padding: '12px 20px',
+      fontSize: '16px',
+      lineHeight: '24px',
+      fontWeight: '600',
       background:
         variant === 'outlined'
           ? '#ffffff'
           : variant === 'gradient'
-          ? 'linear-gradient(90deg, rgba(41,117,223,1) 0%, rgba(58,207,227,1) 100%)'
+          ? rest.disabled
+            ? 'linear-gradient(89.57deg, rgba(41,117,223,0.5) 0.27%, rgba(58,207,227,0.5) 105.82%)'
+            : 'linear-gradient(90deg, #305FE8 0%, #3AD9E3 100%)'
           : '#000000',
     }}
     {...rest}

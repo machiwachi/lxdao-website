@@ -70,7 +70,7 @@ export const removeLocalStorage = (name) => {
 export function getEtherScanDomain() {
   return process.env.NEXT_PUBLIC_CHAIN_ID === '1'
     ? 'etherscan.io'
-    : 'rinkeby.etherscan.io';
+    : 'goerli.etherscan.io';
 }
 
 export function getOpenSeaDomain() {
@@ -96,4 +96,35 @@ export function removeEmpty(obj) {
   return Object.fromEntries(
     Object.entries(obj || {}).filter(([_, v]) => v != null && v != '')
   );
+}
+
+// https://stackoverflow.com/questions/14446511/most-efficient-method-to-groupby-on-an-array-of-objects
+export function groupBy(data, key) {
+  return data.reduce((acc, cur) => {
+    acc[cur[key]] = acc[cur[key]] || [];
+    // if the key is new, initiate its value to an array, otherwise keep its own array value
+    acc[cur[key]].push(cur);
+    return acc;
+  }, []);
+}
+
+export function stringCut(str, len) {
+  let _str = '';
+  if (str && str.length > len) {
+    _str = `${str.substr(0, len)}...`;
+  } else {
+    _str = str;
+  }
+  return _str;
+}
+
+export function removeItem(array, item) {
+  let tempArray = [...array];
+  let index = tempArray.indexOf(item);
+
+  if (index >= 0) {
+    tempArray.splice(index, 1);
+    return tempArray;
+  }
+  return tempArray;
 }

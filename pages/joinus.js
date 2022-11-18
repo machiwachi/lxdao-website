@@ -5,10 +5,12 @@ import API from '@/common/API';
 import Layout from '@/components/Layout';
 import SectionJoinUsHero from '@/sections/SectionJoinUsHero';
 import SectionMemberType from '@/sections/SectionMemberType';
+import SectionMember from '@/sections/SectionMember';
 import SectionApplicationSteps from '@/sections/SectionApplicationSteps';
 
 export default function JoinUs() {
   const [activeBuidlers, setActiveBuidlers] = useState([]);
+  const [memberType, setMemberType] = useState('member');
 
   useEffect(async () => {
     try {
@@ -27,10 +29,15 @@ export default function JoinUs() {
   return (
     <div>
       <Layout>
-        <SectionJoinUsHero />
+        <SectionJoinUsHero maxWidth="1216px" />
         {/* todo Muxin later, tell people who we need */}
-        <SectionMemberType activeBuidlers={activeBuidlers} />
-        <SectionApplicationSteps />
+        <SectionMemberType
+          activeBuidlers={activeBuidlers}
+          memberType={memberType}
+          setMemberType={setMemberType}
+        />
+        {memberType === 'member' && <SectionMember />}
+        {memberType === 'buidler' && <SectionApplicationSteps />}
       </Layout>
     </div>
   );

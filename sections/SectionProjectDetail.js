@@ -6,11 +6,13 @@ import {
   Grid,
   Chip,
   Stack,
-  Avatar,
   Tooltip,
+  Link,
+  CardContent,
+  Card,
+  Avatar,
   Autocomplete,
   TextField,
-  Link,
   MenuItem,
   Select,
   Checkbox,
@@ -31,6 +33,7 @@ import Button from '@/components/Button';
 import Container from '@/components/Container';
 import BuidlerCard from '@/components/BuidlerCard';
 import Dialog from '@/components/Dialog';
+import { WorkDetailItem } from '@/sections/SectionWorkSteps';
 
 const useStyles = makeStyles({
   tooltip: {
@@ -49,7 +52,10 @@ const SectionProjectDetail = ({ projectId }) => {
   const [openJoinTooltip, setOpenJoinTooltip] = useState(false);
   const [showJoinButton, setShowJoinButton] = useState(true);
   const [showInviteButton, setShowInviteButton] = useState(false);
+  const [showInviteSearchButton, setShowInviteSearchButton] = useState(false);
   const [showAcceptButton, setShowAcceptButton] = useState(false);
+  const [inviteLoading, setInviteLoading] = useState(false);
+  const [acceptLoading, setAcceptLoading] = useState(false);
   const [currentBuidlerOnProjectInfo, setCurrentBuidlerOnProjectInfo] =
     useState({ id: null, ipfsURI: '' });
   const [projectRoleValue, setProjectRoleValue] = useState([]);
@@ -63,6 +69,7 @@ const SectionProjectDetail = ({ projectId }) => {
       errorMsg: '',
     },
   });
+  const [projectForumList, setProjectForumList] = useState([]);
 
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
@@ -117,6 +124,26 @@ const SectionProjectDetail = ({ projectId }) => {
   useEffect(() => {
     getProjectData();
   }, [address]);
+
+  useEffect(() => {
+    if (project?.links?.forum) {
+      const forumLinkSplitArray = project?.links?.forum.split('/');
+      const forumSlug = forumLinkSplitArray.slice(
+        forumLinkSplitArray.length - 2,
+        forumLinkSplitArray.length - 1
+      );
+
+      API.get(`/project/${forumSlug}/topics.json`)
+        .then((res) => {
+          if (res?.data?.data) {
+            setProjectForumList(res?.data?.data);
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  }, [project]);
 
   const getBuidlersData = (project) => {
     API.get(`/buidler?status=ACTIVE`)
@@ -178,10 +205,10 @@ const SectionProjectDetail = ({ projectId }) => {
   const LabelText = ({ label }) => {
     return (
       <Typography
+        variant="body1"
+        lineHeight="24px"
         color="#666F85"
-        fontSize="16px"
         textAlign="left"
-        marginBottom={1.5}
       >
         {label}
       </Typography>
@@ -219,6 +246,7 @@ const SectionProjectDetail = ({ projectId }) => {
         ...inviteBuidlerErrors,
         ...cloneInviteBuidlerErrors,
       });
+      setInviteLoading(false);
       return;
     }
     if (projectRoleValue.length < 1) {
@@ -228,6 +256,7 @@ const SectionProjectDetail = ({ projectId }) => {
         ...inviteBuidlerErrors,
         ...cloneInviteBuidlerErrors,
       });
+      setInviteLoading(false);
       return;
     }
     if (selectedBuidler && projectRoleValue.length > 0) {
@@ -243,7 +272,9 @@ const SectionProjectDetail = ({ projectId }) => {
         projectRole: projectRoleValue,
       })
         .then((res) => {
+          setInviteLoading(false);
           if (res?.data?.status === 'SUCCESS') {
+            getProjectData();
             setAlert(
               'Invite buidler successfully, please wait for the buidler to accept the invitation',
               'success'
@@ -252,7 +283,8 @@ const SectionProjectDetail = ({ projectId }) => {
             setAlert(res?.data?.message, 'error');
           }
         })
-        .catch((err) => {
+        .catch(() => {
+          setInviteLoading(false);
           setAlert('something went wrong', 'error');
         });
     }
@@ -261,6 +293,7 @@ const SectionProjectDetail = ({ projectId }) => {
   const handleAcceptInvitation = () => {
     API.post(`/buidler/joinProject`, currentBuidlerOnProjectInfo)
       .then((res) => {
+        setAcceptLoading(false);
         if (res?.data?.status === 'SUCCESS') {
           setAlert(
             'Congratulations on your successful participation in this project!',
@@ -270,67 +303,147 @@ const SectionProjectDetail = ({ projectId }) => {
           setShowAcceptButton(false);
         }
       })
-      .catch((err) => {
+      .catch(() => {
+        setAcceptLoading(false);
         setAlert('something went wrong', 'error');
       });
   };
 
+  // TODO: add the project data
+  // const cardItem = (item) => {
+  //   return (
+  //     <Card
+  //       sx={{
+  //         minWidth: '172px',
+  //         height: '132px',
+  //         background: '#FFFFFF',
+  //         border: '0.5px solid #D0D5DD',
+  //         borderRadius: '6px',
+  //         boxShadow: 'none',
+  //         fontWeight: 600,
+  //       }}
+  //     >
+  //       <CardContent>
+  //         <Typography
+  //           textAlign="left"
+  //           variant="body1"
+  //           fontWeight="600"
+  //           textTransform="capitalize"
+  //           color="#101828"
+  //         >
+  //           {item.title}
+  //         </Typography>
+  //         <Box
+  //           sx={{
+  //             display: 'flex',
+  //             alignItems: 'center',
+  //             height: '32px',
+  //             marginTop: '16px',
+  //           }}
+  //         >
+  //           <img
+  //             src={item.url}
+  //             style={{ height: '100%', left: '-6px', position: 'relative' }}
+  //           />
+  //           <Typography sx={{ fontSize: '32px' }} fontWeight="600">
+  //             {item.value}
+  //           </Typography>
+  //         </Box>
+  //       </CardContent>
+  //     </Card>
+  //   );
+  // };
+
   if (!project) return null;
   return (
     <Container
-      paddingY={{ md: '96px', xs: 8 }}
+      paddingY={{ md: 12, xs: 8 }}
       textAlign="center"
       id="Project-Detail-Section"
       maxWidth="1200px"
       minHeight="calc(100vh - 280px)"
+      width="auto"
+      display="flex"
+      justifyContent="center"
     >
-      <Grid container spacing={4}>
-        <Grid item xs={4} display={{ md: 'block', xs: 'none' }}>
-          <Link href={project?.links.website || ''} target="_blank">
-            <img
-              style={{
-                width: '100%',
-                boxShadow: '0px 4px 10px 3px rgba(0, 0, 0, 0.04)',
-              }}
-              src={project.logoLarge}
-            />
-          </Link>
-        </Grid>
-        <Grid item md={8} justify="flex-start">
-          <Stack spacing={3.5}>
-            <Box
-              display={{ md: 'none', xs: 'flex' }}
-              alignItems="flex-end"
-              gap="12px"
-            >
-              <Link href={project?.links.website || ''} target="_blank">
-                <img style={{ width: '50px' }} src={project.logoLarge} />
-              </Link>
-              <Link
-                href={project?.links.website || ''}
-                target="_blank"
-                sx={{ textDecoration: 'none' }}
-              >
-                <Typography variant="h5" align="left">
-                  {project.name}
-                </Typography>
-              </Link>
-            </Box>
+      <Grid
+        container
+        spacing={4}
+        flexDirection={{ md: 'row', xs: 'column' }}
+        width={{ xs: '100%' }}
+      >
+        <Grid item md={4} lg={4} margin={{ xs: '0 auto' }}>
+          <Box
+            sx={{
+              background: '#FFFFFF',
+              border: '0.5px solid #D0D5DD',
+              borderRadius: '6px',
+              width: '100%',
+              padding: 3,
+            }}
+          >
             <Link
-              href={project?.links.website || ''}
+              href={project?.links?.website || ''}
               target="_blank"
-              sx={{ textDecoration: 'none' }}
+              sx={{
+                position: 'relative',
+                display: 'block',
+                maxWidth: '100%',
+                maxHeight: '100%',
+              }}
             >
+              <img
+                style={{
+                  width: '100%',
+                  border: '0.5px solid #D0D5DD',
+                  borderRadius: '6px',
+                }}
+                src={project.logoLarge}
+              />
               <Typography
-                variant="h4"
-                align="left"
-                display={{ md: 'block', xs: 'none' }}
+                sx={{
+                  position: 'absolute',
+                  left: '1px',
+                  bottom: '6px',
+                  background: '#36AFF9',
+                  borderRadius: '2px',
+                  fontSize: '12px',
+                  lineHeight: '15px',
+                  color: '#fff',
+                }}
+                width={38}
+                height={16}
               >
-                {project.name}
+                {'#' + project.number}
               </Typography>
             </Link>
-            <Typography align="left">{project.description}</Typography>
-            <Box align="left" display="flex" gap="5px" flexWrap="wrap">
+            <Typography
+              variant="h5"
+              fontWeight="600"
+              marginTop={3}
+              lineHeight="28px"
+            >
+              {project.name}
+            </Typography>
+            <Box
+              sx={{
+                width: '100%',
+                height: '0px',
+                border: '0.5px solid #E5E5E5',
+              }}
+              marginTop={3}
+              marginBottom={3}
+            ></Box>
+            <Typography align="left" variant="body1" color="#666F85">
+              {project.description}
+            </Typography>
+            <Box
+              align="left"
+              display="flex"
+              gap="5px"
+              flexWrap="wrap"
+              minHeight={'26px'}
+            >
               {project.type &&
                 project.type.map((type, index) => {
                   return (
@@ -368,14 +481,113 @@ const SectionProjectDetail = ({ projectId }) => {
                   );
                 })}
             </Box>
-            {project?.buidlersOnProject?.length > 0 && (
-              <Box align="left">
-                <LabelText label="Buidlers" />
-                <Stack direction="row" spacing={2}>
+            <Box
+              sx={{
+                width: '100%',
+                height: '0px',
+                border: '0.5px solid #E5E5E5',
+              }}
+              marginBottom={3}
+              marginTop="26px"
+            ></Box>
+            <Stack direction="column" spacing={2} marginBottom={3}>
+              {project.launchDate && (
+                <Box display="flex" justifyContent="center">
+                  <LabelText label="Launch Date" />
+                  <Typography
+                    variant="body1"
+                    lineHeight="24px"
+                    color="#101828"
+                    fontWeight={600}
+                    marginLeft={2}
+                  >
+                    {format(new Date(project.launchDate), 'yyyy-MM-dd')}
+                  </Typography>
+                </Box>
+              )}
+              <Box align="center">
+                <Typography
+                  fontSize={{ md: '14px', xs: '12px' }}
+                  sx={{
+                    alignItems: 'center',
+                    color: '#4DCC9E',
+                    background: 'rgba(77, 204, 158, 0.1)',
+                    display: 'initial',
+                    lineHeight: '23.92px',
+                    padding: '4px 12px',
+                  }}
+                >
+                  {PROJECT_STATUS[project.status]}
+                </Typography>
+              </Box>
+            </Stack>
+            {project?.isAbleToJoin && showJoinButton && (
+              <Tooltip
+                PopperProps={{
+                  disablePortal: true,
+                }}
+                onClose={() => {
+                  setOpenJoinTooltip(false);
+                }}
+                open={openJoinTooltip}
+                disableFocusListener
+                disableHoverListener
+                disableTouchListener
+                title="Make sure you are a LXDAO buidler and connect your wallet first."
+                marginTop={3}
+              >
+                <Box display="flex" width="180px" margin="auto">
+                  <Button
+                    width="100%"
+                    variant="gradient"
+                    onClick={handleBuidlerJoin}
+                  >
+                    Join this project
+                  </Button>
+                </Box>
+              </Tooltip>
+            )}
+          </Box>
+        </Grid>
+        <Grid item md={8} lg={8} justify="flex-start">
+          <Stack>
+            {/* <Box
+              display="flex"
+              flexWrap="wrap"
+              justifyContent={{ xs: 'center', md: 'flex-start' }}
+              gap={{ xs: 1, md: 3 }}
+              marginBottom={3}
+            >
+              {cardData.map((card, i) =>
+                cardItem(card, i < cardData.length - 1)
+              )}
+            </Box> */}
+            <Box
+              sx={{
+                width: '100%',
+                minHeight: '146px',
+                padding: '22px 32px',
+                background: '#FFFFFF',
+                border: '0.5px solid #D0D5DD',
+                borderRadius: '6px',
+              }}
+              marginBottom={3}
+            >
+              <Typography
+                variant="body1"
+                fontWeight="600"
+                marginBottom={2}
+                textAlign="left"
+              >
+                Buidlers
+              </Typography>
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+              >
+                <Box display="flex">
                   {project.buidlersOnProject.map((buidler, index) => {
-                    if (buidler.status !== 'ACTIVE') {
-                      return null;
-                    }
                     return (
                       <Tooltip
                         key={index}
@@ -389,49 +601,109 @@ const SectionProjectDetail = ({ projectId }) => {
                         }
                         classes={{ tooltip: classes.tooltip }}
                       >
-                        <Box position="relative">
-                          <Link href={`/buidlers/${buidler?.buidler?.address}`}>
+                        <Link href={`/buidlers/${buidler?.buidler?.address}`}>
+                          <Box
+                            width="60px"
+                            height="60px"
+                            marginRight="10px"
+                            position="relative"
+                            sx={{
+                              border: '0.5px solid #D0D5DD',
+                              borderRadius: '2px',
+                            }}
+                          >
+                            {buidler?.projectRole.includes(
+                              'Project Manager'
+                            ) && (
+                              <Typography
+                                position="absolute"
+                                sx={{
+                                  left: 0,
+                                  top: 0,
+                                  fontSize: '12px',
+                                  lineHeight: '15px',
+                                  color: '#fff',
+                                  background: '#36AFF9',
+                                  width: '30px',
+                                  zIndex: 3,
+                                }}
+                              >
+                                PM
+                              </Typography>
+                            )}
                             <Avatar
                               key={index}
                               alt={buidler?.buidler?.name}
                               src={buidler?.buidler?.avatar}
                               sx={{
                                 cursor: 'pointer',
+                                position: 'absolute',
+                                zIndex: 2,
+                                width: '100%',
+                                height: '100%',
                               }}
                               onMouseOver={() =>
                                 handleDisplayBuidlerTooltip(buidler, 'open')
                               }
                             />
-                          </Link>
-
-                          {buidler?.projectRole.includes('Project Manager') && (
-                            <Box
-                              width="30px"
-                              height="12px"
-                              color="#ffffff"
-                              backgroundColor="rgba(41,117,223)"
-                              fontSize="8px"
-                              display="flex"
-                              alignItems="center"
-                              justifyContent="center"
-                              position="absolute"
-                              right="4px"
-                              bottom="-15px"
-                            >
-                              PM
-                            </Box>
-                          )}
-                        </Box>
+                            {buidler.status == 'PENDING' && (
+                              <Box
+                                position="absolute"
+                                width="100%"
+                                height="100%"
+                                sx={{
+                                  background: 'rgba(0, 0, 0, 0.5)',
+                                  borderRadius: '2px',
+                                  top: 0,
+                                  left: 0,
+                                  zIndex: 3,
+                                }}
+                              ></Box>
+                            )}
+                          </Box>
+                        </Link>
                       </Tooltip>
                     );
                   })}
-                </Stack>
+                  {showInviteButton && !showInviteSearchButton && address && (
+                    <Box
+                      width="60px"
+                      height="60px"
+                      marginRight="10px"
+                      position="relative"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      sx={{
+                        border: '0.5px solid #D0D5DD',
+                        borderRadius: '2px',
+                        color: '#D0D5DD',
+                      }}
+                      onClick={() => setShowInviteSearchButton(true)}
+                    >
+                      <img src="/icons/add.svg" />
+                    </Box>
+                  )}
+                </Box>
+                {showAcceptButton && (
+                  <Button
+                    variant="gradient"
+                    onClick={handleAcceptInvitation}
+                    loading={acceptLoading}
+                  >
+                    {acceptLoading ? 'loading...' : 'Accept Invitation'}
+                  </Button>
+                )}
               </Box>
-            )}
-            {showInviteButton && (
-              <Stack direction="column" spacing={1} alignItems="flex-start">
-                <Typography>Invitate builder to join this project:</Typography>
-                <Box display="flex" gap="10px">
+
+              {showInviteSearchButton && (
+                <Box
+                  marginTop={3}
+                  maxWidth="700px"
+                  display="flex"
+                  gap="10px"
+                  flexWrap="wrap"
+                >
                   <Autocomplete
                     sx={{ width: '300px', height: '56px' }}
                     options={activeBuidlerList.map((option) => option.name)}
@@ -477,6 +749,7 @@ const SectionProjectDetail = ({ projectId }) => {
                       error={inviteBuidlerErrors['role'].error}
                       value={projectRoleValue}
                       MenuProps={MenuProps}
+                      textAlign="left"
                       onChange={(event) => {
                         setProjectRoleValue(event.target.value);
                         if (event.target.value) {
@@ -509,67 +782,53 @@ const SectionProjectDetail = ({ projectId }) => {
                   </FormControl>
                   <Button
                     variant="gradient"
-                    onClick={handleInviteBuidler}
+                    onClick={inviteLoading ? () => {} : handleInviteBuidler}
                     height="56px"
+                    loading={inviteLoading}
+                    loadingPosition="start"
                   >
-                    Invite
+                    {inviteLoading ? 'loading...' : 'Invite'}
                   </Button>
-                </Box>
-              </Stack>
-            )}
-            {showAcceptButton && (
-              <Box display="flex">
-                <Button variant="gradient" onClick={handleAcceptInvitation}>
-                  Accept Invitation
-                </Button>
-              </Box>
-            )}
-            <Stack direction="row" spacing={8}>
-              {project.launchDate && (
-                <Box align="left">
-                  <LabelText label="Launch Date" />
-                  <Typography
-                    fontSize={{ md: '20px', xs: '18px' }}
-                    color="#000000"
-                  >
-                    {format(new Date(project.launchDate), 'yyyy-MM-dd')}
-                  </Typography>
                 </Box>
               )}
-              <Box align="left">
-                <LabelText label="Status" />
-                <Typography
-                  fontSize={{ md: '20px', xs: '18px' }}
-                  color="#000000"
-                >
-                  {PROJECT_STATUS[project.status]}
-                </Typography>
-              </Box>
-            </Stack>
-            {project?.isAbleToJoin && showJoinButton && (
-              <Tooltip
-                PopperProps={{
-                  disablePortal: true,
+            </Box>
+            {project?.links?.forum && (
+              <Box
+                sx={{
+                  width: '100%',
+                  height: 'auto',
+                  padding: 4,
+                  background: '#FFFFFF',
+                  border: '0.5px solid #D0D5DD',
+                  borderRadius: '6px',
                 }}
-                onClose={() => {
-                  setOpenJoinTooltip(false);
-                }}
-                open={openJoinTooltip}
-                disableFocusListener
-                disableHoverListener
-                disableTouchListener
-                title="Make sure you are a LXDAO buidler and connect your wallet first."
               >
-                <Box display="flex" width="180px">
-                  <Button
-                    width="100%"
-                    variant="gradient"
-                    onClick={handleBuidlerJoin}
-                  >
-                    Join this project
-                  </Button>
+                <Typography
+                  variant="body1"
+                  fontWeight="600"
+                  marginBottom={2}
+                  textAlign="left"
+                >
+                  Forum
+                </Typography>
+                <Box>
+                  {projectForumList &&
+                    projectForumList.map((forum, index) => {
+                      return (
+                        <WorkDetailItem type="idea" data={forum} key={index} />
+                      );
+                    })}
                 </Box>
-              </Tooltip>
+                <Button variant="outlined" width="200px" margin="0 auto">
+                  <Link
+                    href={project?.links?.forum}
+                    target="_blank"
+                    sx={{ textDecoration: 'none', color: '#0D1320' }}
+                  >
+                    View More
+                  </Link>
+                </Button>
+              </Box>
             )}
           </Stack>
         </Grid>
@@ -587,6 +846,7 @@ const SectionProjectDetail = ({ projectId }) => {
           </Box>
         }
         confirmText="OK"
+        variant="gradient"
         handleClose={() => {
           setOpenJoinDialog(false);
         }}
