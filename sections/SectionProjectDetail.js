@@ -33,6 +33,7 @@ import Button from '@/components/Button';
 import Container from '@/components/Container';
 import BuidlerCard from '@/components/BuidlerCard';
 import Dialog from '@/components/Dialog';
+import { WorkDetailItem } from '@/sections/SectionWorkSteps';
 
 const useStyles = makeStyles({
   tooltip: {
@@ -68,6 +69,7 @@ const SectionProjectDetail = ({ projectId }) => {
       errorMsg: '',
     },
   });
+  const [projectForumList, setProjectForumList] = useState([]);
 
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
@@ -122,6 +124,26 @@ const SectionProjectDetail = ({ projectId }) => {
   useEffect(() => {
     getProjectData();
   }, [address]);
+
+  useEffect(() => {
+    if (project?.links?.forum) {
+      const forumLinkSplitArray = project?.links?.forum.split('/');
+      const forumSlug = forumLinkSplitArray.slice(
+        forumLinkSplitArray.length - 2,
+        forumLinkSplitArray.length - 1
+      );
+
+      API.get(`/project/${forumSlug}/topics.json`)
+        .then((res) => {
+          if (res?.data?.data) {
+            setProjectForumList(res?.data?.data);
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  }, [project]);
 
   const getBuidlersData = (project) => {
     API.get(`/buidler?status=ACTIVE`)
@@ -331,62 +353,6 @@ const SectionProjectDetail = ({ projectId }) => {
   //     </Card>
   //   );
   // };
-
-  const forumdata = [
-    {
-      name: 'About the 000 GCLX category',
-      operate: [
-        { name: 'Views', num: 18 },
-        { name: 'Replies', num: 0 },
-        { name: 'Activity', num: '12d' },
-      ],
-    },
-    {
-      name: 'About the 000 GCLX category1',
-      operate: [
-        { name: 'Views', num: 18 },
-        { name: 'Replies', num: 0 },
-        { name: 'Activity', num: '13d' },
-      ],
-    },
-  ];
-  const operateItem = (item) => (
-    <Box display="flex" gap="3px" marginRight={2}>
-      <Typography variant="body2" marginRight={0.5} color="#666F85">
-        {item.name}
-      </Typography>
-      <Typography color="#36AFF9" variant="body2">
-        {item.num}
-      </Typography>
-    </Box>
-  );
-  const forumItem = (item) => (
-    <Box
-      sx={{
-        padding: '22px 23px',
-        width: '100%',
-        height: '88px',
-        background: '#FFFFFF',
-        border: '0.5px solid #D0D5DD',
-        borderRadius: '6px',
-      }}
-      marginBottom={2}
-      display="flex"
-      justifyContent="space-between"
-    >
-      <Box>
-        <Typography variant="body1" align="left" fontWeight={600}>
-          {item.name}
-        </Typography>
-        <Box display="flex" alignItems="center">
-          {item.operate.map((item_) => operateItem(item_))}
-        </Box>
-      </Box>
-      <Typography color="#36AFF9" variant="subtitle1" fontWeight={600}>
-        →
-      </Typography>
-    </Box>
-  );
 
   if (!project) return null;
   return (
@@ -846,7 +812,10 @@ const SectionProjectDetail = ({ projectId }) => {
                   Forum
                 </Typography>
                 <Box>
-                  {forumdata && forumdata.map((forum) => forumItem(forum))}
+                  {projectForumList &&
+                    projectForumList.map((forum, index) => {
+                      return <WorkDetailItem data={forum} key={index} />;
+                    })}
                 </Box>
                 <Button variant="outlined" width="200px" margin="0 auto">
                   <Link

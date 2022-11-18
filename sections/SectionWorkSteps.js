@@ -6,7 +6,7 @@ import API from '@/common/API';
 
 import SimpleProjectCard from '@/components/SimpleProjectCard';
 
-const WorkDetailItem = ({ title, data, ...rest }) => {
+export const WorkDetailItem = ({ data, ...rest }) => {
   return (
     <Box
       display="flex"
