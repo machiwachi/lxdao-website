@@ -9,21 +9,6 @@ const partnersData = [
     logo: '/images/partners/nextdao-logo.svg',
     link: 'https://twitter.com/theNextDAO',
   },
-  {
-    name: 'NextDAO',
-    logo: '/images/partners/nextdao-logo.svg',
-    link: 'https://twitter.com/theNextDAO',
-  },
-  {
-    name: 'NextDAO',
-    logo: '/images/partners/nextdao-logo.svg',
-    link: 'https://twitter.com/theNextDAO',
-  },
-  {
-    name: 'NextDAO',
-    logo: '/images/partners/nextdao-logo.svg',
-    link: 'https://twitter.com/theNextDAO',
-  },
 ];
 
 const SectionPartners = () => (

@@ -223,7 +223,7 @@ export default function Home() {
 
   return (
     <Layout>
-      <Container paddingY={10} maxWidth={1216}>
+      <Container paddingY={{ md: '96px', xs: 8 }} maxWidth={1216}>
         <Box
           display="flex"
           flexDirection="column"
@@ -234,7 +234,7 @@ export default function Home() {
           <Box textAlign="center" gap={6}>
             <Typography
               fontSize="70px"
-              fontWeight="600"
+              fontWeight={600}
               lineHeight="70px"
               color="#101828"
             >
@@ -242,7 +242,7 @@ export default function Home() {
             </Typography>
             <Typography
               variant="subtitle1"
-              fontWeight="400"
+              fontWeight={400}
               lineHeight="30px"
               color="#667085"
               marginTop={4}

@@ -93,7 +93,11 @@ const BudilerTooltip = ({
             </Box>
           </>
         )}
-        <Link href={`/buidlers/${address}`} sx={{ textDecoration: 'none' }}>
+        <Link
+          href={`/buidlers/${address}`}
+          sx={{ textDecoration: 'none' }}
+          target="_blank"
+        >
           <Typography
             color="#101828"
             variant="body1"
@@ -145,9 +149,9 @@ const SectionBuidlers = ({ buidlers }) => {
         <Typography
           variant="h2"
           lineHeight="44px"
-          fontWeight="600"
+          fontWeight={600}
           color="#ffffff"
-          marginBottom="31px"
+          marginBottom={3}
         >
           LXDAO BUIDLERS
         </Typography>

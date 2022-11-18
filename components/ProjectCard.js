@@ -54,7 +54,6 @@ const ProjectCard = ({ project, index }) => {
     <Card
       sx={{
         position: 'relative',
-        borderRadius: 4,
         paddingY: 4,
         paddingX: 2,
         cursor: 'pointer',
@@ -70,6 +69,7 @@ const ProjectCard = ({ project, index }) => {
           pathname: `/projects/${project.number}`,
         });
       }}
+      key={index}
     >
       <Box sx={{ display: 'flex' }} marginBottom={4}>
         <Box sx={{ marginRight: '26px' }}>

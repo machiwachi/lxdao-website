@@ -84,7 +84,7 @@ const Footer = () => {
                     link: 'https://github.com/lxdao-official',
                   },
                   {
-                    name: 'Developer Guild',
+                    name: 'Developer Guide',
                     link: 'https://github.com/lxdao-official/LXDAO-Developer-Guide',
                   },
                 ]}

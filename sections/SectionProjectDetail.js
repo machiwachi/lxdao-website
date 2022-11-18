@@ -287,71 +287,50 @@ const SectionProjectDetail = ({ projectId }) => {
       });
   };
 
-  const cardData = [
-    {
-      title: 'items',
-      url: '',
-      value: '1.0k',
-    },
-    {
-      title: 'owners',
-      url: '',
-      value: '501',
-    },
-    {
-      title: 'floor price',
-      url: '/icons/eth.svg',
-      value: '0.05',
-    },
-    {
-      title: 'total volume',
-      url: '/icons/eth.svg',
-      value: '300',
-    },
-  ];
-  const cardItem = (item) => {
-    return (
-      <Card
-        sx={{
-          minWidth: '172px',
-          height: '132px',
-          background: '#FFFFFF',
-          border: '0.5px solid #D0D5DD',
-          borderRadius: '6px',
-          boxShadow: 'none',
-          fontWeight: 600,
-        }}
-      >
-        <CardContent>
-          <Typography
-            textAlign="left"
-            variant="body1"
-            fontWeight="600"
-            textTransform="capitalize"
-            color="#101828"
-          >
-            {item.title}
-          </Typography>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              height: '32px',
-              marginTop: '16px',
-            }}
-          >
-            <img
-              src={item.url}
-              style={{ height: '100%', left: '-6px', position: 'relative' }}
-            />
-            <Typography sx={{ fontSize: '32px' }} fontWeight="600">
-              {item.value}
-            </Typography>
-          </Box>
-        </CardContent>
-      </Card>
-    );
-  };
+  // TODO: add the project data
+  // const cardItem = (item) => {
+  //   return (
+  //     <Card
+  //       sx={{
+  //         minWidth: '172px',
+  //         height: '132px',
+  //         background: '#FFFFFF',
+  //         border: '0.5px solid #D0D5DD',
+  //         borderRadius: '6px',
+  //         boxShadow: 'none',
+  //         fontWeight: 600,
+  //       }}
+  //     >
+  //       <CardContent>
+  //         <Typography
+  //           textAlign="left"
+  //           variant="body1"
+  //           fontWeight="600"
+  //           textTransform="capitalize"
+  //           color="#101828"
+  //         >
+  //           {item.title}
+  //         </Typography>
+  //         <Box
+  //           sx={{
+  //             display: 'flex',
+  //             alignItems: 'center',
+  //             height: '32px',
+  //             marginTop: '16px',
+  //           }}
+  //         >
+  //           <img
+  //             src={item.url}
+  //             style={{ height: '100%', left: '-6px', position: 'relative' }}
+  //           />
+  //           <Typography sx={{ fontSize: '32px' }} fontWeight="600">
+  //             {item.value}
+  //           </Typography>
+  //         </Box>
+  //       </CardContent>
+  //     </Card>
+  //   );
+  // };
 
   const forumdata = [
     {
@@ -606,7 +585,7 @@ const SectionProjectDetail = ({ projectId }) => {
         </Grid>
         <Grid item md={8} lg={8} justify="flex-start">
           <Stack>
-            <Box
+            {/* <Box
               display="flex"
               flexWrap="wrap"
               justifyContent={{ xs: 'center', md: 'flex-start' }}
@@ -616,7 +595,7 @@ const SectionProjectDetail = ({ projectId }) => {
               {cardData.map((card, i) =>
                 cardItem(card, i < cardData.length - 1)
               )}
-            </Box>
+            </Box> */}
             <Box
               sx={{
                 width: '100%',
@@ -847,52 +826,39 @@ const SectionProjectDetail = ({ projectId }) => {
                 </Box>
               )}
             </Box>
-            <Box
-              sx={{
-                width: '100%',
-                height: 'auto',
-                padding: 4,
-                background: '#FFFFFF',
-                border: '0.5px solid #D0D5DD',
-                borderRadius: '6px',
-              }}
-            >
-              <Typography
-                variant="body1"
-                fontWeight="600"
-                marginBottom={2}
-                textAlign="left"
-              >
-                Forum
-              </Typography>
-              <Box>
-                {forumdata && forumdata.map((forum) => forumItem(forum))}
-              </Box>
+            {project?.links?.forum && (
               <Box
-                width="200px"
-                height="48px"
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                margin="auto"
                 sx={{
+                  width: '100%',
+                  height: 'auto',
+                  padding: 4,
                   background: '#FFFFFF',
-                  border: '1px solid #D0D5DD',
-                  /* Shadow/xs */
-                  boxShadow: '0px 1px 2px rgba(16, 24, 40, 0.05)',
+                  border: '0.5px solid #D0D5DD',
                   borderRadius: '6px',
                 }}
               >
                 <Typography
                   variant="body1"
-                  fontWeight={500}
-                  color="#0D1320"
-                  textTransform="capitalize"
+                  fontWeight="600"
+                  marginBottom={2}
+                  textAlign="left"
                 >
-                  View More
+                  Forum
                 </Typography>
+                <Box>
+                  {forumdata && forumdata.map((forum) => forumItem(forum))}
+                </Box>
+                <Button variant="outlined" width="200px" margin="0 auto">
+                  <Link
+                    href={project?.links?.forum}
+                    target="_blank"
+                    sx={{ textDecoration: 'none', color: '#0D1320' }}
+                  >
+                    View More
+                  </Link>
+                </Button>
               </Box>
-            </Box>
+            )}
           </Stack>
         </Grid>
       </Grid>

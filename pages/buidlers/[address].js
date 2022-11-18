@@ -550,13 +550,13 @@ function BuidlerDetails(props) {
       <Box
         display="flex"
         flexDirection={{
-          xs: 'column',
           md: 'row',
+          xs: 'column',
         }}
         gap="24px"
       >
         {/* left section*/}
-        <Box width={{ md: '300px', sm: 'auto', xs: '350px' }}>
+        <Box width={{ md: '300px', sm: 'auto', xs: 'auto' }}>
           <Box
             border="0.5px solid #D0D5DD"
             borderRadius="6px"
@@ -1040,6 +1040,7 @@ function BuidlerDetails(props) {
                   <LXButton size="small" variant="outlined">
                     <Link
                       href={`/projects`}
+                      target="_blank"
                       sx={{
                         textDecoration: 'none',
                       }}
@@ -1098,6 +1099,7 @@ function BuidlerDetails(props) {
                   <LXButton size="small" variant="outlined">
                     <Link
                       href={`https://lxdao.notion.site/95fde886aef24c9ca63b8bae95fa8456`}
+                      target="_blank"
                       sx={{
                         textDecoration: 'none',
                       }}
