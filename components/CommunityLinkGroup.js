@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Link } from '@mui/material';
 
 const CommunityLinkGroup = () => (
-  <Box display="flex" gap={2}>
+  <Box display="flex" gap={2} marginBottom="80px">
     <Link href="https://twitter.com/LXDAO_Official" target="_blank">
       <Box component={'img'} src={'/icons/twitter-circle.svg'} />
     </Link>
