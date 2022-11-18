@@ -19,6 +19,7 @@ export const WorkDetailItem = ({ type, data, ...rest }) => {
       sx={{ backgroundColor: '#ffffff' }}
       borderRadius="6px"
       gap="100px"
+      width={{ sm: '450px', xs: '350px' }}
       {...rest}
     >
       <Box display="flex" flexDirection="column" gap={1}>
@@ -27,6 +28,13 @@ export const WorkDetailItem = ({ type, data, ...rest }) => {
           lineHeight="19px"
           fontWeight={600}
           color="#101828"
+          width={{ sm: '280px', xs: '180px' }}
+          sx={{
+            textOverflow: 'ellipsis',
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            wordWrap: 'break-word',
+          }}
         >
           {data?.title}
         </Typography>
@@ -250,7 +258,8 @@ const SectionWorkSteps = ({ projects }) => {
 
   useEffect(async () => {
     const result = await request(SNAPSHOTURL, queryProposals);
-    const proposals = result.proposals?.map((item) => ({
+    const latest3Result = result.proposals.slice(0, 3);
+    const proposals = latest3Result?.map((item) => ({
       id: item.id,
       title: item.title,
       choices: item.choices,

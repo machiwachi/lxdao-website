@@ -7,7 +7,7 @@ export const queryProposals = gql`
     proposals(
       first: 20
       skip: 0
-      where: { space_in: ["lxdao.eth"], state: "active" }
+      where: { space_in: ["lxdao.eth"] }
       orderBy: "created"
       orderDirection: desc
     ) {
