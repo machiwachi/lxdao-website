@@ -4,33 +4,34 @@ import { Box, Typography, Link } from '@mui/material';
 import Container from '@/components/Container';
 
 const DataBox = ({ number, name, link }) => (
-  <Box
-    sx={{
-      border: '0.5px solid #ffffff',
-      borderRadius: '6px',
-      background: 'transpant',
-    }}
+  <Link
+    href={link}
+    color="#ffffff"
+    sx={{ textDecoration: 'none' }}
     flex={1}
-    display="flex"
-    flexDirection="column"
-    alignItems="center"
     gap={2}
-    paddingY="30px"
   >
-    <Typography variant="h3" lineHeight="51px" fontWeight={700}>
-      {number}
-    </Typography>
-    <Link
-      target="_blank"
-      href={link}
-      color="#ffffff"
-      sx={{ textDecoration: 'none' }}
+    <Box
+      width="100%"
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      sx={{
+        border: '0.5px solid #ffffff',
+        borderRadius: '6px',
+        background: 'transpant',
+      }}
+      paddingY="30px"
     >
+      <Typography variant="h3" lineHeight="51px" fontWeight={700}>
+        {number}
+      </Typography>
+
       <Typography variant="subtitle1" lineHeight="25px" fontWeight={400}>
         {name} →
       </Typography>
-    </Link>
-  </Box>
+    </Box>
+  </Link>
 );
 
 const SectionMission = ({ projectAmount, buidlerAmount }) => (
@@ -55,8 +56,8 @@ const SectionMission = ({ projectAmount, buidlerAmount }) => (
           lineHeight={{ md: '70px', sm: '50px', xs: '50px' }}
           fontWeight={500}
         >
-          Bringing together buidlers to buidl and maintain “LX” projects for
-          Web3, in a sustainable manner.
+          Bringing together buidlers to buidl and maintain &quot;LX&quot;
+          (Valuable) projects for Web3, in a sustainable manner.
         </Typography>
         <Box
           display="flex"
