@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCards } from 'swiper';
+
+import { request } from 'graphql-request';
+import { SNAPSHOTURL, queryProposals } from '@/graphql/snapshot';
 import { Box, Typography, Link } from '@mui/material';
 import API from '@/common/API';
 
 import SimpleProjectCard from '@/components/SimpleProjectCard';
 
-export const WorkDetailItem = ({ data, ...rest }) => {
+export const WorkDetailItem = ({ type, data, ...rest }) => {
   return (
     <Box
       display="flex"
@@ -35,7 +38,7 @@ export const WorkDetailItem = ({ data, ...rest }) => {
               fontWeight={400}
               color="#666F85"
             >
-              Views
+              {type === 'idea' ? 'Views' : data?.choices[0]}
             </Typography>
             <Typography
               variant="body2"
@@ -43,7 +46,7 @@ export const WorkDetailItem = ({ data, ...rest }) => {
               fontWeight={600}
               color="#36AFF9"
             >
-              {data?.views}
+              {type === 'idea' ? data?.views : data?.scores[0]}
             </Typography>
           </Box>
           <Box display="flex" gap="3px">
@@ -53,7 +56,7 @@ export const WorkDetailItem = ({ data, ...rest }) => {
               fontWeight={400}
               color="#666F85"
             >
-              Replies
+              {type === 'idea' ? 'Replies' : data?.choices[1]}
             </Typography>
             <Typography
               variant="body2"
@@ -61,7 +64,7 @@ export const WorkDetailItem = ({ data, ...rest }) => {
               fontWeight={600}
               color="#36AFF9"
             >
-              {data?.reply_count}
+              {type === 'idea' ? data?.reply_count : data?.scores[1]}
             </Typography>
           </Box>
           <Box display="flex" gap="3px">
@@ -71,7 +74,7 @@ export const WorkDetailItem = ({ data, ...rest }) => {
               fontWeight={400}
               color="#666F85"
             >
-              Likes
+              {type === 'idea' ? 'Likes' : data?.choices[2]}
             </Typography>
             <Typography
               variant="body2"
@@ -79,13 +82,17 @@ export const WorkDetailItem = ({ data, ...rest }) => {
               fontWeight={600}
               color="#36AFF9"
             >
-              {data?.like_count}
+              {type === 'idea' ? data?.like_count : data?.scores[2]}
             </Typography>
           </Box>
         </Box>
       </Box>
       <Link
-        href={`https://forum.lxdao.io/t/${data?.slug}/${data.id}`}
+        href={
+          type === 'idea'
+            ? `https://forum.lxdao.io/t/${data?.slug}/${data.id}`
+            : `https://snapshot.org/#/lxdao.eth/proposal/${data.id}`
+        }
         target="_blank"
         sx={{ textDecoration: 'none' }}
       >
@@ -103,6 +110,7 @@ export const WorkDetailItem = ({ data, ...rest }) => {
 };
 
 const WorkDetailSection = ({
+  type,
   title,
   data,
   bottomButtonText,
@@ -126,7 +134,12 @@ const WorkDetailSection = ({
       <Box display="flex" gap={2} flexDirection="column">
         {data.length &&
           data.map((item, index) => (
-            <WorkDetailItem key={index} title={item.content} data={item} />
+            <WorkDetailItem
+              key={index}
+              title={item.content}
+              type={type}
+              data={item}
+            />
           ))}
       </Box>
       <Link
@@ -219,65 +232,10 @@ const WorkStep = ({
   );
 };
 
-const voteData = [
-  {
-    content: 'Investigate voting records',
-    data: [
-      {
-        name: 'For',
-        number: '0',
-      },
-      {
-        name: 'Against',
-        number: '0',
-      },
-      {
-        name: 'Abstain',
-        number: '0',
-      },
-    ],
-    link: '',
-  },
-  {
-    content: 'Invest data site',
-    data: [
-      {
-        name: 'For',
-        number: '0',
-      },
-      {
-        name: 'Against',
-        number: '0',
-      },
-      {
-        name: 'Abstain',
-        number: '0',
-      },
-    ],
-    link: '',
-  },
-  {
-    content: 'LXDAO Member NFT PFP idea collect',
-    data: [
-      {
-        name: 'For',
-        number: '0',
-      },
-      {
-        name: 'Against',
-        number: '0',
-      },
-      {
-        name: 'Abstain',
-        number: '0',
-      },
-    ],
-    link: '',
-  },
-];
-
 const SectionWorkSteps = ({ projects }) => {
   const [ideaData, setIdeasData] = useState([]);
+  const [proposalData, setProposalData] = useState([]);
+
   useEffect(() => {
     API.get(`/community/ideas.json`)
       .then((res) => {
@@ -288,6 +246,17 @@ const SectionWorkSteps = ({ projects }) => {
       .catch((err) => {
         console.error(err);
       });
+  }, []);
+
+  useEffect(async () => {
+    const result = await request(SNAPSHOTURL, queryProposals);
+    const proposals = result.proposals?.map((item) => ({
+      id: item.id,
+      title: item.title,
+      choices: item.choices,
+      scores: item.scores,
+    }));
+    setProposalData(proposals);
   }, []);
 
   return (
@@ -326,6 +295,7 @@ const SectionWorkSteps = ({ projects }) => {
             proposals"
           rightSection={
             <WorkDetailSection
+              type="idea"
               title="In progress proposal"
               data={ideaData}
               bottomButtonText="Post an idea"
@@ -341,8 +311,9 @@ const SectionWorkSteps = ({ projects }) => {
           stepDes="Discussion Proposal Vote.Discussion Proposal Vote.Discussion Proposal Vote.Discussion Proposal Vote.Discussion Proposal Vote.Discussion Proposal Vote."
           rightSection={
             <WorkDetailSection
+              type="vote"
               title="Investigate voting records"
-              data={voteData}
+              data={proposalData}
               bottomButtonText="Create a vote"
               bottomButtonLink="https://snapshot.org/#/lxdao.eth"
             />
