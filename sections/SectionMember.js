@@ -29,7 +29,7 @@ const SectionApplicationSteps = () => {
             variant="h6"
             color="#101828"
             textAlign="center"
-            width={{ sm: '700px', xs: '300px' }}
+            maxWidth={{ sm: '700px', xs: '300px' }}
           >
             Our main community is on Discord, we use Discord for chatting,
             events, and notifications.
@@ -50,7 +50,7 @@ const SectionApplicationSteps = () => {
             variant="h6"
             color="#101828"
             textAlign="center"
-            width={{ sm: '700px', xs: '300px' }}
+            maxWidth={{ sm: '700px', xs: '300px' }}
           >
             We also have a Forum for formal public discussion, soft proposals,
             sharing, etc.
