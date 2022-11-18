@@ -938,7 +938,7 @@ function BuidlerDetails(props) {
                         marginLeft={1}
                         sx={{ background: 'rgba(0,159,255,0.7)' }}
                       ></Box>
-                      intermediate
+                      Intermediate
                     </Typography>
                     <Typography
                       fontWeight="400"
@@ -954,7 +954,7 @@ function BuidlerDetails(props) {
                         marginLeft={1}
                         sx={{ background: 'rgba(0,159,255,0.4)' }}
                       ></Box>
-                      jonior
+                      Jonior
                     </Typography>
                   </Box>
                 </Box>
