@@ -16,7 +16,7 @@ const SectionWorkingGroup = () => (
         color="#ffffff"
         marginBottom={8}
       >
-        LXDAO Working Group
+        LXDAO Working Groups
       </Typography>
       <Grid container spacing={2}>
         {workingGroupsData.length > 0 &&

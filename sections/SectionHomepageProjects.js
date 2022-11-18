@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Typography, Link } from '@mui/material';
 
-import Button from '@/components/Button';
+import CustomButton from '@/components/Button';
 import ProjectCard from '@/components/ProjectCard';
 
 const SectionHomePageProjects = ({ projects }) => {
@@ -76,8 +76,9 @@ const SectionHomePageProjects = ({ projects }) => {
           maxWidth="1216px"
           marginX={{ lg: 'auto', md: '20px', xs: '20px' }}
           marginTop="110px"
+          display="flex"
         >
-          <Button variant="gradient" width="200px">
+          <CustomButton variant="gradient" width="200px">
             <Link
               href="https://www.notion.so/lxdao/How-do-we-work-93038c708217465384cc7d9f377547c5"
               target="_blank"
@@ -85,7 +86,16 @@ const SectionHomePageProjects = ({ projects }) => {
             >
               Buidl Your Own
             </Link>
-          </Button>
+          </CustomButton>
+          <CustomButton variant="gradient" width="200px" marginLeft={2}>
+            <Link
+              href="/projects"
+              target="_blank"
+              sx={{ textDecoration: 'none', color: '#ffffff' }}
+            >
+              View all projects
+            </Link>
+          </CustomButton>
         </Box>
       </Box>
     </Box>

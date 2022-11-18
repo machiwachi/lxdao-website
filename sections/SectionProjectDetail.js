@@ -814,7 +814,9 @@ const SectionProjectDetail = ({ projectId }) => {
                 <Box>
                   {projectForumList &&
                     projectForumList.map((forum, index) => {
-                      return <WorkDetailItem data={forum} key={index} />;
+                      return (
+                        <WorkDetailItem type="idea" data={forum} key={index} />
+                      );
                     })}
                 </Box>
                 <Button variant="outlined" width="200px" margin="0 auto">
