@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Link } from '@mui/material';
 
 import Button from '@/components/Button';
 import ProjectCard from '@/components/ProjectCard';
@@ -78,7 +78,13 @@ const SectionHomePageProjects = ({ projects }) => {
           marginTop="110px"
         >
           <Button variant="gradient" width="200px">
-            Buidl Your Own
+            <Link
+              href="https://www.notion.so/lxdao/How-do-we-work-93038c708217465384cc7d9f377547c5"
+              target="_blank"
+              sx={{ textDecoration: 'none', color: '#ffffff' }}
+            >
+              Buidl Your Own
+            </Link>
           </Button>
         </Box>
       </Box>

@@ -88,15 +88,6 @@ const Header = () => {
             </ListItemButton>
           </Link>
         </ListItem>
-        <ListItem disablePadding>
-          <ListItemButton
-            onClick={() => {
-              router.push('/treasury');
-            }}
-          >
-            <Typography sx={{ cursor: 'pointer' }}>Treasury</Typography>
-          </ListItemButton>
-        </ListItem>
       </List>
     </Box>
   );
@@ -107,8 +98,8 @@ const Header = () => {
       alignItems="center"
       justifyContent="space-between"
       height={{ md: '128px', sm: '120px', xs: '120px' }}
-      maxWidth="100%"
-      paddingX={{ md: '110px', sm: '20px', xs: '20px' }}
+      maxWidth="1216px"
+      marginX={{ lg: 'auto', md: '20px', xs: '20px' }}
     >
       <Box
         onClick={() => {
@@ -196,20 +187,6 @@ const Header = () => {
               >
                 AMA
               </Link>
-            </MenuItem>
-            <MenuItem
-              onClick={() => {
-                handleGovernanceMenuClose();
-              }}
-            >
-              <Typography
-                sx={{ cursor: 'pointer' }}
-                onClick={() => {
-                  router.push('/treasury');
-                }}
-              >
-                Treasury
-              </Typography>
             </MenuItem>
           </Menu>
         </Box>
