@@ -13,8 +13,10 @@ const SimpleProjectCard = ({ data, key }) => (
     <Box
       height={{ sm: '146px', xs: '124px' }}
       width="100%"
-      component={'img'}
-      src={data.banner}
+      sx={{
+        backgroundSize: 'cover',
+        backgroundImage: `url(${data.banner})`,
+      }}
     />
     <Box padding="10px 20px 20px 20px">
       <Box display="flex" alignItems="center" gap={2}>
@@ -56,7 +58,7 @@ const SimpleProjectCard = ({ data, key }) => (
         Buidlers
       </Typography>
       <Box display="flex" gap="10px">
-        {data.buidlers &&
+        {!!data.buidlers &&
           data.buidlers.map((buidler, index) => {
             return (
               <Link

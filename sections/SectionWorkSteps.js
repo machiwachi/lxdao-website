@@ -319,7 +319,7 @@ const SectionWorkSteps = ({ projects }) => {
           rightSection={
             <WorkDetailSection
               type="vote"
-              title="Guide LXDAO to the correct way!"
+              title="Guide LXDAO in the correct way!"
               data={proposalData}
               bottomButtonText="Create a vote"
               bottomButtonLink="https://snapshot.org/#/lxdao.eth"
@@ -331,7 +331,7 @@ const SectionWorkSteps = ({ projects }) => {
           rightBgColor="#10D7C4"
           stepIcon="/icons/buidling.svg"
           stepTitle="BUIDLING"
-          stepDes="buidling buidling buidling buidling buidling buidling buidling buidling buidling buidling"
+          stepDes="It's time to get your hands dirty! Find the project you are interested in, and let's work together!"
           rightSection={
             <Box>
               <Swiper
@@ -348,6 +348,31 @@ const SectionWorkSteps = ({ projects }) => {
                   );
                 })}
               </Swiper>
+              <Link
+                href="/buidlers"
+                target="_blank"
+                sx={{ textDecoration: 'none' }}
+              >
+                <Box
+                  marginTop={2}
+                  padding="22px"
+                  sx={{ backgroundColor: '#ffffff' }}
+                  borderRadius="6px"
+                  display="flex"
+                  justifyContent="center"
+                  gap={2}
+                >
+                  <Box component={'img'} src={'/icons/add.svg'} />
+                  <Typography
+                    variant="subtitle2"
+                    lineHeight="22px"
+                    fontWeight={800}
+                    color="#101828"
+                  >
+                    View all projects
+                  </Typography>
+                </Box>
+              </Link>
             </Box>
           }
         />
@@ -355,8 +380,8 @@ const SectionWorkSteps = ({ projects }) => {
           leftBgColor="#ffffff"
           rightBgColor="#36AFF9"
           stepIcon="/icons/success.svg"
-          stepTitle="Fund allocation"
-          stepDes="After the product is perfected, the fund is allocated according to the contribution.After the product is perfected, the fund is allocated according to the contributionAfter the product is perfected, the fund is allocated according to the contribution"
+          stepTitle="Rewards allocation"
+          stepDes="Sustainability is an essential part of LXDAO's mission. At this stage, due to the limited DAO treasury, we will try to apply for external grants, donations, and investments for projects first. If we cannot get them, we will use LXPoints as PoW for you for now and convert them into tokens or fiats later."
           rightSection={
             <Box
               component="img"
