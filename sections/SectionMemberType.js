@@ -4,7 +4,7 @@ import { Box, Typography } from '@mui/material';
 import Container from '@/components/Container';
 import MemberTypeCard from '@/components/MemberTypeCard';
 
-const SectionMemberType = ({ activeBuidlers }) => {
+const SectionMemberType = ({ activeBuidlers, memberType, setMemberType }) => {
   const activeBuidlerAmount = activeBuidlers?.length;
   const displayBuidlerAvatars = [];
   const displayBuidlers =
@@ -14,6 +14,7 @@ const SectionMemberType = ({ activeBuidlers }) => {
   displayBuidlers.forEach((buidler) => {
     displayBuidlerAvatars.push(buidler?.avatar);
   });
+
   return (
     <Box backgroundColor="#F9FAFB" width="100%">
       <Container
@@ -36,8 +37,28 @@ const SectionMemberType = ({ activeBuidlers }) => {
           display="flex"
           flexDirection={{ md: 'row', xs: 'column' }}
           gap="26px"
+          alignItems="stretch"
         >
           <MemberTypeCard
+            onClick={() => setMemberType('member')}
+            title="LX Community Member"
+            type="member"
+            description={
+              <>
+                LX Community members are the users or fans of the LXDAO
+                projects. Everyone can join LXDAO and become a community member.
+                As a community member, you can contribute to LXDAO and get
+                LXPoints rewards, you can also receive benefits from LXDAO
+                projects. For example, VIP privilege from projects, airdrop,
+                whitelist, early access, etc.
+              </>
+            }
+            selected={memberType === 'member'}
+            flex={1}
+            avatars={[]}
+          />
+          <MemberTypeCard
+            onClick={() => setMemberType('buidler')}
             title="LX Buidler"
             type="buidler"
             description={
@@ -45,33 +66,15 @@ const SectionMemberType = ({ activeBuidlers }) => {
                 LX Builders are the most important members of the LXDAO
                 community. They are responsible for buidling and maintaining the
                 LXDAO projects. Therefore, you need to submit an application.
-                And the Onboarding committee will review and vote on your
+                And the Onboarding Committee will review and vote on your
                 application. After onboarding, you will get a Buidler SBT Card
                 for free which cannot be transferred.
               </>
             }
             amount={activeBuidlerAmount}
-            selected={true}
+            selected={memberType === 'buidler'}
             flex={1}
             avatars={displayBuidlerAvatars}
-          />
-          <MemberTypeCard
-            title="LX Community Member"
-            type="member"
-            description={
-              <>
-                NOT OPENED YET. LX Community members are the users or fans of
-                the LXDAO projects. As a member of the community, members will
-                receive benefits from LXDAO projects , for example, VIP
-                privilege for free, airdrop, whitelist, early access, etc.
-                Anyone can purchase LX Community member NFT, a PFP NFT with
-                extra benefits. You can sell or transfer it later.
-              </>
-            }
-            selected={false}
-            flex={1}
-            disabled={true}
-            avatars={['', '', '', '']}
           />
         </Box>
       </Container>

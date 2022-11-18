@@ -75,11 +75,22 @@ const SectionApplicationSteps = () => {
             fontSize={{ sm: '48px', xs: '30px' }}
             fontWeight="600"
             color="#101828"
-            marginBottom={10}
+            marginBottom={4}
             textAlign="center"
             width={{ sm: 'auto', xs: '300px' }}
           >
             How to become a builder？
+          </Typography>
+          <Typography
+            variant="h6"
+            color="#101828"
+            marginBottom={10}
+            textAlign="center"
+            width={{ sm: '900px', xs: '300px' }}
+          >
+            Please show your passion and commitment to the community. It&apos;s
+            good to have some contributions first (get some LXPoints) to apply
+            to join.
           </Typography>
           <Box
             display="flex"
@@ -127,8 +138,10 @@ const SectionApplicationSteps = () => {
             textTransform="uppercase"
             href="https://tally.so/r/3Ek62r"
             target="_blank"
+            marginTop={4}
+            paddingY={4}
           >
-            <Button variant="gradient" marginTop={10} width="260px">
+            <Button variant="gradient" width="260px">
               Start your Application
             </Button>
           </Link>

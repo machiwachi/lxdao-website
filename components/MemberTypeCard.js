@@ -9,6 +9,7 @@ const MemberTypeCard = ({
   selected,
   disabled,
   avatars,
+  onClick = () => {},
 }) => {
   const DisplayAvatar = ({ img, type }) => {
     if (type === 'buidler') {
@@ -42,6 +43,7 @@ const MemberTypeCard = ({
 
   return (
     <Box
+      onClick={onClick}
       sx={{
         background: selected
           ? 'linear-gradient(to right, #2A76DF, #64CCEB, #4DCC9E)'
@@ -49,6 +51,8 @@ const MemberTypeCard = ({
         borderRadius: '13px',
         padding: '2px',
       }}
+      display="flex"
+      flex="1 1 50%"
     >
       <Box
         backgroundColor="#ffffff"
@@ -70,7 +74,7 @@ const MemberTypeCard = ({
             fontWeight="600"
             lineHeight="44px"
             textAlign="left"
-            color={amount ? '#101828' : '#667085'}
+            color="#101828"
           >
             {title}
           </Typography>
@@ -92,9 +96,8 @@ const MemberTypeCard = ({
         <Typography
           variant="body1"
           fontWeight="400"
-          lineHeight="36px"
+          lineHeight="28px"
           textAlign="left"
-          textTransform="capitalize"
           color="#667085"
         >
           {description}
@@ -108,21 +111,23 @@ const MemberTypeCard = ({
           <Box>
             <Box>
               {avatars?.length > 0 &&
-                avatars.map((avatar) => {
-                  return <DisplayAvatar img={avatar} type={type} />;
+                avatars.map((avatar, index) => {
+                  return <DisplayAvatar key={index} img={avatar} type={type} />;
                 })}
             </Box>
           </Box>
-          <Box textAlign="left">
-            <Typography variant="h6" fontWeight="600">
-              +{amount || '?'}
-            </Typography>
-            <Typography variant="body1" fontSize={{ md: '16px', xs: '14px' }}>
-              {amount
-                ? `${amount} ${type}${amount > 1 ? 's' : ''} have joined`
-                : 'Coming Soon'}{' '}
-            </Typography>
-          </Box>
+          {amount ? (
+            <Box textAlign="left">
+              <Typography variant="h6" fontWeight="600">
+                +{amount || '?'}
+              </Typography>
+              <Typography variant="body1" fontSize={{ md: '16px', xs: '14px' }}>
+                {amount
+                  ? `${amount} ${type}${amount > 1 ? 's' : ''} have joined`
+                  : 'Coming Soon'}{' '}
+              </Typography>
+            </Box>
+          ) : null}
         </Box>
       </Box>
     </Box>
