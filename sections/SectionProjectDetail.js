@@ -33,8 +33,6 @@ import Button from '@/components/Button';
 import Container from '@/components/Container';
 import BuidlerCard from '@/components/BuidlerCard';
 import Dialog from '@/components/Dialog';
-import DebouncedInput from '@/components/DebouncedInput';
-import SingleSelect from '@/components/Select';
 
 const useStyles = makeStyles({
   tooltip: {
@@ -263,7 +261,7 @@ const SectionProjectDetail = ({ projectId }) => {
             setAlert(res?.data?.message, 'error');
           }
         })
-        .catch((err) => {
+        .catch(() => {
           setInviteLoading(false);
           setAlert('something went wrong', 'error');
         });
@@ -283,7 +281,7 @@ const SectionProjectDetail = ({ projectId }) => {
           setShowAcceptButton(false);
         }
       })
-      .catch((err) => {
+      .catch(() => {
         setAcceptLoading(false);
         setAlert('something went wrong', 'error');
       });
@@ -311,7 +309,7 @@ const SectionProjectDetail = ({ projectId }) => {
       value: '300',
     },
   ];
-  const cardItem = (item, isRight) => {
+  const cardItem = (item) => {
     return (
       <Card
         sx={{
@@ -415,7 +413,6 @@ const SectionProjectDetail = ({ projectId }) => {
   return (
     <Container
       paddingY={{ md: '96px', xs: 8 }}
-      // paddingX={{ md: 32, xs: 8 }}
       textAlign="center"
       id="Project-Detail-Section"
       maxWidth="1200px"
@@ -441,7 +438,7 @@ const SectionProjectDetail = ({ projectId }) => {
             }}
           >
             <Link
-              href={project?.links.website || ''}
+              href={project?.links?.website || ''}
               target="_blank"
               sx={{
                 position: 'relative',
@@ -567,7 +564,6 @@ const SectionProjectDetail = ({ projectId }) => {
                 <Typography
                   fontSize={{ md: '14px', xs: '12px' }}
                   sx={{
-                    display: 'flex',
                     alignItems: 'center',
                     color: '#4DCC9E',
                     background: 'rgba(77, 204, 158, 0.1)',
