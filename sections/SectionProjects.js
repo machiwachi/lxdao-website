@@ -77,7 +77,7 @@ const SectionProjects = () => {
 
   return (
     <Container
-      paddingY={{ md: '96px', xs: 8 }}
+      paddingY={{ md: 12, xs: 8 }}
       textAlign="center"
       id="Projects-Section"
       maxWidth="1200px"

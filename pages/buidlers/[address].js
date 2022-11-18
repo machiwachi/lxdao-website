@@ -348,7 +348,7 @@ function BuidlerDetails(props) {
   };
 
   return (
-    <Container>
+    <Container paddingY={{ md: 12, xs: 8 }}>
       {address === record.address && record.status === 'PENDING' && (
         <Box marginTop={4}>
           <Alert severity="success">

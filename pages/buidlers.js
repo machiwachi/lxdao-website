@@ -223,7 +223,7 @@ export default function Home() {
 
   return (
     <Layout>
-      <Container paddingY={{ md: '96px', xs: 8 }} maxWidth={1216}>
+      <Container paddingY={{ md: 12, xs: 8 }} maxWidth={1216}>
         <Box
           display="flex"
           flexDirection="column"

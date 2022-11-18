@@ -357,7 +357,7 @@ const SectionProjectDetail = ({ projectId }) => {
   if (!project) return null;
   return (
     <Container
-      paddingY={{ md: '96px', xs: 8 }}
+      paddingY={{ md: 12, xs: 8 }}
       textAlign="center"
       id="Project-Detail-Section"
       maxWidth="1200px"
