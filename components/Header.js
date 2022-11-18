@@ -88,15 +88,6 @@ const Header = () => {
             </ListItemButton>
           </Link>
         </ListItem>
-        <ListItem disablePadding>
-          <ListItemButton
-            onClick={() => {
-              router.push('/treasury');
-            }}
-          >
-            <Typography sx={{ cursor: 'pointer' }}>Treasury</Typography>
-          </ListItemButton>
-        </ListItem>
       </List>
     </Box>
   );
@@ -196,20 +187,6 @@ const Header = () => {
               >
                 AMA
               </Link>
-            </MenuItem>
-            <MenuItem
-              onClick={() => {
-                handleGovernanceMenuClose();
-              }}
-            >
-              <Typography
-                sx={{ cursor: 'pointer' }}
-                onClick={() => {
-                  router.push('/treasury');
-                }}
-              >
-                Treasury
-              </Typography>
             </MenuItem>
           </Menu>
         </Box>
