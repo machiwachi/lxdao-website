@@ -5720,11 +5720,7 @@ react-hook-form@^7.34.2:
 
 react-image-crop@^10.0.8:
   version "10.0.8"
-<<<<<<< HEAD
-  resolved "https://registry.yarnpkg.com/react-image-crop/-/react-image-crop-10.0.8.tgz#a57400606cdf73ee3436a78fddc82ba6b71801ca"
-=======
   resolved "https://registry.npmmirror.com/react-image-crop/-/react-image-crop-10.0.8.tgz#a57400606cdf73ee3436a78fddc82ba6b71801ca"
->>>>>>> feat: query snapshot data
   integrity sha512-JyFYRs+KbZhab7/8bDQjZsha1y+ruIIFRQo6BJH+aTd7ua4wSOh+POe305HQV3DH6SxiWrma5UXTYpCiVvx9aw==
   dependencies:
     clsx "^1.2.1"

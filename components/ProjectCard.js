@@ -145,7 +145,6 @@ const ProjectCard = ({ project, index }) => {
                       borderRadius: '4px',
                       fontSize: { sx: '10px', md: '12px' },
                       border: 'none',
-                      fontSize: '12px',
                       color: '#36AFF9',
                       background: 'rgba(54, 175, 249, 0.1)',
                     }}
@@ -178,8 +177,8 @@ const ProjectCard = ({ project, index }) => {
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             display: '-webkit-box',
-            '-webkit-box-orient': 'vertical',
-            '-webkit-line-clamp': '3',
+            WebkitBoxOrient: 'vertical',
+            WebkitLineClamp: '3',
           }}
         >
           {project.description}

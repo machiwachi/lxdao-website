@@ -11,99 +11,100 @@ import SimpleProjectCard from '@/components/SimpleProjectCard';
 
 export const WorkDetailItem = ({ type, data, ...rest }) => {
   return (
-    <Box
-      display="flex"
-      justifyContent="space-between"
-      alignItems="center"
-      padding="22px"
-      sx={{ backgroundColor: '#ffffff' }}
-      borderRadius="6px"
-      gap="100px"
-      width={{ sm: '450px', xs: '350px' }}
-      {...rest}
+    <Link
+      href={
+        type === 'idea'
+          ? `https://forum.lxdao.io/t/${data?.slug}/${data.id}`
+          : `https://snapshot.org/#/lxdao.eth/proposal/${data.id}`
+      }
+      target="_blank"
+      sx={{ textDecoration: 'none' }}
     >
-      <Box display="flex" flexDirection="column" gap={1}>
-        <Typography
-          variant="body1"
-          lineHeight="19px"
-          fontWeight={600}
-          color="#101828"
-          width={{ sm: '280px', xs: '180px' }}
-          sx={{
-            textOverflow: 'ellipsis',
-            overflow: 'hidden',
-            whiteSpace: 'nowrap',
-            wordWrap: 'break-word',
-          }}
-        >
-          {data?.title}
-        </Typography>
-        <Box display="flex" gap={2}>
-          <Box display="flex" gap="3px">
-            <Typography
-              variant="body2"
-              lineHeight="17px"
-              fontWeight={400}
-              color="#666F85"
-            >
-              {type === 'idea' ? 'Views' : data?.choices[0]}
-            </Typography>
-            <Typography
-              variant="body2"
-              lineHeight="17px"
-              fontWeight={600}
-              color="#36AFF9"
-            >
-              {type === 'idea' ? data?.views : data?.scores[0]}
-            </Typography>
-          </Box>
-          <Box display="flex" gap="3px">
-            <Typography
-              variant="body2"
-              lineHeight="17px"
-              fontWeight={400}
-              color="#666F85"
-            >
-              {type === 'idea' ? 'Replies' : data?.choices[1]}
-            </Typography>
-            <Typography
-              variant="body2"
-              lineHeight="17px"
-              fontWeight={600}
-              color="#36AFF9"
-            >
-              {type === 'idea' ? data?.reply_count : data?.scores[1]}
-            </Typography>
-          </Box>
-          <Box display="flex" gap="3px">
-            <Typography
-              variant="body2"
-              lineHeight="17px"
-              fontWeight={400}
-              color="#666F85"
-            >
-              {type === 'idea' ? 'Likes' : data?.choices[2]}
-            </Typography>
-            <Typography
-              variant="body2"
-              lineHeight="17px"
-              fontWeight={600}
-              color="#36AFF9"
-            >
-              {type === 'idea' ? data?.like_count : data?.scores[2]}
-            </Typography>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        padding="22px"
+        sx={{ backgroundColor: '#ffffff' }}
+        borderRadius="6px"
+        gap="100px"
+        width={{ sm: '450px', xs: '350px' }}
+        {...rest}
+      >
+        <Box display="flex" flexDirection="column" gap={1}>
+          <Typography
+            variant="body1"
+            lineHeight="19px"
+            fontWeight={600}
+            color="#101828"
+            maxWidth={{ sm: '285px', xs: '180px' }}
+            sx={{
+              textOverflow: 'ellipsis',
+              overflow: 'hidden',
+              whiteSpace: 'nowrap',
+              wordWrap: 'break-word',
+            }}
+          >
+            {data?.title}
+          </Typography>
+          <Box display="flex" gap={2}>
+            <Box display="flex" gap="3px">
+              <Typography
+                variant="body2"
+                lineHeight="17px"
+                fontWeight={400}
+                color="#666F85"
+              >
+                {type === 'idea' ? 'Views' : data?.choices[0]}
+              </Typography>
+              <Typography
+                variant="body2"
+                lineHeight="17px"
+                fontWeight={600}
+                color="#36AFF9"
+              >
+                {type === 'idea' ? data?.views : data?.scores[0]}
+              </Typography>
+            </Box>
+            <Box display="flex" gap="3px">
+              <Typography
+                variant="body2"
+                lineHeight="17px"
+                fontWeight={400}
+                color="#666F85"
+              >
+                {type === 'idea' ? 'Replies' : data?.choices[1]}
+              </Typography>
+              <Typography
+                variant="body2"
+                lineHeight="17px"
+                fontWeight={600}
+                color="#36AFF9"
+              >
+                {type === 'idea' ? data?.reply_count : data?.scores[1]}
+              </Typography>
+            </Box>
+            <Box display="flex" gap="3px">
+              <Typography
+                variant="body2"
+                lineHeight="17px"
+                fontWeight={400}
+                color="#666F85"
+              >
+                {type === 'idea' ? 'Likes' : data?.choices[2]}
+              </Typography>
+              <Typography
+                variant="body2"
+                lineHeight="17px"
+                fontWeight={600}
+                color="#36AFF9"
+              >
+                {type === 'idea' ? data?.like_count : data?.scores[2]}
+              </Typography>
+            </Box>
           </Box>
         </Box>
-      </Box>
-      <Link
-        href={
-          type === 'idea'
-            ? `https://forum.lxdao.io/t/${data?.slug}/${data.id}`
-            : `https://snapshot.org/#/lxdao.eth/proposal/${data.id}`
-        }
-        target="_blank"
-        sx={{ textDecoration: 'none' }}
-      >
+
         <Typography
           variant="subtitle1"
           lineHeight="24px"
@@ -112,8 +113,8 @@ export const WorkDetailItem = ({ type, data, ...rest }) => {
         >
           →
         </Typography>
-      </Link>
-    </Box>
+      </Box>
+    </Link>
   );
 };
 
@@ -140,7 +141,7 @@ const WorkDetailSection = ({
         {title}
       </Typography>
       <Box display="flex" gap={2} flexDirection="column">
-        {data.length &&
+        {!!data.length &&
           data.map((item, index) => (
             <WorkDetailItem
               key={index}
@@ -298,14 +299,11 @@ const SectionWorkSteps = ({ projects }) => {
           rightBgColor="#10D7C4"
           stepIcon="/icons/idea.svg"
           stepTitle="IDEA"
-          stepDes="Initiate creative proposals in our community Initiate creative
-            proposals in our community.creative proposals in ou,creative
-            proposals in ouInitiate creative proposals in our community creative
-            proposals"
+          stepDes="Everything starts from an idea. It comes from the internal and external of the LXDAO Community, it can be proposed by developers, product designers, operations, musicians, and anyone, it can be small or big. Of course, it must be meaningful and valuable to Web3."
           rightSection={
             <WorkDetailSection
               type="idea"
-              title="In progress proposal"
+              title="Join the next big things!"
               data={ideaData}
               bottomButtonText="Post an idea"
               bottomButtonLink="https://forum.lxdao.io/tag/idea"
@@ -317,11 +315,11 @@ const SectionWorkSteps = ({ projects }) => {
           rightBgColor="#36AFF9"
           stepIcon="/icons/vote.svg"
           stepTitle="VOTE"
-          stepDes="Discussion Proposal Vote.Discussion Proposal Vote.Discussion Proposal Vote.Discussion Proposal Vote.Discussion Proposal Vote.Discussion Proposal Vote."
+          stepDes="Your vote is very important to LXDAO. To polish the idea and project, to make a fair rewards distribution, and to make sure LXDAO is doing something meaningful and valuable in Web3! (Only LXDAO Buidlers can vote)"
           rightSection={
             <WorkDetailSection
               type="vote"
-              title="Investigate voting records"
+              title="Guide LXDAO to the correct way!"
               data={proposalData}
               bottomButtonText="Create a vote"
               bottomButtonLink="https://snapshot.org/#/lxdao.eth"
