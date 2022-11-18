@@ -28,8 +28,8 @@ const WorkDetailItem = ({ title, data, ...rest }) => {
         </Typography>
         <Box display="flex" gap={2}>
           {data.length &&
-            data.map((item) => (
-              <Box display="flex" gap="3px">
+            data.map((item, index) => (
+              <Box display="flex" gap="3px" key={index}>
                 <Typography
                   variant="body2"
                   lineHeight="17px"

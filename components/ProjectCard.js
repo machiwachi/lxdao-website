@@ -212,11 +212,13 @@ const ProjectCard = ({ project, index }) => {
           >
             {project.buidlersOnProject.map((buidler, index) => {
               return (
-                <Link href={`/buidlers/${buidler?.buidler?.address}`}>
+                <Link
+                  key={index}
+                  href={`/buidlers/${buidler?.buidler?.address}`}
+                >
                   <Box
                     width={60}
                     height={60}
-                    key={index}
                     sx={{
                       position: 'relative',
                       border: '0.5px solid #D0D5DD',

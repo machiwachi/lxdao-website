@@ -59,12 +59,15 @@ const SimpleProjectCard = ({ data, key }) => (
         {data.buidlers &&
           data.buidlers.map((buidler, index) => {
             return (
-              <Link href={`/buidlers/${buidler.address}`} target="_blank">
+              <Link
+                key={index}
+                href={`/buidlers/${buidler.address}`}
+                target="_blank"
+              >
                 <Box
                   height={{ sm: '60px', xs: '40px' }}
                   width={{ sm: '60px', xs: '40px' }}
                   component={'img'}
-                  key={index}
                   src={buidler.avatar}
                   border="0.5px solid #D0D5DD"
                 />

@@ -167,7 +167,7 @@ const SectionBuidlers = ({ buidlers }) => {
         <Box display="flex" flexWrap="wrap" width={{ sm: '100%', xs: '100%' }}>
           {buidlers.map((buidler, index) => {
             return (
-              <>
+              <Box key={index}>
                 <BudilerTooltip
                   handleBuidlerCardHover={() => {
                     handleBuidlerHover(index);
@@ -184,7 +184,7 @@ const SectionBuidlers = ({ buidlers }) => {
                   active={activeBuidlerIndex === index}
                   display={{ md: 'none', xs: 'block' }}
                 />
-              </>
+              </Box>
             );
           })}
         </Box>

@@ -48,9 +48,14 @@ const NavList = ({ title, items }) => (
     <Typography variant="h6" lineHeight="58px" fontWeight={700}>
       {title}
     </Typography>
-    {items.map((item) => {
+    {items.map((item, index) => {
       return (
-        <Link target="_blank" href={item.link} sx={{ textDecoration: 'none' }}>
+        <Link
+          target="_blank"
+          href={item.link}
+          sx={{ textDecoration: 'none' }}
+          key={index}
+        >
           <Typography
             color="#646F7C"
             variant="body1"
@@ -134,9 +139,9 @@ const Footer = () => {
               color="#666F85"
             >
               LXDAO is an{' '}
-              <Typography display="inline" color="#3C7AFF">
+              <span display="inline" color="#3C7AFF">
                 R&D
-              </Typography>
+              </span>
               -focused DAO in Web3
             </Typography>
             <CommunityLinkGroup />

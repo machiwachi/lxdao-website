@@ -48,7 +48,7 @@ const SectionMission = ({ projectAmount, buidlerAmount }) => (
         flexDirection="column"
         gap={{ md: '64px', sm: '56px', xs: '56px' }}
       >
-        <Typography variant="subtitle1" lineHeight="60px" fontWeight={500}>
+        <Typography variant="subtitle1" lineHeight="30px" fontWeight={500}>
           Our Mission
         </Typography>
         <Typography

@@ -21,7 +21,7 @@ const SectionHomePageProjects = ({ projects }) => {
         </Typography>
         <Typography
           variant="subtitle1"
-          ineHeight="30px"
+          lineHeight="30px"
           fontWeight={400}
           color="#666F85"
           maxWidth="1216px"
