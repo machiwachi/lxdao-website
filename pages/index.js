@@ -8,7 +8,7 @@ import SectionWorkSteps from '@/sections/SectionWorkSteps';
 import SectionHomepageProjects from '@/sections/SectionHomepageProjects';
 import SectionBuidlers from '@/sections/SectionBuidlers';
 import SectionWorkingGroup from '@/sections/SectionWorkingGroup';
-import SectionActivities from '@/sections/SectionActivities';
+// import SectionActivities from '@/sections/SectionActivities';
 import SectionPartners from '@/sections/SectionPartners';
 
 import { scrollToSection } from '@/utils/utility';
@@ -44,7 +44,7 @@ export default function Home() {
 
   useEffect(async () => {
     try {
-      const res = await API.get('/buidler');
+      const res = await API.get('/buidler?per_page=100');
       const result = res?.data;
       if (result.status !== 'SUCCESS') {
         // error todo Muxin add common alert, wang teng design
@@ -73,7 +73,7 @@ export default function Home() {
       <SectionHomepageProjects projects={projects} />
       <SectionBuidlers buidlers={buidlers} />
       <SectionWorkingGroup />
-      <SectionActivities />
+      {/* <SectionActivities /> */}
       <SectionPartners />
     </Layout>
   );
