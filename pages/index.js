@@ -44,7 +44,7 @@ export default function Home() {
 
   useEffect(async () => {
     try {
-      const res = await API.get('/buidler');
+      const res = await API.get('/buidler?per_page=100');
       const result = res?.data;
       if (result.status !== 'SUCCESS') {
         // error todo Muxin add common alert, wang teng design

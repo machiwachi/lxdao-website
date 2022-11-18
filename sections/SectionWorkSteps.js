@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCards } from 'swiper';
 import { Box, Typography, Link } from '@mui/material';
+import API from '@/common/API';
 
 import SimpleProjectCard from '@/components/SimpleProjectCard';
 
@@ -24,33 +25,70 @@ const WorkDetailItem = ({ title, data, ...rest }) => {
           fontWeight={600}
           color="#101828"
         >
-          {title}
+          {data?.title}
         </Typography>
         <Box display="flex" gap={2}>
-          {data.length &&
-            data.map((item, index) => (
-              <Box display="flex" gap="3px" key={index}>
-                <Typography
-                  variant="body2"
-                  lineHeight="17px"
-                  fontWeight={400}
-                  color="#666F85"
-                >
-                  {item.name}
-                </Typography>
-                <Typography
-                  variant="body2"
-                  lineHeight="17px"
-                  fontWeight={600}
-                  color="#36AFF9"
-                >
-                  {item.number}
-                </Typography>
-              </Box>
-            ))}
+          <Box display="flex" gap="3px">
+            <Typography
+              variant="body2"
+              lineHeight="17px"
+              fontWeight={400}
+              color="#666F85"
+            >
+              Views
+            </Typography>
+            <Typography
+              variant="body2"
+              lineHeight="17px"
+              fontWeight={600}
+              color="#36AFF9"
+            >
+              {data?.views}
+            </Typography>
+          </Box>
+          <Box display="flex" gap="3px">
+            <Typography
+              variant="body2"
+              lineHeight="17px"
+              fontWeight={400}
+              color="#666F85"
+            >
+              Replies
+            </Typography>
+            <Typography
+              variant="body2"
+              lineHeight="17px"
+              fontWeight={600}
+              color="#36AFF9"
+            >
+              {data?.reply_count}
+            </Typography>
+          </Box>
+          <Box display="flex" gap="3px">
+            <Typography
+              variant="body2"
+              lineHeight="17px"
+              fontWeight={400}
+              color="#666F85"
+            >
+              Likes
+            </Typography>
+            <Typography
+              variant="body2"
+              lineHeight="17px"
+              fontWeight={600}
+              color="#36AFF9"
+            >
+              {data?.like_count}
+            </Typography>
+          </Box>
         </Box>
       </Box>
-      <Link href={data.link} target="_blank" sx={{ textDecoration: 'none' }}>
+      <Link
+        href={`https://forum.lxdao.io/t/${data?.slug}/${data.id}`}
+        target="_blank"
+        sx={{ textDecoration: 'none' }}
+      >
         <Typography
           variant="subtitle1"
           lineHeight="24px"
@@ -88,7 +126,7 @@ const WorkDetailSection = ({
       <Box display="flex" gap={2} flexDirection="column">
         {data.length &&
           data.map((item, index) => (
-            <WorkDetailItem key={index} title={item.content} data={item.data} />
+            <WorkDetailItem key={index} title={item.content} data={item} />
           ))}
       </Box>
       <Link
@@ -181,63 +219,6 @@ const WorkStep = ({
   );
 };
 
-const ideaData = [
-  {
-    content: 'LXDAO Member NFT PFP idea collect',
-    data: [
-      {
-        name: 'Views',
-        number: '0',
-      },
-      {
-        name: 'Repliies',
-        number: '0',
-      },
-      {
-        name: 'Activity',
-        number: '0',
-      },
-    ],
-    link: '',
-  },
-  {
-    content: 'Invest data site',
-    data: [
-      {
-        name: 'Views',
-        number: '0',
-      },
-      {
-        name: 'Repliies',
-        number: '0',
-      },
-      {
-        name: 'Activity',
-        number: '0',
-      },
-    ],
-    link: '',
-  },
-  {
-    content: 'LXDAO Member NFT PFP idea collect',
-    data: [
-      {
-        name: 'Views',
-        number: '0',
-      },
-      {
-        name: 'Repliies',
-        number: '0',
-      },
-      {
-        name: 'Activity',
-        number: '0',
-      },
-    ],
-    link: '',
-  },
-];
-
 const voteData = [
   {
     content: 'Investigate voting records',
@@ -295,168 +276,120 @@ const voteData = [
   },
 ];
 
-const projectData = [
-  {
-    number: '000',
-    name: 'GCLX',
-    description:
-      'MyFirstNFT is a non-profit instructional project for Web3 newbies. Get a FREE NFT while learning about Web3',
-    logo: '/images/projects/mfnft-logo.png',
-    banner: '/images/projects/mfnft-banner.png',
-    buidlers: [
-      {
-        avatar:
-          'https://cloudflare-ipfs.com/ipfs/bafkreibswn22ifwqcf246axiwhnrjzgbnvvodaiqntxc3u5xulzesp33fu',
-        address: '0x17c57bD297175e5711Ee3Daf045252B588f3162F',
-      },
-      {
-        avatar:
-          'https://cloudflare-ipfs.com/ipfs/bafkreic2j7csesqbd5eorfykeim7ejgdsjar4ddd63upisx5sagdfrbfuq',
-        address: '0x86DBe1f56dC3053b26522de1B38289E39AFCF884',
-      },
-    ],
-  },
-  {
-    number: '001',
-    name: 'My First NFT',
-    description:
-      'MyFirstNFT is a non-profit instructional project for Web3 newbies. Get a FREE NFT while learning about Web3',
-    logo: '/images/projects/mfnft-logo.png',
-    banner: '/images/projects/mfnft-banner.png',
-    buidlers: [
-      {
-        avatar:
-          'https://cloudflare-ipfs.com/ipfs/bafkreibswn22ifwqcf246axiwhnrjzgbnvvodaiqntxc3u5xulzesp33fu',
-        address: '0x17c57bD297175e5711Ee3Daf045252B588f3162F',
-      },
-      {
-        avatar:
-          'https://cloudflare-ipfs.com/ipfs/bafkreic2j7csesqbd5eorfykeim7ejgdsjar4ddd63upisx5sagdfrbfuq',
-        address: '0x86DBe1f56dC3053b26522de1B38289E39AFCF884',
-      },
-    ],
-  },
-  {
-    number: '002',
-    name: 'MetaPavo',
-    description:
-      'MyFirstNFT is a non-profit instructional project for Web3 newbies. Get a FREE NFT while learning about Web3',
-    logo: '/images/projects/mfnft-logo.png',
-    banner: '/images/projects/mfnft-banner.png',
-    buidlers: [
-      {
-        avatar:
-          'https://cloudflare-ipfs.com/ipfs/bafkreibswn22ifwqcf246axiwhnrjzgbnvvodaiqntxc3u5xulzesp33fu',
-        address: '0x17c57bD297175e5711Ee3Daf045252B588f3162F',
-      },
-      {
-        avatar:
-          'https://cloudflare-ipfs.com/ipfs/bafkreic2j7csesqbd5eorfykeim7ejgdsjar4ddd63upisx5sagdfrbfuq',
-        address: '0x86DBe1f56dC3053b26522de1B38289E39AFCF884',
-      },
-    ],
-  },
-];
+const SectionWorkSteps = ({ projects }) => {
+  const [ideaData, setIdeasData] = useState([]);
+  useEffect(() => {
+    API.get(`/community/ideas.json`)
+      .then((res) => {
+        if (res?.data?.data) {
+          setIdeasData(res?.data?.data);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
 
-const SectionWorkSteps = () => (
-  <Box width="100%">
-    <Box
-      textAlign="center"
-      marginTop={{ md: '112px', sm: '48px', xs: '48px' }}
-      marginBottom={{ md: '95px', sm: '48px', xs: '48px' }}
-    >
-      <Typography
-        variant="subtitle1"
-        lineHeight="60px"
-        fontWeight={500}
-        letterSpacing="-0.02em"
-        marginBottom={{ md: 0, sm: '20px', xs: '20px' }}
+  return (
+    <Box width="100%">
+      <Box
+        textAlign="center"
+        marginTop={{ md: '112px', sm: '48px', xs: '48px' }}
+        marginBottom={{ md: '95px', sm: '48px', xs: '48px' }}
       >
-        LXDAO & WORK
-      </Typography>
-      <Typography
-        variant="h2"
-        lineHeight={{ md: '68px', sm: '37px', xs: '37px' }}
-        fontWeight={800}
-      >
-        How does LXDAO work?
-      </Typography>
-    </Box>
-    <Box position="relative">
-      <WorkStep
-        leftBgColor="#F1F3F5"
-        rightBgColor="#10D7C4"
-        stepIcon="/icons/idea.svg"
-        stepTitle="IDEA"
-        stepDes="Initiate creative proposals in our community Initiate creative
+        <Typography
+          variant="subtitle1"
+          lineHeight="60px"
+          fontWeight={500}
+          letterSpacing="-0.02em"
+          marginBottom={{ md: 0, sm: '20px', xs: '20px' }}
+        >
+          LXDAO & WORK
+        </Typography>
+        <Typography
+          variant="h2"
+          lineHeight={{ md: '68px', sm: '37px', xs: '37px' }}
+          fontWeight={800}
+        >
+          How does LXDAO work?
+        </Typography>
+      </Box>
+      <Box position="relative">
+        <WorkStep
+          leftBgColor="#F1F3F5"
+          rightBgColor="#10D7C4"
+          stepIcon="/icons/idea.svg"
+          stepTitle="IDEA"
+          stepDes="Initiate creative proposals in our community Initiate creative
             proposals in our community.creative proposals in ou,creative
             proposals in ouInitiate creative proposals in our community creative
             proposals"
-        rightSection={
-          <WorkDetailSection
-            title="In progress proposal"
-            data={ideaData}
-            bottomButtonText="Post an idea"
-            bottomButtonLink=""
-          />
-        }
-      />
-      <WorkStep
-        leftBgColor="#ffffff"
-        rightBgColor="#36AFF9"
-        stepIcon="/icons/vote.svg"
-        stepTitle="VOTE"
-        stepDes="Discussion Proposal Vote.Discussion Proposal Vote.Discussion Proposal Vote.Discussion Proposal Vote.Discussion Proposal Vote.Discussion Proposal Vote."
-        rightSection={
-          <WorkDetailSection
-            title="Investigate voting records"
-            data={voteData}
-            bottomButtonText="Create a vote"
-            bottomButtonLink="https://snapshot.org/#/lxdao.eth"
-          />
-        }
-      />
-      <WorkStep
-        leftBgColor="#F1F3F5"
-        rightBgColor="#10D7C4"
-        stepIcon="/icons/buidling.svg"
-        stepTitle="BUIDLING"
-        stepDes="buidling buidling buidling buidling buidling buidling buidling buidling buidling buidling"
-        rightSection={
-          <Box>
-            <Swiper
-              effect={'cards'}
-              grabCursor={true}
-              modules={[EffectCards]}
-              className="mySwiper"
-            >
-              {projectData.map((data, index) => {
-                return (
-                  <SwiperSlide key={index}>
-                    <SimpleProjectCard data={data} />
-                  </SwiperSlide>
-                );
-              })}
-            </Swiper>
-          </Box>
-        }
-      />
-      <WorkStep
-        leftBgColor="#ffffff"
-        rightBgColor="#36AFF9"
-        stepIcon="/icons/success.svg"
-        stepTitle="Fund allocation"
-        stepDes="After the product is perfected, the fund is allocated according to the contribution.After the product is perfected, the fund is allocated according to the contributionAfter the product is perfected, the fund is allocated according to the contribution"
-        rightSection={
-          <Box
-            component="img"
-            width={{ sm: '450px', xs: '320px' }}
-            src="/images/workstep-success.png"
-          />
-        }
-      />
+          rightSection={
+            <WorkDetailSection
+              title="In progress proposal"
+              data={ideaData}
+              bottomButtonText="Post an idea"
+              bottomButtonLink="https://forum.lxdao.io/tag/idea"
+            />
+          }
+        />
+        <WorkStep
+          leftBgColor="#ffffff"
+          rightBgColor="#36AFF9"
+          stepIcon="/icons/vote.svg"
+          stepTitle="VOTE"
+          stepDes="Discussion Proposal Vote.Discussion Proposal Vote.Discussion Proposal Vote.Discussion Proposal Vote.Discussion Proposal Vote.Discussion Proposal Vote."
+          rightSection={
+            <WorkDetailSection
+              title="Investigate voting records"
+              data={voteData}
+              bottomButtonText="Create a vote"
+              bottomButtonLink="https://snapshot.org/#/lxdao.eth"
+            />
+          }
+        />
+        <WorkStep
+          leftBgColor="#F1F3F5"
+          rightBgColor="#10D7C4"
+          stepIcon="/icons/buidling.svg"
+          stepTitle="BUIDLING"
+          stepDes="buidling buidling buidling buidling buidling buidling buidling buidling buidling buidling"
+          rightSection={
+            <Box>
+              <Swiper
+                effect={'cards'}
+                grabCursor={true}
+                modules={[EffectCards]}
+                className="mySwiper"
+              >
+                {projects.map((data, index) => {
+                  return (
+                    <SwiperSlide key={index}>
+                      <SimpleProjectCard data={data} />
+                    </SwiperSlide>
+                  );
+                })}
+              </Swiper>
+            </Box>
+          }
+        />
+        <WorkStep
+          leftBgColor="#ffffff"
+          rightBgColor="#36AFF9"
+          stepIcon="/icons/success.svg"
+          stepTitle="Fund allocation"
+          stepDes="After the product is perfected, the fund is allocated according to the contribution.After the product is perfected, the fund is allocated according to the contributionAfter the product is perfected, the fund is allocated according to the contribution"
+          rightSection={
+            <Box
+              component="img"
+              width={{ sm: '450px', xs: '320px' }}
+              src="/images/workstep-success.png"
+            />
+          }
+        />
+      </Box>
     </Box>
-  </Box>
-);
+  );
+};
 
 export default SectionWorkSteps;
