@@ -358,8 +358,8 @@ function BuidlerDetails(props) {
           <Box
             display="flex"
             justifyContent="center"
-            marginTop={6}
-            marginBottom={2}
+            marginTop={4}
+            marginBottom={4}
           >
             <LXButton width="200px" disabled={true} variant="gradient">
               {minting ? 'Minting Builder Card...' : 'Mint Builder Card'}
@@ -381,8 +381,8 @@ function BuidlerDetails(props) {
           <Box
             display="flex"
             justifyContent="center"
-            marginTop={6}
-            marginBottom={2}
+            marginTop={4}
+            marginBottom={4}
           >
             <LXButton
               width="220px"
