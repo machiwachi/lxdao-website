@@ -127,24 +127,9 @@ const BudilerTooltip = ({
   );
 };
 
-const SectionBuidlers = () => {
-  const [buidlers, setBuidlers] = useState([]);
+const SectionBuidlers = ({ buidlers }) => {
   const [activeBuidlerIndex, setActiveBuidlerIndex] = useState(null);
   const router = useRouter();
-
-  useEffect(async () => {
-    try {
-      const res = await API.get('/buidler');
-      const result = res?.data;
-      if (result.status !== 'SUCCESS') {
-        // error todo Muxin add common alert, wang teng design
-        return;
-      }
-      setBuidlers(result?.data);
-    } catch (err) {
-      console.error(err);
-    }
-  }, []);
 
   const handleBuidlerHover = (index) => {
     setActiveBuidlerIndex(index);

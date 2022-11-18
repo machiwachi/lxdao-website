@@ -33,7 +33,7 @@ const DataBox = ({ number, name, link }) => (
   </Box>
 );
 
-const SectionMission = () => (
+const SectionMission = ({ projectAmount, buidlerAmount }) => (
   <Box
     sx={{ background: 'linear-gradient(90deg, #2A76DF 0%, #0FDBC2 100%)' }}
     width="100%"
@@ -63,9 +63,13 @@ const SectionMission = () => (
           flexDirection={{ md: 'row', sm: 'column', xs: 'column' }}
           gap={2}
         >
-          <DataBox number="12+" name="Buidlers" link="" />
-          <DataBox number="6+" name="Projects" link="" />
-          <DataBox number="16k+ USDC" name="Treasury" link="" />
+          <DataBox number={buidlerAmount} name="Buidlers" link="/buidlers" />
+          <DataBox number={projectAmount} name="Projects" link="/projects" />
+          <DataBox
+            number="14k+ USDC"
+            name="Treasury"
+            link="https://gnosis-safe.io/app/eth:0xB45e9F74D0a35fE1aa0B78feA03877EF96ae8dd2/home"
+          />
         </Box>
       </Box>
     </Container>

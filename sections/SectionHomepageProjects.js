@@ -1,28 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Box, Typography } from '@mui/material';
-
-import API from '@/common/API';
 
 import Button from '@/components/Button';
 import ProjectCard from '@/components/ProjectCard';
 
-const SectionHomePageProjects = () => {
-  const [projects, setProjects] = useState([]);
-
-  useEffect(() => {
-    API.get(`/project?page=1&per_page=12`)
-      .then((res) => {
-        if (res?.data?.status === 'SUCCESS') {
-          setProjects(res?.data?.data);
-        } else {
-          // todo Muxin common error handling, function invocation
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, []);
-
+const SectionHomePageProjects = ({ projects }) => {
   return (
     <Box sx={{ background: 'linear-gradient(#FFF4EA 0%, #FFFFFF 100%)' }}>
       <Box paddingY={{ md: '112px', xs: 8 }}>
