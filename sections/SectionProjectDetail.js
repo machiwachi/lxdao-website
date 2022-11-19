@@ -146,7 +146,7 @@ const SectionProjectDetail = ({ projectId }) => {
   }, [project]);
 
   const getBuidlersData = (project) => {
-    API.get(`/buidler?status=ACTIVE`)
+    API.get(`/buidler?status=ACTIVE&per_page=100`)
       .then((res) => {
         if (res?.data?.data) {
           const activeBuidlers = [];
