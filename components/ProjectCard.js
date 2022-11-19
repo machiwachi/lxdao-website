@@ -89,11 +89,12 @@ const ProjectCard = ({ project, index }) => {
                 width: '38px',
                 height: '16px',
                 fontSize: '12px',
-                lineHeight: '15px',
+                lineHeight: '16px',
                 color: '#fff',
                 position: 'absolute',
-                bottom: 2,
+                bottom: '2px',
                 left: '11px',
+                textAlign: 'center',
               }}
             >
               {'#' + project.number}
@@ -126,7 +127,7 @@ const ProjectCard = ({ project, index }) => {
                 variant="outlined"
                 sx={{
                   borderRadius: '4px',
-                  fontSize: { xs: '8px', md: '12px' },
+                  fontSize: '14px',
                   background: 'rgba(77, 204, 158, 0.1)',
                   color: '#4DCC9E',
                   border: 'none',
@@ -143,7 +144,7 @@ const ProjectCard = ({ project, index }) => {
                     variant="outlined"
                     sx={{
                       borderRadius: '4px',
-                      fontSize: { sx: '10px', md: '12px' },
+                      fontSize: '14px',
                       border: 'none',
                       color: '#36AFF9',
                       background: 'rgba(54, 175, 249, 0.1)',
@@ -248,6 +249,7 @@ const ProjectCard = ({ project, index }) => {
                           background: '#36AFF9',
                           width: '30px',
                           zIndex: 3,
+                          textAlign: 'center',
                         }}
                       >
                         PM

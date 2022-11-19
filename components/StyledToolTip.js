@@ -5,10 +5,11 @@ import { Tooltip } from '@mui/material';
 const useStyles = makeStyles({
   tooltip: {
     marginTop: '0px !important',
+    marginBottom: '0px !important',
     marginLeft: '0px !important',
-    background: '#ffffff',
+    backgroundColor: '#ffffff',
     borderRadius: '0',
-    width: '420px',
+    width: '420px !important',
     padding: '36px',
   },
 });

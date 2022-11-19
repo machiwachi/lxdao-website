@@ -87,11 +87,11 @@ const SectionHomePageProjects = ({ projects }) => {
               Buidl Your Own
             </Link>
           </CustomButton>
-          <CustomButton variant="gradient" width="200px" marginLeft={2}>
+          <CustomButton variant="outlined" width="200px" marginLeft={2}>
             <Link
               href="/projects"
               target="_blank"
-              sx={{ textDecoration: 'none', color: '#ffffff' }}
+              sx={{ textDecoration: 'none' }}
             >
               View all projects
             </Link>
