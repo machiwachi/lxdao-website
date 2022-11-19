@@ -12,6 +12,7 @@ function Tag(props) {
         wordBreak: 'break-all',
         background: props.background || 'rgba(102,111,133,0.1)',
         color: props.color || '#666F85',
+        fontSize: '14px',
       }}
     >
       {props.text}

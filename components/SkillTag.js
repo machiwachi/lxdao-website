@@ -20,7 +20,7 @@ function SkillTag(props) {
         wordBreak: 'break-all',
       }}
     >
-      <Typography>{props.text}</Typography>
+      <Typography fontSize="14px">{props.text}</Typography>
     </Box>
   );
 }

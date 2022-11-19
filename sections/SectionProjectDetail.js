@@ -811,15 +811,27 @@ const SectionProjectDetail = ({ projectId }) => {
                 >
                   Forum
                 </Typography>
-                <Box>
+                <Box display="flex" flexDirection="column" gap={2}>
                   {projectForumList &&
                     projectForumList.map((forum, index) => {
                       return (
-                        <WorkDetailItem type="idea" data={forum} key={index} />
+                        <WorkDetailItem
+                          width="100%"
+                          border="0.5px solid #D0D5DD"
+                          borderRadius="6px"
+                          type="idea"
+                          data={forum}
+                          key={index}
+                        />
                       );
                     })}
                 </Box>
-                <Button variant="outlined" width="200px" margin="0 auto">
+                <Button
+                  variant="outlined"
+                  width="200px"
+                  margin="0 auto"
+                  marginTop={3}
+                >
                   <Link
                     href={project?.links?.forum}
                     target="_blank"
