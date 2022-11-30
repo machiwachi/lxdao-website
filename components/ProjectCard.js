@@ -210,69 +210,76 @@ const ProjectCard = ({ project, index }) => {
             flexWrap="wrap"
             justifyContent="flex-start"
           >
-            {project.buidlersOnProject.map((buidler, index) => {
-              return (
-                <Link
-                  key={index}
-                  href={`/buidlers/${buidler?.buidler?.address}`}
-                >
-                  <Box
-                    width={60}
-                    height={60}
-                    sx={{
-                      position: 'relative',
-                      border: '0.5px solid #D0D5DD',
-                      borderRadius: '2px',
-                    }}
+            {project.buidlersOnProject
+              .sort((a, b) => {
+                if (a.projectRole.includes('Project Manager')) return -1;
+                if (b.projectRole.includes('Project Manager')) return 1;
+                return 0;
+              })
+              .map((buidler, index) => {
+                return (
+                  <Link
+                    key={index}
+                    href={`/buidlers/${buidler?.buidler?.address}`}
                   >
-                    <Avatar
-                      key={index}
-                      alt={buidler?.buidler?.name}
-                      src={buidler?.buidler?.avatar}
+                    <Box
+                      width={60}
+                      height={60}
                       sx={{
-                        cursor: 'pointer',
-                        position: 'absolute',
-                        zIndex: 2,
-                        width: '100%',
-                        height: '100%',
+                        position: 'relative',
+                        border: '0.5px solid #D0D5DD',
+                        borderRadius: '2px',
                       }}
-                    />
-                    {buidler?.projectRole.includes('Project Manager') && (
-                      <Typography
-                        position="absolute"
+                    >
+                      <Avatar
+                        key={index}
+                        alt={buidler?.buidler?.name}
+                        src={buidler?.buidler?.avatar}
+                        variant="square"
                         sx={{
-                          left: 0,
-                          top: 0,
-                          fontSize: '12px',
-                          lineHeight: '15px',
-                          color: '#fff',
-                          background: '#36AFF9',
-                          width: '30px',
-                          zIndex: 3,
-                          textAlign: 'center',
+                          cursor: 'pointer',
+                          position: 'absolute',
+                          zIndex: 2,
+                          width: '100%',
+                          height: '100%',
                         }}
-                      >
-                        PM
-                      </Typography>
-                    )}
-                    {buidler.status == 'PENDING' && (
-                      <Box
-                        position="absolute"
-                        width="100%"
-                        height="100%"
-                        sx={{
-                          background: 'rgba(0, 0, 0, 0.5)',
-                          borderRadius: '2px',
-                          top: 0,
-                          left: 0,
-                          zIndex: 3,
-                        }}
-                      ></Box>
-                    )}
-                  </Box>
-                </Link>
-              );
-            })}
+                      />
+                      {buidler?.projectRole.includes('Project Manager') && (
+                        <Typography
+                          position="absolute"
+                          sx={{
+                            left: 0,
+                            top: 0,
+                            fontSize: '12px',
+                            lineHeight: '15px',
+                            color: '#fff',
+                            background: '#36AFF9',
+                            width: '30px',
+                            zIndex: 3,
+                            textAlign: 'center',
+                          }}
+                        >
+                          PM
+                        </Typography>
+                      )}
+                      {buidler.status == 'PENDING' && (
+                        <Box
+                          position="absolute"
+                          width="100%"
+                          height="100%"
+                          sx={{
+                            background: 'rgba(0, 0, 0, 0.5)',
+                            borderRadius: '2px',
+                            top: 0,
+                            left: 0,
+                            zIndex: 3,
+                          }}
+                        ></Box>
+                      )}
+                    </Box>
+                  </Link>
+                );
+              })}
           </Box>
         </>
       ) : null}

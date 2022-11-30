@@ -586,84 +586,91 @@ const SectionProjectDetail = ({ projectId }) => {
                 justifyContent="space-between"
               >
                 <Box display="flex">
-                  {project.buidlersOnProject.map((buidler, index) => {
-                    return (
-                      <Tooltip
-                        key={index}
-                        title={<BuidlerCard buidlerInfo={buidler} />}
-                        open={buidler.showTooltip}
-                        PopperProps={{
-                          disablePortal: true,
-                        }}
-                        onClose={() =>
-                          handleDisplayBuidlerTooltip(buidler, 'close')
-                        }
-                        classes={{ tooltip: classes.tooltip }}
-                      >
-                        <Link href={`/buidlers/${buidler?.buidler?.address}`}>
-                          <Box
-                            width="60px"
-                            height="60px"
-                            marginRight="10px"
-                            position="relative"
-                            sx={{
-                              border: '0.5px solid #D0D5DD',
-                              borderRadius: '2px',
-                            }}
-                          >
-                            {buidler?.projectRole.includes(
-                              'Project Manager'
-                            ) && (
-                              <Typography
-                                position="absolute"
-                                sx={{
-                                  left: 0,
-                                  top: 0,
-                                  fontSize: '12px',
-                                  lineHeight: '15px',
-                                  color: '#fff',
-                                  background: '#36AFF9',
-                                  width: '30px',
-                                  zIndex: 3,
-                                }}
-                              >
-                                PM
-                              </Typography>
-                            )}
-                            <Avatar
-                              key={index}
-                              alt={buidler?.buidler?.name}
-                              src={buidler?.buidler?.avatar}
+                  {project.buidlersOnProject
+                    .sort((a, b) => {
+                      if (a.projectRole.includes('Project Manager')) return -1;
+                      if (b.projectRole.includes('Project Manager')) return 1;
+                      return 0;
+                    })
+                    .map((buidler, index) => {
+                      return (
+                        <Tooltip
+                          key={index}
+                          title={<BuidlerCard buidlerInfo={buidler} />}
+                          open={buidler.showTooltip}
+                          PopperProps={{
+                            disablePortal: true,
+                          }}
+                          onClose={() =>
+                            handleDisplayBuidlerTooltip(buidler, 'close')
+                          }
+                          classes={{ tooltip: classes.tooltip }}
+                        >
+                          <Link href={`/buidlers/${buidler?.buidler?.address}`}>
+                            <Box
+                              width="60px"
+                              height="60px"
+                              marginRight="10px"
+                              position="relative"
                               sx={{
-                                cursor: 'pointer',
-                                position: 'absolute',
-                                zIndex: 2,
-                                width: '100%',
-                                height: '100%',
+                                border: '0.5px solid #D0D5DD',
+                                borderRadius: '2px',
                               }}
-                              onMouseOver={() =>
-                                handleDisplayBuidlerTooltip(buidler, 'open')
-                              }
-                            />
-                            {buidler.status == 'PENDING' && (
-                              <Box
-                                position="absolute"
-                                width="100%"
-                                height="100%"
+                            >
+                              {buidler?.projectRole.includes(
+                                'Project Manager'
+                              ) && (
+                                <Typography
+                                  position="absolute"
+                                  sx={{
+                                    left: 0,
+                                    top: 0,
+                                    fontSize: '12px',
+                                    lineHeight: '15px',
+                                    color: '#fff',
+                                    background: '#36AFF9',
+                                    width: '30px',
+                                    zIndex: 3,
+                                  }}
+                                >
+                                  PM
+                                </Typography>
+                              )}
+                              <Avatar
+                                key={index}
+                                alt={buidler?.buidler?.name}
+                                src={buidler?.buidler?.avatar}
+                                variant="square"
                                 sx={{
-                                  background: 'rgba(0, 0, 0, 0.5)',
-                                  borderRadius: '2px',
-                                  top: 0,
-                                  left: 0,
-                                  zIndex: 3,
+                                  cursor: 'pointer',
+                                  position: 'absolute',
+                                  zIndex: 2,
+                                  width: '100%',
+                                  height: '100%',
                                 }}
-                              ></Box>
-                            )}
-                          </Box>
-                        </Link>
-                      </Tooltip>
-                    );
-                  })}
+                                onMouseOver={() =>
+                                  handleDisplayBuidlerTooltip(buidler, 'open')
+                                }
+                              />
+                              {buidler.status == 'PENDING' && (
+                                <Box
+                                  position="absolute"
+                                  width="100%"
+                                  height="100%"
+                                  sx={{
+                                    background: 'rgba(0, 0, 0, 0.5)',
+                                    borderRadius: '2px',
+                                    top: 0,
+                                    left: 0,
+                                    zIndex: 3,
+                                  }}
+                                ></Box>
+                              )}
+                            </Box>
+                          </Link>
+                        </Tooltip>
+                      );
+                    })}
                   {showInviteButton && !showInviteSearchButton && address && (
                     <Box
                       width="60px"
@@ -825,20 +832,20 @@ const SectionProjectDetail = ({ projectId }) => {
                       );
                     })}
                 </Box>
-                <Button
-                  variant="outlined"
-                  width="200px"
-                  margin="0 auto"
-                  marginTop={3}
+                <Link
+                  href={project?.links?.forum}
+                  target="_blank"
+                  sx={{ textDecoration: 'none', color: '#0D1320' }}
                 >
-                  <Link
-                    href={project?.links?.forum}
-                    target="_blank"
-                    sx={{ textDecoration: 'none', color: '#0D1320' }}
+                  <Button
+                    variant="outlined"
+                    width="200px"
+                    margin="0 auto"
+                    marginTop={3}
                   >
                     View More
-                  </Link>
-                </Button>
+                  </Button>
+                </Link>
               </Box>
             )}
           </Stack>
