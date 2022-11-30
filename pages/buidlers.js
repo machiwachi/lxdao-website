@@ -182,7 +182,7 @@ export default function Home() {
       params.push('role=' + trimmedRole);
     }
     params.push('page=' + (currentPage || current));
-    params.push('per_page=6');
+    params.push('per_page=9');
     query += params.join('&');
 
     if (!isAddMore) {

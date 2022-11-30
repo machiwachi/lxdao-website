@@ -8,8 +8,6 @@ import {
   Stack,
   Tooltip,
   Link,
-  CardContent,
-  Card,
   Avatar,
   Autocomplete,
   TextField,
@@ -88,6 +86,7 @@ const SectionProjectDetail = ({ projectId }) => {
     'Artist',
     'UI/UX Desinger',
     'Operation',
+    'Product Manager',
   ];
 
   const useAlert = () => useContext(AlertContext);
