@@ -731,6 +731,16 @@ function BuidlerDetails(props) {
                 ) : null}
 
                 {/* todo only show this button to Onboarding Committee */}
+                {address !== record.address && (
+                  <Divider
+                    sx={{
+                      width: '100%',
+                      marginTop: 2,
+                      marginBottom: 3,
+                      borderColor: '#E5E5E5',
+                    }}
+                  />
+                )}
                 {address && (
                   <LXButton
                     onClick={async () => {
@@ -745,7 +755,7 @@ function BuidlerDetails(props) {
                     }}
                     variant="outlined"
                   >
-                    Sync to IPFS (OB)
+                    Sync to IPFS <br /> (OB Available)
                   </LXButton>
                 )}
               </Box>
