@@ -11,7 +11,8 @@ import Tag from '@/components/Tag';
 import Skills from '@/components/Skills';
 import BuidlerContacts from '@/components/BuidlerContacts';
 import Button from '@/components/Button';
-import Masonry from '@mui/lab/Masonry';
+import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
+
 import { convertIpfsGateway } from '@/utils/utility';
 
 export function BuidlerCard(props) {
@@ -312,24 +313,21 @@ export default function Home() {
               </Typography>
             </Box>
           ) : (
-            <Box marginRight={-2}>
-              <Masonry
-                sx={{
-                  '&.MuiMasonry-root': {
-                    width: { md: '1216px', sm: '800px', xs: '368px' },
-                  },
-                }}
-                columns={{ xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
-                spacing={2}
+            <Box>
+              <ResponsiveMasonry
+                columnsCountBreakPoints={{ 0: 1, 600: 2, 900: 3 }}
               >
-                {list.map((item) => {
-                  return (
-                    <Grid key={item.id} item xs={12} sm={6} lg={4}>
-                      <BuidlerCard key={item.id} record={item} />
-                    </Grid>
-                  );
-                })}
-              </Masonry>
+                <Masonry gutter="16px">
+                  {list.map((item) => {
+                    return (
+                      <Grid key={item.id} item xs={12} sm={6} lg={4}>
+                        <BuidlerCard key={item.id} record={item} />
+                      </Grid>
+                    );
+                  })}
+                </Masonry>
+              </ResponsiveMasonry>
+
               <Box
                 marginTop={{ md: 6, xs: 3 }}
                 display="flex"
