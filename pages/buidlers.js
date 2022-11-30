@@ -203,7 +203,7 @@ export default function Home() {
       records.forEach((record) => {
         tempList.push(record);
       });
-      setHasMore(tempList.length === 6);
+      setHasMore(tempList.length === 9);
 
       isAddMore ? setList([...list, ...tempList]) : setList([...tempList]);
     } catch (err) {
