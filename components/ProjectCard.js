@@ -143,7 +143,7 @@ const ProjectCard = ({ project, index }) => {
                     label={tag}
                     variant="outlined"
                     sx={{
-                      borderRadius: '4px',
+                      borderRadius: '2px',
                       fontSize: '14px',
                       border: 'none',
                       color: '#36AFF9',
@@ -207,8 +207,9 @@ const ProjectCard = ({ project, index }) => {
           <Box
             display="flex"
             gap="10px"
-            flexWrap="wrap"
+            flexWrap="noWrap"
             justifyContent="flex-start"
+            overflow="hidden"
           >
             {project.buidlersOnProject
               .sort((a, b) => {
