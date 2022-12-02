@@ -120,25 +120,38 @@ export function BuidlerCard(props) {
             >
               Projects
             </Typography>
-            <Box display="flex">
+            <Box
+              display="flex"
+              gap="10px"
+              flexWrap="noWrap"
+              justifyContent="flex-start"
+              overflow="hidden"
+            >
               {record.projects
                 .filter((project) => project.status !== 'PENDING')
-                .map((project) => (
-                  <Box
-                    key={project.id}
-                    width="60px"
-                    height="60px"
-                    borderRadius="6px"
-                    overflow="hidden"
-                    border="0.5px solid #E5E5E5"
-                    marginRight={1.25}
+                .map((project, index) => (
+                  <Link
+                    key={index}
+                    href={`/projects/${project?.project?.number}`}
                   >
-                    <img
-                      style={{ display: 'block', width: 60 }}
-                      src={project.project?.logo || '/images/placeholder.jpeg'}
-                      alt=""
-                    />
-                  </Box>
+                    <Box
+                      key={project.id}
+                      width={60}
+                      height={60}
+                      sx={{
+                        border: '0.5px solid #D0D5DD',
+                        borderRadius: '2px',
+                      }}
+                    >
+                      <img
+                        style={{ display: 'block', width: '100%' }}
+                        src={
+                          project.project?.logo || '/images/placeholder.jpeg'
+                        }
+                        alt=""
+                      />
+                    </Box>
+                  </Link>
                 ))}
             </Box>
           </Box>

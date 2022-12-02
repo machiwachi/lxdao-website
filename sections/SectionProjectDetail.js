@@ -402,8 +402,8 @@ const SectionProjectDetail = ({ projectId }) => {
               <Typography
                 sx={{
                   position: 'absolute',
-                  left: '1px',
-                  bottom: '6px',
+                  left: 0,
+                  bottom: '6.5px',
                   background: '#36AFF9',
                   borderRadius: '2px',
                   fontSize: '12px',

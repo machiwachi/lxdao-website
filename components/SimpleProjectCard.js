@@ -58,24 +58,24 @@ const SimpleProjectCard = ({ data, key }) => (
         Buidlers
       </Typography>
       <Box display="flex" gap="10px">
-        {!!data.buidlers &&
-          data.buidlers.map((buidler, index) => {
-            return (
-              <Link
-                key={index}
-                href={`/buidlers/${buidler.address}`}
-                target="_blank"
-              >
-                <Box
-                  height={{ sm: '60px', xs: '40px' }}
-                  width={{ sm: '60px', xs: '40px' }}
-                  component={'img'}
-                  src={buidler.avatar}
-                  border="0.5px solid #D0D5DD"
-                />
-              </Link>
-            );
-          })}
+        {data?.buidlersOnProject?.map((buidler, index) => {
+          return (
+            <Link
+              key={index}
+              href={`/buidlers/${buidler?.buidler?.address}`}
+              target="_blank"
+            >
+              <Box
+                height={{ sm: '60px', xs: '40px' }}
+                width={{ sm: '60px', xs: '40px' }}
+                borderRadius="2px"
+                component={'img'}
+                src={buidler?.buidler?.avatar}
+                border="0.5px solid #D0D5DD"
+              />
+            </Link>
+          );
+        })}
       </Box>
     </Box>
   </Box>
