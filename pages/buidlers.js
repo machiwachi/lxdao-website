@@ -170,18 +170,34 @@ const roleNames = [
   'Onboarding Committee',
 ];
 
+let skillNames = [
+  'All',
+  'UI/UX Design',
+  'Project Management',
+  'Product Management',
+  'FrontEnd',
+  'FullStack',
+  'BackEnd',
+  'Operation',
+  'Solidity',
+  'Blockchain',
+  'Others',
+];
+
 export default function Home() {
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [list, setList] = useState([]);
   const [search, setSearch] = useState('');
   const [role, setRole] = useState('');
+  const [skill, setSkill] = useState('');
   const [current, setCurrent] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
   const searchList = async (
     search = '',
     role = '',
+    skill = '',
     currentPage = 0,
     isAddMore = false
   ) => {
@@ -189,11 +205,15 @@ export default function Home() {
     let params = [];
     const trimmedSearch = search.trim();
     const trimmedRole = role === 'All' ? '' : role.trim();
+    const trimmedSkill = skill === 'All' ? '' : skill.trim();
     if (trimmedSearch) {
       params.push('search=' + trimmedSearch);
     }
     if (trimmedRole) {
       params.push('role=' + trimmedRole);
+    }
+    if (trimmedSkill) {
+      params.push('skill=' + trimmedSkill);
     }
     params.push('page=' + (currentPage || current));
     params.push('per_page=9');
@@ -278,14 +298,13 @@ export default function Home() {
           </Button>
         </Box>
         <Grid marginTop={10} container spacing={2}>
-          <Grid item xs={2} />
           <Grid item xs={4}>
             <DebouncedInput
               value={search}
               onChange={(value) => {
                 setCurrent(1);
                 setSearch(value);
-                searchList(value, role, 1);
+                searchList(value, role, skill, 1);
               }}
               label="Search"
               placeholder="Search buidlers"
@@ -299,7 +318,19 @@ export default function Home() {
               onChange={(value) => {
                 setCurrent(1);
                 setRole(value);
-                searchList(search, value, 1);
+                searchList(search, value, skill, 1);
+              }}
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <SingleSelect
+              value={skill}
+              label="Skill"
+              dropdown={skillNames}
+              onChange={(value) => {
+                setCurrent(1);
+                setSkill(value);
+                searchList(search, role, value, 1);
               }}
             />
           </Grid>
@@ -356,7 +387,7 @@ export default function Home() {
                     variant="outlined"
                     onClick={() => {
                       setCurrent(current + 1);
-                      searchList(search, role, current + 1, true);
+                      searchList(search, role, skill, current + 1, true);
                     }}
                   >
                     View More
