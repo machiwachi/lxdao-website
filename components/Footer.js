@@ -129,6 +129,7 @@ const Footer = () => {
           >
             <Box
               width="147px"
+              height="58px"
               component={'img'}
               src={'/icons/lxdao-logo.svg'}
             />

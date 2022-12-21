@@ -396,7 +396,7 @@ function BuidlerDetails(props) {
           </Box>
         </Box>
       )}
-      {isBuddyChecking && (
+      {isBuddyChecking && record.status === 'PENDING' && (
         <Box marginTop={4}>
           <Alert severity="info">Enable Mint Access</Alert>
           <Box marginTop={2} marginBottom={2}>
@@ -708,7 +708,7 @@ function BuidlerDetails(props) {
                       variant="outlined"
                       disabled={syncing}
                     >
-                      {syncing ? 'Syncing...' : 'Sync'}
+                      {syncing ? 'Syncing...' : 'Sync on Chain'}
                     </LXButton>
                   )}
                 {address === record.address &&
@@ -729,54 +729,99 @@ function BuidlerDetails(props) {
                     Onboarding
                   </LXButton>
                 ) : null}
+
+                {/* todo only show this button to Onboarding Committee */}
+                {address !== record.address && (
+                  <Divider
+                    sx={{
+                      width: '100%',
+                      marginTop: 2,
+                      marginBottom: 3,
+                      borderColor: '#E5E5E5',
+                    }}
+                  />
+                )}
+                {address && (
+                  <LXButton
+                    onClick={async () => {
+                      const data = await API.post(
+                        `/buidler/${record.address}/uploadIPFS`
+                      );
+                      console.log('data: ', data);
+                      const result = data?.data;
+                      if (result.status === 'SUCCESS') {
+                        alert('Synced!');
+                      }
+                    }}
+                    variant="outlined"
+                  >
+                    Sync to IPFS <br /> (OB Available)
+                  </LXButton>
+                )}
               </Box>
             </Box>
           </Box>
-          <Box
-            marginTop={3}
-            border="0.5px solid #D0D5DD"
-            borderRadius="6px"
-            display="flex"
-            justifyContent="space-between"
-            padding="20px 24px"
-          >
-            <Box display="flex" alignItems="center">
-              Buddy
-            </Box>
-            {record.buddies?.length > 0 && (
+          {record.buddies?.length > 0 && (
+            <Link
+              target="_blank"
+              href={`/buidlers/${record.buddies[0].address}`}
+              sx={{
+                textDecoration: 'none',
+              }}
+            >
               <Box
-                width="80px"
-                height="80px"
+                marginTop={3}
                 border="0.5px solid #D0D5DD"
                 borderRadius="6px"
-                overflow="hidden"
+                display="flex"
+                justifyContent="space-between"
+                padding="20px 24px"
+              >
+                <Box display="flex" alignItems="center">
+                  Buddy
+                </Box>
+
+                <Box
+                  width="80px"
+                  height="80px"
+                  border="0.5px solid #D0D5DD"
+                  borderRadius="6px"
+                  overflow="hidden"
+                >
+                  <img
+                    style={{ display: 'block', width: 80, height: 80 }}
+                    src={record.buddies[0].avatar || '/images/placeholder.jpeg'}
+                    alt=""
+                  />
+                </Box>
+              </Box>
+            </Link>
+          )}
+          {record.status === 'ACTIVE' ? (
+            <Link
+              target="_blank"
+              href={`https://opensea.io/collection/lxdaobuidler`}
+              sx={{
+                textDecoration: 'none',
+              }}
+            >
+              <Box
+                marginTop={2}
+                width={{ lg: '300px', sm: 'auto', xs: '350px' }}
+                display="flex"
+                justifyContent="center"
               >
                 <img
-                  style={{ display: 'block', width: 80, height: 80 }}
-                  src={record.buddies[0].avatar || '/images/placeholder.jpeg'}
+                  crossOrigin="anonymous"
+                  style={{
+                    display: 'block',
+                    maxWidth: '100%',
+                  }}
+                  src={`${process.env.NEXT_PUBLIC_LXDAO_BACKEND_API}/buidler/${record.address}/card`}
                   alt=""
                 />
               </Box>
-            )}
-          </Box>
-
-          {record.status === 'ACTIVE' ? (
-            <Box
-              marginTop={2}
-              width={{ lg: '300px', sm: 'auto', xs: '350px' }}
-              display="flex"
-              justifyContent="center"
-            >
-              <img
-                crossOrigin="anonymous"
-                style={{
-                  display: 'block',
-                  maxWidth: '100%',
-                }}
-                src={`${process.env.NEXT_PUBLIC_LXDAO_BACKEND_API}/buidler/${record.address}/card`}
-                alt=""
-              />
-            </Box>
+            </Link>
           ) : null}
         </Box>
         {/* right senction */}
@@ -1094,7 +1139,8 @@ function BuidlerDetails(props) {
                     variant="body1"
                     fontWeight="400"
                   >
-                    You haven't joined the workgroup, go and choose one to join
+                    You haven&apos;t joined the workgroup, go and choose one to
+                    join
                   </Typography>
                   <LXButton size="small" variant="outlined">
                     <Link

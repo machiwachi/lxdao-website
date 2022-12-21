@@ -11,7 +11,8 @@ import Tag from '@/components/Tag';
 import Skills from '@/components/Skills';
 import BuidlerContacts from '@/components/BuidlerContacts';
 import Button from '@/components/Button';
-import Masonry from '@mui/lab/Masonry';
+import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
+
 import { convertIpfsGateway } from '@/utils/utility';
 
 export function BuidlerCard(props) {
@@ -119,25 +120,38 @@ export function BuidlerCard(props) {
             >
               Projects
             </Typography>
-            <Box display="flex">
+            <Box
+              display="flex"
+              gap="10px"
+              flexWrap="noWrap"
+              justifyContent="flex-start"
+              overflow="hidden"
+            >
               {record.projects
                 .filter((project) => project.status !== 'PENDING')
-                .map((project) => (
-                  <Box
-                    key={project.id}
-                    width="60px"
-                    height="60px"
-                    borderRadius="6px"
-                    overflow="hidden"
-                    border="0.5px solid #E5E5E5"
-                    marginRight={1.25}
+                .map((project, index) => (
+                  <Link
+                    key={index}
+                    href={`/projects/${project?.project?.number}`}
                   >
-                    <img
-                      style={{ display: 'block', width: 60 }}
-                      src={project.project?.logo || '/images/placeholder.jpeg'}
-                      alt=""
-                    />
-                  </Box>
+                    <Box
+                      key={project.id}
+                      width={60}
+                      height={60}
+                      sx={{
+                        border: '0.5px solid #D0D5DD',
+                        borderRadius: '2px',
+                      }}
+                    >
+                      <img
+                        style={{ display: 'block', width: '100%' }}
+                        src={
+                          project.project?.logo || '/images/placeholder.jpeg'
+                        }
+                        alt=""
+                      />
+                    </Box>
+                  </Link>
                 ))}
             </Box>
           </Box>
@@ -156,18 +170,34 @@ const roleNames = [
   'Onboarding Committee',
 ];
 
+let skillNames = [
+  'All',
+  'UI/UX Design',
+  'Project Management',
+  'Product Management',
+  'FrontEnd',
+  'FullStack',
+  'BackEnd',
+  'Operation',
+  'Solidity',
+  'Blockchain',
+  'Others',
+];
+
 export default function Home() {
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [list, setList] = useState([]);
   const [search, setSearch] = useState('');
   const [role, setRole] = useState('');
+  const [skill, setSkill] = useState('');
   const [current, setCurrent] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
   const searchList = async (
     search = '',
     role = '',
+    skill = '',
     currentPage = 0,
     isAddMore = false
   ) => {
@@ -175,14 +205,18 @@ export default function Home() {
     let params = [];
     const trimmedSearch = search.trim();
     const trimmedRole = role === 'All' ? '' : role.trim();
+    const trimmedSkill = skill === 'All' ? '' : skill.trim();
     if (trimmedSearch) {
       params.push('search=' + trimmedSearch);
     }
     if (trimmedRole) {
       params.push('role=' + trimmedRole);
     }
+    if (trimmedSkill) {
+      params.push('skill=' + trimmedSkill);
+    }
     params.push('page=' + (currentPage || current));
-    params.push('per_page=6');
+    params.push('per_page=9');
     query += params.join('&');
 
     if (!isAddMore) {
@@ -203,7 +237,7 @@ export default function Home() {
       records.forEach((record) => {
         tempList.push(record);
       });
-      setHasMore(tempList.length === 6);
+      setHasMore(tempList.length === 9);
 
       isAddMore ? setList([...list, ...tempList]) : setList([...tempList]);
     } catch (err) {
@@ -264,14 +298,13 @@ export default function Home() {
           </Button>
         </Box>
         <Grid marginTop={10} container spacing={2}>
-          <Grid item xs={2} />
           <Grid item xs={4}>
             <DebouncedInput
               value={search}
               onChange={(value) => {
                 setCurrent(1);
                 setSearch(value);
-                searchList(value, role, 1);
+                searchList(value, role, skill, 1);
               }}
               label="Search"
               placeholder="Search buidlers"
@@ -285,7 +318,19 @@ export default function Home() {
               onChange={(value) => {
                 setCurrent(1);
                 setRole(value);
-                searchList(search, value, 1);
+                searchList(search, value, skill, 1);
+              }}
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <SingleSelect
+              value={skill}
+              label="Skill"
+              dropdown={skillNames}
+              onChange={(value) => {
+                setCurrent(1);
+                setSkill(value);
+                searchList(search, role, value, 1);
               }}
             />
           </Grid>
@@ -312,24 +357,21 @@ export default function Home() {
               </Typography>
             </Box>
           ) : (
-            <Box marginRight={-2}>
-              <Masonry
-                sx={{
-                  '&.MuiMasonry-root': {
-                    width: { md: '1216px', sm: '800px', xs: '368px' },
-                  },
-                }}
-                columns={{ xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
-                spacing={2}
+            <Box>
+              <ResponsiveMasonry
+                columnsCountBreakPoints={{ 0: 1, 600: 2, 900: 3 }}
               >
-                {list.map((item) => {
-                  return (
-                    <Grid key={item.id} item xs={12} sm={6} lg={4}>
-                      <BuidlerCard key={item.id} record={item} />
-                    </Grid>
-                  );
-                })}
-              </Masonry>
+                <Masonry gutter="16px">
+                  {list.map((item) => {
+                    return (
+                      <Grid key={item.id} item xs={12} sm={6} lg={4}>
+                        <BuidlerCard key={item.id} record={item} />
+                      </Grid>
+                    );
+                  })}
+                </Masonry>
+              </ResponsiveMasonry>
+
               <Box
                 marginTop={{ md: 6, xs: 3 }}
                 display="flex"
@@ -345,7 +387,7 @@ export default function Home() {
                     variant="outlined"
                     onClick={() => {
                       setCurrent(current + 1);
-                      searchList(search, role, current + 1, true);
+                      searchList(search, role, skill, current + 1, true);
                     }}
                   >
                     View More

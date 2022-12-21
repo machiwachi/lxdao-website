@@ -16,7 +16,7 @@ function SkillTag(props) {
       sx={{
         background: levelColors[props.level],
         color: '#fff',
-        borderRadius: 1,
+        borderRadius: '2px',
         wordBreak: 'break-all',
       }}
     >
