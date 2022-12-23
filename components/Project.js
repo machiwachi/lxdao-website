@@ -41,8 +41,8 @@ function Project({ data }) {
                 variant="body2"
                 color="#666F85"
               >
-                Role:&emsp;
-              </Typography>
+                Role:
+              </Typography>{' '}
               {data.projectRole?.includes('Project Manager') ? (
                 <Typography
                   display="inline-block"

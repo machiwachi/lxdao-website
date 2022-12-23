@@ -57,8 +57,8 @@ function BuidlerContacts({ contacts }) {
                 color="primary"
                 sx={{
                   borderRadius: '100px',
-                  height: { sm: '48px', md: '36px' },
-                  width: { sm: '48px', md: '36px' },
+                  height: '36px',
+                  width: '36px',
                   padding: '8px',
                   background: '#FAFAFA',
                 }}

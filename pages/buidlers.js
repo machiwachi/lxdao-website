@@ -18,6 +18,7 @@ import { convertIpfsGateway } from '@/utils/utility';
 export function BuidlerCard(props) {
   const record = props.record;
   const skills = record.skills ? record.skills : [];
+  const simpleMode = props.simpleMode;
 
   return (
     <Box
@@ -37,8 +38,7 @@ export function BuidlerCard(props) {
       >
         <Box display="flex">
           <Box
-            flexBasis="80px"
-            flexShrink={0}
+            flex="0 0 80px"
             width="80px"
             height="80px"
             borderRadius="6px"
@@ -55,7 +55,9 @@ export function BuidlerCard(props) {
             />
           </Box>
           <Box
+            flex={1}
             display="flex"
+            width="calc(100% - 85px)"
             flexDirection="column"
             justifyContent="space-between"
           >
@@ -65,16 +67,19 @@ export function BuidlerCard(props) {
                 lineHeight: '24px',
                 fontWeight: '500',
                 color: '#000',
+                textOverflow: 'ellipsis',
+                overflow: 'hidden',
+                whiteSpace: 'nowrap',
               }}
             >
               {record.name}
             </Typography>
-            <Box height={{ sm: '48px', md: '36px' }}>
+            <Box height={{ sm: '48px', md: '36px' }} overflow="hidden">
               <BuidlerContacts contacts={record.contacts} />
             </Box>
           </Box>
         </Box>
-        {record.description && (
+        {!simpleMode && record.description && (
           <Box display="flex" flexWrap="wrap" marginTop={2}>
             <Typography
               variant="body1"
@@ -87,14 +92,14 @@ export function BuidlerCard(props) {
             </Typography>
           </Box>
         )}
-        {record.role.length > 0 ? (
+        {!simpleMode && record.role.length > 0 ? (
           <Box display="flex" flexWrap="wrap" marginTop={2}>
             {record.role.map((item) => {
               return <Tag key={item} text={item}></Tag>;
             })}
           </Box>
         ) : null}
-        {skills.length > 0 && (
+        {!simpleMode && skills.length > 0 && (
           <Box marginTop={2}>
             <Typography
               color="#101828"
@@ -109,53 +114,54 @@ export function BuidlerCard(props) {
             </Box>
           </Box>
         )}
-        {record.projects.filter((project) => project.status !== 'PENDING')
-          .length > 0 && (
-          <Box marginTop={2}>
-            <Typography
-              color="#101828"
-              fontWeight="600"
-              marginBottom={2}
-              variant="body1"
-            >
-              Projects
-            </Typography>
-            <Box
-              display="flex"
-              gap="10px"
-              flexWrap="noWrap"
-              justifyContent="flex-start"
-              overflow="hidden"
-            >
-              {record.projects
-                .filter((project) => project.status !== 'PENDING')
-                .map((project, index) => (
-                  <Link
-                    key={index}
-                    href={`/projects/${project?.project?.number}`}
-                  >
-                    <Box
-                      key={project.id}
-                      width={60}
-                      height={60}
-                      sx={{
-                        border: '0.5px solid #D0D5DD',
-                        borderRadius: '2px',
-                      }}
+        {!simpleMode &&
+          record.projects.filter((project) => project.status !== 'PENDING')
+            .length > 0 && (
+            <Box marginTop={2}>
+              <Typography
+                color="#101828"
+                fontWeight="600"
+                marginBottom={2}
+                variant="body1"
+              >
+                Projects
+              </Typography>
+              <Box
+                display="flex"
+                gap="10px"
+                flexWrap="noWrap"
+                justifyContent="flex-start"
+                overflow="hidden"
+              >
+                {record.projects
+                  .filter((project) => project.status !== 'PENDING')
+                  .map((project, index) => (
+                    <Link
+                      key={index}
+                      href={`/projects/${project?.project?.number}`}
                     >
-                      <img
-                        style={{ display: 'block', width: '100%' }}
-                        src={
-                          project.project?.logo || '/images/placeholder.jpeg'
-                        }
-                        alt=""
-                      />
-                    </Box>
-                  </Link>
-                ))}
+                      <Box
+                        key={project.id}
+                        width={60}
+                        height={60}
+                        sx={{
+                          border: '0.5px solid #D0D5DD',
+                          borderRadius: '2px',
+                        }}
+                      >
+                        <img
+                          style={{ display: 'block', width: '100%' }}
+                          src={
+                            project.project?.logo || '/images/placeholder.jpeg'
+                          }
+                          alt=""
+                        />
+                      </Box>
+                    </Link>
+                  ))}
+              </Box>
             </Box>
-          </Box>
-        )}
+          )}
       </Link>
     </Box>
   );

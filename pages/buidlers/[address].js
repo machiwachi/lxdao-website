@@ -36,6 +36,7 @@ import CopyText from '@/components/CopyText';
 import Container from '@/components/Container';
 import ProfileForm from '@/components/ProfileForm';
 import useBuidler from '@/components/useBuidler';
+import useMate from '@/components/useMate';
 import Skills from '@/components/Skills';
 import { formatAddress } from '@/utils/utility';
 import API from '@/common/API';
@@ -48,6 +49,7 @@ import Project from '@/components/Project';
 import { convertIpfsGateway, groupBy, stringCut } from '@/utils/utility';
 import LXButton from '@/components/Button';
 import WorkingGroupCard from '@/components/WorkingGroupCard';
+import { BuidlerCard } from '../buidlers';
 
 function totalLXPoints(record) {
   if (!record.lxPoints || !record.lxPoints.length) {
@@ -209,6 +211,7 @@ function BuidlerDetails(props) {
   const record = props.record;
   const { address, isConnected } = useAccount();
 
+  const [_loadingMates, mates] = useMate(record.address);
   const [_loading, currentViewer] = useBuidler(address);
   const { data: signer } = useSigner();
   const contract = useContract({
@@ -1160,65 +1163,29 @@ function BuidlerDetails(props) {
               )}
             </Box>
           </Box>
-          <Box marginTop={3} marginBottom={3}>
-            <Box>
-              <Typography
-                color="#101828"
-                fontWeight="600"
-                variant="body1"
-                marginBottom={2}
-              >
-                Mates
-              </Typography>
-            </Box>
-            <Box display="flex" marginTop={2}>
-              {record?.workingGroups?.length ? (
-                <Box width="100%">
-                  <Grid container spacing={3}>
-                    {record?.workingGroups?.length > 0 &&
-                      record?.workingGroups?.map((group, index) => {
-                        return (
-                          <WorkingGroupCard hasBorder key={index} {...group} />
-                        );
-                      })}
-                  </Grid>
-                </Box>
-              ) : (
-                <Box
-                  display="flex"
-                  flexDirection="column"
-                  width="100%"
-                  height="148px"
-                  alignItems="center"
-                  border="0.5px solid #D0D5DD"
-                  borderRadius="6px"
-                  padding={2}
+          {mates && mates.length > 0 && (
+            <Box marginTop={3} marginBottom={3}>
+              <Box>
+                <Typography
+                  color="#101828"
+                  fontWeight="600"
+                  variant="body1"
+                  marginBottom={2}
                 >
-                  <Typography
-                    marginTop={{ xs: 0, sm: 2 }}
-                    marginBottom={{ xs: '16px', sm: '21px' }}
-                    color="#D0D5DD"
-                    variant="body1"
-                    fontWeight="400"
-                  >
-                    You haven&apos;t joined the workgroup, go and choose one to
-                    join
-                  </Typography>
-                  <LXButton size="small" variant="outlined">
-                    <Link
-                      href={`https://lxdao.notion.site/95fde886aef24c9ca63b8bae95fa8456`}
-                      target="_blank"
-                      sx={{
-                        textDecoration: 'none',
-                      }}
-                    >
-                      View Working Group
-                    </Link>
-                  </LXButton>
-                </Box>
-              )}
+                  Mates
+                </Typography>
+              </Box>
+              <Box display="flex" marginTop={2}>
+                <Grid container spacing={2}>
+                  {mates.map((mate) => (
+                    <Grid key={mate.id} item xs={12} sm={6} lg={4}>
+                      <BuidlerCard simpleMode={true} record={mate} />
+                    </Grid>
+                  ))}
+                </Grid>
+              </Box>
             </Box>
-          </Box>
+          )}
         </Box>
       </Box>
 
