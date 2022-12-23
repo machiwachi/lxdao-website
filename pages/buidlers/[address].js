@@ -35,6 +35,7 @@ import Layout from '@/components/Layout';
 import CopyText from '@/components/CopyText';
 import Container from '@/components/Container';
 import ProfileForm from '@/components/ProfileForm';
+import useBuidler from '@/components/useBuidler';
 import Skills from '@/components/Skills';
 import { formatAddress } from '@/utils/utility';
 import API from '@/common/API';
@@ -207,6 +208,8 @@ function ipfsToBytes(ipfsURI) {
 function BuidlerDetails(props) {
   const record = props.record;
   const { address, isConnected } = useAccount();
+
+  const [_loading, currentViewer] = useBuidler(address);
   const { data: signer } = useSigner();
   const contract = useContract({
     ...contractInfo(),
@@ -741,23 +744,23 @@ function BuidlerDetails(props) {
                     }}
                   />
                 )}
-                {address && (
-                  <LXButton
-                    onClick={async () => {
-                      const data = await API.post(
-                        `/buidler/${record.address}/uploadIPFS`
-                      );
-                      console.log('data: ', data);
-                      const result = data?.data;
-                      if (result.status === 'SUCCESS') {
-                        alert('Synced!');
-                      }
-                    }}
-                    variant="outlined"
-                  >
-                    Sync to IPFS <br /> (OB Available)
-                  </LXButton>
-                )}
+                {currentViewer &&
+                  currentViewer.role.includes('Onboarding Committee') && (
+                    <LXButton
+                      onClick={async () => {
+                        const data = await API.post(
+                          `/buidler/${record.address}/uploadIPFS`
+                        );
+                        const result = data?.data;
+                        if (result.status === 'SUCCESS') {
+                          alert('Synced!');
+                        }
+                      }}
+                      variant="outlined"
+                    >
+                      Sync to IPFS
+                    </LXButton>
+                  )}
               </Box>
             </Box>
           </Box>
@@ -1157,6 +1160,65 @@ function BuidlerDetails(props) {
               )}
             </Box>
           </Box>
+          <Box marginTop={3} marginBottom={3}>
+            <Box>
+              <Typography
+                color="#101828"
+                fontWeight="600"
+                variant="body1"
+                marginBottom={2}
+              >
+                Mates
+              </Typography>
+            </Box>
+            <Box display="flex" marginTop={2}>
+              {record?.workingGroups?.length ? (
+                <Box width="100%">
+                  <Grid container spacing={3}>
+                    {record?.workingGroups?.length > 0 &&
+                      record?.workingGroups?.map((group, index) => {
+                        return (
+                          <WorkingGroupCard hasBorder key={index} {...group} />
+                        );
+                      })}
+                  </Grid>
+                </Box>
+              ) : (
+                <Box
+                  display="flex"
+                  flexDirection="column"
+                  width="100%"
+                  height="148px"
+                  alignItems="center"
+                  border="0.5px solid #D0D5DD"
+                  borderRadius="6px"
+                  padding={2}
+                >
+                  <Typography
+                    marginTop={{ xs: 0, sm: 2 }}
+                    marginBottom={{ xs: '16px', sm: '21px' }}
+                    color="#D0D5DD"
+                    variant="body1"
+                    fontWeight="400"
+                  >
+                    You haven&apos;t joined the workgroup, go and choose one to
+                    join
+                  </Typography>
+                  <LXButton size="small" variant="outlined">
+                    <Link
+                      href={`https://lxdao.notion.site/95fde886aef24c9ca63b8bae95fa8456`}
+                      target="_blank"
+                      sx={{
+                        textDecoration: 'none',
+                      }}
+                    >
+                      View Working Group
+                    </Link>
+                  </LXButton>
+                </Box>
+              )}
+            </Box>
+          </Box>
         </Box>
       </Box>
 
@@ -1207,40 +1269,19 @@ function BuidlerDetails(props) {
 // todo load builder on nodejs Muxin
 export default function Buidler() {
   const router = useRouter();
-  const [record, setRecord] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  const requestDetail = async (address) => {
-    setLoading(true);
-    try {
-      const data = await API.get(`/buidler/${address}`);
-      const result = data?.data;
-      if (result.status !== 'SUCCESS') {
-        // error
-        throw new Error('Cannot get buidler detail');
-      }
-      setRecord(result.data);
-    } catch (error) {
-      // todo Muxin common error
-      console.log(error);
-    }
-
-    setLoading(false);
-  };
-
   const address = router.query.address;
-  useEffect(() => {
-    if (address) {
-      requestDetail(address);
-    }
-  }, [address]);
+
+  const [loading, record, error, refresh] = useBuidler(address);
+
+  // if (loading) return <Layout>Loading...</Layout>;
+  if (loading) return null;
 
   return (
     <Layout>
-      {loading ? null : record ? (
+      {record ? (
         <BuidlerDetails
           refresh={() => {
-            requestDetail(address);
+            refresh();
           }}
           record={record}
         />
