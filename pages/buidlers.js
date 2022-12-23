@@ -262,7 +262,7 @@ export default function Home() {
   }, []);
 
   return (
-    <Layout>
+    <Layout title="LXDAO Buidlers | LXDAO">
       <Container paddingY={{ md: 12, xs: 8 }} maxWidth={1216}>
         <Box
           display="flex"

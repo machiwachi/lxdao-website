@@ -7,7 +7,7 @@ import SectionProjects from '@/sections/SectionProjects';
 export default function Projects() {
   return (
     <div>
-      <Layout>
+      <Layout title="LXDAO Projects | LXDAO">
         <SectionProjects />
       </Layout>
     </div>

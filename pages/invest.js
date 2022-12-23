@@ -7,7 +7,7 @@ import SectionFinancing from '@/sections/SectionFinancing';
 export default function Invest() {
   return (
     <div>
-      <Layout>
+      <Layout title="LXDAO Financing | LXDAO">
         <SectionFinancing />
       </Layout>
     </div>

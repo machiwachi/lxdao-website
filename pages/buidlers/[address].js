@@ -1244,7 +1244,7 @@ export default function Buidler() {
   if (loading) return null;
 
   return (
-    <Layout>
+    <Layout title={`${record && record.name} Buidler Profile | LXDAO`}>
       {record ? (
         <BuidlerDetails
           refresh={() => {

@@ -28,7 +28,7 @@ export default function JoinUs() {
 
   return (
     <div>
-      <Layout>
+      <Layout title="Join us | LXDAO">
         <SectionJoinUsHero maxWidth="1216px" />
         {/* todo Muxin later, tell people who we need */}
         <SectionMemberType

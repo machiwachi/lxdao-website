@@ -12,7 +12,7 @@ export default function Home() {
   if (!projectId) return null;
 
   return (
-    <Layout>
+    <Layout title={'LXDAO Project: ' + projectId + ' | LXDAO'}>
       <SectionProjectDetail projectId={projectId} />
     </Layout>
   );
