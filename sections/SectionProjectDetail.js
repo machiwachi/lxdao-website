@@ -107,6 +107,20 @@ const SectionProjectDetail = ({ projectId }) => {
   projectManagerName = projectManagerBudilder?.buidler?.name;
   projectManagerAddress = projectManagerBudilder?.buidler?.address;
 
+  const sentEmailToProjectManager = () => {
+    const subject = `Builder ${address} want to join ${project?.name}`;
+    const body = `<p>Agree: Go to the Project detail page to invite this buidler</p><p>Reject: Please email this buidler and explain why</p>`;
+    API.post(`/email/sendEmail`, {
+      to: 'ericlee.luck@gmail.com', // need rewrite by PM email
+      subject,
+      body,
+    })
+      .then((res) => {})
+      .catch(() => {
+        setAlert('something went wrong', 'error');
+      });
+  };
+
   const getProjectData = () => {
     API.get(`/project/${projectId}`)
       .then((res) => {
@@ -228,6 +242,7 @@ const SectionProjectDetail = ({ projectId }) => {
     const accessToken = getLocalStorage('accessToken');
     if (accessToken) {
       setOpenJoinDialog(true);
+      sentEmailToProjectManager();
     } else {
       setOpenJoinTooltip(true);
       setTimeout(() => {
@@ -856,14 +871,14 @@ const SectionProjectDetail = ({ projectId }) => {
         title="Want to join this project?"
         content={
           <Box>
-            Please contact with the Project Manager:{' '}
+            Email has been sent to PM, PM will contact you by email later
             <Link href={`/buidlers/${projectManagerAddress}`} target="_blank">
               {projectManagerName}
             </Link>
             .
           </Box>
         }
-        confirmText="OK"
+        confirmText="Confirm"
         variant="gradient"
         handleClose={() => {
           setOpenJoinDialog(false);
