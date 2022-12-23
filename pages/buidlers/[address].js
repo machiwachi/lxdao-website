@@ -1172,7 +1172,7 @@ function BuidlerDetails(props) {
                   variant="body1"
                   marginBottom={2}
                 >
-                  Mates
+                  My Buddies
                 </Typography>
               </Box>
               <Box display="flex" marginTop={2}>
