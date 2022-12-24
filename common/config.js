@@ -1,1 +1,1 @@
-export const discordLink = 'https://discord.gg/UBAmmtBs';
+export const discordLink = 'https://discord.lxdao.io';

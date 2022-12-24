@@ -97,7 +97,7 @@ const projects = [
       },
       {
         name: 'discord',
-        url: 'https://discord.com/invite/CMn25cfgtJ',
+        url: 'https://discord.lxdao.io',
       },
       {
         name: 'opensea',
@@ -220,7 +220,7 @@ const projects = [
       },
       {
         name: 'discord',
-        url: 'https://discord.com/invite/HtcDdPgJ7D',
+        url: 'https://discord.lxdao.io',
       },
       {
         name: 'opensea',
@@ -270,7 +270,7 @@ const projects = [
       },
       {
         name: 'discord',
-        url: 'https://discord.com/invite/eAN9TaAaSq',
+        url: 'https://discord.lxdao.io',
       },
       {
         name: 'opensea',

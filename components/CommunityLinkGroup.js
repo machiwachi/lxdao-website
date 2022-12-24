@@ -6,7 +6,7 @@ const CommunityLinkGroup = ({ marginBottom = 10 }) => (
     <Link href="https://twitter.com/LXDAO_Official" target="_blank">
       <Box component={'img'} src={'/icons/twitter-circle.svg'} />
     </Link>
-    <Link href="https://discord.com/invite/HtcDdPgJ7D" target="_blank">
+    <Link href="https://discord.lxdao.io" target="_blank">
       <Box component={'img'} src={'/icons/discord-circle.svg'} />
     </Link>
     <Link href="https://forum.lxdao.io/" target="_blank">
