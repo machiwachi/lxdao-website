@@ -70,7 +70,7 @@ const Header = () => {
             }}
           >
             <ListItemButton>
-              <Typography sx={{ cursor: 'pointer' }}>Weekly</Typography>
+              <Typography sx={{ cursor: 'pointer' }}>Weekly Update</Typography>
             </ListItemButton>
           </Link>
         </ListItem>
@@ -84,7 +84,7 @@ const Header = () => {
             }}
           >
             <ListItemButton>
-              <Typography sx={{ cursor: 'pointer' }}>AMA</Typography>
+              <Typography sx={{ cursor: 'pointer' }}>Monthly AMA</Typography>
             </ListItemButton>
           </Link>
         </ListItem>
@@ -169,7 +169,7 @@ const Header = () => {
                   textDecoration: 'none',
                 }}
               >
-                Weekly
+                Weekly Update
               </Link>
             </MenuItem>
             <MenuItem
@@ -185,7 +185,7 @@ const Header = () => {
                   textDecoration: 'none',
                 }}
               >
-                AMA
+                Monthly AMA
               </Link>
             </MenuItem>
           </Menu>

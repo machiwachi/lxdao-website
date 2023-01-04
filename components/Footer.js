@@ -116,6 +116,18 @@ const Footer = () => {
                     name: 'Notion',
                     link: 'https://lxdao.notion.site/',
                   },
+                  {
+                    name: 'Snapshot',
+                    link: 'https://snapshot.org/#/lxdao.eth',
+                  },
+                  {
+                    name: 'Weekly Update',
+                    link: 'https://forum.lxdao.io/c/governance/weekly/11',
+                  },
+                  {
+                    name: 'Monthly AMA',
+                    link: 'https://forum.lxdao.io/c/governance/monthly-ama/12',
+                  },
                 ]}
               />
             </Grid>
