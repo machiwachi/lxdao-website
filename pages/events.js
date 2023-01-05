@@ -4,14 +4,25 @@ import React from 'react';
 export default function Events() {
   return (
     <div>
+      <h3>
+        Subscribe calendar:{' '}
+        <a
+          href="https://calendar.google.com/calendar/u/0?cid=bHhkYW8ub2ZmaWNpYWxAZ21haWwuY29t"
+          target="_blank"
+          rel="noreferrer"
+        >
+          https://calendar.google.com/calendar/u/0?cid=bHhkYW8ub2ZmaWNpYWxAZ21haWwuY29t
+        </a>
+      </h3>
       <iframe
-        src="https://outlook.office365.com/calendar/published/d831b3ca3fac44ef82097e29f76ad7fa@lxdao.io/28ac6994386049198bf6eee4314f31525661633157997162338/calendar.html"
+        src="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23ffffff&ctz=Antarctica%2FTroll&showTz=1&src=bHhkYW8ub2ZmaWNpYWxAZ21haWwuY29t&color=%23039BE5"
         style={{
           border: '0px #ffffff none',
         }}
-        frameborder="1"
+        frameborder="0"
         width="100%"
         height="900px"
+        scrolling="no"
       ></iframe>
     </div>
   );
