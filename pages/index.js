@@ -18,6 +18,7 @@ export default function Home() {
   const [projects, setProjects] = useState([]);
   const [latest3Projects, setLatest3Projects] = useState([]);
   const [buidlers, setBuidlers] = useState([]);
+  const [activeBuidlerAmount, setActiveBuidlerAmount] = useState(0);
 
   const router = useRouter();
   const scrollToSectionName = router?.query?.scrollToSection;
@@ -50,7 +51,13 @@ export default function Home() {
         // error todo Muxin add common alert, wang teng design
         return;
       }
-      setBuidlers(result?.data);
+      if (result?.data) {
+        setBuidlers(result?.data);
+        const activeBuidlersNumber = result?.data.filter(
+          (buidler) => buidler.status === 'ACTIVE'
+        )?.length;
+        setActiveBuidlerAmount(activeBuidlersNumber);
+      }
     } catch (err) {
       console.error(err);
     }
@@ -67,7 +74,7 @@ export default function Home() {
       <SectionHero />
       <SectionMission
         projectAmount={projects.length}
-        buidlerAmount={buidlers.length}
+        buidlerAmount={realBuidlersAmount}
       />
       <SectionWorkSteps projects={latest3Projects} />
       <SectionHomepageProjects projects={projects} />
