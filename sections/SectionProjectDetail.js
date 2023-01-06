@@ -32,6 +32,7 @@ import Container from '@/components/Container';
 import BuidlerCard from '@/components/BuidlerCard';
 import Dialog from '@/components/Dialog';
 import { WorkDetailItem } from '@/sections/SectionWorkSteps';
+import showMessage from '@/components/showMessage';
 
 const useStyles = makeStyles({
   tooltip: {
@@ -107,17 +108,22 @@ const SectionProjectDetail = ({ projectId }) => {
   projectManagerName = projectManagerBudilder?.buidler?.name;
   projectManagerAddress = projectManagerBudilder?.buidler?.address;
 
-  const sentEmailToProjectManager = () => {
+  const sentEmailToProjectManager = (targetEmailAddress) => {
     const subject = `Builder ${address} want to join ${project?.name}`;
     const body = `<p>Agree: Go to the Project detail page to invite this buidler</p><p>Reject: Please email this buidler and explain why</p>`;
     API.post(`/email/sendEmail`, {
-      to: 'ericlee.luck@gmail.com', // need rewrite by PM email
+      to: targetEmailAddress, // need rewrite by PM email
       subject,
       body,
     })
       .then((res) => {})
-      .catch(() => {
-        setAlert('something went wrong', 'error');
+      .catch((err) => {
+        // setAlert('something went wrong', 'error');
+        showMessage({
+          type: 'error',
+          title: 'Failed to send email to PM',
+          body: err.message,
+        });
       });
   };
 
@@ -242,7 +248,8 @@ const SectionProjectDetail = ({ projectId }) => {
     const accessToken = getLocalStorage('accessToken');
     if (accessToken) {
       setOpenJoinDialog(true);
-      sentEmailToProjectManager();
+      const projectManagerAddress = 'ericlee.luck@gmail.com'; // need replace the PM Email address
+      sentEmailToProjectManager(projectManagerAddress);
     } else {
       setOpenJoinTooltip(true);
       setTimeout(() => {
