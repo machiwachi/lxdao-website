@@ -86,7 +86,7 @@ const SectionApplicationSteps = () => {
             color="#101828"
             marginBottom={10}
             textAlign="center"
-            width={{ sm: '900px', xs: '300px' }}
+            width={{ md: '900px', sm: '600px', xs: '300px' }}
           >
             Please show your passion and commitment to the community. It&apos;s
             good to have some contributions first (get some LXPoints) to apply
