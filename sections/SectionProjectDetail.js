@@ -110,7 +110,10 @@ const SectionProjectDetail = ({ projectId }) => {
 
   const sentEmailToProjectManager = (targetEmailAddress) => {
     const subject = `Builder ${address} want to join ${project?.name}`;
-    const body = `<p>Agree: Go to the Project detail page to invite this buidler</p><p>Reject: Please email this buidler and explain why</p>`;
+    const body = `<p>There is a request from Builder ${address} to join ${project?.name}, please review it, if it passes, please invite the buidler to join the project on the details page of project, if it does not pass, please contact the buidler and explain the reasons.</p>
+    <p>This is an official email from <a href="https://lxdao.io">LXDAO</a>.</p>
+    <p>Kind Regards,</p>
+    <p>LXDAO</p>`;
     API.post(`/email/sendEmail`, {
       to: targetEmailAddress, // need rewrite by PM email
       subject,
