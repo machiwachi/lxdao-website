@@ -83,16 +83,18 @@ const SectionHomepageHero = () => {
             Web3 will be used by a billion people in a decade.
           </Typography>
         </Box>
-        <Button
-          variant="gradient"
-          width="180px"
-          marginBottom={2}
-          onClick={() => {
-            router.push('/joinus');
+        <Link
+          href={`/joinus`}
+          color="#ffffff"
+          sx={{
+            textDecoration: 'none',
           }}
         >
-          JOIN US
-        </Button>
+          <Button variant="gradient" width="180px" marginBottom={2}>
+            JOIN US
+          </Button>
+        </Link>
+
         <CommunityLinkGroup />
         {/* <ActivityNotification /> */}
       </Box>
