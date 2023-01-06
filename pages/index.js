@@ -74,7 +74,7 @@ export default function Home() {
       <SectionHero />
       <SectionMission
         projectAmount={projects.length}
-        buidlerAmount={realBuidlersAmount}
+        buidlerAmount={activeBuidlerAmount}
       />
       <SectionWorkSteps projects={latest3Projects} />
       <SectionHomepageProjects projects={projects} />
