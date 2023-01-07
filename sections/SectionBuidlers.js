@@ -188,16 +188,21 @@ const SectionBuidlers = ({ buidlers }) => {
             );
           })}
         </Box>
-        <Button
-          variant="gradient"
-          width="200px"
-          marginTop={{ md: '96px', xs: '27px' }}
-          onClick={() => {
-            router.push('/joinus');
+        <Link
+          href={`/joinus`}
+          color="#ffffff"
+          sx={{
+            textDecoration: 'none',
           }}
         >
-          Join Us
-        </Button>
+          <Button
+            variant="gradient"
+            width="200px"
+            marginTop={{ md: '96px', xs: '27px' }}
+          >
+            Join Us
+          </Button>
+        </Link>
       </Container>
     </Box>
   );

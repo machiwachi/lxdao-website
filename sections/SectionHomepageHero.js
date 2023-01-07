@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import styled, { keyframes } from 'styled-components';
 import { Box, Typography, Link } from '@mui/material';
 
@@ -33,6 +34,7 @@ const HightlightText = styled.span`
 `;
 
 const SectionHomepageHero = () => {
+  const router = useRouter();
   const Title = () => {
     return (
       <Box marginTop="112px">
@@ -81,17 +83,18 @@ const SectionHomepageHero = () => {
             Web3 will be used by a billion people in a decade.
           </Typography>
         </Box>
-        <Button variant="gradient" width="180px" marginBottom={2}>
-          <Link
-            href={`/joinus`}
-            color="#ffffff"
-            sx={{
-              textDecoration: 'none',
-            }}
-          >
+        <Link
+          href={`/joinus`}
+          color="#ffffff"
+          sx={{
+            textDecoration: 'none',
+          }}
+        >
+          <Button variant="gradient" width="180px" marginBottom={2}>
             JOIN US
-          </Link>
-        </Button>
+          </Button>
+        </Link>
+
         <CommunityLinkGroup />
         {/* <ActivityNotification /> */}
       </Box>

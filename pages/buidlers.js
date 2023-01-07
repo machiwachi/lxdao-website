@@ -291,17 +291,17 @@ export default function Home() {
               together!
             </Typography>
           </Box>
-          <Button variant="gradient" width="200px" marginBottom={2}>
-            <Link
-              href={`/joinus`}
-              color="#ffffff"
-              sx={{
-                textDecoration: 'none',
-              }}
-            >
+          <Link
+            href={`/joinus`}
+            color="#ffffff"
+            sx={{
+              textDecoration: 'none',
+            }}
+          >
+            <Button variant="gradient" width="200px" marginBottom={2}>
               JOIN US
-            </Link>
-          </Button>
+            </Button>
+          </Link>
         </Box>
         <Grid marginTop={10} container spacing={2}>
           <Grid item xs={4}>
