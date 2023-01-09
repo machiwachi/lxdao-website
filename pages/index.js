@@ -65,7 +65,7 @@ export default function Home() {
 
   useEffect(() => {
     if (projects.length > 0) {
-      setLatest3Projects(projects.slice(projects.length - 3));
+      setLatest3Projects(projects.slice(projects.length - 3).reverse());
     }
   }, [projects]);
 

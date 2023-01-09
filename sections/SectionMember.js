@@ -19,7 +19,7 @@ const SectionApplicationSteps = () => {
             fontSize={{ sm: '48px', xs: '30px' }}
             fontWeight="600"
             color="#101828"
-            marginBottom={4}
+            marginBottom={8}
             textAlign="center"
             width={{ sm: 'auto', xs: '300px' }}
           >
@@ -27,45 +27,40 @@ const SectionApplicationSteps = () => {
           </Typography>
           <Typography
             variant="h6"
-            color="#101828"
+            color="#667085"
             textAlign="center"
-            maxWidth={{ sm: '700px', xs: '300px' }}
+            marginBottom={8}
+            maxWidth={{ md: '1200px', sm: '700px', xs: '300px' }}
           >
             Our main community is on Discord, we use Discord for chatting,
-            events, and notifications.
+            events, and notifications. We also have a Forum for formal public
+            discussion, soft proposals, sharing, etc.
           </Typography>
-          <Link
-            sx={{ textDecoration: 'none' }}
-            textTransform="uppercase"
-            href="https://discord.lxdao.io"
-            target="_blank"
-            paddingY={4}
-            marginBottom={4}
-          >
-            <Button variant="gradient" width="260px">
-              Join the Discord
-            </Button>
-          </Link>
-          <Typography
-            variant="h6"
-            color="#101828"
-            textAlign="center"
-            maxWidth={{ sm: '700px', xs: '300px' }}
-          >
-            We also have a Forum for formal public discussion, soft proposals,
-            sharing, etc.
-          </Typography>
-          <Link
-            sx={{ textDecoration: 'none' }}
-            textTransform="uppercase"
-            href="https://forum.lxdao.io/"
-            target="_blank"
-            paddingY={4}
-          >
-            <Button variant="gradient" width="260px">
-              Open the Forum
-            </Button>
-          </Link>
+          <Box display="flex" flexDirection="row">
+            <Link
+              sx={{ textDecoration: 'none' }}
+              textTransform="uppercase"
+              href="https://discord.lxdao.io"
+              target="_blank"
+              paddingY={4}
+              marginRight="20px"
+            >
+              <Button variant="gradient" width="260px">
+                Join the Discord
+              </Button>
+            </Link>
+            <Link
+              sx={{ textDecoration: 'none' }}
+              textTransform="uppercase"
+              href="https://forum.lxdao.io/"
+              target="_blank"
+              paddingY={4}
+            >
+              <Button variant="outlined" width="210px">
+                Open the Forum
+              </Button>
+            </Link>
+          </Box>
         </Box>
       </Container>
     </Box>

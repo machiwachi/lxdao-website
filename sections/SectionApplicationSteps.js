@@ -83,7 +83,7 @@ const SectionApplicationSteps = () => {
           </Typography>
           <Typography
             variant="h6"
-            color="#101828"
+            color="#667085"
             marginBottom={10}
             textAlign="center"
             width={{ md: '900px', sm: '600px', xs: '300px' }}
