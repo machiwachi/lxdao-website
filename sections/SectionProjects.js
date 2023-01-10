@@ -60,7 +60,7 @@ const SectionProjects = () => {
       records.forEach((record) => {
         tempList.push(record);
       });
-      setHasMore(tempList.length === 6);
+      setHasMore(tempList.length === 9);
 
       isAddMore
         ? setProjects([...projects, ...tempList])
