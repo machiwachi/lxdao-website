@@ -2,16 +2,6 @@ import {
   Box,
   Container,
   Typography,
-  Input,
-  InputAdornment,
-  Button,
-  Grid,
-  OutlinedInput,
-  Checkbox,
-  FormControlLabel,
-  MenuItem,
-  Select,
-  FormControl,
   TableContainer,
   Table,
   TableHead,
@@ -20,7 +10,7 @@ import {
   TableBody,
   TableFooter,
   TablePagination,
-  Paper,
+  Tooltip,
   IconButton,
 } from '@mui/material';
 import FirstPageIcon from '@mui/icons-material/FirstPage';
@@ -28,16 +18,12 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import { useTheme } from '@mui/material/styles';
-import { styled } from '@mui/material/styles';
-import LXButton from '@/components/Button';
 
-import Layout from '@/components/Layout';
-import { useForm, Controller } from 'react-hook-form';
-import TextInput from '../components/TextInput';
-import { stringCut } from '@/utils/utility';
-import PropTypes from 'prop-types';
 import * as React from 'react';
-import { ConstructionOutlined } from '@mui/icons-material';
+import PropTypes from 'prop-types';
+
+import LXButton from '@/components/Button';
+import Layout from '@/components/Layout';
 
 function createData(
   Name,
@@ -57,9 +43,9 @@ const rows = [
     '0xacf9dD5172cE19BFD910b8E8252a2E7b47C977df',
     '1000LXP',
     'MetaPavo',
-    'did the project design work, \n8h * 50U = 400 * 0.3 = 120 LXP',
+    'did the project design work, 8h * 50U = 400 * 0.3 = 120 LXP,did the project design work, 8h * 50U = 400 * 0.3 = 120 LXPdid the project design work, 8h * 50U = 400 * 0.3 = 120 LXP,did the project design work, 8h * 50U = 400 * 0.3 = 120 LXPdid the project design work, 8h * 50U = 400 * 0.3 = 120 LXP,did the project design work, 8h * 50U = 400 * 0.3 = 120 LXPdid the project design work, 8h * 50U = 400 * 0.3 = 120 LXP,did the project design work, 8h * 50U = 400 * 0.3 = 120 LXPdid the project design work, 8h * 50U = 400 * 0.3 = 120 LXP,did the project design work, 8h * 50U = 400 * 0.3 = 120 LXP',
     '2022.10.08',
-    'released'
+    '0'
   ),
   createData(
     'Bruce',
@@ -68,7 +54,7 @@ const rows = [
     'MetaPavo',
     'did the project design work, \n8h * 50U = 400 * 0.3 = 120 LXP',
     '2022.10.08',
-    'released'
+    '1'
   ),
   createData(
     'Bruce',
@@ -77,7 +63,7 @@ const rows = [
     'MetaPavo',
     'did the project design work, \n8h * 50U = 400 * 0.3 = 120 LXP',
     '2022.10.08',
-    'released'
+    '2'
   ),
   createData(
     'Bruce',
@@ -86,7 +72,7 @@ const rows = [
     'MetaPavo',
     'did the project design work, \n8h * 50U = 400 * 0.3 = 120 LXP',
     '2022.10.08',
-    'released'
+    '3'
   ),
   createData(
     'Bruce',
@@ -95,7 +81,7 @@ const rows = [
     'MetaPavo',
     'did the project design work, \n8h * 50U = 400 * 0.3 = 120 LXP',
     '2022.10.08',
-    'released'
+    '4'
   ),
   createData(
     'Bruce',
@@ -104,7 +90,7 @@ const rows = [
     'MetaPavo',
     'did the project design work, \n8h * 50U = 400 * 0.3 = 120 LXP',
     '2022.10.08',
-    'released'
+    '0'
   ),
   createData(
     'Bruce',
@@ -113,7 +99,7 @@ const rows = [
     'MetaPavo',
     'did the project design work, \n8h * 50U = 400 * 0.3 = 120 LXP',
     '2022.10.08',
-    'released'
+    '0'
   ),
   createData(
     'Bruce',
@@ -122,7 +108,7 @@ const rows = [
     'MetaPavo',
     'did the project design work, \n8h * 50U = 400 * 0.3 = 120 LXP',
     '2022.10.08',
-    'released'
+    '0'
   ),
   createData(
     'Bruce',
@@ -131,7 +117,7 @@ const rows = [
     'MetaPavo',
     'did the project design work, \n8h * 50U = 400 * 0.3 = 120 LXP',
     '2022.10.08',
-    'released'
+    '0'
   ),
 ];
 
@@ -233,9 +219,25 @@ TablePaginationActions.propTypes = {
   rowsPerPage: PropTypes.number.isRequired,
 };
 
+function StatuLabel({ statu }) {
+  switch (statu) {
+    case '0':
+      return <Typography color={'#4DCC9E'}>RELEASED</Typography>;
+    case '1':
+      return <Typography color={'#666F85'}>TO BE RELEASED</Typography>;
+    case '2':
+      return <Typography color={'#D0D5DD'}>REJECTED</Typography>;
+    case '3':
+      return <Typography color={'#36aff9'}>MINTED</Typography>;
+    case '4':
+      return <Typography color={'#ffac1d'}>NEED TO REVIEW</Typography>;
+  }
+}
+
 export default function Publicity() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(25);
+  const [copied, setCopied] = React.useState(false);
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
@@ -283,23 +285,24 @@ export default function Publicity() {
               marginTop={4}
             >
               What is{' '}
-              <span style={{ 'text-decoration': 'underline' }}>LX Points</span>{' '}
+              <Link style={{ 'text-decoration': 'underline' }}>LX Points</Link>{' '}
               ? LX Points issuance{' '}
-              <span style={{ 'text-decoration': 'underline' }}>rules</span>{' '}
+              <Link style={{ 'text-decoration': 'underline' }}>rules</Link>{' '}
             </Typography>
           </Box>
         </Box>
         <Box width={'100%'} marginTop={6}>
           <Box>
             <Typography fontSize={48} fontWeight={400} color={'#666F85'}>
-              <span
+              {/* todo: update the link */}
+              <Link
                 style={{ fontSize: 52, fontWeight: 'bold', color: '#36AFF9' }}
                 fontSize={52}
                 fontWeight={600}
                 color={'#36AFF9'}
               >
                 28
-              </span>{' '}
+              </Link>{' '}
               Days后开始公示
             </Typography>
           </Box>
@@ -318,24 +321,41 @@ export default function Publicity() {
               component={Box}
               sx={{
                 border: '0.5px solid #D0D5DD',
-                'border-radius': '6px',
+                borderRadius: '6px',
                 padding: '32px',
                 marginTop: '48px',
               }}
             >
-              <Table stickyHeader>
-                <TableHead sx={{ color: '#666F85' }}>
+              <Table>
+                <TableHead>
                   <TableRow>
-                    <TableCell align="center">Name</TableCell>
-                    <TableCell align="center">Address</TableCell>
-                    <TableCell align="center">Remuneration</TableCell>
-                    <TableCell align="center">Source</TableCell>
-                    <TableCell align="center">Reason</TableCell>
-                    <TableCell align="center">Apply Date</TableCell>
-                    <TableCell align="center">Status</TableCell>
+                    <TableCell sx={{ color: '#666F85' }} align="center">
+                      Name
+                    </TableCell>
+                    <TableCell sx={{ color: '#666F85' }} align="center">
+                      Address
+                    </TableCell>
+                    <TableCell sx={{ color: '#666F85' }} align="center">
+                      Remuneration
+                    </TableCell>
+                    <TableCell sx={{ color: '#666F85' }} align="center">
+                      Source
+                    </TableCell>
+                    <TableCell sx={{ color: '#666F85' }} align="center">
+                      Reason
+                    </TableCell>
+                    <TableCell sx={{ color: '#666F85' }} align="center">
+                      Apply Date
+                    </TableCell>
+                    <TableCell sx={{ color: '#666F85' }} align="center">
+                      Status
+                    </TableCell>
+                    <TableCell sx={{ color: '#666F85' }} align="center">
+                      Action
+                    </TableCell>
                   </TableRow>
                 </TableHead>
-                <TableBody>
+                <TableBody sx={{ fontSize: '16px', color: '#f14d16' }}>
                   {(rowsPerPage > 0
                     ? rows.slice(
                         page * rowsPerPage,
@@ -355,28 +375,76 @@ export default function Publicity() {
                         {row.Name}
                       </TableCell>
                       <TableCell align="center" sx={{ maxWidth: '100px' }}>
-                        {row.Address.slice(0, 4)}...{row.Address.slice(-4)}
+                        <Tooltip
+                          title={copied ? 'copied!' : row.Address}
+                          onClick={() => {
+                            navigator.clipboard.writeText(row.Address).then(
+                              function () {
+                                setCopied(true);
+                                setTimeout(() => {
+                                  setCopied(false);
+                                }, 500);
+                              },
+                              function (e) {
+                                console.log(e);
+                              }
+                            );
+                          }}
+                        >
+                          <span>
+                            {row.Address.slice(0, 4)}...{row.Address.slice(-4)}
+                          </span>
+                        </Tooltip>
                       </TableCell>
-                      <TableCell align="center" sx={{ maxWidth: '100px' }}>
+                      <TableCell
+                        align="center"
+                        sx={{ maxWidth: '100px', fontSize: '16px' }}
+                      >
                         {row.Remuneration}
                       </TableCell>
-                      <TableCell align="center" sx={{ maxWidth: '100px' }}>
+                      <TableCell
+                        align="center"
+                        sx={{ maxWidth: '100px', fontSize: '16px' }}
+                      >
                         {row.Source}
                       </TableCell>
-                      <TableCell align="center" sx={{ minWidth: '300px' }}>
+                      <TableCell
+                        align="center"
+                        sx={{ minWidth: '300px', fontSize: '16px' }}
+                      >
                         {row.Reason}
                       </TableCell>
-                      <TableCell align="center" sx={{ maxWidth: '100px' }}>
+                      <TableCell
+                        align="center"
+                        sx={{ maxWidth: '100px', fontSize: '16px' }}
+                      >
                         {row.ApplyDate}
                       </TableCell>
-                      <TableCell align="center" sx={{ maxWidth: '100px' }}>
-                        {row.Status}
+                      <TableCell
+                        align="center"
+                        sx={{
+                          fontSize: '16px',
+                        }}
+                      >
+                        <StatuLabel statu={row.Status} />
+                      </TableCell>
+                      <TableCell align="center" sx={{ fontSize: '16px' }}>
+                        <LXButton
+                          style={{ marginBottom: '16px' }}
+                          width={'100px'}
+                          variant="outlined"
+                        >
+                          Reject
+                        </LXButton>
+                        <LXButton width={'100px'} variant="outlined">
+                          Republish
+                        </LXButton>
                       </TableCell>
                     </TableRow>
                   ))}
                   {emptyRows > 0 && (
                     <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={6} />
+                      <TableCell colSpan={8} />
                     </TableRow>
                   )}
                 </TableBody>
