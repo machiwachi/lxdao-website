@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import React from 'react';
-import { Box, Typography, Button, Alert } from '@mui/material';
+import { Box, Typography, Button, Alert, TextField } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import { removeEmpty } from '@/utils/utility';
 
@@ -218,7 +218,7 @@ function ProfileForm(props) {
           </Typography>
         )}
       </Box>
-      <Box>
+      <Box marginBottom={2.5}>
         <Typography
           marginBottom={2}
           sx={{
@@ -255,6 +255,56 @@ function ProfileForm(props) {
             marginLeft={2}
           >
             At least one contacts are required
+          </Typography>
+        )}
+      </Box>
+      <Box>
+        <Typography
+          marginBottom={2}
+          sx={{
+            fontSize: '20px',
+          }}
+        >
+          Private Contacts{' '}
+          <span
+            style={{
+              fontSize: 14,
+              display: 'inline',
+            }}
+          >
+            (will be displayed only for LXDAO buidler)
+          </span>
+        </Typography>
+        <Controller
+          name={'privateContacts'}
+          control={control}
+          rules={{
+            validate: (value) => {
+              return value.email.length !== 0;
+            },
+          }}
+          render={({ field: { onChange, value } }) => {
+            return (
+              <TextField
+                fullWidth
+                label="Private Email"
+                value={value.email}
+                placeholder="your@email.com"
+                onChange={(event) => {
+                  onChange({ email: event.target.value });
+                }}
+              />
+            );
+          }}
+        />
+        {errors.privateContacts && (
+          <Typography
+            fontSize="0.75rem"
+            color="#d32f2f"
+            marginTop={1}
+            marginLeft={2}
+          >
+            private email are required
           </Typography>
         )}
       </Box>

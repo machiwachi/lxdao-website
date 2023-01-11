@@ -1223,6 +1223,7 @@ function BuidlerDetails(props) {
                 'skills',
                 'interests',
                 'contacts',
+                'privateContacts',
               ])
             )}
             saveProfileHandler={saveProfileHandler}
