@@ -213,6 +213,7 @@ function BuidlerDetails(props) {
 
   const [_loadingMates, mates] = useMate(record.address);
   const [_loading, currentViewer] = useBuidler(address);
+  console.log({ record, currentViewer });
   const { data: signer } = useSigner();
   const contract = useContract({
     ...contractInfo(),

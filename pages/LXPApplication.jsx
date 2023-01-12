@@ -145,13 +145,7 @@ export default function Apply() {
             >
               Please read the
               {/* todo: update the link */}
-              <Link
-                color={'#667085'}
-                style={{ 'text-decoration': 'underline' }}
-              >
-                LX Points rule
-              </Link>{' '}
-              before applying .
+              <Link color={'#667085'}>LX Points rule</Link> before applying .
             </Typography>
           </Box>
         </Box>
