@@ -69,6 +69,7 @@ const SectionProjectDetail = ({ projectId }) => {
     },
   });
   const [projectForumList, setProjectForumList] = useState([]);
+  const [projectPMInfo, setProjectPMInfo] = useState({});
 
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
@@ -215,6 +216,11 @@ const SectionProjectDetail = ({ projectId }) => {
         ) {
           showInviteButtonFlag = true;
         }
+
+        //save the PM Buider info
+        if (buidler?.projectRole.includes('Project Manager')) {
+          setProjectPMInfo(buidler?.buidler);
+        }
       });
       setShowInviteButton(showInviteButtonFlag);
       setShowJoinButton(!showJoinButtonFlag);
@@ -251,8 +257,7 @@ const SectionProjectDetail = ({ projectId }) => {
     const accessToken = getLocalStorage('accessToken');
     if (accessToken) {
       setOpenJoinDialog(true);
-      const projectManagerAddress = 'ericlee.luck@gmail.com'; // need replace the PM Email address
-      sentEmailToProjectManager(projectManagerAddress);
+      sentEmailToProjectManager(projectPMInfo?.privateContacts?.email);
     } else {
       setOpenJoinTooltip(true);
       setTimeout(() => {
@@ -285,15 +290,18 @@ const SectionProjectDetail = ({ projectId }) => {
     }
     if (selectedBuidler && projectRoleValue.length > 0) {
       let selectedBuidlerId = '';
+      let privateContacts = null;
       activeBuidlerList.forEach((buidler) => {
         if (buidler.name === selectedBuidler) {
           selectedBuidlerId = buidler.id;
+          privateContacts = buidler.privateContacts;
         }
       });
+
       API.post(`/buidler/createInvitation`, {
         buidlerId: selectedBuidlerId,
         projectId: project?.id,
-        projectRole: projectRoleValue,
+        privateContacts,
       })
         .then((res) => {
           setInviteLoading(false);
