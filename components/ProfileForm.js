@@ -45,6 +45,12 @@ function ProfileForm(props) {
     },
   });
 
+  const isValidEmail = (email) =>
+    // eslint-disable-next-line no-useless-escape
+    /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+      email
+    );
+
   const onSubmit = (data) => {
     if (saveProfileHandler) {
       saveProfileHandler(data);
@@ -83,7 +89,7 @@ function ProfileForm(props) {
         <Controller
           name={'avatar'}
           control={control}
-          rules={{ required: false }}
+          rules={{ required: true }}
           render={({ field: { onChange, value } }) => {
             return (
               <Avatar
@@ -240,7 +246,18 @@ function ProfileForm(props) {
           control={control}
           rules={{
             validate: (value) => {
-              return JSON.stringify(removeEmpty(value)) !== '{}';
+              const isValid =
+                value.email &&
+                value.email.length > 0 &&
+                isValidEmail(value.email);
+
+              const isEmpty = JSON.stringify(removeEmpty(value)) === '{}';
+
+              if (isEmpty) {
+                return false;
+              } else {
+                return isValid;
+              }
             },
           }}
           render={({ field: { onChange, value } }) => {
@@ -254,7 +271,7 @@ function ProfileForm(props) {
             marginTop={1}
             marginLeft={2}
           >
-            At least one contacts are required
+            At least one contacts are required, Email must be valid.
           </Typography>
         )}
       </Box>
@@ -280,7 +297,7 @@ function ProfileForm(props) {
           control={control}
           rules={{
             validate: (value) => {
-              return value.email.length !== 0;
+              return value.email.length !== 0 && isValidEmail(value.email);
             },
           }}
           render={({ field: { onChange, value } }) => {
@@ -304,7 +321,7 @@ function ProfileForm(props) {
             marginTop={1}
             marginLeft={2}
           >
-            private email are required
+            private email are required, Please input a valid email
           </Typography>
         )}
       </Box>
