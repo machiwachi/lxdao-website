@@ -83,7 +83,7 @@ function ProfileForm(props) {
         <Controller
           name={'avatar'}
           control={control}
-          rules={{ required: true }}
+          rules={{ required: false }}
           render={({ field: { onChange, value } }) => {
             return (
               <Avatar
@@ -288,7 +288,7 @@ function ProfileForm(props) {
               <TextField
                 fullWidth
                 label="Private Email"
-                value={value.email}
+                value={value?.email}
                 placeholder="your@email.com"
                 onChange={(event) => {
                   onChange({ email: event.target.value });
