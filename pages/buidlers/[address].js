@@ -67,7 +67,7 @@ function totalLXPoints(record) {
         }
         return total;
       }, 0);
-      return `${total}${key}`;
+      return `${total} LXP`;
     })
     .join(' + ');
 }
@@ -142,7 +142,7 @@ function LXPointsTable({ points }) {
                 scope="row"
               >
                 <Typography variant="body1" fontWeight="600">
-                  {`${point.value} ${point.unit}`}
+                  {`${point.value} LXP`}
                 </Typography>
               </TableCell>
               <TableCell sx={{ color: '#101828' }} align="left">

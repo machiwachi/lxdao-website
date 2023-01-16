@@ -21,14 +21,18 @@ import LastPageIcon from '@mui/icons-material/LastPage';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useTheme } from '@mui/material/styles';
-import { useAccount } from 'wagmi';
 
-import * as React from 'react';
+import { useAccount } from 'wagmi';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+
+import API from '@/common/API';
 
 import LXButton from '@/components/Button';
 import Layout from '@/components/Layout';
 import useBuidler from '@/components/useBuidler';
+import showMessage from '@/components/showMessage';
 
 function createData(
   Name,
@@ -42,93 +46,9 @@ function createData(
   return { Name, Address, Remuneration, Source, Reason, ApplyDate, Status };
 }
 
-const rows = [
-  createData(
-    'Bruce123132131231231',
-    '0xacf9dD5172cE19BFD910b8E8252a2E7b47C977df',
-    '1000LXP',
-    'MetaPavo',
-    'did the project design work, 8h * 50U = 400 * 0.3 = 120 LXP,did the project design work, 8h * 50U = 400 * 0.3 = 120 LXPdid the project design work, 8h * 50U = 400 * 0.3 = 120 LXP,did the project design work, 8h * 50U = 400 * 0.3 = 120 LXPdid the project design work, 8h * 50U = 400 * 0.3 = 120 LXP,did the project design work, 8h * 50U = 400 * 0.3 = 120 LXPdid the project design work, 8h * 50U = 400 * 0.3 = 120 LXP,did the project design work, 8h * 50U = 400 * 0.3 = 120 LXPdid the project design work, 8h * 50U = 400 * 0.3 = 120 LXP,did the project design work, 8h * 50U = 400 * 0.3 = 120 LXP',
-    '2022.10.08',
-    '0'
-  ),
-  createData(
-    'Bruce',
-    '0xacf9dD5172cE19BFD910b8E8252a2E7b47C977df',
-    '1000LXP',
-    'MetaPavo',
-    'did the project design work, \n8h * 50U = 400 * 0.3 = 120 LXP',
-    '2022.10.08',
-    '1'
-  ),
-  createData(
-    'Bruce',
-    '0xacf9dD5172cE19BFD910b8E8252a2E7b47C977df',
-    '1000LXP',
-    'MetaPavo',
-    'did the project design work, \n8h * 50U = 400 * 0.3 = 120 LXP',
-    '2022.10.08',
-    '2'
-  ),
-  createData(
-    'Bruce',
-    '0xacf9dD5172cE19BFD910b8E8252a2E7b47C977df',
-    '1000LXP',
-    'MetaPavo',
-    'did the project design work, \n8h * 50U = 400 * 0.3 = 120 LXP',
-    '2022.10.08',
-    '3'
-  ),
-  createData(
-    'Bruce',
-    '0xacf9dD5172cE19BFD910b8E8252a2E7b47C977df',
-    '1000LXP',
-    'MetaPavo',
-    'did the project design work, \n8h * 50U = 400 * 0.3 = 120 LXP',
-    '2022.10.08',
-    '4'
-  ),
-  createData(
-    'Bruce',
-    '0xacf9dD5172cE19BFD910b8E8252a2E7b47C977df',
-    '1000LXP',
-    'MetaPavo',
-    'did the project design work, \n8h * 50U = 400 * 0.3 = 120 LXP',
-    '2022.10.08',
-    '0'
-  ),
-  createData(
-    'Bruce',
-    '0xacf9dD5172cE19BFD910b8E8252a2E7b47C977df',
-    '1000LXP',
-    'MetaPavo',
-    'did the project design work, \n8h * 50U = 400 * 0.3 = 120 LXP',
-    '2022.10.08',
-    '0'
-  ),
-  createData(
-    'Bruce',
-    '0xacf9dD5172cE19BFD910b8E8252a2E7b47C977df',
-    '1000LXP',
-    'MetaPavo',
-    'did the project design work, \n8h * 50U = 400 * 0.3 = 120 LXP',
-    '2022.10.08',
-    '0'
-  ),
-  createData(
-    'Bruce',
-    '0xacf9dD5172cE19BFD910b8E8252a2E7b47C977df',
-    '1000LXP',
-    'MetaPavo',
-    'did the project design work, \n8h * 50U = 400 * 0.3 = 120 LXP',
-    '2022.10.08',
-    '0'
-  ),
-];
-
 function TablePaginationActions(props) {
   const theme = useTheme();
-  const [pagei, setPagei] = React.useState(1);
+  const [pagei, setPagei] = useState(1);
   const { count, page, rowsPerPage, onPageChange } = props;
 
   const handlePageInput = (event) => {
@@ -163,7 +83,7 @@ function TablePaginationActions(props) {
     onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     setPagei(page);
   }, [page]);
 
@@ -223,41 +143,546 @@ TablePaginationActions.propTypes = {
   rowsPerPage: PropTypes.number.isRequired,
 };
 
-function StatuLabel({ statu }) {
-  switch (statu) {
-    case '0':
+function StatusLabel({ status }) {
+  switch (status) {
+    case 'RELEASED':
       return <Typography color={'#4DCC9E'}>RELEASED</Typography>;
-    case '1':
+    case 'TOBERELEASED':
       return <Typography color={'#666F85'}>TO BE RELEASED</Typography>;
-    case '2':
+    case 'REJECTED':
       return <Typography color={'#D0D5DD'}>REJECTED</Typography>;
-    case '3':
+    case 'MINTED':
       return <Typography color={'#36aff9'}>MINTED</Typography>;
-    case '4':
+    case 'NEEDTOREVIEW':
       return <Typography color={'#ffac1d'}>NEED TO REVIEW</Typography>;
   }
 }
 
-export default function Publicity({ days }) {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(25);
-  const [hideHistory, setHideHistory] = React.useState(false);
-  const [copied, setCopied] = React.useState(false);
-  const { address, isConnected } = useAccount();
-  const [_loading, currentViewer] = useBuidler(address);
-  const isAccountingTeam = currentViewer?.role.includes('Accounting Team');
+function UnReleasedTable({ isAccountingTeam }) {
+  const router = useRouter();
+  const [rows, setRows] = useState([]);
+  const [copied, setCopied] = useState(false);
+  const [page, setPage] = useState(0);
+  const [perPage, setPerPage] = useState(25);
+  const [pagination, setPagination] = useState({});
 
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * perPage - rows.length) : 0;
+
+  const hanldeOperationBtn = async (id, operation) => {
+    try {
+      const res = await API.put(`/lxpoints/${id}`, { operation: operation });
+
+      const result = res.data;
+      if (result.status !== 'SUCCESS') {
+        alert(result.message);
+        // error todo Muxin add common alert, wang teng design
+        return;
+      }
+      if (operation == 'REJECT') {
+        router.reload(window.location.pathname);
+      }
+      getLXPApplications();
+    } catch (err) {
+      showMessage({
+        type: 'error',
+        title: err.error_code,
+        body: err.message,
+      });
+    }
+  };
+
+  const hanldeReleaseBtn = async () => {
+    try {
+      const res = await API.post(`/lxpoints/release`);
+
+      const result = res.data;
+      if (result.status !== 'SUCCESS') {
+        alert(result.message);
+        // error todo Muxin add common alert, wang teng design
+        return;
+      }
+      router.reload(window.location.pathname);
+    } catch (err) {
+      showMessage({
+        type: 'error',
+        title: err.error_code,
+        body: err.message,
+      });
+    }
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
+  const handleChangePerPage = (event) => {
+    setPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
+  const getLXPApplications = async () => {
+    let query = `/lxpoints/list?`;
+    let params = [];
+    ['NEEDTOREVIEW', 'TOBERELEASED'].map((value, index) => {
+      params.push('status=' + value);
+    });
+    params.push('page=' + (page + 1));
+    params.push('per_page=' + perPage);
+    query += params.join('&');
+    try {
+      const res = await API.get(query);
+
+      const result = res.data;
+      if (result.status !== 'SUCCESS') {
+        alert(result.message);
+        // error todo Muxin add common alert, wang teng design
+        return;
+      }
+      setRows(result.data);
+      setPagination(result.pagination);
+    } catch (err) {
+      showMessage({
+        type: 'error',
+        title: err.error_code,
+        body: err.message,
+      });
+    }
+  };
+
+  useEffect(() => {
+    (async () => {
+      await getLXPApplications();
+    })();
+  }, [page, perPage]);
+
+  return (
+    <Box
+      sx={{
+        width: '100%',
+        position: 'relative',
+        margin: 'auto',
+        display: 'flex',
+        justifyContent: 'center',
+        boxSizing: 'inherit',
+      }}
+    >
+      <TableContainer
+        component={Box}
+        sx={{
+          border: '0.5px solid #D0D5DD',
+          borderRadius: '6px',
+          padding: '32px 32px 0 32px',
+          marginTop: '48px',
+          backgroundColor: '#F3FAFF',
+        }}
+      >
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell sx={{ color: '#666F85' }} align="center">
+                Name
+              </TableCell>
+              <TableCell sx={{ color: '#666F85' }} align="center">
+                Address
+              </TableCell>
+              <TableCell sx={{ color: '#666F85' }} align="center">
+                Remuneration
+              </TableCell>
+              <TableCell sx={{ color: '#666F85' }} align="center">
+                Source
+              </TableCell>
+              <TableCell sx={{ color: '#666F85' }} align="center">
+                Reason
+              </TableCell>
+              <TableCell sx={{ color: '#666F85' }} align="center">
+                Apply Date
+              </TableCell>
+              <TableCell sx={{ color: '#666F85' }} align="center">
+                Status
+              </TableCell>
+              <TableCell sx={{ color: '#666F85' }} align="center">
+                Action
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody sx={{ fontSize: '16px' }}>
+            {rows.map((row, index) => {
+              return (
+                <TableRow key={row.id}>
+                  <TableCell
+                    align="center"
+                    sx={{
+                      maxWidth: '100px',
+                      textOverflow: 'ellipsis',
+                      overflow: 'hidden',
+                    }}
+                  >
+                    {row.name}
+                  </TableCell>
+                  <TableCell align="center" sx={{ maxWidth: '100px' }}>
+                    <Tooltip
+                      title={copied ? 'copied!' : row.address}
+                      onClick={() => {
+                        navigator.clipboard.writeText(row.address).then(
+                          function () {
+                            setCopied(true);
+                            setTimeout(() => {
+                              setCopied(false);
+                            }, 500);
+                          },
+                          function (e) {
+                            console.error(e);
+                          }
+                        );
+                      }}
+                    >
+                      <span>
+                        {row.address.slice(0, 4)}...
+                        {row.address.slice(-4)}
+                      </span>
+                    </Tooltip>
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    sx={{ maxWidth: '100px', fontSize: '16px' }}
+                  >
+                    {row.value}
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    sx={{ maxWidth: '100px', fontSize: '16px' }}
+                  >
+                    {row.source}
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    sx={{ minWidth: '300px', fontSize: '16px' }}
+                  >
+                    {row.reason}
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    sx={{ maxWidth: '100px', fontSize: '16px' }}
+                  >
+                    {new Date(row.createdAt)
+                      .toISOString()
+                      .split('T')[0]
+                      .replaceAll('-', '.')}
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    sx={{
+                      fontSize: '16px',
+                    }}
+                  >
+                    <StatusLabel status={row.status} />
+                  </TableCell>
+                  <TableCell align="center" sx={{ fontSize: '16px' }}>
+                    {row.status == 'NEEDTOREVIEW' && isAccountingTeam && (
+                      <>
+                        <LXButton
+                          width={'100px'}
+                          variant="outlined"
+                          onClick={() => {
+                            hanldeOperationBtn(row.id, 'REJECT');
+                          }}
+                        >
+                          Reject
+                        </LXButton>
+                        <LXButton
+                          marginTop={'10px'}
+                          width={'100px'}
+                          variant="outlined"
+                          onClick={() => {
+                            hanldeOperationBtn(row.id, 'REPUBLISH');
+                          }}
+                        >
+                          Republish
+                        </LXButton>
+                      </>
+                    )}
+                    {row.status == 'TOBERELEASED' && (
+                      <LXButton
+                        width={'100px'}
+                        variant="outlined"
+                        onClick={() => {
+                          hanldeOperationBtn(row.id, 'DISPUTE');
+                        }}
+                      >
+                        Dispute
+                      </LXButton>
+                    )}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                count={pagination?.total}
+                rowsPerPage={perPage}
+                page={page}
+                SelectProps={{
+                  inputProps: {
+                    'aria-label': 'rows per page',
+                  },
+                  native: true,
+                }}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangePerPage}
+                ActionsComponent={TablePaginationActions}
+              />
+            </TableRow>
+            <TableRow sx={{ justifyContent: 'center' }}>
+              <TableCell colSpan={8}>
+                <Box display="flex" justifyContent="center">
+                  <LXButton
+                    width="200px"
+                    variant="gradient"
+                    onClick={hanldeReleaseBtn}
+                  >
+                    Release
+                  </LXButton>
+                </Box>
+              </TableCell>
+            </TableRow>
+          </TableFooter>
+        </Table>
+      </TableContainer>
+    </Box>
+  );
+}
+
+function ReleasedTable({ isAccountingTeam }) {
+  const [hideHistory, setHideHistory] = useState(false);
+  const [rows, setRows] = useState([]);
+  const [copied, setCopied] = useState(false);
+
+  const [page, setPage] = useState(0);
+  const [perPage, setPerPage] = useState(25);
+  const [pagination, setPagination] = useState({});
+
+  const emptyRows =
+    page > 0 ? Math.max(0, (1 + page) * perPage - rows.length) : 0;
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangePerPage = (event) => {
+    setPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const getLXPApplications = async () => {
+    let query = `/lxpoints/list?`;
+    let params = [];
+    ['RELEASED', 'REJECTED'].map((value, index) => {
+      params.push('status=' + value);
+    });
+    params.push('page=' + (page + 1));
+    params.push('per_page=' + perPage);
+    query += params.join('&');
+    try {
+      const res = await API.get(query);
+
+      const result = res.data;
+      if (result.status !== 'SUCCESS') {
+        alert(result.message);
+        // error todo Muxin add common alert, wang teng design
+        return;
+      }
+      setRows(result.data);
+      setPagination(result.pagination);
+    } catch (err) {
+      showMessage({
+        type: 'error',
+        title: err.error_code,
+        body: err.message,
+      });
+    }
+  };
+  useEffect(() => {
+    (async () => {
+      await getLXPApplications();
+    })();
+  }, [page, perPage]);
+
+  return (
+    <Box
+      sx={{
+        width: '100%',
+        position: 'relative',
+        margin: 'auto',
+        display: 'flex',
+        justifyContent: 'center',
+        boxSizing: 'inherit',
+      }}
+    >
+      <TableContainer
+        component={Box}
+        sx={{
+          border: '0.5px solid #D0D5DD',
+          borderRadius: '6px',
+          padding: '32px',
+          marginTop: '48px',
+        }}
+      >
+        <Box
+          display={'flex'}
+          alignItems={'center'}
+          sx={{ cursor: 'pointer' }}
+          onClick={() => {
+            setHideHistory(!hideHistory);
+          }}
+        >
+          History{' '}
+          {hideHistory ? (
+            <>
+              <ArrowDropDownIcon />
+              <Typography color={'#36AFF9'}>Expand All</Typography>
+            </>
+          ) : (
+            <ArrowDropUpIcon />
+          )}
+        </Box>
+        {!hideHistory && (
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell sx={{ color: '#666F85' }} align="center">
+                  Name
+                </TableCell>
+                <TableCell sx={{ color: '#666F85' }} align="center">
+                  Address
+                </TableCell>
+                <TableCell sx={{ color: '#666F85' }} align="center">
+                  Remuneration
+                </TableCell>
+                <TableCell sx={{ color: '#666F85' }} align="center">
+                  Source
+                </TableCell>
+                <TableCell sx={{ color: '#666F85' }} align="center">
+                  Reason
+                </TableCell>
+                <TableCell sx={{ color: '#666F85' }} align="center">
+                  Apply Date
+                </TableCell>
+                <TableCell sx={{ color: '#666F85' }} align="center">
+                  Status
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody sx={{ fontSize: '16px', color: '#f14d16' }}>
+              {(perPage > 0
+                ? rows.slice(page * perPage, page * perPage + perPage)
+                : rows
+              ).map((row, index) => (
+                <TableRow key={index}>
+                  <TableCell
+                    align="center"
+                    sx={{
+                      maxWidth: '100px',
+                      textOverflow: 'ellipsis',
+                      overflow: 'hidden',
+                    }}
+                  >
+                    {row.name}
+                  </TableCell>
+                  <TableCell align="center" sx={{ maxWidth: '100px' }}>
+                    <Tooltip
+                      title={copied ? 'copied!' : row.Address}
+                      onClick={() => {
+                        navigator.clipboard.writeText(row.Address).then(
+                          function () {
+                            setCopied(true);
+                            setTimeout(() => {
+                              setCopied(false);
+                            }, 500);
+                          },
+                          function (e) {
+                            console.error(e);
+                          }
+                        );
+                      }}
+                    >
+                      <span>
+                        {row.address.slice(0, 4)}...
+                        {row.address.slice(-4)}
+                      </span>
+                    </Tooltip>
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    sx={{ maxWidth: '100px', fontSize: '16px' }}
+                  >
+                    {row.value}
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    sx={{ maxWidth: '100px', fontSize: '16px' }}
+                  >
+                    {row.source}
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    sx={{ minWidth: '300px', fontSize: '16px' }}
+                  >
+                    {row.reason}
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    sx={{ maxWidth: '100px', fontSize: '16px' }}
+                  >
+                    {new Date(row.createdAt)
+                      .toISOString()
+                      .split('T')[0]
+                      .replaceAll('-', '.')}
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    sx={{
+                      fontSize: '16px',
+                    }}
+                  >
+                    <StatusLabel status={row.status} />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TablePagination
+                  rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                  count={pagination.total}
+                  rowsPerPage={perPage}
+                  page={page}
+                  SelectProps={{
+                    inputProps: {
+                      'aria-label': 'rows per page',
+                    },
+                    native: true,
+                  }}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangePerPage}
+                  ActionsComponent={TablePaginationActions}
+                />
+              </TableRow>
+            </TableFooter>
+          </Table>
+        )}
+      </TableContainer>
+    </Box>
+  );
+}
+
+export default function Publicity({ days }) {
+  const { address, isConnected } = useAccount();
+  const [_loading, currentViewer] = useBuidler(address);
+  const isAccountingTeam = currentViewer?.role.includes('Accounting Team');
   return (
     <Layout title={`Apply LX Points | LXDAO`}>
       <Container
@@ -314,370 +739,8 @@ export default function Publicity({ days }) {
               {days < 0 ? 'Days后结束公示' : 'Days后开始公示'}
             </Typography>
           </Box>
-          <Box
-            sx={{
-              width: '100%',
-              position: 'relative',
-              margin: 'auto',
-              display: 'flex',
-              justifyContent: 'center',
-              boxSizing: 'inherit',
-            }}
-          >
-            <TableContainer
-              component={Box}
-              sx={{
-                border: '0.5px solid #D0D5DD',
-                borderRadius: '6px',
-                padding: '32px',
-                marginTop: '48px',
-                backgroundColor: '#F3FAFF',
-              }}
-            >
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell sx={{ color: '#666F85' }} align="center">
-                      Name
-                    </TableCell>
-                    <TableCell sx={{ color: '#666F85' }} align="center">
-                      Address
-                    </TableCell>
-                    <TableCell sx={{ color: '#666F85' }} align="center">
-                      Remuneration
-                    </TableCell>
-                    <TableCell sx={{ color: '#666F85' }} align="center">
-                      Source
-                    </TableCell>
-                    <TableCell sx={{ color: '#666F85' }} align="center">
-                      Reason
-                    </TableCell>
-                    <TableCell sx={{ color: '#666F85' }} align="center">
-                      Apply Date
-                    </TableCell>
-                    <TableCell sx={{ color: '#666F85' }} align="center">
-                      Status
-                    </TableCell>
-                    <TableCell sx={{ color: '#666F85' }} align="center">
-                      Action
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody sx={{ fontSize: '16px', color: '#f14d16' }}>
-                  {(rowsPerPage > 0
-                    ? rows.slice(
-                        page * rowsPerPage,
-                        page * rowsPerPage + rowsPerPage
-                      )
-                    : rows
-                  )
-                    .filter((v) => {
-                      if (isAccountingTeam) {
-                        return v.Status == 4 || v.Status == 1;
-                      } else {
-                        return v.Status == 1;
-                      }
-                    })
-                    .map((row, index) => (
-                      <TableRow key={index}>
-                        <TableCell
-                          align="center"
-                          sx={{
-                            maxWidth: '100px',
-                            textOverflow: 'ellipsis',
-                            overflow: 'hidden',
-                          }}
-                        >
-                          {row.Name}
-                        </TableCell>
-                        <TableCell align="center" sx={{ maxWidth: '100px' }}>
-                          <Tooltip
-                            title={copied ? 'copied!' : row.Address}
-                            onClick={() => {
-                              navigator.clipboard.writeText(row.Address).then(
-                                function () {
-                                  setCopied(true);
-                                  setTimeout(() => {
-                                    setCopied(false);
-                                  }, 500);
-                                },
-                                function (e) {
-                                  console.log(e);
-                                }
-                              );
-                            }}
-                          >
-                            <span>
-                              {row.Address.slice(0, 4)}...
-                              {row.Address.slice(-4)}
-                            </span>
-                          </Tooltip>
-                        </TableCell>
-                        <TableCell
-                          align="center"
-                          sx={{ maxWidth: '100px', fontSize: '16px' }}
-                        >
-                          {row.Remuneration}
-                        </TableCell>
-                        <TableCell
-                          align="center"
-                          sx={{ maxWidth: '100px', fontSize: '16px' }}
-                        >
-                          {row.Source}
-                        </TableCell>
-                        <TableCell
-                          align="center"
-                          sx={{ minWidth: '300px', fontSize: '16px' }}
-                        >
-                          {row.Reason}
-                        </TableCell>
-                        <TableCell
-                          align="center"
-                          sx={{ maxWidth: '100px', fontSize: '16px' }}
-                        >
-                          {row.ApplyDate}
-                        </TableCell>
-                        <TableCell
-                          align="center"
-                          sx={{
-                            fontSize: '16px',
-                          }}
-                        >
-                          <StatuLabel statu={row.Status} />
-                        </TableCell>
-                        <TableCell align="center" sx={{ fontSize: '16px' }}>
-                          {row.Status == 4 && (
-                            <>
-                              <LXButton width={'100px'} variant="outlined">
-                                Reject
-                              </LXButton>
-                              <LXButton
-                                marginTop={'10px'}
-                                width={'100px'}
-                                variant="outlined"
-                              >
-                                Republish
-                              </LXButton>
-                            </>
-                          )}
-                          {row.Status == 1 && (
-                            <LXButton width={'100px'} variant="outlined">
-                              Dispute
-                            </LXButton>
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  {emptyRows > 0 && (
-                    <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={8} />
-                    </TableRow>
-                  )}
-                </TableBody>
-                <TableFooter>
-                  <TableRow>
-                    <TablePagination
-                      rowsPerPageOptions={[
-                        5,
-                        10,
-                        25,
-                        { label: 'All', value: -1 },
-                      ]}
-                      count={rows.length}
-                      rowsPerPage={rowsPerPage}
-                      page={page}
-                      SelectProps={{
-                        inputProps: {
-                          'aria-label': 'rows per page',
-                        },
-                        native: true,
-                      }}
-                      onPageChange={handleChangePage}
-                      onRowsPerPageChange={handleChangeRowsPerPage}
-                      ActionsComponent={TablePaginationActions}
-                    />
-                  </TableRow>
-                </TableFooter>
-              </Table>
-            </TableContainer>
-          </Box>
-
-          <Box
-            sx={{
-              width: '100%',
-              position: 'relative',
-              margin: 'auto',
-              display: 'flex',
-              justifyContent: 'center',
-              boxSizing: 'inherit',
-            }}
-          >
-            <TableContainer
-              component={Box}
-              sx={{
-                border: '0.5px solid #D0D5DD',
-                borderRadius: '6px',
-                padding: '32px',
-                marginTop: '48px',
-              }}
-            >
-              <Box
-                display={'flex'}
-                alignItems={'center'}
-                sx={{ cursor: 'pointer' }}
-                onClick={() => {
-                  setHideHistory(!hideHistory);
-                }}
-              >
-                History{' '}
-                {hideHistory ? (
-                  <>
-                    <ArrowDropDownIcon />
-                    <Typography color={'#36AFF9'}>Expand All</Typography>
-                  </>
-                ) : (
-                  <ArrowDropUpIcon />
-                )}
-              </Box>
-              {!hideHistory && (
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell sx={{ color: '#666F85' }} align="center">
-                        Name
-                      </TableCell>
-                      <TableCell sx={{ color: '#666F85' }} align="center">
-                        Address
-                      </TableCell>
-                      <TableCell sx={{ color: '#666F85' }} align="center">
-                        Remuneration
-                      </TableCell>
-                      <TableCell sx={{ color: '#666F85' }} align="center">
-                        Source
-                      </TableCell>
-                      <TableCell sx={{ color: '#666F85' }} align="center">
-                        Reason
-                      </TableCell>
-                      <TableCell sx={{ color: '#666F85' }} align="center">
-                        Apply Date
-                      </TableCell>
-                      <TableCell sx={{ color: '#666F85' }} align="center">
-                        Status
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody sx={{ fontSize: '16px', color: '#f14d16' }}>
-                    {(rowsPerPage > 0
-                      ? rows.slice(
-                          page * rowsPerPage,
-                          page * rowsPerPage + rowsPerPage
-                        )
-                      : rows
-                    )
-                      .filter((v) => v.Status == 0)
-                      .map((row, index) => (
-                        <TableRow key={index}>
-                          <TableCell
-                            align="center"
-                            sx={{
-                              maxWidth: '100px',
-                              textOverflow: 'ellipsis',
-                              overflow: 'hidden',
-                            }}
-                          >
-                            {row.Name}
-                          </TableCell>
-                          <TableCell align="center" sx={{ maxWidth: '100px' }}>
-                            <Tooltip
-                              title={copied ? 'copied!' : row.Address}
-                              onClick={() => {
-                                navigator.clipboard.writeText(row.Address).then(
-                                  function () {
-                                    setCopied(true);
-                                    setTimeout(() => {
-                                      setCopied(false);
-                                    }, 500);
-                                  },
-                                  function (e) {
-                                    console.log(e);
-                                  }
-                                );
-                              }}
-                            >
-                              <span>
-                                {row.Address.slice(0, 4)}...
-                                {row.Address.slice(-4)}
-                              </span>
-                            </Tooltip>
-                          </TableCell>
-                          <TableCell
-                            align="center"
-                            sx={{ maxWidth: '100px', fontSize: '16px' }}
-                          >
-                            {row.Remuneration}
-                          </TableCell>
-                          <TableCell
-                            align="center"
-                            sx={{ maxWidth: '100px', fontSize: '16px' }}
-                          >
-                            {row.Source}
-                          </TableCell>
-                          <TableCell
-                            align="center"
-                            sx={{ minWidth: '300px', fontSize: '16px' }}
-                          >
-                            {row.Reason}
-                          </TableCell>
-                          <TableCell
-                            align="center"
-                            sx={{ maxWidth: '100px', fontSize: '16px' }}
-                          >
-                            {row.ApplyDate}
-                          </TableCell>
-                          <TableCell
-                            align="center"
-                            sx={{
-                              fontSize: '16px',
-                            }}
-                          >
-                            <StatuLabel statu={row.Status} />
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    {emptyRows > 0 && (
-                      <TableRow style={{ height: 53 * emptyRows }}>
-                        <TableCell colSpan={8} />
-                      </TableRow>
-                    )}
-                  </TableBody>
-                  <TableFooter>
-                    <TableRow>
-                      <TablePagination
-                        rowsPerPageOptions={[
-                          5,
-                          10,
-                          25,
-                          { label: 'All', value: -1 },
-                        ]}
-                        count={rows.length}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        SelectProps={{
-                          inputProps: {
-                            'aria-label': 'rows per page',
-                          },
-                          native: true,
-                        }}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                        ActionsComponent={TablePaginationActions}
-                      />
-                    </TableRow>
-                  </TableFooter>
-                </Table>
-              )}
-            </TableContainer>
-          </Box>
+          {days < 0 && <UnReleasedTable isAccountingTeam={isAccountingTeam} />}
+          <ReleasedTable isAccountingTeam={isAccountingTeam} />
         </Box>
       </Container>
     </Layout>
@@ -685,9 +748,10 @@ export default function Publicity({ days }) {
 }
 
 export async function getServerSideProps() {
-  const now = new Date('2023-2-1');
+  const now = new Date('2023-2-1'); // dev stage, when online, please modify it to `new Date()`
   let days = 0;
   if (now.getDate() > 7) {
+    // how many day from now to next start.
     if (now.getMonth() == 11) {
       var next = new Date(now.getFullYear() + 1, 0, 1);
     } else {
@@ -696,6 +760,7 @@ export async function getServerSideProps() {
 
     days = Math.ceil((next.getTime() - now.getTime()) / (1000 * 3600 * 24));
   } else {
+    // how many day from now to end.
     days = now.getDate() - 7;
   }
 

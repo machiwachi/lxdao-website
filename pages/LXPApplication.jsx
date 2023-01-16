@@ -15,6 +15,7 @@ import {
   TextField,
 } from '@mui/material';
 
+import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 
@@ -22,6 +23,7 @@ import API from '@/common/API';
 
 import LXButton from '@/components/Button';
 import Layout from '@/components/Layout';
+import showMessage from '@/components/showMessage';
 
 function Label({ required, value }) {
   return (
@@ -52,14 +54,16 @@ export default function Apply() {
       name: '',
       address: '',
       amount: '',
+      source: '',
       reason: '',
       check: false,
-      control: {},
     },
   });
+  const router = useRouter();
 
   const [type, setType] = useState(0);
   const [open, setOpen] = useState(false);
+  const [disabltSubmitBtn, setDisabltSubmitBtn] = useState(false);
   const [options, setOptions] = useState([]);
   const loading = open && options.length === 0;
 
@@ -89,7 +93,42 @@ export default function Apply() {
       });
       setOptions(tempList);
     } catch (err) {
-      console.error(err);
+      showMessage({
+        type: 'error',
+        title: 'Failed to submit application! ',
+        body: err.message,
+      });
+    }
+  };
+
+  const applicationHandler = async (raw) => {
+    setDisabltSubmitBtn(true);
+    try {
+      const data = {
+        type: raw.type,
+        name: raw.name,
+        address: raw.address,
+        source: raw.source,
+        value: parseInt(raw.amount),
+        reason: raw.reason,
+      };
+      const response = await API.post(
+        `/lxpoints/${raw.address}/createLXPoints`,
+        data
+      );
+      const result = response?.data;
+      if (result.status !== 'SUCCESS') {
+        throw new Error(result.message);
+      } else {
+        router.push('/LXPPublicity');
+      }
+    } catch (err) {
+      setDisabltSubmitBtn(false);
+      showMessage({
+        type: 'error',
+        title: 'Failed to submit application! ',
+        body: err.message,
+      });
     }
   };
 
@@ -172,8 +211,8 @@ export default function Apply() {
                     }}
                     onBlur={onBlur}
                   >
-                    <MenuItem value={0}>LXDAO Builder</MenuItem>
-                    <MenuItem value={1}>LXDAO Member</MenuItem>
+                    <MenuItem value={'LXDAOBUILDER'}>LXDAO Builder</MenuItem>
+                    <MenuItem value={'LXDAOMEMBER'}>LXDAO Member</MenuItem>
                   </Select>
                 );
               }}
@@ -182,7 +221,7 @@ export default function Apply() {
           <Grid item xs={2} alignItems="center">
             <Label required={true} value={'Name: '} />
           </Grid>
-          {type === 0 ? (
+          {type === 'LXDAOBUILDER' ? (
             <Grid item xs={9}>
               <Controller
                 name={'name'}
@@ -285,7 +324,7 @@ export default function Apply() {
                 return (
                   <>
                     <OutlinedInput
-                      disabled={type === 0}
+                      disabled={type === 'LXDAOBUILDER'}
                       placeholder="2a3s341....3sad"
                       sx={{ height: 56, width: '100%' }}
                       value={value}
@@ -296,6 +335,27 @@ export default function Apply() {
                       {errors?.address?.message}
                     </Typography>
                   </>
+                );
+              }}
+            />
+          </Grid>
+          <Grid item xs={2} alignItems="center">
+            <Label required={true} value={'Source: '} />
+          </Grid>
+          <Grid item xs={9}>
+            <Controller
+              name={'source'}
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { onChange, value, onBlur } }) => {
+                return (
+                  <OutlinedInput
+                    placeholder="Please summarize in one word!"
+                    sx={{ height: 56, width: '100%' }}
+                    value={value}
+                    onChange={onChange}
+                    onBlur={onBlur}
+                  />
                 );
               }}
             />
@@ -381,9 +441,9 @@ export default function Apply() {
           variant="gradient"
           marginTop={'69px'}
           onClick={handleSubmit((data) => {
-            console.log(data);
+            applicationHandler(data);
           })}
-          disabled={JSON.stringify(errors) != '{}'}
+          disabled={JSON.stringify(errors) != '{}' || disabltSubmitBtn}
         >
           Submit
         </LXButton>
