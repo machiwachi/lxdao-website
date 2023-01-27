@@ -23,28 +23,19 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useTheme } from '@mui/material/styles';
 
 import { useAccount } from 'wagmi';
+import { ethers } from 'ethers';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import API from '@/common/API';
 
+import abi_lxp from '../abi-lxp.json';
+
 import LXButton from '@/components/Button';
 import Layout from '@/components/Layout';
 import useBuidler from '@/components/useBuidler';
 import showMessage from '@/components/showMessage';
-
-function createData(
-  Name,
-  Address,
-  Remuneration,
-  Source,
-  Reason,
-  ApplyDate,
-  Status
-) {
-  return { Name, Address, Remuneration, Source, Reason, ApplyDate, Status };
-}
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -54,6 +45,7 @@ function TablePaginationActions(props) {
   const handlePageInput = (event) => {
     setPagei(event.target.value - 1);
   };
+
   const handlePageInputConfirm = (event) => {
     if (event.key == 'Enter') {
       let max = Math.ceil(count / rowsPerPage);
@@ -108,7 +100,7 @@ function TablePaginationActions(props) {
         )}
       </IconButton>
       <input
-        style={{ width: '2rem', 'text-align': 'center' }}
+        style={{ width: '2rem', textAlign: 'center' }}
         value={pagei + 1}
         onChange={handlePageInput}
         onKeyDown={handlePageInputConfirm}
@@ -136,13 +128,6 @@ function TablePaginationActions(props) {
   );
 }
 
-TablePaginationActions.propTypes = {
-  count: PropTypes.number.isRequired,
-  onPageChange: PropTypes.func.isRequired,
-  page: PropTypes.number.isRequired,
-  rowsPerPage: PropTypes.number.isRequired,
-};
-
 function StatusLabel({ status }) {
   switch (status) {
     case 'RELEASED':
@@ -158,10 +143,11 @@ function StatusLabel({ status }) {
   }
 }
 
-function UnReleasedTable({ isAccountingTeam }) {
+function UnReleasedTable({ isAccountingTeam, isConnected }) {
   const router = useRouter();
   const [rows, setRows] = useState([]);
   const [copied, setCopied] = useState(false);
+  const [disable, setDisable] = useState(false);
   const [page, setPage] = useState(0);
   const [perPage, setPerPage] = useState(25);
   const [pagination, setPagination] = useState({});
@@ -192,10 +178,49 @@ function UnReleasedTable({ isAccountingTeam }) {
     }
   };
 
-  const hanldeReleaseBtn = async () => {
-    try {
-      const res = await API.post(`/lxpoints/release`);
+  const mintAll = async (addresses, amounts) => {
+    const lxpAddress = process.env.NEXT_PUBLIC_LXP_CONTRACT_ADDRESS;
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const lxpContract = new ethers.Contract(lxpAddress, abi_lxp, signer);
+    const tx = await lxpContract.batchMint(addresses, amounts);
+    return tx.hash;
+  };
 
+  const getAllTOBERELEASEDLXP = async () => {
+    let query = `/lxpoints/list?`;
+    let params = [];
+    ['TOBERELEASED'].map((value, index) => {
+      params.push('status=' + value);
+    });
+    params.push('page=1');
+    params.push('per_page=' + 9999);
+    query += params.join('&');
+    const res = await API.get(query);
+    const result = res.data;
+    if (result.status !== 'SUCCESS') {
+      alert(result.message);
+      // error todo Muxin add common alert, wang teng design
+      return;
+    }
+    const rawData = result.data;
+    const addresses = rawData.map((value, index) => value.address);
+    const amounts = rawData.map((value, index) => value.value);
+    return [addresses, amounts];
+  };
+
+  const hanldeReleaseBtn = async () => {
+    // mint all and store the transaction hash
+    setDisable(true);
+    try {
+      // read all record
+      const [addresses, amounts] = await getAllTOBERELEASEDLXP();
+      if (addresses.length == 0) {
+        throw { message: 'No to be released lxp' };
+      }
+      const hash = await mintAll(addresses, amounts);
+      // post to backend
+      const res = await API.post(`/lxpoints/release`, { hash: hash });
       const result = res.data;
       if (result.status !== 'SUCCESS') {
         alert(result.message);
@@ -204,6 +229,7 @@ function UnReleasedTable({ isAccountingTeam }) {
       }
       router.reload(window.location.pathname);
     } catch (err) {
+      setDisable(false);
       showMessage({
         type: 'error',
         title: err.error_code,
@@ -402,7 +428,7 @@ function UnReleasedTable({ isAccountingTeam }) {
                         </LXButton>
                       </>
                     )}
-                    {row.status == 'TOBERELEASED' && (
+                    {row.status == 'TOBERELEASED' && isConnected && (
                       <LXButton
                         width={'100px'}
                         variant="outlined"
@@ -436,19 +462,22 @@ function UnReleasedTable({ isAccountingTeam }) {
                 ActionsComponent={TablePaginationActions}
               />
             </TableRow>
-            <TableRow sx={{ justifyContent: 'center' }}>
-              <TableCell colSpan={8}>
-                <Box display="flex" justifyContent="center">
-                  <LXButton
-                    width="200px"
-                    variant="gradient"
-                    onClick={hanldeReleaseBtn}
-                  >
-                    Release
-                  </LXButton>
-                </Box>
-              </TableCell>
-            </TableRow>
+            {isAccountingTeam && (
+              <TableRow sx={{ justifyContent: 'center' }}>
+                <TableCell colSpan={8}>
+                  <Box display="flex" justifyContent="center">
+                    <LXButton
+                      width="200px"
+                      variant="gradient"
+                      onClick={hanldeReleaseBtn}
+                      disabled={disable}
+                    >
+                      Release
+                    </LXButton>
+                  </Box>
+                </TableCell>
+              </TableRow>
+            )}
           </TableFooter>
         </Table>
       </TableContainer>
@@ -460,7 +489,6 @@ function ReleasedTable({ isAccountingTeam }) {
   const [hideHistory, setHideHistory] = useState(false);
   const [rows, setRows] = useState([]);
   const [copied, setCopied] = useState(false);
-
   const [page, setPage] = useState(0);
   const [perPage, setPerPage] = useState(25);
   const [pagination, setPagination] = useState({});
@@ -505,6 +533,7 @@ function ReleasedTable({ isAccountingTeam }) {
       });
     }
   };
+
   useEffect(() => {
     (async () => {
       await getLXPApplications();
@@ -739,7 +768,12 @@ export default function Publicity({ days }) {
               {days < 0 ? 'Days后结束公示' : 'Days后开始公示'}
             </Typography>
           </Box>
-          {days < 0 && <UnReleasedTable isAccountingTeam={isAccountingTeam} />}
+          {days < 0 && (
+            <UnReleasedTable
+              isAccountingTeam={isAccountingTeam}
+              isConnected={isConnected}
+            />
+          )}
           <ReleasedTable isAccountingTeam={isAccountingTeam} />
         </Box>
       </Container>
@@ -747,8 +781,8 @@ export default function Publicity({ days }) {
   );
 }
 
-export async function getServerSideProps() {
-  const now = new Date('2023-2-1'); // dev stage, when online, please modify it to `new Date()`
+function getDays() {
+  const now = new Date('2023-1-1'); // dev stage, when online, please modify it to `new Date()`
   let days = 0;
   if (now.getDate() > 7) {
     // how many day from now to next start.
@@ -760,9 +794,13 @@ export async function getServerSideProps() {
 
     days = Math.ceil((next.getTime() - now.getTime()) / (1000 * 3600 * 24));
   } else {
-    // how many day from now to end.
+    // how many day from now to the end.
     days = now.getDate() - 7;
   }
+  return days;
+}
 
+export async function getServerSideProps() {
+  const days = getDays();
   return { props: { days } };
 }

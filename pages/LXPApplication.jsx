@@ -74,7 +74,7 @@ export default function Apply() {
   ) => {
     let query = `/buidler?`;
     let params = [];
-    params.push('per_page=100');
+    params.push('per_page=1000');
     query += params.join('&');
 
     try {
@@ -88,8 +88,8 @@ export default function Apply() {
 
       let tempList = [];
       records.forEach((record) => {
-        let { name, address } = record;
-        tempList.push({ name, address });
+        let { id, name, address } = record;
+        tempList.push({ id, name, address });
       });
       setOptions(tempList);
     } catch (err) {
@@ -108,6 +108,7 @@ export default function Apply() {
         type: raw.type,
         name: raw.name,
         address: raw.address,
+        buidlerId: raw.buidlerId,
         source: raw.source,
         value: parseInt(raw.amount),
         reason: raw.reason,
@@ -208,6 +209,7 @@ export default function Apply() {
                     onChange={(event) => {
                       onChange(event.target.value);
                       setType(event.target.value);
+                      setValue('buidlerId', null);
                     }}
                     onBlur={onBlur}
                   >
@@ -246,6 +248,7 @@ export default function Apply() {
                       onChange={(e, value) => {
                         onChange(value?.name);
                         setValue('address', value?.address);
+                        setValue('buidlerId', value?.id);
                       }}
                       onBlur={onBlur}
                       options={options}
