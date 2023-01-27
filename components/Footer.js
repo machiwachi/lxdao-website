@@ -92,6 +92,14 @@ const Footer = () => {
                     name: 'Developer Guide',
                     link: 'https://github.com/lxdao-official/LXDAO-Developer-Guide',
                   },
+                  {
+                    name: 'Weekly Update',
+                    link: 'https://forum.lxdao.io/c/governance/weekly/11',
+                  },
+                  {
+                    name: 'Monthly AMA',
+                    link: 'https://forum.lxdao.io/c/governance/monthly-ama/12',
+                  },
                 ]}
               />
             </Grid>
@@ -121,12 +129,8 @@ const Footer = () => {
                     link: 'https://snapshot.org/#/lxdao.eth',
                   },
                   {
-                    name: 'Weekly Update',
-                    link: 'https://forum.lxdao.io/c/governance/weekly/11',
-                  },
-                  {
-                    name: 'Monthly AMA',
-                    link: 'https://forum.lxdao.io/c/governance/monthly-ama/12',
+                    name: 'LXDAO Media Kit',
+                    link: 'https://www.figma.com/file/kBSNRnzvDNyLX5SrM7P2Mh/LXDAO-Media-kit?node-id=2%3A15&t=Sbk019qSH9SwRL7y-0',
                   },
                 ]}
               />
