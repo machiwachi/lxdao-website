@@ -9,6 +9,21 @@ const partnersData = [
     logo: '/images/partners/nextdao-logo.svg',
     link: 'https://twitter.com/theNextDAO',
   },
+  {
+    name: 'ELEDUCK',
+    logo: '/images/partners/eleduck-logo.svg',
+    link: 'https://eleduck.com/',
+  },
+  {
+    name: 'MobyMask',
+    logo: '/images/partners/mobymask-logo.svg',
+    link: 'https://mobymask.com/',
+  },
+  {
+    name: 'MoleDAO',
+    logo: '/images/partners/moledao-logo.svg',
+    link: 'https://www.moledao.io/',
+  },
 ];
 
 const SectionPartners = () => (
