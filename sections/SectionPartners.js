@@ -12,7 +12,7 @@ const partnersData = [
   {
     name: 'ELEDUCK',
     logo: '/images/partners/eleduck-logo.svg',
-    link: 'https://eleduck.com/',
+    link: 'https://twitter.com/eleduck_com',
   },
   {
     name: 'MobyMask',
