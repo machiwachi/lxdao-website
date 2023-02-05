@@ -112,6 +112,7 @@ const SectionProjectDetail = ({ projectId }) => {
   const sentEmailToProjectManager = (targetEmailAddress) => {
     const subject = `Builder ${address} want to join ${project?.name}`;
     const body = `<p>There is a request from Builder ${address} to join ${project?.name}, please review it, if it passes, please invite the buidler to join the project on the details page of project, if it does not pass, please contact the buidler and explain the reasons.</p>
+    <br><br>
     <p>This is an official email from <a href="https://lxdao.io">LXDAO</a>.</p>
     <p>Kind Regards,</p>
     <p>LXDAO</p>`;
@@ -205,6 +206,7 @@ const SectionProjectDetail = ({ projectId }) => {
         ) {
           setShowAcceptButton(true);
           setCurrentBuidlerOnProjectInfo({
+            projectName: project?.name,
             id: buidler?.id,
             ipfsURI: buidler?.buidler?.ipfsURI || '',
           });
@@ -890,9 +892,9 @@ const SectionProjectDetail = ({ projectId }) => {
         content={
           <Box>
             Email has been sent to PM, PM will contact you by email later
-            <Link href={`/buidlers/${projectManagerAddress}`} target="_blank">
+            {/* <Link href={`/buidlers/${projectManagerAddress}`} target="_blank">
               {projectManagerName}
-            </Link>
+            </Link> */}
             .
           </Box>
         }
