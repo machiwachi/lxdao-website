@@ -10,8 +10,8 @@ import {
   useSignMessage,
   useDisconnect,
 } from 'wagmi';
-import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
+import { infuraProvider } from 'wagmi/providers/infura';
 
 import API, { refreshAPIToken } from '@/common/API';
 import {
@@ -25,7 +25,10 @@ import '@rainbow-me/rainbowkit/styles.css';
 
 const { chains, provider } = configureChains(
   [chain.mainnet, chain.goerli],
-  [alchemyProvider({ apiKey: process.env.ALCHEMY_ID }), publicProvider()]
+  [
+    infuraProvider({ apiKey: process.env.NEXT_PUBLIC_INFURA_ID }),
+    publicProvider(),
+  ]
 );
 
 const { connectors } = getDefaultWallets({
