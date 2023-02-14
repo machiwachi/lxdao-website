@@ -247,8 +247,8 @@ function ProfileForm(props) {
           rules={{
             validate: (value) => {
               const isValid =
-                value.email &&
-                value.email.length > 0 &&
+                value?.email &&
+                value?.email.length > 0 &&
                 isValidEmail(value.email);
 
               const isEmpty = JSON.stringify(removeEmpty(value)) === '{}';
@@ -297,7 +297,7 @@ function ProfileForm(props) {
           control={control}
           rules={{
             validate: (value) => {
-              return value.email.length !== 0 && isValidEmail(value.email);
+              return value?.email.length !== 0 && isValidEmail(value?.email);
             },
           }}
           render={({ field: { onChange, value } }) => {
