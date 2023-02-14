@@ -110,10 +110,13 @@ const SectionProjectDetail = ({ projectId }) => {
   projectManagerAddress = projectManagerBudilder?.buidler?.address;
 
   const sentEmailToProjectManager = (targetEmailAddress) => {
-    const subject = `Builder ${address} want to join ${project?.name}`;
-    const body = `<p>There is a request from Builder ${address} to join ${project?.name}, please review it, if it passes, please invite the buidler to join the project on the details page of project, if it does not pass, please contact the buidler and explain the reasons.</p>
+    const subject = `Builder asks to join ${project?.name} project`;
+    const body = `<p>Hi ${projectManagerName},</p><br><br><p>There is a request from Builder<a href=${`https://lxdao.io/buidlers/${address}`} target="_blank">(${address})</a> to join ${
+      project?.name
+    } project. If it is approved, invite the Buidler to join the project on the details page. If it is denied, get in touch with the Buidler and let them know why.</p>
     <br><br>
     <p>This is an official email from <a href="https://lxdao.io">LXDAO</a>.</p>
+    <br><br>
     <p>Kind Regards,</p>
     <p>LXDAO</p>`;
     API.post(`/email/sendEmail`, {
