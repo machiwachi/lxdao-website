@@ -1,11 +1,4 @@
-import {
-  Container,
-  Typography,
-  Box,
-  Card,
-  CardContent,
-  Link,
-} from '@mui/material';
+import { Typography, Box, Card, CardContent, Link } from '@mui/material';
 import OnBoardingLayout from '@/components/OnBoardingLayout';
 
 export default function Flow() {
@@ -41,9 +34,9 @@ export default function Flow() {
       title="LXDAO Introduction"
       desc="HOW DOES LXDAO WORKS?"
       back="/onboarding/intro"
-      next="/onboarding/flow"
+      next="/onboarding/buddy"
     >
-      <Container
+      <Box
         sx={{
           display: 'flex',
           mt: '64px',
@@ -96,7 +89,7 @@ export default function Flow() {
             </Box>
           </Box>
         ))}
-      </Container>
+      </Box>
       <Link color="#101828">
         <Typography marginBottom="106px">Learn more →</Typography>
       </Link>

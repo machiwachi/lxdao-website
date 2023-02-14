@@ -16,6 +16,7 @@ export default function OnBoardingLayout({
         <Typography
           color="#666F85"
           variant="subtitle1"
+          fontFamily="Inter"
           sx={{ fontWeight: 400 }}
         >
           {title}
@@ -24,6 +25,7 @@ export default function OnBoardingLayout({
           variant="h2"
           lineHeight="44px"
           mt="24px"
+          textTransform="uppercase"
           sx={{ fontWeight: 800 }}
         >
           {desc}
