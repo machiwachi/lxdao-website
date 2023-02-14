@@ -1,6 +1,10 @@
 import { useRouter } from 'next/router';
 import { Box } from '@mui/material';
-export default function OnBoardingBottom({ back = '', next = '' }) {
+export default function OnBoardingBottom({
+  back = '',
+  next = '',
+  disableNext = false,
+}) {
   const router = useRouter();
   return (
     <Box
@@ -58,10 +62,9 @@ export default function OnBoardingBottom({ back = '', next = '' }) {
             lineHeight: '24px',
             fontWeight: '600',
             mx: '8px',
-            background:
-              //   rest.disabled?
-              // 'linear-gradient(89.57deg, rgba(41,117,223,0.5) 0.27%, rgba(58,207,227,0.5) 105.82%)':
-              'linear-gradient(90deg, #305FE8 0%, #3AD9E3 100%)',
+            background: disableNext
+              ? 'linear-gradient(89.57deg, rgba(41,117,223,0.5) 0.27%, rgba(58,207,227,0.5) 105.82%)'
+              : 'linear-gradient(90deg, #305FE8 0%, #3AD9E3 100%)',
           }}
         >
           I Got

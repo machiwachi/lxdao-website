@@ -9,6 +9,7 @@ export default function OnBoardingLayout({
   desc,
   back,
   next,
+  disableNext,
 }) {
   return (
     <Layout>
@@ -23,7 +24,7 @@ export default function OnBoardingLayout({
         </Typography>
         <Typography
           variant="h2"
-          lineHeight="44px"
+          lineHeight="70px"
           mt="24px"
           textTransform="uppercase"
           sx={{ fontWeight: 800 }}
@@ -31,7 +32,7 @@ export default function OnBoardingLayout({
           {desc}
         </Typography>
         {children}
-        <OnBoardingBottom back={back} next={next} />
+        <OnBoardingBottom back={back} next={next} disableNext={disableNext} />
       </Container>
     </Layout>
   );
