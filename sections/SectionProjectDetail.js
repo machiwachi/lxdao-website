@@ -111,10 +111,9 @@ const SectionProjectDetail = ({ projectId }) => {
 
   const sentEmailToProjectManager = (targetEmailAddress) => {
     const subject = `Builder asks to join ${project?.name} project`;
-    const body = `<p>Hi ${projectManagerName},</p><br><br><p>There is a request from Builder<a href=${`https://lxdao.io/buidlers/${address}`} target="_blank">(${address})</a> to join ${
+    const body = `<p>Hi ${projectManagerName},</p><p>There is a request from Builder(<a href=${`https://lxdao.io/buidlers/${address}`} target="_blank">${address}</a>) to join ${
       project?.name
     } project. If it is approved, invite the Buidler to join the project on the details page. If it is denied, get in touch with the Buidler and let them know why.</p>
-    <br><br>
     <p>This is an official email from <a href="https://lxdao.io">LXDAO</a>.</p>
     <br><br>
     <p>Kind Regards,</p>
