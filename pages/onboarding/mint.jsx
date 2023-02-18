@@ -1,12 +1,58 @@
 import OnBoardingLayout from '@/components/OnBoardingLayout';
+import { useAccount } from 'wagmi';
+import { Box, Typography } from '@mui/material';
+import LXButton from '@/components/Button';
+import useBuidler from '@/components/useBuidler';
 
-export default function Profile() {
+export default function Mint() {
+  const { address } = useAccount();
   return (
     <OnBoardingLayout
-      title="LXDAO Introduction"
-      desc="How a buddy can help you?"
+      title="Free, Only gas."
+      desc="Mint your LXDAO Buidler Card"
       back="/onboarding/profile"
       next="done"
-    ></OnBoardingLayout>
+    >
+      <Box sx={{ display: 'flex', paddingTop: '32px', paddingBottom: '107px' }}>
+        <Box marginBottom={'83px'} margin="auto">
+          <img
+            crossOrigin="anonymous"
+            style={{ display: 'block', width: 545 }}
+            src={`${process.env.NEXT_PUBLIC_LXDAO_BACKEND_API}/buidler/${address}/card`}
+            alt=""
+          />
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'start',
+          }}
+        >
+          <Typography variant="subtitle1" fontWeight="800" color="#101828">
+            HOW MINT
+          </Typography>
+          <Typography
+            variant="body1"
+            color="#666F85"
+            whiteSpace={'pre-wrap'}
+            lineHeight="24px"
+            mt={4}
+          >
+            {
+              '1. Contact your Buddy and make an appointment\n2. Your Buddy will review your profile and answer your questions\n3. Your Buddy enables your LXDAO Buidler Card mint access'
+            }
+          </Typography>
+          <LXButton variant="gradient" width="148px" my={4}>
+            Mint
+          </LXButton>
+          <Typography variant="body2" color="#666F85" whiteSpace={'pre-wrap'}>
+            {
+              'Free, Only gas.\nMinti success meaning officially become an LXDAO Buidler'
+            }
+          </Typography>
+        </Box>
+      </Box>
+    </OnBoardingLayout>
   );
 }

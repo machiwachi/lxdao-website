@@ -1,10 +1,12 @@
 import { useRouter } from 'next/router';
 import { Box } from '@mui/material';
+import { useAccount } from 'wagmi';
 export default function OnBoardingBottom({
   back = '',
   next = '',
   disableNext = false,
 }) {
+  const { address } = useAccount();
   const router = useRouter();
   return (
     <Box
@@ -49,6 +51,10 @@ export default function OnBoardingBottom({
           justifyContent="center"
           visibility={next ? 'visible' : 'hidden'}
           onClick={() => {
+            if (next == 'done') {
+              router.push(`/buidlers/${address}`);
+              return;
+            }
             router.push(next);
           }}
           sx={{
@@ -67,7 +73,7 @@ export default function OnBoardingBottom({
               : 'linear-gradient(90deg, #305FE8 0%, #3AD9E3 100%)',
           }}
         >
-          I Got
+          {next == 'done' ? 'Done' : 'I Got'}
         </Box>
       )}
     </Box>
