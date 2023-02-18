@@ -151,7 +151,7 @@ export function BuidlerCard({ record, simpleMode = false }) {
           <Skeleton variant="rectangular" width={104} height={16} />
           <Skeleton
             variant="rectangular"
-            width={315}
+            maxWidth={315}
             height={16}
             sx={{ mr: 3 }}
           />
@@ -190,7 +190,7 @@ export function BuidlerCard({ record, simpleMode = false }) {
       </Box>
 
       <Box display="flex" flexWrap="wrap" marginTop={2}>
-        <Skeleton variant="rectangular" width={432} height={20} />
+        <Skeleton variant="rectangular" maxWidth={432} height={20} />
         <Skeleton
           variant="rectangular"
           width={'80%'}
@@ -673,13 +673,13 @@ export default function Profile() {
           mb: '48px',
         }}
       >
-        <Box width="505px">
+        <Box maxWidth="505px">
           <BuidlerCard />
         </Box>
         <Box
           sx={{
             display: 'flex',
-            width: '505px',
+            width: { xs: '100%', md: '505px' },
             mt: '16px',
             alignItems: 'center',
             justifyContent: 'space-between',

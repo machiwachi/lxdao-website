@@ -13,12 +13,25 @@ export default function Mint() {
       back="/onboarding/profile"
       next="done"
     >
-      <Box sx={{ display: 'flex', paddingTop: '32px', paddingBottom: '107px' }}>
-        <Box marginBottom={'83px'} margin="auto">
+      <Box
+        sx={{
+          display: 'flex',
+          paddingTop: '32px',
+          paddingBottom: '107px',
+          flexDirection: { xs: 'column', md: 'row' },
+          alignItems: 'center',
+        }}
+      >
+        <Box
+          marginBottom={'83px'}
+          margin="auto"
+          sx={{ width: { xs: '100%', md: '545px' } }}
+        >
           <img
             crossOrigin="anonymous"
-            style={{ display: 'block', width: 545 }}
-            src={`${process.env.NEXT_PUBLIC_LXDAO_BACKEND_API}/buidler/${address}/card`}
+            width={'100%'}
+            style={{ objectFit: 'contain' }}
+            src={cardUrl}
             alt=""
           />
         </Box>
@@ -26,7 +39,7 @@ export default function Mint() {
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'start',
+            alignItems: { xs: 'center', md: 'start' },
           }}
         >
           <Typography variant="subtitle1" fontWeight="800" color="#101828">

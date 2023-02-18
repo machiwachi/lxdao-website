@@ -16,6 +16,8 @@ export default function Buddy() {
       <Box
         sx={{
           display: 'flex',
+          flexDirection: { xs: 'column', md: 'row' },
+          alignItems: 'center',
           justifyContent: 'space-between',
           mt: '108px',
           mb: '48px',
@@ -30,7 +32,11 @@ export default function Buddy() {
         <Box>
           <Typography
             maxWidth={'720px'}
-            sx={{ whiteSpace: 'pre-wrap', color: '#667085' }}
+            sx={{
+              whiteSpace: 'pre-wrap',
+              color: '#667085',
+              wordBreak: 'break-all',
+            }}
           >
             {`Answering any questions https://lxdao.io/buidlers/0xF7129631fad9C3a52a55EB6Ef96646C84e2161C4 from the new joiner. If you don’t know, ask your Buddy\n\nHelp the new joiner to involve in DAO activities: join the working group or project, join the community call, make proposals, etc.\n\nNotify the new joiner for the important meetings just in case they missed out, and get familiar with living in LXDAO\n\n`}
           </Typography>

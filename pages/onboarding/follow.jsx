@@ -11,13 +11,25 @@ import { useState } from 'react';
 export default function Follow() {
   const [state, setState] = useState(new Array(7).fill(false));
   const data = [
-    <Typography variant="body1" color="#666F85">
+    <Typography
+      variant="body1"
+      color="#666F85"
+      sx={{
+        wordBreak: 'break-all',
+      }}
+    >
       Follow the official Twitter:{' '}
       <Link href="https://twitter.com/LXDAO_Official" color="#36AFF9">
         https://twitter.com/LXDAO_Official
       </Link>
     </Typography>,
-    <Typography variant="body1" color="#666F85">
+    <Typography
+      variant="body1"
+      color="#666F85"
+      sx={{
+        wordBreak: 'break-all',
+      }}
+    >
       Follow the LXDAO Twitter List{' '}
       <Link
         href="https://twitter.com/i/lists/1576113456792551424"
@@ -26,33 +38,63 @@ export default function Follow() {
         https://twitter.com/i/lists/1576113456792551424
       </Link>
     </Typography>,
-    <Typography variant="body1" color="#666F85">
+    <Typography
+      variant="body1"
+      color="#666F85"
+      sx={{
+        wordBreak: 'break-all',
+      }}
+    >
       Register on Forum{' '}
       <Link href="https://forum.lxdao.io" color="#36AFF9">
         https://forum.lxdao.io
       </Link>{' '}
       (main community)
     </Typography>,
-    <Typography variant="body1" color="#666F85">
+    <Typography
+      variant="body1"
+      color="#666F85"
+      sx={{
+        wordBreak: 'break-all',
+      }}
+    >
       Discord{' '}
       <Link href="http://discord.lxdao.io/" color="#36AFF9">
         http://discord.lxdao.io/
       </Link>{' '}
     </Typography>,
-    <Typography variant="body1" color="#666F85">
+    <Typography
+      variant="body1"
+      color="#666F85"
+      sx={{
+        wordBreak: 'break-all',
+      }}
+    >
       Notion{' '}
       <Link href="https://lxdao.notion.site/" color="#36AFF9">
         https://lxdao.notion.site/
       </Link>
     </Typography>,
-    <Typography variant="body1" color="#666F85">
+    <Typography
+      variant="body1"
+      color="#666F85"
+      sx={{
+        wordBreak: 'break-all',
+      }}
+    >
       GitHub{' '}
       <Link href="https://github.com/lxdao-official" color="#36AFF9">
         https://github.com/lxdao-official
       </Link>{' '}
       (for developers)
     </Typography>,
-    <Typography variant="body1" color="#666F85">
+    <Typography
+      variant="body1"
+      color="#666F85"
+      sx={{
+        wordBreak: 'break-all',
+      }}
+    >
       Subscribe newsletter with your email (on the bottom of{' '}
       <Link href="https://lxdao.io/" color="#36AFF9">
         https://lxdao.io/
@@ -78,6 +120,8 @@ export default function Follow() {
       <Box
         sx={{
           display: 'flex',
+          flexDirection: { xs: 'column', md: 'row' },
+          alignItems: { xs: 'center', md: 'start' },
           mt: '25px',
           mb: '48px',
         }}
@@ -100,6 +144,7 @@ export default function Follow() {
                           '&.Mui-checked': {
                             color: '#36AFF9',
                           },
+                          wordBreak: 'break-all',
                         }}
                         checked={state[index]}
                         onChange={handleChange}
@@ -116,7 +161,10 @@ export default function Follow() {
         <Box
           component="img"
           src="/icons/onboarding/follow.svg"
-          sx={{ mt: '84px', mb: '71px' }}
+          sx={{
+            mt: { sx: '32px', md: '84px' },
+            mb: { sx: '32px', md: '71px' },
+          }}
         />
       </Box>
     </OnBoardingLayout>
