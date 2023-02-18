@@ -612,7 +612,9 @@ function BuidlerDetails(props) {
               />
               {record.description && (
                 <Box marginTop={3}>
-                  <Typography>{record.description}</Typography>
+                  <Typography sx={{ wordBreak: 'break-word' }}>
+                    {record.description}
+                  </Typography>
                 </Box>
               )}
               {record.role?.length > 0 && (
@@ -1223,6 +1225,7 @@ function BuidlerDetails(props) {
                 'skills',
                 'interests',
                 'contacts',
+                'privateContacts',
               ])
             )}
             saveProfileHandler={saveProfileHandler}
