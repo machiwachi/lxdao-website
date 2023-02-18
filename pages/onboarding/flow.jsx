@@ -39,6 +39,8 @@ export default function Flow() {
       <Box
         sx={{
           display: 'flex',
+          flexDirection: { xs: 'column', md: 'row' },
+          alignItems: { xs: 'center' },
           mt: '64px',
           mb: '60px',
           overflow: 'scroll',
@@ -58,6 +60,7 @@ export default function Flow() {
                 sx={{
                   width: 224,
                   height: 280,
+                  mb: { xs: 3, md: 0 },
                   border: '0.5px solid #D0D5DD',
                   borderRadius: '6px',
                   position: 'relative',
