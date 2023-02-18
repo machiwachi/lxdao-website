@@ -13,7 +13,7 @@ export default function OnBoardingBottom({
       sx={{
         display: 'flex',
         flexDirection: { xs: 'column', md: 'row' },
-        justifyContent: 'center',
+        justifyContent: { sx: 'center', md: 'space-between' },
         alignItems: 'center',
         mb: { xs: '30px' },
       }}
@@ -37,6 +37,7 @@ export default function OnBoardingBottom({
             lineHeight: '24px',
             fontWeight: '600',
             mx: '8px',
+            mb: { xs: '8px' },
             background: '#F4F6F8',
           }}
         >

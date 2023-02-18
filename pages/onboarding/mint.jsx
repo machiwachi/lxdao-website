@@ -3,9 +3,17 @@ import { useAccount } from 'wagmi';
 import { Box, Typography } from '@mui/material';
 import LXButton from '@/components/Button';
 import useBuidler from '@/components/useBuidler';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
 export default function Mint() {
   const { address } = useAccount();
+  const [cardUrl, setCardUrl] = useState('');
+  useEffect(() => {
+    setCardUrl(
+      `${process.env.NEXT_PUBLIC_LXDAO_BACKEND_API}/buidler/${address}/card`
+    );
+  }, [address]);
   return (
     <OnBoardingLayout
       title="Free, Only gas."
@@ -18,7 +26,7 @@ export default function Mint() {
           <img
             crossOrigin="anonymous"
             style={{ display: 'block', width: 545 }}
-            src={`${process.env.NEXT_PUBLIC_LXDAO_BACKEND_API}/buidler/${address}/card`}
+            src={cardUrl}
             alt=""
           />
         </Box>
