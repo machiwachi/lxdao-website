@@ -183,9 +183,15 @@ export default function Apply() {
               color="#667085"
               marginTop={4}
             >
-              Please read the
-              {/* todo: update the link */}
-              <Link color={'#667085'}>LX Points rule</Link> before applying .
+              Ready to start applying LX Points? Learn more about the{' '}
+              <Link
+                href="https://www.notion.so/lxdao/LXP-Rules-80afdaa00f754fb6a222313d5e322917"
+                target="_blank"
+                color={'#667085'}
+              >
+                LX Points rule
+              </Link>{' '}
+              and how you can get started!
             </Typography>
           </Box>
         </Box>
@@ -432,7 +438,7 @@ export default function Apply() {
                         onBlur={onBlur}
                       />
                     }
-                    label="I am sure I have a conscience"
+                    label="I guarantee that I made my application based solely on my conscience."
                   />
                 );
               }}

@@ -376,16 +376,29 @@ function UnReleasedTable({ isAccountingTeam, isConnected }) {
                     {row.value}
                   </TableCell>
                   <TableCell
-                    align="center"
+                    align="left"
                     sx={{ maxWidth: '100px', fontSize: '16px' }}
                   >
                     {row.source}
                   </TableCell>
                   <TableCell
-                    align="center"
-                    sx={{ minWidth: '300px', fontSize: '16px' }}
+                    align="left"
+                    sx={{
+                      minWidth: '300px',
+                      fontSize: '16px',
+                    }}
                   >
-                    {row.reason}
+                    <Typography
+                      sx={{
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        display: '-webkit-box',
+                        WebkitBoxOrient: 'vertical',
+                        WebkitLineClamp: '3',
+                      }}
+                    >
+                      {row.reason}
+                    </Typography>
                   </TableCell>
                   <TableCell
                     align="center"
@@ -486,7 +499,7 @@ function UnReleasedTable({ isAccountingTeam, isConnected }) {
 }
 
 function ReleasedTable({ isAccountingTeam }) {
-  const [hideHistory, setHideHistory] = useState(false);
+  const [hideHistory, setHideHistory] = useState(true);
   const [rows, setRows] = useState([]);
   const [copied, setCopied] = useState(false);
   const [page, setPage] = useState(0);
@@ -606,6 +619,25 @@ function ReleasedTable({ isAccountingTeam }) {
               </TableRow>
             </TableHead>
             <TableBody sx={{ fontSize: '16px', color: '#f14d16' }}>
+              {rows.length <= 0 ? (
+                <TableRow>
+                  <TableCell
+                    colspan="7"
+                    align="center"
+                    sx={{
+                      textAlign: 'center',
+                      width: '100%',
+                      height: '60px',
+                      lineHeight: '60px',
+                      color: '#666F85',
+                    }}
+                  >
+                    No data
+                  </TableCell>
+                </TableRow>
+              ) : (
+                ''
+              )}
               {(perPage > 0
                 ? rows.slice(page * perPage, page * perPage + perPage)
                 : rows
@@ -713,7 +745,7 @@ export default function Publicity({ days }) {
   const [_loading, currentViewer] = useBuidler(address);
   const isAccountingTeam = currentViewer?.role.includes('Accounting Team');
   return (
-    <Layout title={`Apply LX Points | LXDAO`}>
+    <Layout title={`LX Points Public Announcement | LXDAO`}>
       <Container
         sx={{
           mt: 12,
@@ -724,36 +756,45 @@ export default function Publicity({ days }) {
           alignItems: 'center',
         }}
       >
-        {days < 0 && (
-          <Box
-            display="flex"
-            flexDirection="column"
-            gap={6}
-            alignItems={{ lg: 'center', xs: 'center' }}
-            textAlign={{ lg: 'center', xs: 'center' }}
-          >
-            <Box textAlign="center" gap={6}>
-              <Typography
-                fontSize="70px"
-                fontWeight={600}
-                lineHeight="70px"
-                color="#101828"
+        <Box
+          display="flex"
+          flexDirection="column"
+          gap={6}
+          alignItems={{ lg: 'center', xs: 'center' }}
+          textAlign={{ lg: 'center', xs: 'center' }}
+        >
+          <Box textAlign="center" gap={6}>
+            <Typography
+              fontSize="70px"
+              fontWeight={600}
+              lineHeight="70px"
+              color="#101828"
+            >
+              LX Points Public Announcement
+            </Typography>
+            <Typography
+              variant="subtitle1"
+              fontWeight={400}
+              lineHeight="30px"
+              color="#667085"
+              marginTop={4}
+            >
+              To ensure transparency, LX Points submitted by LXDAO contributors
+              must be publicly announced by the community and approved by the
+              LXDAO accounting team. For detailed rules, please refer to this
+              link:{' '}
+              <Link
+                href="https://www.notion.so/lxdao/LXP-Rules-80afdaa00f754fb6a222313d5e322917"
+                target="_blank"
+                color={'#667085'}
               >
-                LX Points Publicity List
-              </Typography>
-              <Typography
-                variant="subtitle1"
-                fontWeight={400}
-                lineHeight="30px"
-                color="#667085"
-                marginTop={4}
-              >
-                What is <Link color={'#667085'}>LX Points</Link> ? LX Points
-                issuance <Link color={'#667085'}>rules</Link>{' '}
-              </Typography>
-            </Box>
+                LX Points rule
+              </Link>{' '}
+              .
+            </Typography>
           </Box>
-        )}
+        </Box>
+
         <Box width={'100%'} marginTop={6}>
           <Box>
             <Typography fontSize={48} fontWeight={400} color={'#666F85'}>
@@ -782,7 +823,7 @@ export default function Publicity({ days }) {
 }
 
 function getDays() {
-  const now = new Date('2023-1-1'); // dev stage, when online, please modify it to `new Date()`
+  const now = new Date('2023-03-01');
   let days = 0;
   if (now.getDate() > 7) {
     // how many day from now to next start.
