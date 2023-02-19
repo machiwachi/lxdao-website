@@ -59,6 +59,9 @@ function totalLXPoints(record) {
   return Object.keys(lxPointsGroup)
     .map((key) => {
       const total = lxPointsGroup[key].reduce((total, point) => {
+        if (point.status != 'RELEASED') {
+          return total;
+        }
         if (point.operator === '+') {
           return total + point.value;
         }
@@ -67,7 +70,7 @@ function totalLXPoints(record) {
         }
         return total;
       }, 0);
-      return `${total}${key}`;
+      return `${total} LXP`;
     })
     .join(' + ');
 }
@@ -142,7 +145,7 @@ function LXPointsTable({ points }) {
                 scope="row"
               >
                 <Typography variant="body1" fontWeight="600">
-                  {`${point.value} ${point.unit}`}
+                  {`${point.value} LXP`}
                 </Typography>
               </TableCell>
               <TableCell sx={{ color: '#101828' }} align="left">
@@ -172,7 +175,7 @@ function LXPointsTable({ points }) {
                   variant="body2"
                   fontWeight="400"
                 >
-                  {point.createdAt.split('T')[0]}
+                  {point.status == 'RELEASED' && point.updatedAt.split('T')[0]}
                 </Typography>
               </TableCell>
               <TableCell sx={{ paddingRight: 0 }} align="right">
@@ -189,7 +192,7 @@ function LXPointsTable({ points }) {
                     variant="body1"
                     fontWeight="400"
                   >
-                    View
+                    {point.status == 'RELEASED' && 'View'}
                   </Typography>
                 </Link>
               </TableCell>
