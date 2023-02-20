@@ -62,6 +62,22 @@ const Header = () => {
         </ListItem>
         <ListItem disablePadding>
           <Link
+            href={`/LXPAnnouncement`}
+            target="_blank"
+            color={'inherit'}
+            sx={{
+              textDecoration: 'none',
+            }}
+          >
+            <ListItemButton>
+              <Typography sx={{ cursor: 'pointer' }}>
+                LX Points Announcement
+              </Typography>
+            </ListItemButton>
+          </Link>
+        </ListItem>
+        <ListItem disablePadding>
+          <Link
             href={`https://forum.lxdao.io/c/governance/10`}
             target="_blank"
             color={'inherit'}
@@ -156,6 +172,22 @@ const Header = () => {
             }}
             MenuListProps={{ 'aria-labelledby': 'governance-menu-trigger' }}
           >
+            <MenuItem
+              onClick={() => {
+                handleGovernanceMenuClose();
+              }}
+            >
+              <Link
+                href={`/LXPAnnouncement`}
+                target="_blank"
+                color={'inherit'}
+                sx={{
+                  textDecoration: 'none',
+                }}
+              >
+                LX Points Announcement
+              </Link>
+            </MenuItem>
             <MenuItem
               onClick={() => {
                 handleGovernanceMenuClose();

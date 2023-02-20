@@ -877,8 +877,20 @@ function BuidlerDetails(props) {
                       variant="body1"
                       color="#101828"
                     >
-                      All Remuneration
+                      All Remuneration{' '}
+                      <Link
+                        href="/LXPApplication"
+                        target="_blank"
+                        sx={{
+                          display: 'inline',
+                          fontSize: '14px',
+                          fontWeight: 500,
+                        }}
+                      >
+                        (Apply LX Points ->)
+                      </Link>
                     </Typography>
+
                     <Typography
                       marginTop={1}
                       fontWeight="600"

@@ -740,12 +740,12 @@ function ReleasedTable({ isAccountingTeam }) {
   );
 }
 
-export default function Publicity({ days }) {
+export default function LXPAnnouncement({ days }) {
   const { address, isConnected } = useAccount();
   const [_loading, currentViewer] = useBuidler(address);
   const isAccountingTeam = currentViewer?.role.includes('Accounting Team');
   return (
-    <Layout title={`LX Points Public Announcement | LXDAO`}>
+    <Layout title={`LX Points Announcement | LXDAO`}>
       <Container
         sx={{
           mt: 12,
@@ -770,7 +770,7 @@ export default function Publicity({ days }) {
               lineHeight="70px"
               color="#101828"
             >
-              LX Points Public Announcement
+              LX Points Announcement
             </Typography>
             <Typography
               variant="subtitle1"
