@@ -106,7 +106,6 @@ export default function Follow() {
     let pre = [...state];
     pre[event.target.name] = event.target.checked;
     setState(pre);
-    console.log(state);
   };
   const selectAll = state.filter((v) => v).length == 7;
   return (

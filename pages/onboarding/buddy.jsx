@@ -1,11 +1,23 @@
-import OnBoardingLayout from '@/components/OnBoardingLayout';
+import { useAccount } from 'wagmi';
+import { useRouter } from 'next/router';
 import { Box, Typography, Link } from '@mui/material';
 
+import OnBoardingLayout from '@/components/OnBoardingLayout';
+import useBuidler from '@/components/useBuidler';
+
 export default function Buddy() {
+  const { address } = useAccount();
+  const router = useRouter();
+  const [loading, record, error, refresh] = useBuidler(address);
   const data = {
-    nickname: 'BruceXu',
-    avatart: '/images/bruce.jpeg',
+    address: record?.buddies[0].address,
+    name: record?.buddies[0].name,
+    avatar: record?.buddies[0].avatar,
   };
+  let host = '';
+  if (typeof window !== 'undefined') {
+    host = window.location.protocol + '//' + window.location.host;
+  }
   return (
     <OnBoardingLayout
       title="LXDAO Introduction"
@@ -38,10 +50,20 @@ export default function Buddy() {
               wordBreak: 'break-all',
             }}
           >
-            {`Answering any questions https://lxdao.io/buidlers/0xF7129631fad9C3a52a55EB6Ef96646C84e2161C4 from the new joiner. If you don’t know, ask your Buddy\n\nHelp the new joiner to involve in DAO activities: join the working group or project, join the community call, make proposals, etc.\n\nNotify the new joiner for the important meetings just in case they missed out, and get familiar with living in LXDAO\n\n`}
+            {`Answering any questions `}
+            <Link href={`/buidlers/${data.address}`} color="#667085">
+              {host + `/buidlers/${data.address}`}
+            </Link>{' '}
+            {`from the new joiner. If you don’t know, ask your Buddy\n\nHelp the new joiner to involve in DAO activities: join the working group or project, join the community call, make proposals, etc.\n\nNotify the new joiner for the important meetings just in case they missed out, and get familiar with living in LXDAO\n\n`}
           </Typography>
           <Typography>
-            <Link sx={{ textDecorationColor: '#101828', color: '#101828' }}>
+            <Link
+              sx={{
+                textDecorationColor: '#101828',
+                color: '#101828',
+                cursor: 'pointer',
+              }}
+            >
               Learn more →
             </Link>
           </Typography>
@@ -58,15 +80,18 @@ export default function Buddy() {
               background: '#FFFFFF',
               border: '0.5px solid #D0D5DD',
               borderRadius: '6px',
+              cursor: 'pointer',
+            }}
+            onClick={() => {
+              router.push(`/buidlers/${data.address}`);
             }}
           >
             <Typography color="#101828" fontWeight="600">
-              Your Boddy{' '}
-              <span style={{ color: '#36AFF9' }}>{data.nickname}</span>
+              Your Boddy <span style={{ color: '#36AFF9' }}>{data.name}</span>
             </Typography>
             <Box
               component="img"
-              src={data.avatart}
+              src={data.avatar}
               sx={{
                 width: '76.95px',
                 height: '80px',
