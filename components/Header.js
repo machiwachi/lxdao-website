@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { Box, Typography, Link, Menu, MenuItem } from '@mui/material';
 
-import { useAccount } from 'wagmi';
-import useBuidler from './useBuidler';
 import MenuIcon from '@mui/icons-material/Menu';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
@@ -15,9 +13,6 @@ import OnBoardingAlertBtn from './OnBoardingAlertBtn';
 import { ConnectWalletButton } from '@/components/ConnectWallet';
 
 const Header = () => {
-  const { address } = useAccount();
-  console.log(address);
-  const [, buidler] = useBuidler(address);
   const [openMenu, setOpenMenu] = useState(false);
   const [governance, setGovernance] = useState(null);
   const router = useRouter();

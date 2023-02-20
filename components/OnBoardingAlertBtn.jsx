@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import {
   Box,
   Typography,
@@ -14,10 +12,15 @@ import { tooltipClasses } from '@mui/material/Tooltip';
 import { styled as muistyle } from '@mui/material/styles';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
+import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { useAccount } from 'wagmi';
+import useWindowSize from 'react-use/lib/useWindowSize';
 import styled, { keyframes } from 'styled-components';
+import Confetti from 'react-confetti';
 
 import LXButton from '@/components/Button';
-import Congratulate from './Congratulate';
+import useBuidler from '@/components/useBuidler';
 
 const LightTooltip = muistyle(({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -69,38 +72,49 @@ const RotateContent = styled.div`
 `;
 
 export default function OnBoardingAlertBtn() {
+  const { address } = useAccount();
+  const [, buidler] = useBuidler(address);
   const [open, setOpen] = useState(false);
+  const router = useRouter();
+  const { width, height } = useWindowSize();
+
   return (
     <>
-      <LightTooltip title="Click me to complete the onborading process.">
-        <RotateBorder
-          onClick={() => {
-            setOpen(true);
-          }}
-        >
-          <RotateContent>
-            <Box component="img" src="/icons/user-block.svg"></Box>
-            <Box
-              sx={{
-                position: 'absolute',
-                width: '24px',
-                height: '24px',
-                borderRadius: '50%',
-                color: '#fff',
-                fontSize: '16px',
-                fontWeight: '900',
-                lineHeight: '20px',
-                backgroundColor: '#FF0000',
-                left: '52%',
-                bottom: '52%',
-                border: '2px solid #fff',
+      <Confetti width={width} height={height} recycle={false} run={open} />
+      {(buidler?.status == 'PENDING' || buidler?.status == 'READYTOMINT') && (
+        <Box display={router.asPath.includes('onboarding') ? 'none' : 'normal'}>
+          <LightTooltip title="Click me to complete the onborading process.">
+            <RotateBorder
+              onClick={() => {
+                setOpen(true);
               }}
             >
-              !
-            </Box>
-          </RotateContent>
-        </RotateBorder>
-      </LightTooltip>
+              <RotateContent>
+                <Box component="img" src="/icons/user-block.svg"></Box>
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    width: '24px',
+                    height: '24px',
+                    borderRadius: '50%',
+                    color: '#fff',
+                    fontSize: '16px',
+                    fontWeight: '900',
+                    lineHeight: '20px',
+                    backgroundColor: '#FF0000',
+                    left: '52%',
+                    bottom: '52%',
+                    border: '2px solid #fff',
+                  }}
+                >
+                  !
+                </Box>
+              </RotateContent>
+            </RotateBorder>
+          </LightTooltip>
+        </Box>
+      )}
+
       <Dialog open={open} maxWidth="714px">
         <Box
           sx={{
@@ -145,7 +159,22 @@ export default function OnBoardingAlertBtn() {
             DaoDAO，恭喜你通过了LXDAO Community
             voting（Snapshot），在正式加入LXDAO成为其中伟大的Builder一员之前，还差几步骤，以便你能够更好的了解LXDAO和融入其中。
           </Typography>
-          <LXButton mb="29px" mt="66px" variant="gradient">
+          <LXButton
+            mb="29px"
+            mt="66px"
+            variant="gradient"
+            onClick={() => {
+              if (buidler?.status == 'READYTOMINT') {
+                router.push('/onboarding/mint');
+                return;
+              }
+              if (buidler?.contacts) {
+                router.push('/onboarding/profile');
+                return;
+              }
+              router.push('/onboarding/intro');
+            }}
+          >
             On Boarding!
           </LXButton>
           <Button
