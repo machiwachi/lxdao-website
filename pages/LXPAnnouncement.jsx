@@ -823,7 +823,7 @@ export default function LXPAnnouncement({ days }) {
 }
 
 function getDays() {
-  const now = new Date('2023-03-01');
+  const now = new Date();
   let days = 0;
   if (now.getDate() > 7) {
     // how many day from now to next start.
