@@ -740,12 +740,12 @@ function ReleasedTable({ isAccountingTeam }) {
   );
 }
 
-export default function Publicity({ days }) {
+export default function LXPAnnouncement({ days }) {
   const { address, isConnected } = useAccount();
   const [_loading, currentViewer] = useBuidler(address);
   const isAccountingTeam = currentViewer?.role.includes('Accounting Team');
   return (
-    <Layout title={`LX Points Public Announcement | LXDAO`}>
+    <Layout title={`LX Points Announcement | LXDAO`}>
       <Container
         sx={{
           mt: 12,
@@ -770,7 +770,7 @@ export default function Publicity({ days }) {
               lineHeight="70px"
               color="#101828"
             >
-              LX Points Public Announcement
+              LX Points Announcement
             </Typography>
             <Typography
               variant="subtitle1"
@@ -823,7 +823,7 @@ export default function Publicity({ days }) {
 }
 
 function getDays() {
-  const now = new Date('2023-03-01');
+  const now = new Date();
   let days = 0;
   if (now.getDate() > 7) {
     // how many day from now to next start.
