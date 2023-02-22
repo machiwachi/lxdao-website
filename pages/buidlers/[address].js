@@ -131,73 +131,81 @@ function LXPointsTable({ points }) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {points.map((point) => (
-            <TableRow
-              key={point.id}
-              sx={{
-                '&:last-child td, &:last-child th': { border: 0 },
-                borderBottom: '0.5px solid #E5E5E5',
-              }}
-            >
-              <TableCell
-                sx={{ color: '#101828', paddingLeft: 0 }}
-                component="th"
-                scope="row"
+          {points.map((point) => {
+            let pointStatus = point.status;
+            if (point.status === 'RELEASED') {
+              pointStatus = point.updatedAt.split('T')[0];
+            } else if (point.status !== 'REJECTED') {
+              pointStatus = 'PENDING';
+            }
+            return (
+              <TableRow
+                key={point.id}
+                sx={{
+                  '&:last-child td, &:last-child th': { border: 0 },
+                  borderBottom: '0.5px solid #E5E5E5',
+                }}
               >
-                <Typography variant="body1" fontWeight="600">
-                  {`${point.value} LXP`}
-                </Typography>
-              </TableCell>
-              <TableCell sx={{ color: '#101828' }} align="left">
-                <Tooltip title={point.reason}>
+                <TableCell
+                  sx={{ color: '#101828', paddingLeft: 0 }}
+                  component="th"
+                  scope="row"
+                >
+                  <Typography variant="body1" fontWeight="600">
+                    {`${point.value} LXP`}
+                  </Typography>
+                </TableCell>
+                <TableCell sx={{ color: '#101828' }} align="left">
+                  <Tooltip title={point.reason}>
+                    <Typography
+                      sx={{
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                        maxWidth: { xs: '150px', sm: '300px' },
+                      }}
+                      variant="body2"
+                      fontWeight="400"
+                    >
+                      {point.reason}
+                    </Typography>
+                  </Tooltip>
+                </TableCell>
+                <TableCell sx={{ color: '#101828' }} align="left">
+                  {point.source}
+                </TableCell>
+                <TableCell sx={{ color: '#101828' }} align="left">
                   <Typography
                     sx={{
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap',
-                      maxWidth: { xs: '150px', sm: '300px' },
+                      width: '89px',
                     }}
                     variant="body2"
                     fontWeight="400"
                   >
-                    {point.reason}
+                    {pointStatus}
                   </Typography>
-                </Tooltip>
-              </TableCell>
-              <TableCell sx={{ color: '#101828' }} align="left">
-                {point.source}
-              </TableCell>
-              <TableCell sx={{ color: '#101828' }} align="left">
-                <Typography
-                  sx={{
-                    width: '89px',
-                  }}
-                  variant="body2"
-                  fontWeight="400"
-                >
-                  {point.status == 'RELEASED' && point.updatedAt.split('T')[0]}
-                </Typography>
-              </TableCell>
-              <TableCell sx={{ paddingRight: 0 }} align="right">
-                <Link
-                  target="_blank"
-                  sx={{ textDecoration: 'none' }}
-                  href={`https://${getEtherScanDomain()}/tx/${point.hash}`}
-                >
-                  <Typography
-                    sx={{
-                      width: '110px',
-                    }}
-                    color="#36AFF9"
-                    variant="body1"
-                    fontWeight="400"
+                </TableCell>
+                <TableCell sx={{ paddingRight: 0 }} align="right">
+                  <Link
+                    target="_blank"
+                    sx={{ textDecoration: 'none' }}
+                    href={`https://${getEtherScanDomain()}/tx/${point.hash}`}
                   >
-                    {point.status == 'RELEASED' && 'View'}
-                  </Typography>
-                </Link>
-              </TableCell>
-            </TableRow>
-          ))}
+                    <Typography
+                      sx={{
+                        width: '110px',
+                      }}
+                      color="#36AFF9"
+                      variant="body1"
+                      fontWeight="400"
+                    >
+                      {point.status == 'RELEASED' && 'View'}
+                    </Typography>
+                  </Link>
+                </TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
     </TableContainer>
@@ -887,7 +895,7 @@ function BuidlerDetails(props) {
                           fontWeight: 500,
                         }}
                       >
-                        (Apply LX Points ->)
+                        (Apply LXP ->)
                       </Link>
                     </Typography>
 
