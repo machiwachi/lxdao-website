@@ -333,6 +333,25 @@ function UnReleasedTable({ isAccountingTeam, isConnected }) {
             </TableRow>
           </TableHead>
           <TableBody sx={{ fontSize: '16px' }}>
+            {rows.length <= 0 ? (
+              <TableRow>
+                <TableCell
+                  colspan="7"
+                  align="center"
+                  sx={{
+                    textAlign: 'center',
+                    width: '100%',
+                    height: '60px',
+                    lineHeight: '60px',
+                    color: '#666F85',
+                  }}
+                >
+                  No data
+                </TableCell>
+              </TableRow>
+            ) : (
+              ''
+            )}
             {rows.map((row, index) => {
               return (
                 <TableRow key={row.id}>
@@ -457,24 +476,27 @@ function UnReleasedTable({ isAccountingTeam, isConnected }) {
               );
             })}
           </TableBody>
+
           <TableFooter>
-            <TableRow>
-              <TablePagination
-                rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                count={pagination?.total}
-                rowsPerPage={perPage}
-                page={page}
-                SelectProps={{
-                  inputProps: {
-                    'aria-label': 'rows per page',
-                  },
-                  native: true,
-                }}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangePerPage}
-                ActionsComponent={TablePaginationActions}
-              />
-            </TableRow>
+            {rows.length > 0 ? (
+              <TableRow>
+                <TablePagination
+                  rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                  count={pagination?.total}
+                  rowsPerPage={perPage}
+                  page={page}
+                  SelectProps={{
+                    inputProps: {
+                      'aria-label': 'rows per page',
+                    },
+                    native: true,
+                  }}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangePerPage}
+                  ActionsComponent={TablePaginationActions}
+                />
+              </TableRow>
+            ) : null}
             {isAccountingTeam && (
               <TableRow sx={{ justifyContent: 'center' }}>
                 <TableCell colSpan={8}>
@@ -715,23 +737,30 @@ function ReleasedTable({ isAccountingTeam }) {
               ))}
             </TableBody>
             <TableFooter>
-              <TableRow>
-                <TablePagination
-                  rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                  count={pagination.total}
-                  rowsPerPage={perPage}
-                  page={page}
-                  SelectProps={{
-                    inputProps: {
-                      'aria-label': 'rows per page',
-                    },
-                    native: true,
-                  }}
-                  onPageChange={handleChangePage}
-                  onRowsPerPageChange={handleChangePerPage}
-                  ActionsComponent={TablePaginationActions}
-                />
-              </TableRow>
+              {rows.length > 0 ? (
+                <TableRow>
+                  <TablePagination
+                    rowsPerPageOptions={[
+                      5,
+                      10,
+                      25,
+                      { label: 'All', value: -1 },
+                    ]}
+                    count={pagination.total}
+                    rowsPerPage={perPage}
+                    page={page}
+                    SelectProps={{
+                      inputProps: {
+                        'aria-label': 'rows per page',
+                      },
+                      native: true,
+                    }}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangePerPage}
+                    ActionsComponent={TablePaginationActions}
+                  />
+                </TableRow>
+              ) : null}
             </TableFooter>
           </Table>
         )}
@@ -745,7 +774,7 @@ export default function LXPAnnouncement({ days }) {
   const [_loading, currentViewer] = useBuidler(address);
   const isAccountingTeam = currentViewer?.role.includes('Accounting Team');
   return (
-    <Layout title={`LX Points Announcement | LXDAO`}>
+    <Layout title={`LXP Announcement | LXDAO`}>
       <Container
         sx={{
           mt: 12,
@@ -770,7 +799,7 @@ export default function LXPAnnouncement({ days }) {
               lineHeight="70px"
               color="#101828"
             >
-              LX Points Announcement
+              LXP Announcement
             </Typography>
             <Typography
               variant="subtitle1"
@@ -779,25 +808,38 @@ export default function LXPAnnouncement({ days }) {
               color="#667085"
               marginTop={4}
             >
-              To ensure transparency, LX Points submitted by LXDAO contributors
-              must be publicly announced by the community and approved by the
-              LXDAO accounting team. For detailed rules, please refer to this
-              link:{' '}
+              To ensure transparency, LXP submitted by LXDAO contributors must
+              be publicly announced by the community and approved by the LXDAO
+              accounting team. For detailed rules, please refer to this link:{' '}
               <Link
                 href="https://www.notion.so/lxdao/LXP-Rules-80afdaa00f754fb6a222313d5e322917"
                 target="_blank"
                 color={'#667085'}
               >
-                LX Points rule
+                LXP rule
+              </Link>{' '}
+              .
+            </Typography>
+            <Typography
+              variant="subtitle1"
+              fontWeight={400}
+              lineHeight="30px"
+              color="#667085"
+              marginTop={1}
+            >
+              Ready to submit your LXP application? Click the link:{' '}
+              <Link href="/LXPApplication" target="_blank" color={'#667085'}>
+                LXP Application
               </Link>{' '}
               .
             </Typography>
           </Box>
         </Box>
 
-        <Box width={'100%'} marginTop={6}>
+        <Box width={'100%'} marginTop={8}>
           <Box>
             <Typography fontSize={48} fontWeight={400} color={'#666F85'}>
+              Public announcement {days < 0 ? 'ends in' : 'starts after'}{' '}
               <span
                 style={{ fontSize: 52, fontWeight: 'bold', color: '#36AFF9' }}
                 fontSize={52}
@@ -806,7 +848,7 @@ export default function LXPAnnouncement({ days }) {
               >
                 {days < 0 ? -days : days}
               </span>{' '}
-              {days < 0 ? 'Days后结束公示' : 'Days后开始公示'}
+              Days
             </Typography>
           </Box>
           {days < 0 && (
@@ -823,7 +865,7 @@ export default function LXPAnnouncement({ days }) {
 }
 
 function getDays() {
-  const now = new Date('2023-03-01');
+  const now = new Date('');
   let days = 0;
   if (now.getDate() > 7) {
     // how many day from now to next start.

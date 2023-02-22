@@ -50,7 +50,7 @@ export default function Apply() {
   } = useForm({
     mode: 'onBlur',
     defaultValues: {
-      type: 0,
+      type: '',
       name: '',
       address: '',
       amount: '',
@@ -61,9 +61,10 @@ export default function Apply() {
   });
   const router = useRouter();
 
-  const [type, setType] = useState(0);
+  const [type, setType] = useState('');
   const [open, setOpen] = useState(false);
   const [disabltSubmitBtn, setDisabltSubmitBtn] = useState(false);
+  const [submitLoading, setSubmitLoading] = useState(false);
   const [options, setOptions] = useState([]);
   const loading = open && options.length === 0;
 
@@ -103,6 +104,7 @@ export default function Apply() {
 
   const applicationHandler = async (raw) => {
     setDisabltSubmitBtn(true);
+    setSubmitLoading(true);
     try {
       const data = {
         type: raw.type,
@@ -119,12 +121,15 @@ export default function Apply() {
       );
       const result = response?.data;
       if (result.status !== 'SUCCESS') {
+        setDisabltSubmitBtn(false);
+        setSubmitLoading(false);
         throw new Error(result.message);
       } else {
-        router.push('/LXPPublicity');
+        router.push('/LXPAnnouncement');
       }
     } catch (err) {
       setDisabltSubmitBtn(false);
+      setSubmitLoading(false);
       showMessage({
         type: 'error',
         title: 'Failed to submit application! ',
@@ -150,7 +155,7 @@ export default function Apply() {
   }, [loading]);
 
   return (
-    <Layout title={`Apply LX Points | LXDAO`}>
+    <Layout title={`LXP Application | LXDAO`}>
       <Container
         sx={{
           mt: 12,
@@ -174,7 +179,7 @@ export default function Apply() {
               lineHeight="70px"
               color="#101828"
             >
-              Apply LX Points
+              Apply LXP
             </Typography>
             <Typography
               variant="subtitle1"
@@ -183,15 +188,27 @@ export default function Apply() {
               color="#667085"
               marginTop={4}
             >
-              Ready to start applying LX Points? Learn more about the{' '}
+              Ready to start applying LXP? Learn more about the{' '}
               <Link
                 href="https://www.notion.so/lxdao/LXP-Rules-80afdaa00f754fb6a222313d5e322917"
                 target="_blank"
                 color={'#667085'}
               >
-                LX Points rule
+                LXP rule
               </Link>{' '}
               and how you can get started!
+            </Typography>
+            <Typography
+              variant="subtitle1"
+              fontWeight={400}
+              lineHeight="30px"
+              color="#667085"
+              marginTop={1}
+            >
+              Feel free to check the LXP Announcement and history list:{' '}
+              <Link href="/LXPAnnouncement" target="_blank" color={'#667085'}>
+                Click me!
+              </Link>
             </Typography>
           </Box>
         </Box>
@@ -206,22 +223,32 @@ export default function Apply() {
               rules={{ required: true }}
               render={({ field: { onChange, value, onBlur } }) => {
                 return (
-                  <Select
-                    sx={{ width: '100%', height: 56 }}
-                    displayEmpty
-                    inputProps={{ 'aria-label': 'Without label' }}
-                    value={value}
-                    defaultValue={0}
-                    onChange={(event) => {
-                      onChange(event.target.value);
-                      setType(event.target.value);
-                      setValue('buidlerId', null);
-                    }}
-                    onBlur={onBlur}
-                  >
-                    <MenuItem value={'LXDAOBUILDER'}>LXDAO Builder</MenuItem>
-                    <MenuItem value={'LXDAOMEMBER'}>LXDAO Member</MenuItem>
-                  </Select>
+                  <>
+                    <Select
+                      sx={{ width: '100%', height: 56 }}
+                      displayEmpty
+                      inputProps={{ 'aria-label': 'Without label' }}
+                      value={value}
+                      defaultValue={''}
+                      onChange={(event) => {
+                        onChange(event.target.value);
+                        setType(event.target.value);
+                        setValue('buidlerId', null);
+                      }}
+                      onBlur={onBlur}
+                    >
+                      <MenuItem value={'LXDAOBUILDER'}>LXDAO Builder</MenuItem>
+                      <MenuItem value={'LXDAOMEMBER'}>LXDAO Member</MenuItem>
+                    </Select>
+                    <Typography
+                      marginTop={1}
+                      fontSize="0.85rem"
+                      color="#d32f2f"
+                      marginLeft={2}
+                    >
+                      {errors?.type ? 'Type is required' : ''}
+                    </Typography>
+                  </>
                 );
               }}
             />
@@ -237,51 +264,61 @@ export default function Apply() {
                 rules={{ required: true }}
                 render={({ field: { onChange, value, onBlur } }) => {
                   return (
-                    <Autocomplete
-                      open={open}
-                      onOpen={() => {
-                        setOpen(true);
-                      }}
-                      onClose={() => {
-                        setOpen(false);
-                      }}
-                      isOptionEqualToValue={(option, kvalue) => {
-                        return option.name === kvalue.name;
-                      }}
-                      getOptionLabel={(option) => {
-                        return option.name;
-                      }}
-                      onChange={(e, value) => {
-                        onChange(value?.name);
-                        setValue('address', value?.address);
-                        setValue('buidlerId', value?.id);
-                      }}
-                      onBlur={onBlur}
-                      options={options}
-                      loading={loading}
-                      renderInput={(params) => {
-                        return (
-                          <TextField
-                            {...params}
-                            value={value}
-                            InputProps={{
-                              ...params.InputProps,
-                              endAdornment: (
-                                <>
-                                  {loading ? (
-                                    <CircularProgress
-                                      color="inherit"
-                                      size={20}
-                                    />
-                                  ) : null}
-                                  {params.InputProps.endAdornment}
-                                </>
-                              ),
-                            }}
-                          />
-                        );
-                      }}
-                    />
+                    <>
+                      <Autocomplete
+                        open={open}
+                        onOpen={() => {
+                          setOpen(true);
+                        }}
+                        onClose={() => {
+                          setOpen(false);
+                        }}
+                        isOptionEqualToValue={(option, kvalue) => {
+                          return option.name === kvalue.name;
+                        }}
+                        getOptionLabel={(option) => {
+                          return option.name;
+                        }}
+                        onChange={(e, value) => {
+                          onChange(value?.name);
+                          setValue('address', value?.address);
+                          setValue('buidlerId', value?.id);
+                        }}
+                        onBlur={onBlur}
+                        options={options}
+                        loading={loading}
+                        renderInput={(params) => {
+                          return (
+                            <TextField
+                              {...params}
+                              value={value}
+                              InputProps={{
+                                ...params.InputProps,
+                                endAdornment: (
+                                  <>
+                                    {loading ? (
+                                      <CircularProgress
+                                        color="inherit"
+                                        size={20}
+                                      />
+                                    ) : null}
+                                    {params.InputProps.endAdornment}
+                                  </>
+                                ),
+                              }}
+                            />
+                          );
+                        }}
+                      />
+                      <Typography
+                        marginTop={1}
+                        fontSize="0.85rem"
+                        color="#d32f2f"
+                        marginLeft={2}
+                      >
+                        {errors?.name ? 'Name is required' : ''}
+                      </Typography>
+                    </>
                   );
                 }}
               />
@@ -294,12 +331,22 @@ export default function Apply() {
                 rules={{ required: true }}
                 render={({ field: { onChange, value, onBlur } }) => {
                   return (
-                    <OutlinedInput
-                      sx={{ height: 56, width: '100%' }}
-                      value={value}
-                      onChange={onChange}
-                      onBlur={onBlur}
-                    />
+                    <>
+                      <OutlinedInput
+                        sx={{ height: 56, width: '100%' }}
+                        value={value}
+                        onChange={onChange}
+                        onBlur={onBlur}
+                      />
+                      <Typography
+                        marginTop={1}
+                        fontSize="0.85rem"
+                        color="#d32f2f"
+                        marginLeft={2}
+                      >
+                        {errors?.name ? 'Name is required' : ''}
+                      </Typography>
+                    </>
                   );
                 }}
               />
@@ -340,13 +387,30 @@ export default function Apply() {
                       onChange={onChange}
                       onBlur={onBlur}
                     />
-                    <Typography color={'#DC0202'} fontSize={'12px'}>
+                    <Typography
+                      marginTop={1}
+                      fontSize="0.85rem"
+                      color="#d32f2f"
+                      marginLeft={2}
+                    >
                       {errors?.address?.message}
                     </Typography>
                   </>
                 );
               }}
             />
+            {errors?.address &&
+              !errors?.address?.message &&
+              !errors?.address?.ref?.value && (
+                <Typography
+                  marginTop={1}
+                  fontSize="0.85rem"
+                  color="#d32f2f"
+                  marginLeft={2}
+                >
+                  Address is required
+                </Typography>
+              )}
           </Grid>
           <Grid item xs={2} alignItems="center">
             <Label required={true} value={'Source: '} />
@@ -359,7 +423,7 @@ export default function Apply() {
               render={({ field: { onChange, value, onBlur } }) => {
                 return (
                   <OutlinedInput
-                    placeholder="Please summarize in one word!"
+                    placeholder="These LXPs source, e.g. xxx project, xxx event, core team salary"
                     sx={{ height: 56, width: '100%' }}
                     value={value}
                     onChange={onChange}
@@ -368,6 +432,16 @@ export default function Apply() {
                 );
               }}
             />
+            {errors.source && (
+              <Typography
+                marginTop={1}
+                fontSize="0.85rem"
+                color="#d32f2f"
+                marginLeft={2}
+              >
+                Source is required
+              </Typography>
+            )}
           </Grid>
           <Grid item xs={2} alignItems="center">
             <Label required={true} value={'Amount: '} />
@@ -376,21 +450,58 @@ export default function Apply() {
             <Controller
               name={'amount'}
               control={control}
-              rules={{ required: true }}
+              rules={{
+                required: true,
+                validate: {
+                  ckeckAmount: (v) => {
+                    if (!v) {
+                      return 'Amount is required.';
+                    }
+                    if (!Number.isFinite(Number(v))) {
+                      return 'Please enter a number';
+                    }
+                    if (v.length > 6) {
+                      return 'Too much LXP, please check with the team first';
+                    }
+                  },
+                },
+              }}
               render={({ field: { onChange, value, onBlur } }) => {
                 return (
-                  <OutlinedInput
-                    endAdornment={
-                      <InputAdornment position="end">LXP</InputAdornment>
-                    }
-                    sx={{ height: 56, width: '100%' }}
-                    value={value}
-                    onChange={onChange}
-                    onBlur={onBlur}
-                  />
+                  <>
+                    <OutlinedInput
+                      endAdornment={
+                        <InputAdornment position="end">LXP</InputAdornment>
+                      }
+                      sx={{ height: 56, width: '100%' }}
+                      value={value}
+                      onChange={onChange}
+                      onBlur={onBlur}
+                    />
+                    <Typography
+                      marginTop={1}
+                      fontSize="0.85rem"
+                      color="#d32f2f"
+                      marginLeft={2}
+                    >
+                      {errors?.amount?.message}
+                    </Typography>
+                  </>
                 );
               }}
             />
+            {errors?.amount &&
+              !errors?.amount?.message &&
+              !errors?.amount?.ref?.value && (
+                <Typography
+                  marginTop={1}
+                  fontSize="0.85rem"
+                  color="#d32f2f"
+                  marginLeft={2}
+                >
+                  Amount is required
+                </Typography>
+              )}
           </Grid>
           <Grid item xs={2} alignItems="center">
             <Label required={true} value={'Reason: '} />
@@ -414,6 +525,16 @@ export default function Apply() {
                 );
               }}
             />
+            {errors.reason && (
+              <Typography
+                marginTop={1}
+                fontSize="0.85rem"
+                color="#d32f2f"
+                marginLeft={2}
+              >
+                Reason is required
+              </Typography>
+            )}
           </Grid>
           <Grid item xs={2}></Grid>
           <Grid item xs={9}>
@@ -443,6 +564,16 @@ export default function Apply() {
                 );
               }}
             />
+            {errors.check && (
+              <Typography
+                marginTop={1}
+                fontSize="0.85rem"
+                color="#d32f2f"
+                marginLeft={2}
+              >
+                Please make sure your application with a clear conscience.
+              </Typography>
+            )}
           </Grid>
         </Grid>
         <LXButton
@@ -454,7 +585,7 @@ export default function Apply() {
           })}
           disabled={JSON.stringify(errors) != '{}' || disabltSubmitBtn}
         >
-          Submit
+          {submitLoading ? 'Submitting' : 'Submit'}
         </LXButton>
       </Container>
     </Layout>

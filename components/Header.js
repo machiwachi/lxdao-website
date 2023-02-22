@@ -71,7 +71,7 @@ const Header = () => {
           >
             <ListItemButton>
               <Typography sx={{ cursor: 'pointer' }}>
-                LX Points Announcement
+                LXP Announcement
               </Typography>
             </ListItemButton>
           </Link>
@@ -185,7 +185,7 @@ const Header = () => {
                   textDecoration: 'none',
                 }}
               >
-                LX Points Announcement
+                LXP Announcement
               </Link>
             </MenuItem>
             <MenuItem
