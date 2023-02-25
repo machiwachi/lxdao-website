@@ -100,6 +100,10 @@ const Footer = () => {
                     name: 'Monthly AMA',
                     link: 'https://forum.lxdao.io/c/governance/monthly-ama/12',
                   },
+                  {
+                    name: 'LXP Announcement',
+                    link: '/LXPAnnouncement',
+                  },
                 ]}
               />
             </Grid>
@@ -111,6 +115,10 @@ const Footer = () => {
                   {
                     name: 'Make a proposal',
                     link: 'https://www.notion.so/lxdao/How-do-we-work-93038c708217465384cc7d9f377547c5',
+                  },
+                  {
+                    name: 'Apply LXP',
+                    link: '/LXPApplication',
                   },
                 ]}
               />
