@@ -62,6 +62,20 @@ const Header = () => {
         </ListItem>
         <ListItem disablePadding>
           <Link
+            href={`https://lxdao.notion.site/`}
+            target="_blank"
+            color={'inherit'}
+            sx={{
+              textDecoration: 'none',
+            }}
+          >
+            <ListItemButton>
+              <Typography sx={{ cursor: 'pointer' }}>Docs</Typography>
+            </ListItemButton>
+          </Link>
+        </ListItem>
+        <ListItem disablePadding>
+          <Link
             href={`/LXPAnnouncement`}
             target="_blank"
             color={'inherit'}
@@ -152,6 +166,17 @@ const Header = () => {
         >
           Buidlers
         </Typography>
+
+        <Link
+          href={`https://lxdao.notion.site/`}
+          target="_blank"
+          color={'inherit'}
+          sx={{
+            textDecoration: 'none',
+          }}
+        >
+          <Typography>Docs</Typography>
+        </Link>
         <Box>
           <Box
             sx={{ cursor: 'pointer' }}
