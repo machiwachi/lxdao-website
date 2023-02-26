@@ -32,6 +32,7 @@ import Container from '@/components/Container';
 import BuidlerCard from '@/components/BuidlerCard';
 import Dialog from '@/components/Dialog';
 import { WorkDetailItem } from '@/sections/SectionWorkSteps';
+import showMessage from '@/components/showMessage';
 
 const useStyles = makeStyles({
   tooltip: {
@@ -68,6 +69,7 @@ const SectionProjectDetail = ({ projectId }) => {
     },
   });
   const [projectForumList, setProjectForumList] = useState([]);
+  const [projectPMInfo, setProjectPMInfo] = useState({});
 
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
@@ -106,6 +108,31 @@ const SectionProjectDetail = ({ projectId }) => {
   );
   projectManagerName = projectManagerBudilder?.buidler?.name;
   projectManagerAddress = projectManagerBudilder?.buidler?.address;
+
+  const sentEmailToProjectManager = (targetEmailAddress) => {
+    const subject = `Builder asks to join ${project?.name} project`;
+    const body = `<p>Hi ${projectManagerName},</p><p>There is a request from Builder(<a href=${`https://lxdao.io/buidlers/${address}`} target="_blank">${address}</a>) to join ${
+      project?.name
+    } project. If it is approved, invite the Buidler to join the project on the details page. If it is denied, get in touch with the Buidler and let them know why.</p>
+    <p>This is an official email from <a href="https://lxdao.io">LXDAO</a>.</p>
+    <br><br>
+    <p>Kind Regards,</p>
+    <p>LXDAO</p>`;
+    API.post(`/email/sendEmail`, {
+      to: targetEmailAddress, // need rewrite by PM email
+      subject,
+      body,
+    })
+      .then((res) => {})
+      .catch((err) => {
+        // setAlert('something went wrong', 'error');
+        showMessage({
+          type: 'error',
+          title: 'Failed to send email to PM',
+          body: err.message,
+        });
+      });
+  };
 
   const getProjectData = () => {
     API.get(`/project/${projectId}`)
@@ -181,6 +208,7 @@ const SectionProjectDetail = ({ projectId }) => {
         ) {
           setShowAcceptButton(true);
           setCurrentBuidlerOnProjectInfo({
+            projectName: project?.name,
             id: buidler?.id,
             ipfsURI: buidler?.buidler?.ipfsURI || '',
           });
@@ -191,6 +219,11 @@ const SectionProjectDetail = ({ projectId }) => {
           buidler?.buidler.address === address
         ) {
           showInviteButtonFlag = true;
+        }
+
+        //save the PM Buider info
+        if (buidler?.projectRole.includes('Project Manager')) {
+          setProjectPMInfo(buidler?.buidler);
         }
       });
       setShowInviteButton(showInviteButtonFlag);
@@ -228,6 +261,7 @@ const SectionProjectDetail = ({ projectId }) => {
     const accessToken = getLocalStorage('accessToken');
     if (accessToken) {
       setOpenJoinDialog(true);
+      sentEmailToProjectManager(projectPMInfo?.privateContacts?.email);
     } else {
       setOpenJoinTooltip(true);
       setTimeout(() => {
@@ -260,15 +294,17 @@ const SectionProjectDetail = ({ projectId }) => {
     }
     if (selectedBuidler && projectRoleValue.length > 0) {
       let selectedBuidlerId = '';
+      let privateContacts = null;
       activeBuidlerList.forEach((buidler) => {
         if (buidler.name === selectedBuidler) {
           selectedBuidlerId = buidler.id;
+          privateContacts = buidler.privateContacts;
         }
       });
       API.post(`/buidler/createInvitation`, {
         buidlerId: selectedBuidlerId,
         projectId: project?.id,
-        projectRole: projectRoleValue,
+        privateContacts,
       })
         .then((res) => {
           setInviteLoading(false);
@@ -856,14 +892,14 @@ const SectionProjectDetail = ({ projectId }) => {
         title="Want to join this project?"
         content={
           <Box>
-            Please contact with the Project Manager:{' '}
+            Email has been sent to PM, PM will contact you by email later
             <Link href={`/buidlers/${projectManagerAddress}`} target="_blank">
               {projectManagerName}
             </Link>
             .
           </Box>
         }
-        confirmText="OK"
+        confirmText="Confirm"
         variant="gradient"
         handleClose={() => {
           setOpenJoinDialog(false);

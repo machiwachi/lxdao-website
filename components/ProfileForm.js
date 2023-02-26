@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import React from 'react';
-import { Box, Typography, Button, Alert } from '@mui/material';
+import { Box, Typography, Button, Alert, TextField } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import { removeEmpty } from '@/utils/utility';
 
@@ -44,6 +44,12 @@ function ProfileForm(props) {
       ...values,
     },
   });
+
+  const isValidEmail = (email) =>
+    // eslint-disable-next-line no-useless-escape
+    /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+      email
+    );
 
   const onSubmit = (data) => {
     if (saveProfileHandler) {
@@ -218,7 +224,7 @@ function ProfileForm(props) {
           </Typography>
         )}
       </Box>
-      <Box>
+      <Box marginBottom={2.5}>
         <Typography
           marginBottom={2}
           sx={{
@@ -240,7 +246,18 @@ function ProfileForm(props) {
           control={control}
           rules={{
             validate: (value) => {
-              return JSON.stringify(removeEmpty(value)) !== '{}';
+              const isValid =
+                value?.email &&
+                value?.email.length > 0 &&
+                isValidEmail(value.email);
+
+              const isEmpty = JSON.stringify(removeEmpty(value)) === '{}';
+
+              if (isEmpty) {
+                return false;
+              } else {
+                return isValid;
+              }
             },
           }}
           render={({ field: { onChange, value } }) => {
@@ -254,7 +271,57 @@ function ProfileForm(props) {
             marginTop={1}
             marginLeft={2}
           >
-            At least one contacts are required
+            At least one contacts are required, Email must be valid.
+          </Typography>
+        )}
+      </Box>
+      <Box>
+        <Typography
+          marginBottom={2}
+          sx={{
+            fontSize: '20px',
+          }}
+        >
+          Private Contacts{' '}
+          <span
+            style={{
+              fontSize: 14,
+              display: 'inline',
+            }}
+          >
+            (will be displayed only for LXDAO buidler)
+          </span>
+        </Typography>
+        <Controller
+          name={'privateContacts'}
+          control={control}
+          rules={{
+            validate: (value) => {
+              return value?.email.length !== 0 && isValidEmail(value?.email);
+            },
+          }}
+          render={({ field: { onChange, value } }) => {
+            return (
+              <TextField
+                fullWidth
+                label="Private Email"
+                value={value?.email}
+                placeholder="your@email.com"
+                onChange={(event) => {
+                  onChange({ email: event.target.value });
+                }}
+              />
+            );
+          }}
+        />
+        {errors.privateContacts && (
+          <Typography
+            fontSize="0.75rem"
+            color="#d32f2f"
+            marginTop={1}
+            marginLeft={2}
+          >
+            private email are required, Please input a valid email
           </Typography>
         )}
       </Box>
