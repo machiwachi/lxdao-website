@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 import React, { useEffect, useState } from 'react';
 import { Typography, Box, Grid, Link, CircularProgress } from '@mui/material';
+import { Img3 } from '@lxdao/img3';
 
 import Layout from '@/components/Layout';
 import SingleSelect from '@/components/Select';
@@ -13,7 +14,7 @@ import BuidlerContacts from '@/components/BuidlerContacts';
 import Button from '@/components/Button';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 
-import { convertIpfsGateway } from '@/utils/utility';
+import { getIpfsCid } from '@/utils/utility';
 
 export function BuidlerCard(props) {
   const record = props.record;
@@ -46,12 +47,14 @@ export function BuidlerCard(props) {
             border="0.5px solid #E5E5E5"
             marginRight={3}
           >
-            <img
-              style={{ display: 'block', width: 80, height: 80 }}
+            <Img3
               src={
-                convertIpfsGateway(record.avatar) || '/images/placeholder.jpeg'
+                getIpfsCid(record.avatar)
+                  ? `ipfs://${getIpfsCid(record.avatar)}`
+                  : '/images/placeholder.jpeg'
               }
-              alt=""
+              style={{ display: 'block', width: 80, height: 80 }}
+              timeout={3000}
             />
           </Box>
           <Box

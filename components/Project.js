@@ -1,6 +1,7 @@
 import React from 'react';
+import { Img3 } from '@lxdao/img3';
 import { Box, Typography, Grid, Link } from '@mui/material';
-import { removeItem } from '@/utils/utility';
+import { removeItem, getIpfsCid } from '@/utils/utility';
 function Project({ data }) {
   return (
     <Link
@@ -20,10 +21,14 @@ function Project({ data }) {
         flexDirection="row"
       >
         <Box flex="0 0 148px">
-          <img
+          <Img3
+            src={
+              getIpfsCid(data.project.logoLarge)
+                ? `ipfs://${getIpfsCid(data.project.logoLarge)}`
+                : '/images/placeholder.jpeg'
+            }
             style={{ display: 'block', width: '148px' }}
-            src={data.project.logoLarge || '/images/placeholder.jpeg'}
-            alt=""
+            timeout={3000}
           />
         </Box>
 

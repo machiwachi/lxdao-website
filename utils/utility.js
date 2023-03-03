@@ -90,6 +90,20 @@ export function convertIpfsGateway(ipfsUrl) {
   return ipfsUrl;
 }
 
+export function getIpfsCid(ipfsUrl) {
+  // https://cloudflare-ipfs.com/ipfs/bafkreid67qrfaq2yqacnsvpvfnetjocgy7kiuwu4jw4v23tc3yqgfgis2e
+  // https://bafkreid67qrfaq2yqacnsvpvfnetjocgy7kiuwu4jw4v23tc3yqgfgis2e.ipfs.nftstorage.link/
+  // to
+  // bafkreid67qrfaq2yqacnsvpvfnetjocgy7kiuwu4jw4v23tc3yqgfgis2e
+  let cid = '';
+  if (ipfsUrl && ipfsUrl.includes('cloudflare-ipfs')) {
+    cid = ipfsUrl.replace('https://cloudflare-ipfs.com/ipfs/', '');
+  } else if (ipfsUrl && ipfsUrl.includes('ipfs.nftstorage.link')) {
+    cid = ipfsUrl.replace('https://', '').replace('.ipfs.nftstorage.link', '');
+  }
+  return cid;
+}
+
 // https://stackoverflow.com/questions/286141/remove-blank-attributes-from-an-object-in-javascript
 export function removeEmpty(obj) {
   // eslint-disable-next-line no-unused-vars

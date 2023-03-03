@@ -51,6 +51,7 @@ function Avatar(props) {
           style={{ maxHeight: '100%', maxWidth: '100%' }}
           src={src}
           alt={file.name}
+          timeout={3000}
         />
         {file.status === 'uploading' && (
           <Status>
