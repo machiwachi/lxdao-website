@@ -22,9 +22,10 @@ import {
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useAccount } from 'wagmi';
+import { Img3 } from '@lxdao/img3';
 
 import API from '@/common/API';
-import { getLocalStorage } from '@/utils/utility';
+import { getLocalStorage, getIpfsCid } from '@/utils/utility';
 import { AlertContext } from '@/context/AlertContext';
 
 import Button from '@/components/Button';
@@ -427,13 +428,18 @@ const SectionProjectDetail = ({ projectId }) => {
                 maxHeight: '100%',
               }}
             >
-              <img
+              <Img3
+                src={
+                  getIpfsCid(project.logoLarge)
+                    ? `ipfs://${getIpfsCid(project.logoLarge)}`
+                    : '/images/placeholder.jpeg'
+                }
                 style={{
                   width: '100%',
                   border: '0.5px solid #D0D5DD',
                   borderRadius: '6px',
                 }}
-                src={project.logoLarge}
+                timeout={3000}
               />
               <Typography
                 sx={{

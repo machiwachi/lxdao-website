@@ -30,6 +30,7 @@ import { useRouter } from 'next/router';
 import _ from 'lodash';
 import { useContract, useAccount, useSigner } from 'wagmi';
 import * as bs58 from 'bs58';
+import { Img3 } from '@lxdao/img3';
 
 import Layout from '@/components/Layout';
 import CopyText from '@/components/CopyText';
@@ -46,7 +47,7 @@ import BuidlerContacts from '@/components/BuidlerContacts';
 import Tag from '@/components/Tag';
 import showMessage from '@/components/showMessage';
 import Project from '@/components/Project';
-import { convertIpfsGateway, groupBy, stringCut } from '@/utils/utility';
+import { getIpfsCid, groupBy } from '@/utils/utility';
 import LXButton from '@/components/Button';
 import WorkingGroupCard from '@/components/WorkingGroupCard';
 import { BuidlerCard } from '../buidlers';
@@ -589,13 +590,14 @@ function BuidlerDetails(props) {
                 overflow="hidden"
                 margin="auto"
               >
-                <img
-                  style={{ display: 'block', width: 252, height: 252 }}
+                <Img3
                   src={
-                    convertIpfsGateway(record.avatar) ||
-                    '/images/placeholder.jpeg'
+                    getIpfsCid(record.avatar)
+                      ? `ipfs://${getIpfsCid(record.avatar)}`
+                      : '/images/placeholder.jpeg'
                   }
-                  alt=""
+                  style={{ display: 'block', width: 252, height: 252 }}
+                  timeout={3000}
                 />
               </Box>
               <Typography
