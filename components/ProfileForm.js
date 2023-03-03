@@ -91,14 +91,7 @@ function ProfileForm(props) {
           control={control}
           rules={{ required: true }}
           render={({ field: { onChange, value } }) => {
-            return (
-              <Avatar
-                error={errors.avatar}
-                width="150px"
-                value={value}
-                onChange={onChange}
-              ></Avatar>
-            );
+            return <Avatar avatarValue={value} onChange={onChange}></Avatar>;
           }}
         />
         {errors.avatar && (

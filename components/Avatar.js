@@ -1,183 +1,151 @@
-import React, { useState, useRef } from 'react';
-import { Box, Button } from '@mui/material';
-import ImageUploading from 'react-images-uploading';
-import AutorenewIcon from '@mui/icons-material/Autorenew';
-import { convertIpfsGateway } from '../utils/utility';
-import ReactCrop from 'react-image-crop';
-import 'react-image-crop/dist/ReactCrop.css';
-
-import API from '@/common/API';
+import React, { useState } from 'react';
+import { Icon } from '@iconify/react';
+import { Uploader3 } from '@lxdao/uploader3';
+import { Img3 } from '@lxdao/img3';
+import { getLocalStorage } from '@/utils/utility';
 
 function Avatar(props) {
-  const [value, setValue] = useState(props.value || '/images/placeholder.jpeg');
-  const [uploading, setUploading] = useState(false);
-  const [image, setImage] = useState();
-  const [croppedImageUrl, setCroppedImageUrl] = useState();
-  const imgRef = useRef(null);
-  const [crop, setCrop] = useState(null);
+  const [file, setFile] = useState();
 
-  function onChange(imageList) {
-    setImage(imageList[0].data_url);
-  }
+  const accessToken = getLocalStorage('accessToken');
 
-  async function uploadImage(imageUrl) {
-    setUploading(true);
-    const res = await API.post(`/upload/ipfs`, {
-      imageDataUrl: imageUrl,
-    });
-    if (res.data.status === 'SUCCESS') {
-      const url = convertIpfsGateway(res.data.data);
-      setValue(url);
-      props.onChange && props.onChange(url);
-    } else {
-      alert('Please Connect Wallet first.');
-    }
-
-    setUploading(false);
-  }
-  function getCroppedImg(image, crop, fileName) {
-    const canvas = document.createElement('canvas');
-    const scaleX = image.naturalWidth / image.width;
-    const scaleY = image.naturalHeight / image.height;
-    canvas.width = crop.width;
-    canvas.height = crop.height;
-    const ctx = canvas.getContext('2d');
-
-    ctx.drawImage(
-      image,
-      crop.x * scaleX,
-      crop.y * scaleY,
-      crop.width * scaleX,
-      crop.height * scaleY,
-      0,
-      0,
-      crop.width,
-      crop.height
+  const Status = (props) => {
+    const { children } = props;
+    return (
+      <div
+        style={{
+          position: 'absolute',
+          top: '0px',
+          left: '0px',
+          width: '100%',
+          height: '100%',
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          color: '#fff',
+        }}
+      >
+        {children}
+      </div>
     );
+  };
 
-    return new Promise((resolve) => {
-      canvas.toBlob((blob) => {
-        if (!blob) {
-          console.error('Canvas is empty');
-          return;
-        }
-        blob.name = fileName;
-        let fileUrls = '';
-        window.URL.revokeObjectURL(fileUrls);
-        fileUrls = window.URL.createObjectURL(blob);
-        resolve({ url: fileUrls, blob, crop });
-      }, 'image/jpeg');
-    });
-  }
-  async function handleCompletedCrop(completedCrop) {
-    if (completedCrop?.width && completedCrop?.height && imgRef.current) {
-      const croppedImageUrl_ = await getCroppedImg(
-        imgRef.current,
-        completedCrop,
-        'newFile.jpeg'
-      );
-      setCroppedImageUrl(croppedImageUrl_);
+  const PreviewFile = (props) => {
+    const { file } = props;
+
+    let src;
+    if (file.status === 'uploading') {
+      src = file.thumbData || file.imageData;
+    } else if (file.status === 'done') {
+      src = file.url;
+    } else if (file.status === 'cropped') {
+      src = file.thumbData;
+    } else {
+      src = file.previewUrl;
     }
-  }
-  function sureImg() {
-    let reader = new FileReader();
-    reader.readAsDataURL(croppedImageUrl.blob);
-    reader.onloadend = function () {
-      var base64String = reader.result;
-      uploadImage(base64String);
-      setImage('');
-    };
-  }
+
+    return (
+      <>
+        <Img3
+          style={{ maxHeight: '100%', maxWidth: '100%' }}
+          src={src}
+          alt={file.name}
+        />
+        {file.status === 'uploading' && (
+          <Status>
+            <Icon
+              icon={'line-md:uploading-loop'}
+              color={'#65a2fa'}
+              fontSize={40}
+            />
+          </Status>
+        )}
+        {file.status === 'error' && (
+          <Status>
+            <Icon
+              icon={'iconoir:cloud-error'}
+              color={'#ffb7b7'}
+              fontSize={40}
+            />
+          </Status>
+        )}
+      </>
+    );
+  };
+
+  const PreviewWrapper = (props) => {
+    const { children, style, ...rest } = props;
+    return (
+      <div
+        {...rest}
+        style={{
+          width: 200,
+          height: 200 * 0.75,
+          backgroundColor: '#f2f4f6',
+          color: '#333',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          border: '2px solid #fff',
+          position: 'relative',
+          marginRight: 10,
+          marginBottom: 10,
+          ...style,
+        }}
+      >
+        {children}
+      </div>
+    );
+  };
+
   return (
     <>
-      <ImageUploading
-        acceptType={['jpeg', 'png', 'jpg']}
-        onChange={onChange}
-        dataURLKey="data_url"
-      >
-        {({ onImageUpload }) => {
-          return (
-            <Box display="flex" gap={4}>
-              <Box textAlign="center">
-                <Box
-                  borderRadius="50%"
-                  overflow="hidden"
-                  width="150px"
-                  height="150px"
-                  onClick={onImageUpload}
-                  position="relative"
-                  sx={{
-                    cursor: 'pointer',
-                    border: '2px solid #ccc',
-                    borderColor: props.error ? '#d32f2f' : '#ccc',
-                  }}
-                >
-                  <img
-                    src={
-                      croppedImageUrl
-                        ? croppedImageUrl.url
-                        : convertIpfsGateway(value)
-                    }
-                    alt="Crop"
-                    width="100%"
-                  />
-                  {uploading && (
-                    <Box
-                      position="absolute"
-                      top="0"
-                      bottom="0"
-                      right="0"
-                      left="0"
-                      display="flex"
-                      justifyContent="center"
-                      alignItems="center"
-                      backgroundColor="rgba(0,0,0,.5)"
-                      zIndex="1"
-                    >
-                      <AutorenewIcon
-                        sx={{
-                          color: 'white',
-                          animation: 'spin 1s linear infinite',
-                          '@keyframes spin': {
-                            '0%': {
-                              transform: 'rotate(0deg)',
-                            },
-                            '100%': {
-                              transform: 'rotate(360deg)',
-                            },
-                          },
-                        }}
-                        fontSize="large"
-                      />
-                    </Box>
-                  )}
-                </Box>
-                {image && croppedImageUrl && croppedImageUrl.url && (
-                  <Button
-                    variant="outlined"
-                    aria-controls={open ? 'language-menu' : undefined}
-                    aria-haspopup="true"
-                    aria-expanded={open ? 'true' : undefined}
-                    onClick={sureImg}
-                    sx={{ marginTop: '16px' }}
-                  >
-                    确认
-                  </Button>
-                )}
-              </Box>
-              {!!image && (
-                <ReactCrop
-                  crop={crop}
-                  onChange={(_, percentCrop) => setCrop(percentCrop)}
-                  onComplete={(c) => handleCompletedCrop(c)}
-                >
-                  <img ref={imgRef} alt="Crop me" src={image} />
-                </ReactCrop>
-              )}
-            </Box>
-          );
+      <Uploader3
+        api={`${
+          process.env.NEXT_PUBLIC_LXDAO_BACKEND_API
+        }/upload/ipfs/?imageDataUrl=${file ? file[0] : ''}`}
+        headers={{
+          Authorization: `Bearer ${accessToken}`,
         }}
-      </ImageUploading>
+        multiple={false}
+        crop={true}
+        responseFormat={(resData) => {
+          return { url: resData?.data?.url };
+        }}
+        onChange={(files) => {
+          setFile(files[0]);
+        }}
+        onUpload={(file) => {
+          setFile(file);
+        }}
+        onComplete={(file) => {
+          setFile(file);
+          props.onChange(file?.url);
+        }}
+        onCropCancel={(file) => {
+          setFile(null);
+        }}
+        onCropEnd={(file) => {
+          setFile(file);
+        }}
+      >
+        <PreviewWrapper
+          style={{
+            height: 160,
+            width: 160,
+            borderRadius: '50%',
+            border: '2px solid rgb(204, 204, 204)',
+            overflow: 'hidden',
+          }}
+        >
+          {file ? (
+            <PreviewFile file={file} />
+          ) : (
+            <Img3 style={{ width: 150, height: 150 }} src={props.avatarValue} />
+          )}
+        </PreviewWrapper>
+      </Uploader3>
     </>
   );
 }
