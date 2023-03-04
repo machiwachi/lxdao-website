@@ -349,7 +349,7 @@ const SectionWorkSteps = ({ projects }) => {
                 })}
               </Swiper>
               <Link
-                href="/buidlers"
+                href="/projects"
                 target="_blank"
                 sx={{ textDecoration: 'none' }}
               >
