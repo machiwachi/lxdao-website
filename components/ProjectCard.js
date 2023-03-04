@@ -163,6 +163,7 @@ const ProjectCard = ({ project, index }) => {
           border: '0.5px solid #D0D5DD',
           boxShadow: '0px 6px 60px rgba(0, 0, 0, 0.06)',
           borderRadius: '6px',
+          overflow: 'hidden',
         }}
       >
         <img style={{ width: '100%', display: 'block' }} src={project.banner} />

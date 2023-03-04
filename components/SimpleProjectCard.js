@@ -5,9 +5,12 @@ const SimpleProjectCard = ({ data, key }) => (
   <Box
     width={{ sm: '356px', xs: '300px' }}
     height={{ sm: '444px', xs: '375px' }}
-    sx={{ background: '#ffffff' }}
-    border="0.5px solid #D0D5DD"
-    borderRadius="6px"
+    sx={{
+      background: '#ffffff',
+      border: '0.5px solid #D0D5DD',
+      borderRadius: '6px',
+      overflow: 'hidden',
+    }}
     key={key}
   >
     <Box
