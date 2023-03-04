@@ -10,9 +10,9 @@ export default function Buddy() {
   const router = useRouter();
   const [loading, record, error, refresh] = useBuidler(address);
   const data = {
-    address: record?.buddies[0].address,
-    name: record?.buddies[0].name,
-    avatar: record?.buddies[0].avatar,
+    address: record?.buddies[0]?.address,
+    name: record?.buddies[0]?.name,
+    avatar: record?.buddies[0]?.avatar,
   };
   let host = '';
   if (typeof window !== 'undefined') {

@@ -224,6 +224,7 @@ export default function Home() {
     if (trimmedSkill) {
       params.push('skill=' + trimmedSkill);
     }
+    params.push('status=' + 'ACTIVE');
     params.push('page=' + (currentPage || current));
     params.push('per_page=9');
     query += params.join('&');

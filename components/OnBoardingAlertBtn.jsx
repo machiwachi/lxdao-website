@@ -12,7 +12,7 @@ import { tooltipClasses } from '@mui/material/Tooltip';
 import { styled as muistyle } from '@mui/material/styles';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAccount } from 'wagmi';
 import useWindowSize from 'react-use/lib/useWindowSize';
@@ -75,12 +75,27 @@ export default function OnBoardingAlertBtn() {
   const { address } = useAccount();
   const [, buidler] = useBuidler(address);
   const [open, setOpen] = useState(false);
+  const [size, setSize] = useState({
+    width: 1440,
+    height: 600,
+  });
   const router = useRouter();
   const { width, height } = useWindowSize();
+  useEffect(() => {
+    setSize({
+      width: width,
+      height: height,
+    });
+  }, [width, height]);
 
   return (
     <>
-      <Confetti width={width} height={height} recycle={false} run={open} />
+      <Confetti
+        width={size.width}
+        height={size.height}
+        recycle={false}
+        run={open}
+      />
       {(buidler?.status == 'PENDING' || buidler?.status == 'READYTOMINT') && (
         <Box display={router.asPath.includes('onboarding') ? 'none' : 'normal'}>
           <LightTooltip title="Click me to complete the onborading process.">

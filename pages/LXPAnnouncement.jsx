@@ -336,7 +336,7 @@ function UnReleasedTable({ isAccountingTeam, isConnected }) {
             {rows.length <= 0 ? (
               <TableRow>
                 <TableCell
-                  colspan="7"
+                  colSpan="7"
                   align="center"
                   sx={{
                     textAlign: 'center',
@@ -644,7 +644,7 @@ function ReleasedTable({ isAccountingTeam }) {
               {rows.length <= 0 ? (
                 <TableRow>
                   <TableCell
-                    colspan="7"
+                    colSpan="7"
                     align="center"
                     sx={{
                       textAlign: 'center',
