@@ -49,7 +49,7 @@ function Avatar(props) {
       <>
         <Img3
           style={{ maxHeight: '100%', maxWidth: '100%' }}
-          src={src}
+          src={src || '/images/placeholder.jpeg'}
           alt={file.name}
           timeout={3000}
         />
@@ -143,7 +143,10 @@ function Avatar(props) {
           {file ? (
             <PreviewFile file={file} />
           ) : (
-            <Img3 style={{ width: 150, height: 150 }} src={props.avatarValue} />
+            <Img3
+              style={{ width: 150, height: 150 }}
+              src={props.avatarValue || '/images/placeholder.jpeg'}
+            />
           )}
         </PreviewWrapper>
       </Uploader3>
