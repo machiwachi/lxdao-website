@@ -305,6 +305,7 @@ const SectionProjectDetail = ({ projectId }) => {
       API.post(`/buidler/createInvitation`, {
         buidlerId: selectedBuidlerId,
         projectId: project?.id,
+        projectRole: projectRoleValue,
         privateContacts,
       })
         .then((res) => {
