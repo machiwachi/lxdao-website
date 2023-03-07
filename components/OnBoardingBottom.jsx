@@ -40,6 +40,9 @@ export default function OnBoardingBottom({
             mb: { xs: '8px' },
             background: '#F4F6F8',
             mb: { xs: '10px', md: 0 },
+            '&:hover': {
+              backgroundColor: '#ebebeb',
+            },
           }}
         >
           Back

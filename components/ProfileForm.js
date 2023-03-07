@@ -41,6 +41,7 @@ function ProfileForm(props) {
       skills: [],
       interests: [],
       control: {},
+      privateContacts: '',
       ...values,
     },
   });

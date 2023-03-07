@@ -8,6 +8,7 @@ import {
   Skeleton,
   Dialog,
   DialogTitle,
+  Button,
   DialogContent,
 } from '@mui/material';
 import { useState } from 'react';
@@ -461,7 +462,7 @@ export default function Profile() {
       desc="Update your buidler profile on LXDAO"
       back="/onboarding/follow"
       next="/onboarding/mint"
-      disableNext={record?.status == 'PENDING'}
+      disableNext={!record?.name}
     >
       <Box
         sx={{
@@ -471,38 +472,39 @@ export default function Profile() {
           mb: '48px',
         }}
       >
-        <Box maxWidth="505px">
+        <Box width={{ xs: '100%', sm: '505px' }}>
           <BuidlerCard record={record} />
         </Box>
         <Box
           sx={{
             display: 'flex',
-            width: { xs: '100%', md: '505px' },
+            width: { xs: '100%', sm: '505px' },
             mt: '16px',
             alignItems: 'center',
             justifyContent: 'space-between',
           }}
         >
-          <Box sx={{ display: 'flex', cursor: 'pointer' }}>
-            <Box
-              component="img"
-              src="/icons/onboarding/refresh.svg"
-              width={24}
-              height={24}
-            ></Box>
-            <Typography
-              sx={{
-                textTransform: 'uppercase',
-                ml: '20px',
-                color: '#666F85',
-              }}
-              onClick={() => {
-                refresh();
-              }}
-            >
-              to refresh
-            </Typography>
-          </Box>
+          <Button
+            variant="text"
+            startIcon={
+              <Box
+                component="img"
+                src="/icons/onboarding/refresh.svg"
+                width={24}
+                height={24}
+              ></Box>
+            }
+            sx={{
+              textTransform: 'uppercase',
+
+              color: '#666F85',
+            }}
+            onClick={() => {
+              refresh();
+            }}
+          >
+            to refresh
+          </Button>
 
           <LXButton
             width={104}
@@ -549,6 +551,7 @@ export default function Profile() {
                 'skills',
                 'interests',
                 'contacts',
+                'privateContacts',
               ])
             )}
             saveProfileHandler={saveProfileHandler}

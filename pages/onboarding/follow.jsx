@@ -6,10 +6,17 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormHelperText from '@mui/material/FormHelperText';
 import Checkbox from '@mui/material/Checkbox';
 import OnBoardingLayout from '@/components/OnBoardingLayout';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function Follow() {
   const [state, setState] = useState(new Array(7).fill(false));
+  useEffect(() => {
+    const checked = sessionStorage?.getItem('checked');
+    setState(checked ? checked.split(',').map((v) => v == 'true') : state);
+  }, []);
+  useEffect(() => {
+    sessionStorage.setItem('checked', state.toString());
+  }, [state]);
   const data = [
     <Typography
       variant="body1"
@@ -30,7 +37,7 @@ export default function Follow() {
         wordBreak: 'break-all',
       }}
     >
-      Follow the LXDAO Twitter List{' '}
+      Follow the LXDAO Twitter List:{' '}
       <Link
         href="https://twitter.com/i/lists/1576113456792551424"
         color="#36AFF9"
@@ -45,7 +52,7 @@ export default function Follow() {
         wordBreak: 'break-all',
       }}
     >
-      Register on Forum{' '}
+      Register on Forum:{' '}
       <Link href="https://forum.lxdao.io" color="#36AFF9">
         https://forum.lxdao.io
       </Link>{' '}
@@ -58,7 +65,7 @@ export default function Follow() {
         wordBreak: 'break-all',
       }}
     >
-      Discord{' '}
+      Discord:{' '}
       <Link href="http://discord.lxdao.io/" color="#36AFF9">
         http://discord.lxdao.io/
       </Link>{' '}
@@ -70,7 +77,7 @@ export default function Follow() {
         wordBreak: 'break-all',
       }}
     >
-      Notion{' '}
+      Notion:{' '}
       <Link href="https://lxdao.notion.site/" color="#36AFF9">
         https://lxdao.notion.site/
       </Link>
@@ -82,7 +89,7 @@ export default function Follow() {
         wordBreak: 'break-all',
       }}
     >
-      GitHub{' '}
+      GitHub:{' '}
       <Link href="https://github.com/lxdao-official" color="#36AFF9">
         https://github.com/lxdao-official
       </Link>{' '}

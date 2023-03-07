@@ -76,8 +76,8 @@ export default function OnBoardingAlertBtn() {
   const [, buidler] = useBuidler(address);
   const [open, setOpen] = useState(false);
   const [size, setSize] = useState({
-    width: 1440,
-    height: 600,
+    width: 0,
+    height: 0,
   });
   const router = useRouter();
   const { width, height } = useWindowSize();
@@ -136,7 +136,7 @@ export default function OnBoardingAlertBtn() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            padding: '39px 50px 54px 70px',
+            padding: '39px 50px 54px 50px',
             borderRadius: '12px',
           }}
         >
@@ -171,8 +171,11 @@ export default function OnBoardingAlertBtn() {
               mt: '17px',
             }}
           >
-            DaoDAO，恭喜你通过了LXDAO Community
-            voting（Snapshot），在正式加入LXDAO成为其中伟大的Builder一员之前，还差几步骤，以便你能够更好的了解LXDAO和融入其中。
+            {address?.slice(0, 4) + '...' + address?.slice(-4, -1)},
+            congratulations on successfully passing the hard voting process for
+            the LXDAO Community. While you have made significant progress
+            towards becoming a Builder for LXDAO, there are a few remaining
+            steps that you must complete before becoming an official member.
           </Typography>
           <LXButton
             mb="29px"
@@ -193,12 +196,12 @@ export default function OnBoardingAlertBtn() {
             On Boarding!
           </LXButton>
           <Button
-            sx={{ color: '#666F85' }}
+            sx={{ color: '#666F85', textTransform: 'capitalize' }}
             onClick={() => {
               setOpen(false);
             }}
           >
-            等等再看
+            Do it later
           </Button>
         </Box>
       </Dialog>

@@ -63,6 +63,7 @@ export default function Buddy() {
                 color: '#101828',
                 cursor: 'pointer',
               }}
+              //todo: add href
             >
               Learn more →
             </Link>
@@ -86,16 +87,17 @@ export default function Buddy() {
               router.push(`/buidlers/${data.address}`);
             }}
           >
-            <Typography color="#101828" fontWeight="600">
-              Your Boddy <span style={{ color: '#36AFF9' }}>{data.name}</span>
+            <Typography color="#101828" fontWeight="600" whiteSpace="pre-wrap">
+              Your Boddy{'    '}
+              <span style={{ color: '#36AFF9' }}>{data.name}</span>
             </Typography>
             <Box
               component="img"
               src={data.avatar}
               sx={{
-                width: '76.95px',
+                width: '80px',
                 height: '80px',
-                ml: '15px',
+                mx: '20px',
                 border: '0.5px solid #E5E5E5',
               }}
             ></Box>

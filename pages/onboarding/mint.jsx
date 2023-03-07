@@ -104,6 +104,7 @@ export default function Mint() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: { xs: 'center', md: 'start' },
+            mt: { xs: '20px', md: '0' },
           }}
         >
           <Typography variant="subtitle1" fontWeight="800" color="#101828">
@@ -114,7 +115,7 @@ export default function Mint() {
             color="#666F85"
             whiteSpace={'pre-wrap'}
             lineHeight="24px"
-            mt={4}
+            mt={{ sm: 1, md: 4 }}
           >
             {
               '1. Contact your Buddy and make an appointment\n2. Your Buddy will review your profile and answer your questions\n3. Your Buddy enables your LXDAO Buidler Card mint access'
@@ -124,7 +125,7 @@ export default function Mint() {
             variant="gradient"
             width="148px"
             my={4}
-            disabled={!record?.status == 'READYTOMINT'}
+            disabled={!(record?.status == 'READYTOMINT')}
             onClick={() => {
               mint();
             }}
@@ -133,7 +134,7 @@ export default function Mint() {
           </LXButton>
           <Typography variant="body2" color="#666F85" whiteSpace={'pre-wrap'}>
             {
-              'Free, Only gas.\nMinti success meaning officially become an LXDAO Buidler'
+              'Free, Only gas.\nMint success meaning officially become an LXDAO Buidler'
             }
           </Typography>
         </Box>
