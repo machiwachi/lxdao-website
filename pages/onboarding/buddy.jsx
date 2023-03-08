@@ -50,11 +50,11 @@ export default function Buddy() {
               wordBreak: 'break-all',
             }}
           >
-            {`Answering any questions `}
+            {`As a new joiner in LXDAO, don't hesitate to ask any questions you may have. Your Buddy`}{' '}
             <Link href={`/buidlers/${data.address}`} color="#667085">
-              {host + `/buidlers/${data.address}`}
+              {data.name}
             </Link>{' '}
-            {`from the new joiner. If you don’t know, ask your Buddy\n\nHelp the new joiner to involve in DAO activities: join the working group or project, join the community call, make proposals, etc.\n\nNotify the new joiner for the important meetings just in case they missed out, and get familiar with living in LXDAO\n\n`}
+            {`is here to assist you and provide answers if needed. \n\nWe encourage you to participate in DAO activities, such as joining a working group or project, attending community calls, and submitting proposals.\n\nAdditionally, your Buddy will notify you of important meetings to ensure you don't miss out. Our aim is to help you get acquainted with living in LXDAO and make the most out of your experience.\n\n`}
           </Typography>
           <Typography>
             <Link
@@ -82,25 +82,42 @@ export default function Buddy() {
               border: '0.5px solid #D0D5DD',
               borderRadius: '6px',
               cursor: 'pointer',
+              gap: '50px',
             }}
             onClick={() => {
               router.push(`/buidlers/${data.address}`);
             }}
           >
             <Typography color="#101828" fontWeight="600" whiteSpace="pre-wrap">
-              Your Boddy{'    '}
-              <span style={{ color: '#36AFF9' }}>{data.name}</span>
+              Your Buddy{'    '}
             </Typography>
             <Box
-              component="img"
-              src={data.avatar}
               sx={{
-                width: '80px',
-                height: '80px',
-                mx: '20px',
-                border: '0.5px solid #E5E5E5',
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
               }}
-            ></Box>
+            >
+              <Typography
+                color="#36AFF9"
+                fontWeight="600"
+                whiteSpace="pre-wrap"
+                display="inline"
+              >
+                {data.name}
+              </Typography>
+              <Box
+                component="img"
+                src={data.avatar}
+                sx={{
+                  width: '80px',
+                  height: '80px',
+                  marginLeft: '20px',
+                  border: '0.5px solid #E5E5E5',
+                }}
+              ></Box>
+            </Box>
           </Box>
         </Box>
       </Box>

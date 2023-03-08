@@ -19,7 +19,7 @@ function ipfsToBytes(ipfsURI) {
 
 export default function Mint() {
   const { address } = useAccount();
-  const [, record] = useBuidler(address);
+  const [refresh, record] = useBuidler(address);
   const { data: signer } = useSigner();
   const [cardUrl, setCardUrl] = useState('');
   const [minting, setMinting] = useState(false);
@@ -84,6 +84,7 @@ export default function Mint() {
           paddingBottom: '107px',
           flexDirection: { xs: 'column', md: 'row' },
           alignItems: 'center',
+          gap: '80px',
         }}
       >
         <Box
@@ -108,7 +109,7 @@ export default function Mint() {
           }}
         >
           <Typography variant="subtitle1" fontWeight="800" color="#101828">
-            HOW MINT
+            HOW TO MINT
           </Typography>
           <Typography
             variant="body1"
@@ -118,7 +119,7 @@ export default function Mint() {
             mt={{ sm: 1, md: 4 }}
           >
             {
-              '1. Contact your Buddy and make an appointment\n2. Your Buddy will review your profile and answer your questions\n3. Your Buddy enables your LXDAO Buidler Card mint access'
+              '1. Reach out to your Buddy to schedule an onboarding session.\n2. During the onboarding session, your Buddy will review your profile and provide answers to any questions you may have.\n3. Then your Buddy will enable your LXDAO Builder Card minting access, allowing you to create your own unique LXDAO Builder Card.'
             }
           </Typography>
           <LXButton
@@ -130,11 +131,11 @@ export default function Mint() {
               mint();
             }}
           >
-            {minting ? 'Minting' : 'Mint'}
+            {minting ? 'Minting...' : 'Mint'}
           </LXButton>
           <Typography variant="body2" color="#666F85" whiteSpace={'pre-wrap'}>
             {
-              'Free, Only gas.\nMint success meaning officially become an LXDAO Buidler'
+              'Free, Only gas.\nMint success meaning officially become a LXDAO Buidler'
             }
           </Typography>
         </Box>

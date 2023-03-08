@@ -156,7 +156,7 @@ export default function OnBoardingAlertBtn() {
               mt: '10px',
             }}
           >
-            Congratulate
+            Congratulations!
           </Typography>
           <Typography
             color="#666F85"
@@ -171,14 +171,16 @@ export default function OnBoardingAlertBtn() {
               mt: '17px',
             }}
           >
-            {address?.slice(0, 4) + '...' + address?.slice(-4, -1)},
-            congratulations on successfully passing the hard voting process for
-            the LXDAO Community. While you have made significant progress
+            <span style={{ fontWeight: 'bold' }}>
+              {address?.slice(0, 4) + '...' + address?.slice(-4, -1)}
+            </span>
+            , congratulations on successfully passing the hard voting process
+            for the LXDAO Community. While you have made significant progress
             towards becoming a Builder for LXDAO, there are a few remaining
             steps that you must complete before becoming an official member.
           </Typography>
           <LXButton
-            mb="29px"
+            mb="20px"
             mt="66px"
             variant="gradient"
             onClick={() => {
@@ -193,7 +195,7 @@ export default function OnBoardingAlertBtn() {
               router.push('/onboarding/intro');
             }}
           >
-            On Boarding!
+            Onboarding
           </LXButton>
           <Button
             sx={{ color: '#666F85', textTransform: 'capitalize' }}

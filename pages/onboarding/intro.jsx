@@ -20,17 +20,17 @@ export default function Intro() {
     {
       svg: '/icons/mission.svg',
       title: 'MISSION',
-      content: `LXDAO is an R&D-focused DAO in Web3. our mission is Bringing together buidlers to buidl and maintain "LX" projects for Web3, in a sustainable manner.`,
+      content: `LXDAO is an R&D-focused DAO in Web3. Our mission is bringing together buidlers to buidl and maintain "LX" projects for Web3, in a sustainable manner.`,
     },
     {
       svg: '/icons/Vision.svg',
       title: 'VISION',
-      content: `We push and make it happen soon. So we hope in 2032, LXDAO, with over 1000 registered builders, has just completed its 100th Web3 project. More than 10 million users use these products every day.`,
+      content: `Our Vision & Consensus - The technologies, concepts and ideas of Web3 will be used by a billion people in a decade.`,
     },
     {
       svg: '/icons/value.svg',
       title: 'VALUE',
-      content: `First, you must have a LX (LX = 良心 = Conscience). You should be a Web3 believer and long-termist. You want to buidl or contribute to some valuable projects in Web3.`,
+      content: `LX = 良心 = Conscience`,
     },
   ];
   return (

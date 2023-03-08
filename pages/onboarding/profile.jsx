@@ -1,14 +1,11 @@
 import OnBoardingLayout from '@/components/OnBoardingLayout';
 import LXButton from '@/components/Button';
 import {
-  Card,
   Box,
   Typography,
-  Link,
   Skeleton,
   Dialog,
   DialogTitle,
-  Button,
   DialogContent,
 } from '@mui/material';
 import { useState } from 'react';
@@ -17,7 +14,6 @@ import _ from 'lodash';
 import { useAccount } from 'wagmi';
 
 import CloseIcon from '@mui/icons-material/Close';
-import Container from '@/components/Container';
 import ProfileForm from '@/components/ProfileForm';
 import BuidlerContacts from '@/components/BuidlerContacts';
 import { convertIpfsGateway } from '@/utils/utility';
@@ -481,31 +477,9 @@ export default function Profile() {
             width: { xs: '100%', sm: '505px' },
             mt: '16px',
             alignItems: 'center',
-            justifyContent: 'space-between',
+            justifyContent: 'flex-end',
           }}
         >
-          <Button
-            variant="text"
-            startIcon={
-              <Box
-                component="img"
-                src="/icons/onboarding/refresh.svg"
-                width={24}
-                height={24}
-              ></Box>
-            }
-            sx={{
-              textTransform: 'uppercase',
-
-              color: '#666F85',
-            }}
-            onClick={() => {
-              refresh();
-            }}
-          >
-            to refresh
-          </Button>
-
           <LXButton
             width={104}
             variant="gradient"
