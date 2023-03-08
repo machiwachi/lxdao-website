@@ -2,7 +2,7 @@ import { useAccount, useContract, useSigner } from 'wagmi';
 import { useEffect, useState } from 'react';
 import * as bs58 from 'bs58';
 
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Fade } from '@mui/material';
 
 import LXButton from '@/components/Button';
 import useBuidler from '@/components/useBuidler';
@@ -10,6 +10,7 @@ import { contractInfo } from '@/components/ContractsOperation';
 import OnBoardingLayout from '@/components/OnBoardingLayout';
 import showMessage from '@/components/showMessage';
 import API from '@/common/API';
+import { Container } from '@mui/system';
 
 function ipfsToBytes(ipfsURI) {
   const ipfsHash = ipfsURI.replace('ipfs://', '');
@@ -20,8 +21,8 @@ function ipfsToBytes(ipfsURI) {
 export default function Mint() {
   const { address } = useAccount();
   const [, record, , refresh] = useBuidler(address);
+  console.log(record);
   const { data: signer } = useSigner();
-  const [cardUrl, setCardUrl] = useState('');
   const [minting, setMinting] = useState(false);
   const [updating, setUpdating] = useState(false);
   const [syncing, setSyncing] = useState(false);
@@ -29,6 +30,7 @@ export default function Mint() {
   const [txResOpen, setTxResOpen] = useState(false);
   const [tx, setTx] = useState(null);
   const [txRes, setTxRes] = useState(null);
+  const [animation, setAnimation] = useState(false);
   const contract = useContract({
     ...contractInfo(),
     signerOrProvider: signer,
@@ -63,12 +65,9 @@ export default function Mint() {
       });
     }
     setMinting(false);
+    setAnimation(true);
   };
-  useEffect(() => {
-    setCardUrl(
-      `${process.env.NEXT_PUBLIC_LXDAO_BACKEND_API}/buidler/${address}/card`
-    );
-  }, [address]);
+
   return (
     <OnBoardingLayout
       title="Free, Only gas."
@@ -87,19 +86,43 @@ export default function Mint() {
           gap: '80px',
         }}
       >
-        <Box
-          marginBottom={'83px'}
-          margin="auto"
-          sx={{ width: { xs: '100%', md: '545px' } }}
-        >
-          <img
-            crossOrigin="anonymous"
-            width={'100%'}
-            style={{ objectFit: 'contain' }}
-            src={cardUrl}
-            alt=""
+        <Box position="relative">
+          <Box
+            component="img"
+            src="/images/card.png"
+            sx={{ width: { xs: '100%', md: '545px' } }}
+            marginBottom={'83px'}
+            margin="auto"
           />
+          <Fade in={animation} timeout={3000} easing={'ease-out'}>
+            {
+              <Container>
+                <Box
+                  component="img"
+                  width="68px"
+                  height="68px"
+                  position="absolute"
+                  bottom={37}
+                  left={37}
+                  borderRadius="50%"
+                  src={record?.avatar}
+                  sx
+                ></Box>
+                <Typography
+                  color="white"
+                  position="absolute"
+                  bottom={50}
+                  left={127}
+                  fontWeight={500}
+                  fontSize={24}
+                >
+                  {record?.name}
+                </Typography>
+              </Container>
+            }
+          </Fade>
         </Box>
+
         <Box
           sx={{
             display: 'flex',
