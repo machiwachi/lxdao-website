@@ -57,6 +57,7 @@ export default function OnBoardingBottom({
           visibility={next ? 'visible' : 'hidden'}
           onClick={() => {
             if (next == 'done') {
+              sessionStorage.setItem('newBuidler', true);
               router.push(`/buidlers/${address}`);
               return;
             }
