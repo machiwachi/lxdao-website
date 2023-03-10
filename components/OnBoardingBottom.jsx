@@ -13,12 +13,11 @@ export default function OnBoardingBottom({
       sx={{
         display: 'flex',
         flexDirection: { xs: 'column', md: 'row' },
-        justifyContent: { sx: 'center', md: 'space-between' },
+        justifyContent: { xs: 'center', md: 'space-between' },
         alignItems: 'center',
-        mb: { xs: '30px' },
       }}
     >
-      {back && (
+      {
         <Box
           alignItems="center"
           justifyContent="center"
@@ -27,6 +26,7 @@ export default function OnBoardingBottom({
           }}
           sx={{
             display: 'flex',
+            visibility: back ? 'visibility' : 'hidden',
             width: '223px',
             cursor: 'pointer',
             color: '#666F85',
@@ -39,11 +39,15 @@ export default function OnBoardingBottom({
             mx: '8px',
             mb: { xs: '8px' },
             background: '#F4F6F8',
+            mb: { xs: '10px', md: 0 },
+            '&:hover': {
+              backgroundColor: '#ebebeb',
+            },
           }}
         >
           Back
         </Box>
-      )}
+      }
 
       {next && (
         <Box
@@ -53,6 +57,7 @@ export default function OnBoardingBottom({
           visibility={next ? 'visible' : 'hidden'}
           onClick={() => {
             if (next == 'done') {
+              sessionStorage.setItem('newBuidler', true);
               router.push(`/buidlers/${address}`);
               return;
             }
@@ -69,6 +74,7 @@ export default function OnBoardingBottom({
             lineHeight: '24px',
             fontWeight: '600',
             mx: '8px',
+            pointerEvents: disableNext ? 'none' : 'normal',
             background: disableNext
               ? 'linear-gradient(89.57deg, rgba(41,117,223,0.5) 0.27%, rgba(58,207,227,0.5) 105.82%)'
               : 'linear-gradient(90deg, #305FE8 0%, #3AD9E3 100%)',

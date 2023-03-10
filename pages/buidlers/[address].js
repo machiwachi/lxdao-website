@@ -24,7 +24,9 @@ import {
   Accordion,
   Tooltip,
 } from '@mui/material';
+import Confetti from 'react-confetti';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import useWindowSize from 'react-use/lib/useWindowSize';
 import CloseIcon from '@mui/icons-material/Close';
 import { useRouter } from 'next/router';
 import _ from 'lodash';
@@ -1265,21 +1267,47 @@ function BuidlerDetails(props) {
 export default function Buidler() {
   const router = useRouter();
   const address = router.query.address;
-
+  const [open, setOpen] = useState(false);
+  const { width, height } = useWindowSize();
+  const [size, setSize] = useState({
+    width: 0,
+    height: 0,
+  });
   const [loading, record, error, refresh] = useBuidler(address);
 
   // if (loading) return <Layout>Loading...</Layout>;
+  useEffect(() => {
+    const newBuidler = sessionStorage?.getItem('newBuidler');
+    if (newBuidler) {
+      setOpen(true);
+      sessionStorage?.removeItem('newBuidler');
+    }
+  }, []);
+  useEffect(() => {
+    setSize({
+      width: width,
+      height: height,
+    });
+  }, [width, height]);
   if (loading) return null;
 
   return (
     <Layout title={`${record && record.name} Buidler Profile | LXDAO`}>
       {record ? (
-        <BuidlerDetails
-          refresh={() => {
-            refresh();
-          }}
-          record={record}
-        />
+        <>
+          <Confetti
+            width={size.width}
+            height={size.height}
+            recycle={false}
+            run={open}
+          />
+          <BuidlerDetails
+            refresh={() => {
+              refresh();
+            }}
+            record={record}
+          />
+        </>
       ) : (
         <Box
           display="flex"
