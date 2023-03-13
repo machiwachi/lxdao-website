@@ -88,25 +88,25 @@ const SectionMission = ({ projectAmount, buidlerAmount }) => (
           gap={2}
         >
           <DataBox
-            number="10227"
+            number="11.3k+"
             name="Influence"
             detail={
               <div>
                 <div>
                   <span>Discord: </span>
-                  <span>544</span>
+                  <span>700+</span>
                 </div>
                 <div>
                   <span>Twitter: </span>
-                  <span>5662</span>
+                  <span>5.8k+</span>
                 </div>
                 <div>
                   <span>WeChat: </span>
-                  <span>2445</span>
+                  <span>3k+</span>
                 </div>
                 <div>
                   <span>WeChat Official Accounts: </span>
-                  <span>1576</span>
+                  <span>1.8k+</span>
                 </div>
               </div>
             }
