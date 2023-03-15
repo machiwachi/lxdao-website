@@ -23,12 +23,12 @@ export default function Layout({ children, title, description }) {
         <link rel="icon" href="/icons/favicon.png" />
         <title>
           {title ||
-            'LXDAO - Bringing together buidlers to buidl and maintain &quot;LX&quot; projects for Web3, in a sustainable manner.'}
+            'LXDAO - Gather the power of buidlers to buidl and support “LX” (valuable) Web3 projects sustainably and welcome 1 billion users into Web3'}
         </title>
         <meta
           name="description"
           content="LXDAO is an R&amp;D-focused DAO in Web3.
-Our mission: Bringing together buidlers to buidl and maintain LX projects for Web3, in a sustainable manner."
+Our mission: Gather the power of buidlers to buidl and support “LX” (valuable) Web3 projects sustainably and welcome 1 billion users into Web3."
         />
         <meta property="og:locale" content="en_US" />
         <meta property="og:type" content="website" />
@@ -38,7 +38,7 @@ Our mission: Bringing together buidlers to buidl and maintain LX projects for We
           property="og:description"
           content={
             description ||
-            'LXDAO is an R&D-focused DAO in Web3, bringing together buidlers to buidl and maintain "LX" projects for Web3, in a sustainable manner.'
+            'LXDAO is an R&D-focused DAO in Web3. Focus on supporting valuable Web3 Public Goods and Open Source sustainably. Gather the power of buidlers to buidl and support “LX” (valuable) Web3 projects sustainably and welcome 1 billion users into Web3.'
           }
         />
         <meta property="og:url" content="https://lxdao.io/" />

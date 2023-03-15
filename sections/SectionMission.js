@@ -79,8 +79,8 @@ const SectionMission = ({ projectAmount, buidlerAmount }) => (
           lineHeight={{ md: '70px', sm: '50px', xs: '50px' }}
           fontWeight={500}
         >
-          Bringing together buidlers to buidl and maintain &quot;LX&quot;
-          (Valuable) projects for Web3, in a sustainable manner.
+          Gather the power of buidlers to buidl and support “LX” (valuable) Web3
+          projects sustainably and welcome 1 billion users into Web3.
         </Typography>
         <Box
           display="flex"

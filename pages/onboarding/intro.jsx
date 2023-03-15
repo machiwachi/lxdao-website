@@ -20,7 +20,7 @@ export default function Intro() {
     {
       svg: '/icons/mission.svg',
       title: 'MISSION',
-      content: `LXDAO is an R&D-focused DAO in Web3. Our mission is bringing together buidlers to buidl and maintain "LX" projects for Web3, in a sustainable manner.`,
+      content: `LXDAO is an R&D-focused DAO in Web3. Our mission is gathering the power of buidlers to buidl and support “LX” (valuable) Web3 projects sustainably and welcome 1 billion users into Web3.`,
     },
     {
       svg: '/icons/Vision.svg',

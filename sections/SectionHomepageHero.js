@@ -70,17 +70,14 @@ const SectionHomepageHero = () => {
         <Title />
         <Box display={{ md: 'block', sm: 'none', xs: 'none' }}>
           <Typography variant="subtitle1" lineHeight="36px" color="#667085">
-            Our Vision & Consensus - The technologies, concepts and ideas of
-            Web3
-          </Typography>
-          <Typography variant="subtitle1" lineHeight="36px" color="#667085">
-            will be used by a billion people in a decade.
+            Focus on supporting valuable Web3 <strong>Public Goods</strong> and{' '}
+            <strong>Open Source</strong> sustainably.
           </Typography>
         </Box>
         <Box display={{ md: 'none', sm: 'block', xs: 'block' }}>
           <Typography variant="subtitle1" lineHeight="36px" color="#667085">
-            Our Vision & Consensus - The technologies, concepts and ideas of
-            Web3 will be used by a billion people in a decade.
+            Focus on supporting valuable Web3 <strong>Public Goods</strong> and{' '}
+            <strong>Open Source</strong> sustainably.
           </Typography>
         </Box>
         <Link
