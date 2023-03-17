@@ -6,7 +6,7 @@ import { Box, Typography, Link } from '@mui/material';
 import Button from '@/components/Button';
 import Container from '@/components/Container';
 import CommunityLinkGroup from '@/components/CommunityLinkGroup';
-// import ActivityNotification from '@/components/ActivityNotification';
+import ActivityNotification from '@/components/ActivityNotification';
 
 const textColorGradient = keyframes`
   0%{background-position:0% 50%}
@@ -92,8 +92,8 @@ const SectionHomepageHero = () => {
           </Button>
         </Link>
 
-        <CommunityLinkGroup />
-        {/* <ActivityNotification /> */}
+        <CommunityLinkGroup marginBottom={0} />
+        <ActivityNotification />
       </Box>
     </Container>
   );
