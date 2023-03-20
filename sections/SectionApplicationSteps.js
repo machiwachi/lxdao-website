@@ -84,6 +84,32 @@ const SectionApplicationSteps = () => {
           <Typography
             variant="h6"
             color="#667085"
+            marginBottom={4}
+            textAlign="center"
+            width={{ md: '900px', sm: '600px', xs: '300px' }}
+          >
+            New Onboarding Process is under construction, application has been
+            suspended temporarily.
+          </Typography>
+          <Typography
+            variant="h6"
+            color="#667085"
+            marginBottom={10}
+            textAlign="center"
+            width={{ md: '900px', sm: '600px', xs: '300px' }}
+          >
+            More details:{' '}
+            <a
+              href="https://forum.lxdao.io/t/proposal-dismiss-onboarding-committee/490"
+              target="_blank"
+              rel="noreferrer"
+            >
+              https://forum.lxdao.io/t/proposal-dismiss-onboarding-committee/490
+            </a>
+          </Typography>
+          {/* <Typography
+            variant="h6"
+            color="#667085"
             marginBottom={10}
             textAlign="center"
             width={{ md: '900px', sm: '600px', xs: '300px' }}
@@ -91,8 +117,8 @@ const SectionApplicationSteps = () => {
             Please show your passion and commitment to the community. It&apos;s
             good to have some contributions first (get some LXPoints) to apply
             to join.
-          </Typography>
-          <Box
+          </Typography> */}
+          {/* <Box
             display="flex"
             flexDirection={{ lg: 'row', xs: 'column' }}
             alignItems="center"
@@ -144,7 +170,7 @@ const SectionApplicationSteps = () => {
             <Button variant="gradient" width="260px">
               Start your Application
             </Button>
-          </Link>
+          </Link> */}
         </Box>
       </Container>
     </Box>
