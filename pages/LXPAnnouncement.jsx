@@ -396,7 +396,7 @@ function UnReleasedTable({ isAccountingTeam, isConnected }) {
                   </TableCell>
                   <TableCell
                     align="left"
-                    sx={{ maxWidth: '100px', fontSize: '16px' }}
+                    sx={{ minWidth: '100px', fontSize: '16px' }}
                   >
                     {row.source}
                   </TableCell>
@@ -470,7 +470,12 @@ function UnReleasedTable({ isAccountingTeam, isConnected }) {
             {rows.length > 0 ? (
               <TableRow>
                 <TablePagination
-                  rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                  rowsPerPageOptions={[
+                    5,
+                    10,
+                    25,
+                    { label: 'All', value: pagination.total },
+                  ]}
                   count={pagination?.total}
                   rowsPerPage={perPage}
                   page={page}
@@ -707,7 +712,7 @@ function ReleasedTable({ isAccountingTeam }) {
                   </TableCell>
                   <TableCell
                     align="center"
-                    sx={{ maxWidth: '100px', fontSize: '16px' }}
+                    sx={{ minWidth: '100px', fontSize: '16px' }}
                   >
                     {new Date(row.createdAt)
                       .toISOString()
@@ -733,7 +738,7 @@ function ReleasedTable({ isAccountingTeam }) {
                       5,
                       10,
                       25,
-                      { label: 'All', value: -1 },
+                      { label: 'All', value: pagination.total },
                     ]}
                     count={pagination.total}
                     rowsPerPage={perPage}
