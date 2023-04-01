@@ -460,17 +460,6 @@ function UnReleasedTable({ isAccountingTeam, isConnected }) {
                         </LXButton>
                       </>
                     )}
-                    {row.status == 'TOBERELEASED' && isConnected && (
-                      <LXButton
-                        width={'100px'}
-                        variant="outlined"
-                        onClick={() => {
-                          hanldeOperationBtn(row.id, 'DISPUTE');
-                        }}
-                      >
-                        Dispute
-                      </LXButton>
-                    )}
                   </TableCell>
                 </TableRow>
               );
