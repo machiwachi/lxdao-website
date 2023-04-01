@@ -218,7 +218,12 @@ function UnReleasedTable({ isAccountingTeam, isConnected }) {
       if (addresses.length == 0) {
         throw { message: 'No to be released lxp' };
       }
-      const hash = await mintAll(addresses, amounts);
+
+      const formattedAmounts = amounts.map((value) =>
+        ethers.utils.parseUnits(value.toString(), 'ether')
+      );
+
+      const hash = await mintAll(addresses, formattedAmounts);
       // post to backend
       const res = await API.post(`/lxpoints/release`, { hash: hash });
       const result = res.data;
