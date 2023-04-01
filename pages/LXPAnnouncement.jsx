@@ -218,7 +218,12 @@ function UnReleasedTable({ isAccountingTeam, isConnected }) {
       if (addresses.length == 0) {
         throw { message: 'No to be released lxp' };
       }
-      const hash = await mintAll(addresses, amounts);
+
+      const formattedAmounts = amounts.map((value) =>
+        ethers.utils.parseUnits(value.toString(), 'ether')
+      );
+
+      const hash = await mintAll(addresses, formattedAmounts);
       // post to backend
       const res = await API.post(`/lxpoints/release`, { hash: hash });
       const result = res.data;
@@ -363,7 +368,9 @@ function UnReleasedTable({ isAccountingTeam, isConnected }) {
                       overflow: 'hidden',
                     }}
                   >
-                    {row.name}
+                    <Tooltip title={row.name}>
+                      <span>{row.name}</span>
+                    </Tooltip>
                   </TableCell>
                   <TableCell align="center" sx={{ maxWidth: '100px' }}>
                     <Tooltip
@@ -396,7 +403,7 @@ function UnReleasedTable({ isAccountingTeam, isConnected }) {
                   </TableCell>
                   <TableCell
                     align="left"
-                    sx={{ maxWidth: '100px', fontSize: '16px' }}
+                    sx={{ minWidth: '100px', fontSize: '16px' }}
                   >
                     {row.source}
                   </TableCell>
@@ -470,7 +477,12 @@ function UnReleasedTable({ isAccountingTeam, isConnected }) {
             {rows.length > 0 ? (
               <TableRow>
                 <TablePagination
-                  rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                  rowsPerPageOptions={[
+                    5,
+                    10,
+                    25,
+                    { label: 'All', value: pagination.total },
+                  ]}
                   count={pagination?.total}
                   rowsPerPage={perPage}
                   page={page}
@@ -662,7 +674,9 @@ function ReleasedTable({ isAccountingTeam }) {
                       overflow: 'hidden',
                     }}
                   >
-                    {row.name}
+                    <Tooltip title={row.name}>
+                      <span>{row.name}</span>
+                    </Tooltip>
                   </TableCell>
                   <TableCell align="center" sx={{ maxWidth: '100px' }}>
                     <Tooltip
@@ -695,7 +709,7 @@ function ReleasedTable({ isAccountingTeam }) {
                   </TableCell>
                   <TableCell
                     align="center"
-                    sx={{ maxWidth: '100px', fontSize: '16px' }}
+                    sx={{ minWidth: '100px', fontSize: '16px' }}
                   >
                     {row.source}
                   </TableCell>
@@ -707,7 +721,7 @@ function ReleasedTable({ isAccountingTeam }) {
                   </TableCell>
                   <TableCell
                     align="center"
-                    sx={{ maxWidth: '100px', fontSize: '16px' }}
+                    sx={{ minWidth: '100px', fontSize: '16px' }}
                   >
                     {new Date(row.createdAt)
                       .toISOString()
@@ -733,7 +747,7 @@ function ReleasedTable({ isAccountingTeam }) {
                       5,
                       10,
                       25,
-                      { label: 'All', value: -1 },
+                      { label: 'All', value: pagination.total },
                     ]}
                     count={pagination.total}
                     rowsPerPage={perPage}
