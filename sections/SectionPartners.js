@@ -24,6 +24,11 @@ const partnersData = [
     logo: '/images/partners/moledao-logo.svg',
     link: 'https://www.moledao.io/',
   },
+  {
+    name: 'MarsDAO',
+    logo: '/images/partners/marsdao-logo.svg',
+    link: 'https://linktr.ee/MarsDAO',
+  },
 ];
 
 const SectionPartners = () => (
