@@ -29,6 +29,11 @@ const partnersData = [
     logo: '/images/partners/marsdao-logo.svg',
     link: 'https://linktr.ee/MarsDAO',
   },
+  {
+    name: 'EthSign',
+    logo: '/images/partners/ethsign-logo.svg',
+    link: 'https://www.ethsign.xyz/',
+  },
 ];
 
 const SectionPartners = () => (
