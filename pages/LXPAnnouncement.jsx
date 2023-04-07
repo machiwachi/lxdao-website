@@ -369,7 +369,9 @@ function UnReleasedTable({ isAccountingTeam, isConnected }) {
                     }}
                   >
                     <Tooltip title={row.name}>
-                      <span>{row.name}</span>
+                      <Link href={`/buidlers/${row.address}`} target="_blank">
+                        <span>{row.name}</span>
+                      </Link>
                     </Tooltip>
                   </TableCell>
                   <TableCell align="center" sx={{ maxWidth: '100px' }}>
@@ -675,7 +677,9 @@ function ReleasedTable({ isAccountingTeam }) {
                     }}
                   >
                     <Tooltip title={row.name}>
-                      <span>{row.name}</span>
+                      <Link href={`/buidlers/${row.Address}`} target="_blank">
+                        <span>{row.name}</span>
+                      </Link>
                     </Tooltip>
                   </TableCell>
                   <TableCell align="center" sx={{ maxWidth: '100px' }}>
