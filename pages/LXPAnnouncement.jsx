@@ -858,12 +858,10 @@ export default function LXPAnnouncement({ days }) {
               {Math.abs(days) === 1 ? 'Day' : 'Days'}
             </Typography>
           </Box>
-          {days < 0 && (
-            <UnReleasedTable
-              isAccountingTeam={isAccountingTeam}
-              isConnected={isConnected}
-            />
-          )}
+          <UnReleasedTable
+            isAccountingTeam={isAccountingTeam}
+            isConnected={isConnected}
+          />
           <ReleasedTable isAccountingTeam={isAccountingTeam} />
         </Box>
       </Container>
