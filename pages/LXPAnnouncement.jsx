@@ -851,7 +851,7 @@ export default function LXPAnnouncement({ days }) {
               >
                 {days < 0 ? -days : days}
               </span>{' '}
-              Days
+              {Math.abs(days) === 1 ? 'Day' : 'Days'}
             </Typography>
           </Box>
           {days < 0 && (
@@ -870,6 +870,7 @@ export default function LXPAnnouncement({ days }) {
 function getDays() {
   const now = new Date();
   let days = 0;
+
   if (now.getDate() > 7) {
     // how many day from now to next start.
     if (now.getMonth() == 11) {
@@ -881,7 +882,7 @@ function getDays() {
     days = Math.ceil((next.getTime() - now.getTime()) / (1000 * 3600 * 24));
   } else {
     // how many day from now to the end.
-    days = now.getDate() - 7;
+    days = now.getDate() - 8;
   }
   return days;
 }
