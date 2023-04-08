@@ -24,7 +24,7 @@ import showMessage from '@/components/showMessage';
 import '@rainbow-me/rainbowkit/styles.css';
 
 const { chains, provider } = configureChains(
-  [chain.mainnet, chain.goerli],
+  [chain.mainnet, chain.goerli, chain.polygon, chain.polygonMumbai],
   [
     infuraProvider({ apiKey: process.env.NEXT_PUBLIC_INFURA_ID }),
     publicProvider(),
