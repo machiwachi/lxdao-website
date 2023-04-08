@@ -43,7 +43,11 @@ import useMate from '@/components/useMate';
 import Skills from '@/components/Skills';
 import { formatAddress } from '@/utils/utility';
 import API from '@/common/API';
-import { getEtherScanDomain, getOpenSeaDomain } from '@/utils/utility';
+import {
+  getEtherScanDomain,
+  getOpenSeaDomain,
+  getPolygonScanDomain,
+} from '@/utils/utility';
 import { contractInfo } from '@/components/ContractsOperation';
 import BuidlerContacts from '@/components/BuidlerContacts';
 import Tag from '@/components/Tag';
