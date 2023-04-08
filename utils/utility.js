@@ -79,6 +79,12 @@ export function getOpenSeaDomain() {
     : 'testnets.opensea.io';
 }
 
+export function getPolygonScanDomain() {
+  return process.env.NEXT_PUBLIC_LXP_CHAIN_ID === '137'
+    ? 'polygonscan.com'
+    : 'mumbai.polygonscan.com';
+}
+
 export function convertIpfsGateway(ipfsUrl) {
   // https://cloudflare-ipfs.com/ipfs/bafkreid67qrfaq2yqacnsvpvfnetjocgy7kiuwu4jw4v23tc3yqgfgis2e
   // to

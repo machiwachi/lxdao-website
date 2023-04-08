@@ -192,7 +192,7 @@ function LXPointsTable({ points }) {
                   <Link
                     target="_blank"
                     sx={{ textDecoration: 'none' }}
-                    href={`https://${getEtherScanDomain()}/tx/${point.hash}`}
+                    href={`https://${getPolygonScanDomain()}/tx/${point.hash}`}
                   >
                     <Typography
                       sx={{
