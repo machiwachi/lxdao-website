@@ -26,9 +26,9 @@ import { useAccount } from 'wagmi';
 import { ethers } from 'ethers';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 
 import API from '@/common/API';
+import { getPolygonScanDomain } from '@/utils/utility';
 
 import abi_lxp from '../abi-lxp.json';
 
@@ -641,6 +641,9 @@ function ReleasedTable({ isAccountingTeam }) {
                 <TableCell sx={{ color: '#666F85' }} align="center">
                   Status
                 </TableCell>
+                <TableCell sx={{ color: '#666F85' }} align="center">
+                  Transaction Link
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody sx={{ fontSize: '16px', color: '#f14d16' }}>
@@ -719,7 +722,7 @@ function ReleasedTable({ isAccountingTeam }) {
                   </TableCell>
                   <TableCell
                     align="center"
-                    sx={{ minWidth: '300px', fontSize: '16px' }}
+                    sx={{ minWidth: '200px', fontSize: '16px' }}
                   >
                     {row.reason}
                   </TableCell>
@@ -739,6 +742,17 @@ function ReleasedTable({ isAccountingTeam }) {
                     }}
                   >
                     <StatusLabel status={row.status} />
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    sx={{ maxWidth: '100px', fontSize: '16px' }}
+                  >
+                    <Link
+                      target="_blank"
+                      href={`https://${getPolygonScanDomain()}/tx/${row.hash}`}
+                    >
+                      {row.status == 'RELEASED' && 'View'}
+                    </Link>
                   </TableCell>
                 </TableRow>
               ))}
@@ -799,9 +813,9 @@ export default function LXPAnnouncement({ days }) {
           alignItems={{ lg: 'center', xs: 'center' }}
           textAlign={{ lg: 'center', xs: 'center' }}
         >
-          <Box textAlign="center" gap={6}>
+          <Box textAlign="center" gap={6} width="100%">
             <Typography
-              fontSize="70px"
+              fontSize={{ xs: '48px', sm: '70px' }}
               fontWeight={600}
               lineHeight="70px"
               color="#101828"
@@ -845,7 +859,11 @@ export default function LXPAnnouncement({ days }) {
 
         <Box width={'100%'} marginTop={8}>
           <Box>
-            <Typography fontSize={48} fontWeight={400} color={'#666F85'}>
+            <Typography
+              fontSize={{ xs: '30px', sm: '48px' }}
+              fontWeight={400}
+              color={'#666F85'}
+            >
               Public announcement {days < 0 ? 'ends in' : 'starts after'}{' '}
               <span
                 style={{ fontSize: 52, fontWeight: 'bold', color: '#36AFF9' }}

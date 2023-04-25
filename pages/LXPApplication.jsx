@@ -27,17 +27,18 @@ import showMessage from '@/components/showMessage';
 
 function Label({ required, value }) {
   return (
-    <div
-      style={{
-        textAlign: 'right',
+    <Box
+      textAlign={{ xs: 'left', sm: 'right' }}
+      sx={{
         fontWeight: 'bold',
         color: '#101828',
         lineHeight: '56px',
+        width: '85px',
       }}
     >
       {required && <span style={{ color: '#DC0202' }}>* </span>}
       {value}
-    </div>
+    </Box>
   );
 }
 
@@ -212,127 +213,194 @@ export default function Apply() {
             </Typography>
           </Box>
         </Box>
-        <Grid container spacing={2} mt={12} maxWidth={1000}>
-          <Grid item xs={2} alignItems="center">
-            <Label required={true} value={'Type: '} />
-          </Grid>
-          <Grid item xs={9}>
-            <Controller
-              name={'type'}
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { onChange, value, onBlur } }) => {
-                return (
-                  <>
-                    <Select
-                      sx={{ width: '100%', height: 56 }}
-                      displayEmpty
-                      inputProps={{ 'aria-label': 'Without label' }}
-                      value={value}
-                      defaultValue={''}
-                      onChange={(event) => {
-                        onChange(event.target.value);
-                        setType(event.target.value);
-                        setValue('buidlerId', null);
-                      }}
-                      onBlur={onBlur}
-                    >
-                      <MenuItem value={'LXDAOBUILDER'}>LXDAO Builder</MenuItem>
-                      <MenuItem value={'LXDAOMEMBER'}>LXDAO Member</MenuItem>
-                    </Select>
-                    <Typography
-                      marginTop={1}
-                      fontSize="0.85rem"
-                      color="#d32f2f"
-                      marginLeft={2}
-                    >
-                      {errors?.type ? 'Type is required' : ''}
-                    </Typography>
-                  </>
-                );
-              }}
-            />
-          </Grid>
-          <Grid item xs={2} alignItems="center">
-            <Label required={true} value={'Name: '} />
-          </Grid>
-          {type === 'LXDAOBUILDER' ? (
-            <Grid item xs={9}>
+        <Box maxWidth={1000} marginTop="50px">
+          <Box
+            display="flex"
+            flexDirection={{ xs: 'column', sm: 'row' }}
+            marginBottom={{ xs: '0', sm: '15px' }}
+          >
+            <Box marginRight="10px">
+              <Label required={true} value={'Type: '} />
+            </Box>
+            <Box flex={1}>
               <Controller
-                name={'name'}
+                name={'type'}
                 control={control}
                 rules={{ required: true }}
                 render={({ field: { onChange, value, onBlur } }) => {
                   return (
                     <>
-                      <Autocomplete
-                        open={open}
-                        onOpen={() => {
-                          setOpen(true);
-                        }}
-                        onClose={() => {
-                          setOpen(false);
-                        }}
-                        isOptionEqualToValue={(option, kvalue) => {
-                          return option.name === kvalue.name;
-                        }}
-                        getOptionLabel={(option) => {
-                          return option.name;
-                        }}
-                        onChange={(e, value) => {
-                          onChange(value?.name);
-                          setValue('address', value?.address);
-                          setValue('buidlerId', value?.id);
+                      <Select
+                        sx={{ width: '100%', height: 56 }}
+                        displayEmpty
+                        inputProps={{ 'aria-label': 'Without label' }}
+                        value={value}
+                        defaultValue={''}
+                        onChange={(event) => {
+                          onChange(event.target.value);
+                          setType(event.target.value);
+                          setValue('buidlerId', null);
                         }}
                         onBlur={onBlur}
-                        options={options}
-                        loading={loading}
-                        renderInput={(params) => {
-                          return (
-                            <TextField
-                              {...params}
-                              value={value}
-                              InputProps={{
-                                ...params.InputProps,
-                                endAdornment: (
-                                  <>
-                                    {loading ? (
-                                      <CircularProgress
-                                        color="inherit"
-                                        size={20}
-                                      />
-                                    ) : null}
-                                    {params.InputProps.endAdornment}
-                                  </>
-                                ),
-                              }}
-                            />
-                          );
-                        }}
-                      />
+                      >
+                        <MenuItem value={'LXDAOBUILDER'}>
+                          LXDAO Builder
+                        </MenuItem>
+                        <MenuItem value={'LXDAOMEMBER'}>LXDAO Member</MenuItem>
+                      </Select>
                       <Typography
                         marginTop={1}
                         fontSize="0.85rem"
                         color="#d32f2f"
                         marginLeft={2}
                       >
-                        {errors?.name ? 'Name is required' : ''}
+                        {errors?.type ? 'Type is required' : ''}
                       </Typography>
                     </>
                   );
                 }}
               />
-            </Grid>
-          ) : (
-            <Grid item xs={9}>
+            </Box>
+          </Box>
+          <Box
+            display="flex"
+            flexDirection={{ xs: 'column', sm: 'row' }}
+            marginBottom={{ xs: '0', sm: '15px' }}
+          >
+            <Box marginRight="10px">
+              <Label required={true} value={'Name: '} />
+            </Box>
+            {type === 'LXDAOBUILDER' ? (
+              <Box flex={1}>
+                <Controller
+                  name={'name'}
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { onChange, value, onBlur } }) => {
+                    return (
+                      <>
+                        <Autocomplete
+                          open={open}
+                          onOpen={() => {
+                            setOpen(true);
+                          }}
+                          onClose={() => {
+                            setOpen(false);
+                          }}
+                          isOptionEqualToValue={(option, kvalue) => {
+                            return option.name === kvalue.name;
+                          }}
+                          getOptionLabel={(option) => {
+                            return option.name;
+                          }}
+                          onChange={(e, value) => {
+                            onChange(value?.name);
+                            setValue('address', value?.address);
+                            setValue('buidlerId', value?.id);
+                          }}
+                          onBlur={onBlur}
+                          options={options}
+                          loading={loading}
+                          renderInput={(params) => {
+                            return (
+                              <TextField
+                                {...params}
+                                value={value}
+                                InputProps={{
+                                  ...params.InputProps,
+                                  endAdornment: (
+                                    <>
+                                      {loading ? (
+                                        <CircularProgress
+                                          color="inherit"
+                                          size={20}
+                                        />
+                                      ) : null}
+                                      {params.InputProps.endAdornment}
+                                    </>
+                                  ),
+                                }}
+                              />
+                            );
+                          }}
+                        />
+                        <Typography
+                          marginTop={1}
+                          fontSize="0.85rem"
+                          color="#d32f2f"
+                          marginLeft={2}
+                        >
+                          {errors?.name ? 'Name is required' : ''}
+                        </Typography>
+                      </>
+                    );
+                  }}
+                />
+              </Box>
+            ) : (
+              <Box flex={1}>
+                <Controller
+                  name={'name'}
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { onChange, value, onBlur } }) => {
+                    return (
+                      <>
+                        <OutlinedInput
+                          sx={{ height: 56, width: '100%' }}
+                          value={value}
+                          onChange={onChange}
+                          onBlur={onBlur}
+                        />
+                        <Typography
+                          marginTop={1}
+                          fontSize="0.85rem"
+                          color="#d32f2f"
+                          marginLeft={2}
+                        >
+                          {errors?.name ? 'Name is required' : ''}
+                        </Typography>
+                      </>
+                    );
+                  }}
+                />
+              </Box>
+            )}
+          </Box>
+          <Box
+            display="flex"
+            flexDirection={{ xs: 'column', sm: 'row' }}
+            marginBottom={{ xs: '0', sm: '15px' }}
+          >
+            <Box marginRight="10px">
+              <Label required={true} value={'Address: '} />
+            </Box>
+            <Box flex={1}>
               <Controller
-                name={'name'}
+                name={'address'}
                 control={control}
-                rules={{ required: true }}
+                rules={{
+                  required: true,
+                  validate: {
+                    ckeckAddress: (v) => {
+                      if (v.length < 42) {
+                        return 'Too Short Address';
+                      }
+                      if (v.length > 42) {
+                        return 'Too Long Address';
+                      }
+                      if (v.slice(0, 2) != '0x' && v.slice(0, 2) != '0X') {
+                        return 'Wrong Format Address';
+                      }
+                    },
+                  },
+                }}
                 render={({ field: { onChange, value, onBlur } }) => {
                   return (
                     <>
                       <OutlinedInput
+                        disabled={type === 'LXDAOBUILDER'}
+                        placeholder="2a3s341....3sad"
                         sx={{ height: 56, width: '100%' }}
                         value={value}
                         onChange={onChange}
@@ -344,200 +412,169 @@ export default function Apply() {
                         color="#d32f2f"
                         marginLeft={2}
                       >
-                        {errors?.name ? 'Name is required' : ''}
+                        {errors?.address?.message}
                       </Typography>
                     </>
                   );
                 }}
               />
-            </Grid>
-          )}
-
-          <Grid item xs={2} alignItems="center">
-            <Label required={true} value={'Address: '} />
-          </Grid>
-          <Grid item xs={9}>
-            <Controller
-              name={'address'}
-              control={control}
-              rules={{
-                required: true,
-                validate: {
-                  ckeckAddress: (v) => {
-                    if (v.length < 42) {
-                      return 'Too Short Address';
-                    }
-                    if (v.length > 42) {
-                      return 'Too Long Address';
-                    }
-                    if (v.slice(0, 2) != '0x' && v.slice(0, 2) != '0X') {
-                      return 'Wrong Format Address';
-                    }
-                  },
-                },
-              }}
-              render={({ field: { onChange, value, onBlur } }) => {
-                return (
-                  <>
+              {errors?.address &&
+                !errors?.address?.message &&
+                !errors?.address?.ref?.value && (
+                  <Typography
+                    marginTop={1}
+                    fontSize="0.85rem"
+                    color="#d32f2f"
+                    marginLeft={2}
+                  >
+                    Address is required
+                  </Typography>
+                )}
+            </Box>
+          </Box>
+          <Box
+            display="flex"
+            flexDirection={{ xs: 'column', sm: 'row' }}
+            marginBottom={{ xs: '0', sm: '15px' }}
+          >
+            <Box marginRight="10px">
+              <Label required={true} value={'Source: '} />
+            </Box>
+            <Box flex={1}>
+              <Controller
+                name={'source'}
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { onChange, value, onBlur } }) => {
+                  return (
                     <OutlinedInput
-                      disabled={type === 'LXDAOBUILDER'}
-                      placeholder="2a3s341....3sad"
+                      placeholder="These LXPs source, e.g. xxx project, xxx event, core team salary"
                       sx={{ height: 56, width: '100%' }}
                       value={value}
                       onChange={onChange}
                       onBlur={onBlur}
                     />
-                    <Typography
-                      marginTop={1}
-                      fontSize="0.85rem"
-                      color="#d32f2f"
-                      marginLeft={2}
-                    >
-                      {errors?.address?.message}
-                    </Typography>
-                  </>
-                );
-              }}
-            />
-            {errors?.address &&
-              !errors?.address?.message &&
-              !errors?.address?.ref?.value && (
+                  );
+                }}
+              />
+              {errors.source && (
                 <Typography
                   marginTop={1}
                   fontSize="0.85rem"
                   color="#d32f2f"
                   marginLeft={2}
                 >
-                  Address is required
+                  Source is required
                 </Typography>
               )}
-          </Grid>
-          <Grid item xs={2} alignItems="center">
-            <Label required={true} value={'Source: '} />
-          </Grid>
-          <Grid item xs={9}>
-            <Controller
-              name={'source'}
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { onChange, value, onBlur } }) => {
-                return (
-                  <OutlinedInput
-                    placeholder="These LXPs source, e.g. xxx project, xxx event, core team salary"
-                    sx={{ height: 56, width: '100%' }}
-                    value={value}
-                    onChange={onChange}
-                    onBlur={onBlur}
-                  />
-                );
-              }}
-            />
-            {errors.source && (
-              <Typography
-                marginTop={1}
-                fontSize="0.85rem"
-                color="#d32f2f"
-                marginLeft={2}
-              >
-                Source is required
-              </Typography>
-            )}
-          </Grid>
-          <Grid item xs={2} alignItems="center">
-            <Label required={true} value={'Amount: '} />
-          </Grid>
-          <Grid item xs={9}>
-            <Controller
-              name={'amount'}
-              control={control}
-              rules={{
-                required: true,
-                validate: {
-                  ckeckAmount: (v) => {
-                    if (!v) {
-                      return 'Amount is required.';
-                    }
-                    if (!Number.isFinite(Number(v))) {
-                      return 'Please enter a number';
-                    }
-                    if (v.length > 6) {
-                      return 'Too much LXP, please check with the team first';
-                    }
-                  },
-                },
-              }}
-              render={({ field: { onChange, value, onBlur } }) => {
-                return (
-                  <>
-                    <OutlinedInput
-                      endAdornment={
-                        <InputAdornment position="end">LXP</InputAdornment>
+            </Box>
+          </Box>
+          <Box
+            display="flex"
+            flexDirection={{ xs: 'column', sm: 'row' }}
+            marginBottom={{ xs: '0', sm: '15px' }}
+          >
+            <Box marginRight="10px">
+              <Label required={true} value={'Amount: '} />
+            </Box>
+            <Box flex={1}>
+              <Controller
+                name={'amount'}
+                control={control}
+                rules={{
+                  required: true,
+                  validate: {
+                    ckeckAmount: (v) => {
+                      if (!v) {
+                        return 'Amount is required.';
                       }
-                      sx={{ height: 56, width: '100%' }}
+                      if (!Number.isFinite(Number(v))) {
+                        return 'Please enter a number';
+                      }
+                      if (v.length > 6) {
+                        return 'Too much LXP, please check with the team first';
+                      }
+                    },
+                  },
+                }}
+                render={({ field: { onChange, value, onBlur } }) => {
+                  return (
+                    <>
+                      <OutlinedInput
+                        endAdornment={
+                          <InputAdornment position="end">LXP</InputAdornment>
+                        }
+                        sx={{ height: 56, width: '100%' }}
+                        value={value}
+                        onChange={onChange}
+                        onBlur={onBlur}
+                      />
+                      <Typography
+                        marginTop={1}
+                        fontSize="0.85rem"
+                        color="#d32f2f"
+                        marginLeft={2}
+                      >
+                        {errors?.amount?.message}
+                      </Typography>
+                    </>
+                  );
+                }}
+              />
+              {errors?.amount &&
+                !errors?.amount?.message &&
+                !errors?.amount?.ref?.value && (
+                  <Typography
+                    marginTop={1}
+                    fontSize="0.85rem"
+                    color="#d32f2f"
+                    marginLeft={2}
+                  >
+                    Amount is required
+                  </Typography>
+                )}
+            </Box>
+          </Box>
+          <Box
+            display="flex"
+            flexDirection={{ xs: 'column', sm: 'row' }}
+            marginBottom={{ xs: '0', sm: '15px' }}
+          >
+            <Box marginRight="10px">
+              <Label required={true} value={'Reason: '} />
+            </Box>
+            <Box flex={1}>
+              <Controller
+                name={'reason'}
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { onChange, value, onBlur } }) => {
+                  return (
+                    <OutlinedInput
+                      multiline
+                      rows={3}
+                      placeholder="Please provide specific reasons why you are applying for these LXPs"
+                      sx={{ width: '100%' }}
                       value={value}
                       onChange={onChange}
                       onBlur={onBlur}
                     />
-                    <Typography
-                      marginTop={1}
-                      fontSize="0.85rem"
-                      color="#d32f2f"
-                      marginLeft={2}
-                    >
-                      {errors?.amount?.message}
-                    </Typography>
-                  </>
-                );
-              }}
-            />
-            {errors?.amount &&
-              !errors?.amount?.message &&
-              !errors?.amount?.ref?.value && (
+                  );
+                }}
+              />
+              {errors.reason && (
                 <Typography
                   marginTop={1}
                   fontSize="0.85rem"
                   color="#d32f2f"
                   marginLeft={2}
                 >
-                  Amount is required
+                  Reason is required
                 </Typography>
               )}
-          </Grid>
-          <Grid item xs={2} alignItems="center">
-            <Label required={true} value={'Reason: '} />
-          </Grid>
-          <Grid item xs={9}>
-            <Controller
-              name={'reason'}
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { onChange, value, onBlur } }) => {
-                return (
-                  <OutlinedInput
-                    multiline
-                    rows={3}
-                    placeholder="Please provide specific reasons why you are applying for these LXPs"
-                    sx={{ width: '100%' }}
-                    value={value}
-                    onChange={onChange}
-                    onBlur={onBlur}
-                  />
-                );
-              }}
-            />
-            {errors.reason && (
-              <Typography
-                marginTop={1}
-                fontSize="0.85rem"
-                color="#d32f2f"
-                marginLeft={2}
-              >
-                Reason is required
-              </Typography>
-            )}
-          </Grid>
-          <Grid item xs={2}></Grid>
-          <Grid item xs={9}>
+            </Box>
+          </Box>
+          <Box marginTop={3} marginLeft={{ xs: 0, sm: '95px' }}>
             <Controller
               name={'check'}
               control={control}
@@ -574,12 +611,13 @@ export default function Apply() {
                 Please make sure your application with a clear conscience.
               </Typography>
             )}
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
         <LXButton
           width="200px"
           variant="gradient"
           marginTop={'69px'}
+          marginBottom="40px"
           onClick={handleSubmit((data) => {
             applicationHandler(data);
           })}
