@@ -23,7 +23,7 @@ export default function Intro() {
       content: `LXDAO is an R&D-focused DAO in Web3. Our mission is gathering the power of buidlers to buidl and support “LX” (valuable) Web3 projects sustainably and welcome 1 billion users into Web3.`,
     },
     {
-      svg: '/icons/Vision.svg',
+      svg: '/icons/vision.svg',
       title: 'VISION',
       content: `Our Vision & Consensus - The technologies, concepts and ideas of Web3 will be used by a billion people in a decade.`,
     },
