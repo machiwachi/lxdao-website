@@ -1,16 +1,6 @@
-import {
-  Box,
-  Typography,
-  Link,
-  Menu,
-  MenuItem,
-  Tooltip,
-  Dialog,
-  Button,
-} from '@mui/material';
+import { Box, Typography, Tooltip, Dialog, Button } from '@mui/material';
 import { tooltipClasses } from '@mui/material/Tooltip';
 import { styled as muistyle } from '@mui/material/styles';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
@@ -96,39 +86,42 @@ export default function OnBoardingAlertBtn() {
         recycle={false}
         run={open}
       />
-      {(buidler?.status == 'PENDING' || buidler?.status == 'READYTOMINT') && (
-        <Box display={router.asPath.includes('onboarding') ? 'none' : 'normal'}>
-          <LightTooltip title="Click me to complete the onborading process.">
-            <RotateBorder
-              onClick={() => {
-                setOpen(true);
-              }}
-            >
-              <RotateContent>
-                <Box component="img" src="/icons/user-block.svg"></Box>
-                <Box
-                  sx={{
-                    position: 'absolute',
-                    width: '24px',
-                    height: '24px',
-                    borderRadius: '50%',
-                    color: '#fff',
-                    fontSize: '16px',
-                    fontWeight: '900',
-                    lineHeight: '20px',
-                    backgroundColor: '#FF0000',
-                    left: '52%',
-                    bottom: '52%',
-                    border: '2px solid #fff',
-                  }}
-                >
-                  !
-                </Box>
-              </RotateContent>
-            </RotateBorder>
-          </LightTooltip>
-        </Box>
-      )}
+      {(buidler?.status == 'PENDING' || buidler?.status == 'READYTOMINT') &&
+        !buidler?.avatar && (
+          <Box
+            display={router.asPath.includes('onboarding') ? 'none' : 'normal'}
+          >
+            <LightTooltip title="Click me to complete the onborading process.">
+              <RotateBorder
+                onClick={() => {
+                  setOpen(true);
+                }}
+              >
+                <RotateContent>
+                  <Box component="img" src="/icons/user-block.svg"></Box>
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      width: '24px',
+                      height: '24px',
+                      borderRadius: '50%',
+                      color: '#fff',
+                      fontSize: '16px',
+                      fontWeight: '900',
+                      lineHeight: '20px',
+                      backgroundColor: '#FF0000',
+                      left: '52%',
+                      bottom: '52%',
+                      border: '2px solid #fff',
+                    }}
+                  >
+                    !
+                  </Box>
+                </RotateContent>
+              </RotateBorder>
+            </LightTooltip>
+          </Box>
+        )}
 
       <Dialog open={open} maxWidth="714px">
         <Box
