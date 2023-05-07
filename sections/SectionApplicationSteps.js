@@ -18,12 +18,6 @@ const steps = [
     icon: '/icons/contribute-step.svg',
   },
   {
-    label: 'Get voted',
-    description:
-      'Once you earn up to 500 USDT/LXP, existing buidlers will vote you to gain the buidler badge',
-    icon: '/icons/vote-step.svg',
-  },
-  {
     label: 'Earn badges',
     description:
       'Unlock rewards for your governance rights and reputation with our badge system.',
@@ -80,28 +74,43 @@ const SectionApplicationSteps = () => {
           >
             How to contribute？
           </Typography>
+          <Typography
+            variant="body1"
+            fontWeight="400"
+            lineHeight="28px"
+            textAlign="left"
+            color="#667085"
+            marginBottom={5}
+          >
+            <b>Note:</b> We are refreshing the onboarding process, you may
+            contact <b>Marcus</b> by{' '}
+            <a href="mailto: zqsanjingshou@gmail.com">
+              zqsanjingshou@gmail.com
+            </a>{' '}
+            if you want to onboard ASAP.
+          </Typography>
           <Box
             display="flex"
             flexDirection={{ lg: 'row', xs: 'column' }}
             alignItems="center"
-            gap={{ lg: '46px', sm: '80px', xs: '30px' }}
+            gap={{ lg: '38px', sm: '80px', xs: '30px' }}
           >
             {steps.map((step, index) => {
               return (
-                <Box key={index} position="relative" flex="1 1 25%">
+                <Box key={index} position="relative" flex="1 1 33%">
                   <Step index={index} stepData={step} />
                   {index !== steps.length - 1 ? (
                     <>
                       <Box
                         position="absolute"
                         top="55px"
-                        left="218px"
+                        left="288px"
                         bottom="40px"
                         alignItems="center"
                         display={{ lg: 'block', xs: 'none' }}
                       >
                         <Box
-                          width="140px"
+                          width="200px"
                           position="relative"
                           top="3px"
                           borderTop="1px dashed #101828"
@@ -112,7 +121,7 @@ const SectionApplicationSteps = () => {
                           borderRadius="100%"
                           backgroundColor="#000000"
                           position="relative"
-                          left="140px"
+                          left="200px"
                         />
                       </Box>
                     </>
