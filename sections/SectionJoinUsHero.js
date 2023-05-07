@@ -106,8 +106,7 @@ const SectionJoinUsHero = () => {
             >
               LXDAO wants to attract people who want to build conscientiously in
               any role. Whether you are a programmer, designer, artist,
-              operation, or product manager, we welcome you to join us. You can
-              try anything in the project.
+              operation, or product manager, we welcome you to join us.
             </Typography>
           </Box>
         </Box>

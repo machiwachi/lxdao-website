@@ -6,27 +6,21 @@ import Button from '@/components/Button';
 
 const steps = [
   {
-    label: 'Application',
+    label: 'Create profile',
     description:
-      'Submit your application by clicking the "Start your Application" button below. ⬇️',
+      'Join the LXDAO community by filling out your profile with your unique info and interests.',
     icon: '/icons/application-step.svg',
   },
   {
-    label: 'Vote',
+    label: 'Contribute',
     description:
-      'The Onboarding committee will review your application. And vote. It takes 2-5 days.',
-    icon: '/icons/vote-step.svg',
+      'Make a difference and earn USDT or LXP by contributing to projects.',
+    icon: '/icons/contribute-step.svg',
   },
   {
-    label: 'Onboarding',
+    label: 'Earn badges',
     description:
-      '1v1 onboarding session after your application is approved. We will help you get started in LXDAO.',
-    icon: '/icons/session-step.svg',
-  },
-  {
-    label: 'Buidl',
-    description:
-      "Join the community, find the projects you want to build. Let's buidl together!",
+      'Unlock rewards for your governance rights and reputation with our badge system.',
     icon: '/icons/success-step.svg',
   },
 ];
@@ -71,7 +65,6 @@ const SectionApplicationSteps = () => {
       >
         <Box display="flex" flexDirection="column" alignItems="center">
           <Typography
-            textTransform="uppercase"
             fontSize={{ sm: '48px', xs: '30px' }}
             fontWeight="600"
             color="#101828"
@@ -79,67 +72,45 @@ const SectionApplicationSteps = () => {
             textAlign="center"
             width={{ sm: 'auto', xs: '300px' }}
           >
-            How to become a builder？
+            How to contribute？
           </Typography>
           <Typography
-            variant="h6"
+            variant="body1"
+            fontWeight="400"
+            lineHeight="28px"
+            textAlign="left"
             color="#667085"
-            marginBottom={4}
-            textAlign="center"
-            width={{ md: '900px', sm: '600px', xs: '300px' }}
+            marginBottom={5}
           >
-            New Onboarding Process is under construction, application has been
-            suspended temporarily.
+            <b>Note:</b> We are refreshing the onboarding process, you may
+            contact <b>Marcus</b> by{' '}
+            <a href="mailto: zqsanjingshou@gmail.com">
+              zqsanjingshou@gmail.com
+            </a>{' '}
+            if you want to onboard ASAP.
           </Typography>
-          <Typography
-            variant="h6"
-            color="#667085"
-            marginBottom={10}
-            textAlign="center"
-            width={{ md: '900px', sm: '600px', xs: '300px' }}
-          >
-            More details:{' '}
-            <a
-              href="https://forum.lxdao.io/t/proposal-dismiss-onboarding-committee/490"
-              target="_blank"
-              rel="noreferrer"
-            >
-              https://forum.lxdao.io/t/proposal-dismiss-onboarding-committee/490
-            </a>
-          </Typography>
-          {/* <Typography
-            variant="h6"
-            color="#667085"
-            marginBottom={10}
-            textAlign="center"
-            width={{ md: '900px', sm: '600px', xs: '300px' }}
-          >
-            Please show your passion and commitment to the community. It&apos;s
-            good to have some contributions first (get some LXPoints) to apply
-            to join.
-          </Typography> */}
-          {/* <Box
+          <Box
             display="flex"
             flexDirection={{ lg: 'row', xs: 'column' }}
             alignItems="center"
-            gap={{ lg: '46px', sm: '80px', xs: '30px' }}
+            gap={{ lg: '38px', sm: '80px', xs: '30px' }}
           >
             {steps.map((step, index) => {
               return (
-                <Box key={index} position="relative" flex="1 1 25%">
+                <Box key={index} position="relative" flex="1 1 33%">
                   <Step index={index} stepData={step} />
                   {index !== steps.length - 1 ? (
                     <>
                       <Box
                         position="absolute"
                         top="55px"
-                        left="218px"
+                        left="288px"
                         bottom="40px"
                         alignItems="center"
                         display={{ lg: 'block', xs: 'none' }}
                       >
                         <Box
-                          width="140px"
+                          width="200px"
                           position="relative"
                           top="3px"
                           borderTop="1px dashed #101828"
@@ -150,7 +121,7 @@ const SectionApplicationSteps = () => {
                           borderRadius="100%"
                           backgroundColor="#000000"
                           position="relative"
-                          left="140px"
+                          left="200px"
                         />
                       </Box>
                     </>
@@ -162,15 +133,15 @@ const SectionApplicationSteps = () => {
           <Link
             sx={{ textDecoration: 'none' }}
             textTransform="uppercase"
-            href="https://tally.so/r/3Ek62r"
+            href="/onboarding/intro"
             target="_blank"
             marginTop={4}
             paddingY={4}
           >
             <Button variant="gradient" width="260px">
-              Start your Application
+              Start
             </Button>
-          </Link> */}
+          </Link>
         </Box>
       </Container>
     </Box>
