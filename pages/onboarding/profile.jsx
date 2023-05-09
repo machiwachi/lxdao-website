@@ -457,7 +457,7 @@ export default function Profile() {
       title="Update your buidler profile on LXDAO"
       desc="Update your buidler profile on LXDAO"
       back="/onboarding/follow"
-      next="/onboarding/mint"
+      next="done"
       disableNext={!record?.name}
     >
       <Box
