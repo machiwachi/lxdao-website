@@ -119,7 +119,7 @@ export default function Follow() {
     <OnBoardingLayout
       title="Follow LXDAO Community"
       desc="Follow our main social media and community platforms"
-      back="/onboarding/buddy"
+      back="/onboarding/intro"
       next="/onboarding/profile"
       disableNext={!selectAll}
     >

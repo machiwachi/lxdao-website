@@ -80,7 +80,7 @@ export default function OnBoardingBottom({
               : 'linear-gradient(90deg, #305FE8 0%, #3AD9E3 100%)',
           }}
         >
-          {next == 'done' ? 'Done' : 'I Got'}
+          {next == 'done' ? 'Done' : 'Next'}
         </Box>
       )}
     </Box>

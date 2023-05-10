@@ -1,19 +1,8 @@
 /* eslint-disable no-undef */
-import React, { useState, useEffect } from 'react';
-import {
-  Container,
-  Typography,
-  Card,
-  CardMedia,
-  CardContent,
-  Box,
-} from '@mui/material';
+import React from 'react';
+import { Typography, Card, CardContent, Box } from '@mui/material';
 
-import Layout from '@/components/Layout';
-import LXButton from '@/components/Button';
-import OnBoardingBottom from '@/components/OnBoardingBottom';
 import OnBoardingLayout from '@/components/OnBoardingLayout';
-import { maxWidth } from '@mui/system';
 
 export default function Intro() {
   const data = [
@@ -37,7 +26,7 @@ export default function Intro() {
     <OnBoardingLayout
       title="LXDAO Introduction"
       desc="LXDAO INTRODUCTION"
-      next="/onboarding/flow"
+      next="/onboarding/follow"
     >
       <Box
         sx={{
@@ -65,7 +54,6 @@ export default function Intro() {
           >
             <CardContent sx={{ paddingTop: '77px', paddingX: '19px' }}>
               <Box component={'img'} src={value.svg} height="92px" />
-
               <Typography
                 mt="77px"
                 sx={{
