@@ -7,7 +7,7 @@ const ActivityNotification = () => (
     sx={{
       textDecoration: 'none',
     }}
-    href="https://docs.lxdao.io/tutorials/markdown-features"
+    href="https://docs.lxdao.io/tutorials/lxdao-public-calendar"
     target={'_blank'}
     marginBottom={10}
   >
