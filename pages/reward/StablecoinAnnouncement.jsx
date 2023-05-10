@@ -30,12 +30,12 @@ import React, { useEffect, useState } from 'react';
 import API from '@/common/API';
 import { getPolygonScanDomain } from '@/utils/utility';
 
-import abi_lxp from '../abi-lxp.json';
-
 import LXButton from '@/components/Button';
 import Layout from '@/components/Layout';
 import useBuidler from '@/components/useBuidler';
 import showMessage from '@/components/showMessage';
+
+import SafeAppsSDK from '@safe-global/safe-apps-sdk';
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -47,7 +47,7 @@ function TablePaginationActions(props) {
   };
 
   const handlePageInputConfirm = (event) => {
-    if (event.key == 'Enter') {
+    if (event.key === 'Enter') {
       let max = Math.ceil(count / rowsPerPage);
       if (parseInt(event.target.value) > max) {
         onPageChange(event, max - 1);
@@ -55,7 +55,6 @@ function TablePaginationActions(props) {
       }
       setPagei(max - 1);
       onPageChange(event, pagei);
-      return;
     }
   };
 
@@ -152,12 +151,9 @@ function UnReleasedTable({ isAccountingTeam, isConnected }) {
   const [perPage, setPerPage] = useState(25);
   const [pagination, setPagination] = useState({});
 
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * perPage - rows.length) : 0;
-
   const hanldeOperationBtn = async (id, operation) => {
     try {
-      const res = await API.put(`/lxpoints/${id}`, { operation: operation });
+      const res = await API.put(`/stablecoin/${id}`, { operation: operation });
 
       const result = res.data;
       if (result.status !== 'SUCCESS') {
@@ -165,10 +161,10 @@ function UnReleasedTable({ isAccountingTeam, isConnected }) {
         // error todo Muxin add common alert, wang teng design
         return;
       }
-      if (operation == 'REJECT') {
+      if (operation === 'REJECT') {
         router.reload(window.location.pathname);
       }
-      getLXPApplications();
+      await getStablecoinApplications();
     } catch (err) {
       showMessage({
         type: 'error',
@@ -178,17 +174,8 @@ function UnReleasedTable({ isAccountingTeam, isConnected }) {
     }
   };
 
-  const mintAll = async (addresses, amounts) => {
-    const lxpAddress = process.env.NEXT_PUBLIC_LXP_CONTRACT_ADDRESS;
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
-    const lxpContract = new ethers.Contract(lxpAddress, abi_lxp, signer);
-    const tx = await lxpContract.batchMint(addresses, amounts);
-    return tx.hash;
-  };
-
-  const getAllTOBERELEASEDLXP = async () => {
-    let query = `/lxpoints/list?`;
+  const getAllToBeReleasedStablecoin = async () => {
+    let query = `/stablecoin/list?`;
     let params = [];
     ['TOBERELEASED'].map((value, index) => {
       params.push('status=' + value);
@@ -209,13 +196,16 @@ function UnReleasedTable({ isAccountingTeam, isConnected }) {
     return [addresses, amounts];
   };
 
-  const hanldeReleaseBtn = async () => {
+  const handleReleaseBtn = async () => {
     // mint all and store the transaction hash
     setDisable(true);
     try {
       // read all record
-      const [addresses, amounts] = await getAllTOBERELEASEDLXP();
-      if (addresses.length == 0) {
+      const [addresses, amounts] = await getAllToBeReleasedStablecoin();
+
+      console.log('handleReleaseBtn:', addresses);
+
+      if (addresses.length === 0) {
         throw { message: 'No to be released lxp' };
       }
 
@@ -223,16 +213,31 @@ function UnReleasedTable({ isAccountingTeam, isConnected }) {
         ethers.utils.parseUnits(value.toString(), 'ether')
       );
 
-      const hash = await mintAll(addresses, formattedAmounts);
-      // post to backend
-      const res = await API.post(`/lxpoints/release`, { hash: hash });
-      const result = res.data;
-      if (result.status !== 'SUCCESS') {
-        alert(result.message);
-        // error todo Muxin add common alert, wang teng design
-        return;
-      }
-      router.reload(window.location.pathname);
+      // send gnosis safe tx
+      // const hash = await mintAll(addresses, formattedAmounts);
+
+      const appsSdk = new SafeAppsSDK({
+        allowedDomains: [/gnosis-safe.io$/, /app.safe.global$/],
+        debug: true,
+      });
+      console.log('safe:', appsSdk);
+
+      const balance = await appsSdk.eth.getBalance([
+        '0xB45e9F74D0a35fE1aa0B78feA03877EF96ae8dd2',
+      ]);
+      console.log('balance:', balance);
+
+      // const safe = await appsSdk.safe.getInfo();
+
+      // // post to backend
+      // const res = await API.post(`/stablecoin/release`, { hash: hash });
+      // const result = res.data;
+      // if (result.status !== 'SUCCESS') {
+      //   alert(result.message);
+      //   // error todo Muxin add common alert, wang teng design
+      //   return;
+      // }
+      // router.reload(window.location.pathname);
     } catch (err) {
       setDisable(false);
       showMessage({
@@ -252,8 +257,8 @@ function UnReleasedTable({ isAccountingTeam, isConnected }) {
     setPage(0);
   };
 
-  const getLXPApplications = async () => {
-    let query = `/lxpoints/list?`;
+  const getStablecoinApplications = async () => {
+    let query = `/stablecoin/list?`;
     let params = [];
     ['NEEDTOREVIEW', 'TOBERELEASED'].map((value, index) => {
       params.push('status=' + value);
@@ -283,7 +288,7 @@ function UnReleasedTable({ isAccountingTeam, isConnected }) {
 
   useEffect(() => {
     (async () => {
-      await getLXPApplications();
+      await getStablecoinApplications();
     })();
   }, [page, perPage]);
 
@@ -507,7 +512,7 @@ function UnReleasedTable({ isAccountingTeam, isConnected }) {
                     <LXButton
                       width="200px"
                       variant="gradient"
-                      onClick={hanldeReleaseBtn}
+                      onClick={handleReleaseBtn}
                       disabled={disable}
                     >
                       Release
@@ -531,9 +536,6 @@ function ReleasedTable({ isAccountingTeam }) {
   const [perPage, setPerPage] = useState(25);
   const [pagination, setPagination] = useState({});
 
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * perPage - rows.length) : 0;
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -543,7 +545,7 @@ function ReleasedTable({ isAccountingTeam }) {
     setPage(0);
   };
 
-  const getLXPApplications = async () => {
+  const getStablecoinApplications = async () => {
     let query = `/lxpoints/list?`;
     let params = [];
     ['RELEASED', 'REJECTED'].map((value, index) => {
@@ -574,7 +576,7 @@ function ReleasedTable({ isAccountingTeam }) {
 
   useEffect(() => {
     (async () => {
-      await getLXPApplications();
+      await getStablecoinApplications();
     })();
   }, [page, perPage]);
 
@@ -790,12 +792,12 @@ function ReleasedTable({ isAccountingTeam }) {
   );
 }
 
-export default function LXPAnnouncement({ days }) {
+export default function StablecoinAnnouncement({ days }) {
   const { address, isConnected } = useAccount();
   const [_loading, currentViewer] = useBuidler(address);
   const isAccountingTeam = currentViewer?.role.includes('Accounting Team');
   return (
-    <Layout title={`LXP Announcement | LXDAO`}>
+    <Layout title={`Stablecoin Announcement | LXDAO`}>
       <Container
         sx={{
           mt: 12,
@@ -820,7 +822,7 @@ export default function LXPAnnouncement({ days }) {
               lineHeight="70px"
               color="#101828"
             >
-              LXP Announcement
+              Stablecoin Announcement
             </Typography>
             <Typography
               variant="subtitle1"
@@ -829,28 +831,13 @@ export default function LXPAnnouncement({ days }) {
               color="#667085"
               marginTop={4}
             >
-              To ensure transparency, LXP submitted by LXDAO contributors must
-              be publicly announced by the community and approved by the LXDAO
-              accounting team. For detailed rules, please refer to this link:{' '}
+              Ready to submit your Stablecoin application? Click the link:{' '}
               <Link
-                href="https://www.notion.so/lxdao/LXP-Rules-80afdaa00f754fb6a222313d5e322917"
+                href="/reward/StablecoinApplication"
                 target="_blank"
                 color={'#667085'}
               >
-                LXP rule
-              </Link>{' '}
-              .
-            </Typography>
-            <Typography
-              variant="subtitle1"
-              fontWeight={400}
-              lineHeight="30px"
-              color="#667085"
-              marginTop={1}
-            >
-              Ready to submit your LXP application? Click the link:{' '}
-              <Link href="/LXPApplication" target="_blank" color={'#667085'}>
-                LXP Application
+                Apply
               </Link>{' '}
               .
             </Typography>
