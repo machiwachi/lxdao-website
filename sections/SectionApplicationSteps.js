@@ -75,19 +75,20 @@ const SectionApplicationSteps = () => {
             How to contribute？
           </Typography>
           <Typography
-            variant="body1"
+            variant="subtitle1"
             fontWeight="400"
             lineHeight="28px"
-            textAlign="left"
-            color="#667085"
-            marginBottom={5}
+            textAlign="center"
+            color="red"
+            marginBottom={8}
           >
-            <b>Note:</b> We are refreshing the onboarding process, you may
+            <b>!!IMPORTANT:</b> We are refreshing the onboarding process, before
+            proceeding with the onboarding process, it's crucial that you
             contact <b>Marcus</b> by{' '}
             <a href="mailto: zqsanjingshou@gmail.com">
               zqsanjingshou@gmail.com
             </a>{' '}
-            if you want to onboard ASAP.
+            first to add your address to the website.
           </Typography>
           <Box
             display="flex"
