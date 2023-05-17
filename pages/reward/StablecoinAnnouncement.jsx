@@ -13,6 +13,7 @@ import {
   Link,
   Tooltip,
   IconButton,
+  Button,
 } from '@mui/material';
 import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
@@ -226,8 +227,6 @@ function UnReleasedTable({ isAccountingTeam, isConnected }) {
         '0xB45e9F74D0a35fE1aa0B78feA03877EF96ae8dd2',
       ]);
       console.log('balance:', balance);
-
-      // const safe = await appsSdk.safe.getInfo();
 
       // // post to backend
       // const res = await API.post(`/stablecoin/release`, { hash: hash });
@@ -529,12 +528,15 @@ function UnReleasedTable({ isAccountingTeam, isConnected }) {
 }
 
 function ReleasedTable({ isAccountingTeam }) {
+  const router = useRouter();
   const [hideHistory, setHideHistory] = useState(true);
   const [rows, setRows] = useState([]);
   const [copied, setCopied] = useState(false);
   const [page, setPage] = useState(0);
   const [perPage, setPerPage] = useState(25);
   const [pagination, setPagination] = useState({});
+  const [importFile, setImportFile] = useState(null);
+  const [disable, setDisable] = useState(false);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -546,9 +548,9 @@ function ReleasedTable({ isAccountingTeam }) {
   };
 
   const getStablecoinApplications = async () => {
-    let query = `/lxpoints/list?`;
+    let query = `/stablecoin/list?`;
     let params = [];
-    ['RELEASED', 'REJECTED'].map((value, index) => {
+    ['RELEASED', 'REJECTED'].map((value) => {
       params.push('status=' + value);
     });
     params.push('page=' + (page + 1));
@@ -566,6 +568,41 @@ function ReleasedTable({ isAccountingTeam }) {
       setRows(result.data);
       setPagination(result.pagination);
     } catch (err) {
+      showMessage({
+        type: 'error',
+        title: err.error_code,
+        body: err.message,
+      });
+    }
+  };
+
+  const handleUploadToClient = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      const i = event.target.files[0];
+      setImportFile(i);
+    }
+  };
+
+  const handleImportBtn = async () => {
+    setDisable(true);
+    try {
+      const body = new FormData();
+      body.append('file', importFile);
+
+      const res = await API.post('/stablecoin/importHistory', body, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      const result = res.data;
+      if (result.status !== 'SUCCESS') {
+        alert(result.message);
+        return;
+      }
+      router.reload(window.location.pathname);
+    } catch (err) {
+      setDisable(false);
       showMessage({
         type: 'error',
         title: err.error_code,
@@ -784,6 +821,34 @@ function ReleasedTable({ isAccountingTeam }) {
                   />
                 </TableRow>
               ) : null}
+              {
+                <TableRow sx={{ justifyContent: 'center' }}>
+                  <TableCell colSpan={8}>
+                    <Box display="flex" justifyContent="center">
+                      <Button variant="contained" component="label">
+                        Select File
+                        <input
+                          hidden
+                          accept=".xlsx"
+                          multiple
+                          type="file"
+                          onChange={handleUploadToClient}
+                        />
+                      </Button>
+
+                      <LXButton
+                        style={{ marginLeft: '2rem' }}
+                        width="120px"
+                        variant="gradient"
+                        onClick={handleImportBtn}
+                        disabled={disable}
+                      >
+                        Import
+                      </LXButton>
+                    </Box>
+                  </TableCell>
+                </TableRow>
+              }
             </TableFooter>
           </Table>
         )}
