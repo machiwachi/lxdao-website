@@ -62,11 +62,11 @@ function totalLXPoints(record) {
   if (!record.lxPoints || !record.lxPoints.length) {
     return 0;
   }
-  var lxPointsGroup = groupBy(record.lxPoints, 'unit');
+  const lxPointsGroup = groupBy(record.lxPoints, 'unit');
   return Object.keys(lxPointsGroup)
     .map((key) => {
       const total = lxPointsGroup[key].reduce((total, point) => {
-        if (point.status != 'RELEASED') {
+        if (point.status !== 'RELEASED') {
           return total;
         }
         if (point.operator === '+') {
@@ -78,6 +78,30 @@ function totalLXPoints(record) {
         return total;
       }, 0);
       return `${total} LXP`;
+    })
+    .join(' + ');
+}
+
+function totalStableCoins(record) {
+  if (!record.stableCoins || !record.stableCoins.length) {
+    return 0;
+  }
+  const group = groupBy(record.stableCoins, 'unit');
+  return Object.keys(group)
+    .map((key) => {
+      const total = group[key].reduce((total, point) => {
+        if (point.status !== 'RELEASED') {
+          return total;
+        }
+        if (point.operator === '+') {
+          return total + point.value;
+        }
+        if (point.operator === '-') {
+          return total - point.value;
+        }
+        return total;
+      }, 0);
+      return `${total} U`;
     })
     .join(' + ');
 }
@@ -219,6 +243,143 @@ function LXPointsTable({ points }) {
   );
 }
 
+function StableCoinsTable({ points }) {
+  return (
+    <TableContainer
+      component={Paper}
+      sx={{
+        '&.MuiPaper-root': {
+          overflowX: 'unset',
+        },
+        boxShadow: 'none',
+      }}
+    >
+      <Table aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell sx={{ paddingLeft: 0 }} width="15%" align="left">
+              <Typography color="#666F85" variant="body2" fontWeight="400">
+                Remuneration
+              </Typography>
+            </TableCell>
+            <TableCell width="20%" align="left">
+              <Typography color="#666F85" variant="body2" fontWeight="400">
+                Reason
+              </Typography>
+            </TableCell>
+            <TableCell width="15%" align="left">
+              <Typography color="#666F85" variant="body2" fontWeight="400">
+                Source
+              </Typography>
+            </TableCell>
+            <TableCell width="15%" align="left">
+              <Typography
+                sx={{
+                  width: '89px',
+                }}
+                color="#666F85"
+                variant="body2"
+                fontWeight="400"
+              >
+                Release Time
+              </Typography>
+            </TableCell>
+            <TableCell sx={{ paddingRight: 0 }} width="15%" align="right">
+              <Typography
+                sx={{
+                  width: '110px',
+                }}
+                color="#666F85"
+                variant="body2"
+                fontWeight="400"
+              >
+                Transaction Link
+              </Typography>
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {points.map((point) => {
+            let pointStatus = point.status;
+            if (point.status === 'RELEASED') {
+              pointStatus = point.updatedAt.split('T')[0];
+            } else if (point.status !== 'REJECTED') {
+              pointStatus = 'PENDING';
+            }
+            return (
+              <TableRow
+                key={point.id}
+                sx={{
+                  '&:last-child td, &:last-child th': { border: 0 },
+                  borderBottom: '0.5px solid #E5E5E5',
+                }}
+              >
+                <TableCell
+                  sx={{ color: '#101828', paddingLeft: 0 }}
+                  component="th"
+                  scope="row"
+                >
+                  <Typography variant="body1" fontWeight="600">
+                    {`${point.value} U`}
+                  </Typography>
+                </TableCell>
+                <TableCell sx={{ color: '#101828' }} align="left">
+                  <Tooltip title={point.reason}>
+                    <Typography
+                      sx={{
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                        maxWidth: { xs: '150px', sm: '300px' },
+                      }}
+                      variant="body2"
+                      fontWeight="400"
+                    >
+                      {point.reason}
+                    </Typography>
+                  </Tooltip>
+                </TableCell>
+                <TableCell sx={{ color: '#101828' }} align="left">
+                  {point.source}
+                </TableCell>
+                <TableCell sx={{ color: '#101828' }} align="left">
+                  <Typography
+                    sx={{
+                      width: '89px',
+                    }}
+                    variant="body2"
+                    fontWeight="400"
+                  >
+                    {pointStatus}
+                  </Typography>
+                </TableCell>
+                <TableCell sx={{ paddingRight: 0 }} align="right">
+                  <Link
+                    target="_blank"
+                    sx={{ textDecoration: 'none' }}
+                    href={`https://${getPolygonScanDomain()}/tx/${point.hash}`}
+                  >
+                    <Typography
+                      sx={{
+                        width: '110px',
+                      }}
+                      color="#36AFF9"
+                      variant="body1"
+                      fontWeight="400"
+                    >
+                      {point.status === 'RELEASED' && 'View'}
+                    </Typography>
+                  </Link>
+                </TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+}
+
 function ipfsToBytes(ipfsURI) {
   const ipfsHash = ipfsURI.replace('ipfs://', '');
 
@@ -253,6 +414,7 @@ function BuidlerDetails(props) {
   // ipfsURL on chain
   const [ipfsURLOnChain, setIpfsURLOnChain] = useState(null);
   const [accordionOpen, setAccordionOpen] = useState(false);
+  const [stableCoinAccordionOpen, setStableCoinAccordionOpen] = useState(false);
 
   useEffect(async () => {
     if (!signer) {
@@ -369,6 +531,10 @@ function BuidlerDetails(props) {
 
   const handleAccordionOnChange = (e, value) => {
     setAccordionOpen(value);
+  };
+
+  const handleStableCoinAccordionOnChange = (e, value) => {
+    setStableCoinAccordionOpen(value);
   };
 
   return (
@@ -966,9 +1132,9 @@ function BuidlerDetails(props) {
             </Accordion>
           </Box>
 
-          <Box display="flex" flexDirection="column">
+          <Box display="flex" flexDirection="column" marginTop={3}>
             <Accordion
-              onChange={handleAccordionOnChange}
+              onChange={handleStableCoinAccordionOnChange}
               sx={{
                 '&.Mui-expanded': {
                   minHeight: { md: 128, sm: 200 },
@@ -990,7 +1156,7 @@ function BuidlerDetails(props) {
                     borderRadius: '6px',
                     '.MuiAccordionSummary-expandIconWrapper': {
                       marginTop: { sm: 0, xs: '84px' },
-                      display: record?.lxPoints.length ? 'block' : 'none',
+                      display: record?.stableCoins.length ? 'block' : 'none',
                     },
                   },
                 }}
@@ -1028,7 +1194,7 @@ function BuidlerDetails(props) {
                       variant="h5"
                       color="#36AFF9"
                     >
-                      {totalLXPoints(record)}
+                      {totalStableCoins(record)}
                     </Typography>
                   </Box>
                   <Box
@@ -1041,8 +1207,8 @@ function BuidlerDetails(props) {
                       variant="body1"
                       color="#0D1320"
                     >
-                      {record?.lxPoints.length > 0
-                        ? accordionOpen
+                      {record?.stableCoins.length > 0
+                        ? stableCoinAccordionOpen
                           ? 'Put Away'
                           : 'Record List'
                         : null}
@@ -1057,7 +1223,7 @@ function BuidlerDetails(props) {
                     padding: { sm: '8px 32px 32px 32px', xs: '8px' },
                     overflowY: 'auto',
                     overflowX:
-                      record?.lxPoints?.length === 0 ? 'hidden' : 'auto',
+                      record?.stableCoins?.length === 0 ? 'hidden' : 'auto',
                     '&::-webkit-scrollbar': {
                       width: '10px',
                       height: '10px',
@@ -1074,7 +1240,10 @@ function BuidlerDetails(props) {
                   },
                 }}
               >
-                <LXPointsTable maxHeight="235px" points={record.lxPoints} />
+                <StableCoinsTable
+                  maxHeight="235px"
+                  points={record.stableCoins}
+                />
               </AccordionDetails>
             </Accordion>
           </Box>
