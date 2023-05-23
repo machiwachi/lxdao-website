@@ -19,6 +19,7 @@ function OneTask({ iconPath, desc, buttonText, handleClick }) {
     <Box
       sx={{
         display: 'flex',
+        flexDirection: { xs: 'column', md: 'row' },
         border: '0.5px solid #D0D5DD',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -26,7 +27,14 @@ function OneTask({ iconPath, desc, buttonText, handleClick }) {
         p: 3,
       }}
     >
-      <Box sx={{ display: 'flex', gap: 2.5, alignItems: 'center' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          gap: 2.5,
+          alignItems: 'center',
+          mb: { xs: 1, md: 0 },
+        }}
+      >
         <Box component="img" src={iconPath} width={'48px'} />
         <Typography variant="subtitle2" color="#101828" fontWeight={500}>
           {desc}
@@ -58,7 +66,7 @@ function MultiTasks() {
         // justifyContent: 'space-between',
         alignItems: 'start',
         borderRadius: '6px',
-        gap: 5,
+        gap: { xs: 1, md: 5 },
         p: 3,
         width: '100%',
       }}
@@ -70,7 +78,11 @@ function MultiTasks() {
             desc: (
               <Typography variant="body1" color="#101828" fontWeight={500}>
                 Follow the official Twitter:{' '}
-                <Link underline="none" color="#36AFF9">
+                <Link
+                  underline="none"
+                  color="#36AFF9"
+                  href="https://twitter.com/LXDAO_Official"
+                >
                   https://twitter.com/LXDAO_Official
                 </Link>
               </Typography>
@@ -81,7 +93,11 @@ function MultiTasks() {
             desc: (
               <Typography variant="body1" color="#101828" fontWeight={500}>
                 Follow the LXDAO Twitter List{' '}
-                <Link underline="none" color="#36AFF9">
+                <Link
+                  underline="none"
+                  color="#36AFF9"
+                  href="https://twitter.com/i/lists/1576113456792551424"
+                >
                   https://twitter.com/i/lists/1576113456792551424
                 </Link>
               </Typography>
@@ -92,7 +108,11 @@ function MultiTasks() {
             desc: (
               <Typography variant="body1" color="#101828" fontWeight={500}>
                 Discord{' '}
-                <Link underline="none" color="#36AFF9">
+                <Link
+                  underline="none"
+                  color="#36AFF9"
+                  href="http://discord.lxdao.io/"
+                >
                   http://discord.lxdao.io/
                 </Link>
               </Typography>
@@ -103,7 +123,11 @@ function MultiTasks() {
             desc: (
               <Typography variant="body1" color="#101828" fontWeight={500}>
                 Notion{' '}
-                <Link underline="none" color="#36AFF9">
+                <Link
+                  underline="none"
+                  color="#36AFF9"
+                  href="https://lxdao.notion.site/"
+                >
                   https://lxdao.notion.site/
                 </Link>
               </Typography>
@@ -116,10 +140,14 @@ function MultiTasks() {
                 variant="body1"
                 color="#101828"
                 fontWeight={500}
-                sx={{ wordBreak: 'break-all' }}
+                // sx={{ wordBreak: 'break-all' }}
               >
                 GitHub{' '}
-                <Link underline="none" color="#36AFF9">
+                <Link
+                  underline="none"
+                  color="#36AFF9"
+                  href="https://github.com/lxdao-official"
+                >
                   https://github.com/lxdao-official
                 </Link>{' '}
                 (for developers)
@@ -142,13 +170,18 @@ function MultiTasks() {
             justifyContent="start"
             alignItems="center"
             width="100%"
+            sx={{ overflowWrap: 'anywhere' }}
           >
             <Box component="img" src={val.icon} width={'48px'} />
             {val.desc}
           </Box>
         ))}
       </Stack>
-      <Box display="flex" justifyContent="end" sx={{ width: '100%' }}>
+      <Box
+        display="flex"
+        justifyContent={{ xs: 'center', md: 'end' }}
+        sx={{ width: '100%' }}
+      >
         <Button
           variant="outlined"
           size="large"
@@ -156,7 +189,6 @@ function MultiTasks() {
             border: '1px solid #D0D5DD',
             textTransform: 'capitalize',
           }}
-          // onClick={handleClick}
         >
           <Typography variant="body1" color="#101828">
             Done
@@ -200,17 +232,20 @@ export default function FirstBadge() {
             <Link underline="hover" color="inherit" href="/">
               <Typography variant="body1">Member profile</Typography>
             </Link>
-            <Link
-              underline="none"
-              color="#437EF7"
-              href="/material-ui/react-breadcrumbs/"
-              aria-current="page"
-            >
+            <Link underline="none" color="#437EF7" aria-current="page">
               <Typography variant="body1">Earn your first badge</Typography>
             </Link>
           </Breadcrumbs>
         </Box>
-        <Stack sx={{ display: 'flex', alignItems: 'center', gap: 3, py: 6 }}>
+        <Stack
+          sx={{
+            display: 'flex',
+            textAlign: 'center',
+            alignItems: { xs: 'center', md: 'left' },
+            gap: 3,
+            py: 6,
+          }}
+        >
           <Box
             border="0.5px solid #D0D5DD"
             borderRadius="6px"
