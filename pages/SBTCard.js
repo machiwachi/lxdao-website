@@ -2,6 +2,8 @@ import CustomButton from '@/components/Button';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext'; /* eslint-disable no-undef */
 import WorkingGroupCard from '@/components/WorkingGroupCard';
 import React from 'react';
+import showMessage from '@/components/showMessage';
+import { contractInfo } from '@/components/ContractsOperation';
 import ProjectCard from '@/components/ProjectCard';
 import {
   Box,
@@ -14,13 +16,30 @@ import {
 } from '@mui/material';
 import workingGroupsData from '@/common/content/workingGroups';
 import API from '@/common/API';
+import * as bs58 from 'bs58';
+import useBuidler from '@/components/useBuidler';
 import LXButton from '@/components/Button';
+import { useContract, useAccount, useSigner } from 'wagmi';
 // import { Button as LXButton } from '@/components/Button';
 
 import Layout from '@/components/Layout';
 
+function ipfsToBytes(ipfsURI) {
+  const ipfsHash = ipfsURI.replace('ipfs://', '');
+
+  return bs58.decode(ipfsHash).slice(2);
+}
+
 export default function FirstBadge() {
+  const { address } = useAccount();
+  const { data: signer } = useSigner();
+  const [minting, setMinting] = React.useState(false);
   const [projects, setProjects] = React.useState([]);
+  const [, record, , refresh] = useBuidler(address);
+  const contract = useContract({
+    ...contractInfo(),
+    signerOrProvider: signer,
+  });
   React.useEffect(() => {
     API.get(`/project?page=1&per_page=30`)
       .then((res) => {
@@ -34,6 +53,31 @@ export default function FirstBadge() {
         console.error(err);
       });
   }, []);
+  const mint = async () => {
+    if (minting) return;
+    setMinting(true);
+    try {
+      // get signature
+      const signatureRes = await API.post(`/buidler/${address}/signature`);
+      const signature = signatureRes.data.data.signature;
+
+      const ipfsURI = record.ipfsURI;
+      const bytes = ipfsToBytes(ipfsURI);
+      const tx = await contract.mint(bytes, signature);
+      const response = await tx.wait();
+      if (response) {
+        await API.post('/buidler/activate');
+        refresh();
+      }
+    } catch (err) {
+      showMessage({
+        type: 'error',
+        title: 'Failed to mint',
+        body: err.message,
+      });
+    }
+    setMinting(false);
+  };
   return (
     <Layout>
       <Container
@@ -115,8 +159,16 @@ export default function FirstBadge() {
           <Typography fontSize="20px" color="#666F85">
             Governance rights entitled
           </Typography>
-          <LXButton width="227px" variant="gradient">
-            Mint
+          <LXButton
+            variant="gradient"
+            width="200px"
+            // disabled={!(record?.status == 'READYTOMINT')}
+            disabled={false}
+            onClick={() => {
+              mint();
+            }}
+          >
+            {minting ? 'Minting...' : 'Mint'}
           </LXButton>
           <Typography fontSize="16px" color="#666F85">
             Contribute in projects or working groups to earn up to 600 USDC
@@ -164,7 +216,6 @@ export default function FirstBadge() {
                       xs: 'auto',
                     }}
                     marginRight={{
-
                       sm: 'auto',
                       xs: 'auto',
                     }}
