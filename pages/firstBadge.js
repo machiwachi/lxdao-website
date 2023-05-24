@@ -10,11 +10,11 @@ import {
   Container,
 } from '@mui/material';
 // import { Button as LXButton } from '@/components/Button';
-import LXButton from '@/components/Button';
+import { CardShow } from '@/components/CardShow';
 
 import Layout from '@/components/Layout';
 
-function OneTask({ iconPath, desc, buttonText, handleClick }) {
+function OneTask({ iconPath, desc }) {
   return (
     <Box
       sx={{
@@ -40,19 +40,6 @@ function OneTask({ iconPath, desc, buttonText, handleClick }) {
           {desc}
         </Typography>
       </Box>
-      <Button
-        variant="outlined"
-        size="large"
-        sx={{
-          border: '1px solid #D0D5DD',
-          textTransform: 'capitalize',
-        }}
-        onClick={handleClick}
-      >
-        <Typography variant="body1" color="#101828">
-          {buttonText}
-        </Typography>
-      </Button>
     </Box>
   );
 }
@@ -177,24 +164,6 @@ function MultiTasks() {
           </Box>
         ))}
       </Stack>
-      <Box
-        display="flex"
-        justifyContent={{ xs: 'center', md: 'end' }}
-        sx={{ width: '100%' }}
-      >
-        <Button
-          variant="outlined"
-          size="large"
-          sx={{
-            border: '1px solid #D0D5DD',
-            textTransform: 'capitalize',
-          }}
-        >
-          <Typography variant="body1" color="#101828">
-            Done
-          </Typography>
-        </Button>
-      </Box>
     </Stack>
   );
 }
@@ -216,12 +185,10 @@ export default function FirstBadge() {
     <Layout>
       <Container
         sx={{
-          // mt: 12,
           maxWidth: 1216,
           display: 'flex',
           flexDirection: 'column',
           mb: '55px',
-          // alignItems: 'center',
         }}
       >
         <Box>
@@ -237,70 +204,7 @@ export default function FirstBadge() {
             </Link>
           </Breadcrumbs>
         </Box>
-        <Stack
-          sx={{
-            display: 'flex',
-            textAlign: 'center',
-            alignItems: { xs: 'center', md: 'left' },
-            gap: 3,
-            py: 6,
-          }}
-        >
-          <Box
-            border="0.5px solid #D0D5DD"
-            borderRadius="6px"
-            position="relative"
-          >
-            <Box
-              sx={{
-                position: 'absolute',
-                width: '145.8px',
-                borderBottom: '28.28px solid #d0d5dd',
-                borderLeft: '28.28px solid transparent',
-                borderRight: '28.28px solid transparent',
-                textAlign: 'center',
-                transform: 'rotate(-45deg)',
-                top: 27.5,
-                left: -31.5,
-              }}
-            ></Box>
-            <Box
-              sx={{
-                position: 'absolute',
-                width: '145.8px',
-                height: '28.28px',
-                textAlign: 'center',
-                transform: 'rotate(-45deg)',
-                top: 27.5,
-                left: -31.5,
-              }}
-            >
-              <Typography color="#fff" variant="body2" lineHeight="28.28px">
-                To be earned
-              </Typography>
-            </Box>
-
-            <Box
-              component="img"
-              src="/images/badge/first-badge.png"
-              width="368px"
-              height="180px"
-            ></Box>
-          </Box>
-
-          <Typography
-            fontFamily="Inter"
-            fontSize="48px"
-            lineHeight="44px"
-            fontWeight="800"
-          >
-            Earn your first badge
-          </Typography>
-          <LXButton variant="gradient">Mint membership badge </LXButton>
-          <Typography color="#666F85">
-            Complete the 3 task below to earn the membership badge
-          </Typography>
-        </Stack>
+        <CardShow title="first badge" path="/images/badge/first-badge.png" buttonText="" tip={<>Please complete the following 3 tasks and wait for the governance working group to verify (contact <Link underline='none' color="#36AFF9">Marcus</Link> to check the status)</>}/>
         <Stack sx={{ gap: 3 }}>
           {[
             {
@@ -310,10 +214,6 @@ export default function FirstBadge() {
                 <OneTask
                   iconPath="/images/badge/user.svg"
                   desc="Go to the forum to introduce yourself and let everyone know you"
-                  buttonText="go to the forum"
-                  handleClick={() => {
-                    window.location.href = 'https://forum.lxdao.io/';
-                  }}
                 />
               ),
             },
@@ -329,10 +229,6 @@ export default function FirstBadge() {
                 <OneTask
                   iconPath="/images/badge/clock.svg"
                   desc="Every Saturday at 10:00 am UTC+8"
-                  buttonText="Done"
-                  handleClick={() => {
-                    // window.location.href = 'https://forum.lxdao.io/';
-                  }}
                 />
               ),
             },
