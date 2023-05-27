@@ -452,7 +452,7 @@ export default function Profile() {
       back="/onboarding/intro"
       next={`/buidlers/xxxxx?onboarding=true`}
       disableNext={!record?.name}
-      step={2}
+      currentStep={2}
       hideButton={true}
     >
       <ProfileForm

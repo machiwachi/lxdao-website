@@ -1369,7 +1369,7 @@ export default function Buidler() {
         layoutTitle={`${record && record.name} Buidler Profile | LXDAO`}
         title="Congrats, profile complete!"
         next="done"
-        step={3}
+        currentStep={3}
         hideButton={true}
       >
         <BuidlerLayout />

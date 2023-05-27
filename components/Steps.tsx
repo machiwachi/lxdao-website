@@ -28,17 +28,15 @@ const StepItem = styled.div<StepItemProps>`
   height: 38px;
   line-height: 38px;
   padding-left: 16px;
-  cursor: pointer;
   font-size: 18px;
   font-weight: 700;
 `;
 
 const Step: React.FC<StepProps> = (props) => {
-  const { label, active, key, onClick } = props;
+  const { label, active, key } = props;
   return (
     <StepItem
       active={active}
-      onClick={onClick}
       key={key}
     >
       {label}

@@ -31,16 +31,31 @@ export default function Intro() {
     {
       svg: '/icons/bad.svg',
       title: 'Things We Depreciate',
-      content: `1. Sensitive topics such as politics, religion, and policies, as well as malicious content such as pornography, violence, gambling, scams, viruses, and pyramid schemes. 
-      2. Malicious behavior such as abusive language, harassment, spamming, and phishing is forbidden. 
-      3. Uncivilized speech is not allowed, and differing opinions should be discussed rationally without attacking or threatening others. 
-      4. No invitations or advertising allowed without permission from the community administrators. 
-      
-      Violations of these rules will result in a warning for the first offense and removal from the community for the second offense.`,
+      content: (
+        <div>
+          1. Sensitive topics such as politics, religion, and policies, as well
+          as malicious content such as pornography, violence, gambling, scams,
+          viruses, and pyramid schemes.
+          <br /> 2. Malicious behavior such as abusive language, harassment,
+          spamming, and phishing is forbidden.
+          <br /> 3. Uncivilized speech is not allowed, and differing opinions
+          should be discussed rationally without attacking or threatening
+          others.
+          <br /> 4. No invitations or advertising allowed without permission
+          from the community administrators.
+          <br />
+          <br /> Violations of these rules will result in a warning for the
+          first offense and removal from the community for the second offense.
+        </div>
+      ),
     },
   ];
   return (
-    <OnBoardingLayout title="Learning about LXDAO" next="/onboarding/follow">
+    <OnBoardingLayout
+      title="Learning about LXDAO"
+      next="/onboarding/profile"
+      currentStep={1}
+    >
       <Box
         sx={{
           display: 'flex',

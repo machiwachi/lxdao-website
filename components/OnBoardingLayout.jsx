@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { Typography } from '@mui/material';
 import Container from '@/components/Container';
 import Layout from '@/components/Layout';
@@ -11,7 +10,7 @@ export default function OnBoardingLayout({
   back,
   next,
   disableNext,
-  step,
+  currentStep,
   hideButton,
   layoutTitle,
 }) {
@@ -20,24 +19,17 @@ export default function OnBoardingLayout({
     { label: 'Step2', step: 2 },
     { label: 'Step3', step: 3 },
   ];
-  const [activeStep, setActiveStep] = useState(1);
-  const handleClickStep = (step) => {
-    setActiveStep(step);
-  };
 
   return (
     <Layout title={layoutTitle}>
-      <Container paddingY={{ md: 12, xs: 8 }} maxWidth={1216}>
+      <Container paddingY={8} maxWidth={1216}>
         <Steps>
           {stepsData.map((step) => {
             return (
               <Step
                 key={step.step}
                 label={step.label}
-                active={activeStep === step.step}
-                onClick={() => {
-                  handleClickStep(step.step);
-                }}
+                active={currentStep === step.step}
               />
             );
           })}
@@ -54,7 +46,14 @@ export default function OnBoardingLayout({
           {title}
         </Typography>
         {children}
-        <OnBoardingBottom back={back} next={next} disableNext={disableNext} />
+        {!hideButton && (
+          <OnBoardingBottom
+            back={back}
+            next={next}
+            step={currentStep}
+            disableNext={disableNext}
+          />
+        )}
       </Container>
     </Layout>
   );

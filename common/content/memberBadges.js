@@ -7,7 +7,7 @@ const memberBadgesData = [
     description: 'Official community member',
     eligibility: 'Eligibility: Get 3 tasks done',
     linkText: 'Earn now',
-    linkUrl: '/membershipBadge',
+    linkUrl: '/firstBadge',
   },
   {
     active: false,

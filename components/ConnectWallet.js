@@ -95,7 +95,24 @@ const ConnectWalletButton = () => {
     try {
       const nonceRes = await API.get(`/buidler/${address}/nonce`);
       const signatureMessage = nonceRes.data?.data?.signature_message;
-      if (signatureMessage) {
+      const nonce = nonceRes.data?.data?.nonce;
+      // no builder record in DB
+      if (!nonce) {
+        showMessage({
+          type: 'error',
+          title: 'Cannot find your LXDAO builder record',
+          body: (
+            <Box>
+              It seems you are not a LXDAO buidler, welcome to{' '}
+              <Link marginBottom={2} target="_blank" href={`/joinus`}>
+                join us
+              </Link>
+              . Let&apos;s buidler a better Web3 together!
+            </Box>
+          ),
+        });
+        disconnect();
+      } else if (signatureMessage) {
         await signMessageAsync({
           message: signatureMessage,
         });
