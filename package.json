@@ -24,7 +24,7 @@
     "@lingui/loader": "^3.13.2",
     "@lingui/macro": "^3.13.2",
     "@lingui/react": "^3.13.2",
-    "@lxdao/img3": "^1.0.0",
+    "@lxdao/img3": "^1.1.0",
     "@lxdao/uploader3": "^1.2.1",
     "@mui/icons-material": "^5.8.3",
     "@mui/lab": "^5.0.0-alpha.95",
