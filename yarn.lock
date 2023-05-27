@@ -1118,10 +1118,10 @@
     "@babel/runtime" "^7.11.2"
     "@lingui/core" "^3.13.3"
 
-"@lxdao/img3@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@lxdao/img3/-/img3-1.0.0.tgz#7608e42873b97ffb4480ade5bce4b712eb28b65f"
-  integrity sha512-lnl7Ntgdbg+mWCC8RpWbY4SroJ+1gi8HeO8XxwlOFkfiCyDrmh94Ozmfrukd5RNWq6POGH4d/ENoGJr7pp4z0g==
+"@lxdao/img3@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@lxdao/img3/-/img3-1.1.0.tgz#a2b563d86d4600e5f8b0bead24f8e95b12cbe8b2"
+  integrity sha512-ywHk32GCzQCi0iQjz2ctKYAeJYdyAfVrmEk5TZmd9pIvGH/pFWqlhVPqXENis3aXlI8AumZSFRveBtmbS2GwFA==
   dependencies:
     "@iconify/react" "^4.1.0"
     react-is "^18.2.0"
