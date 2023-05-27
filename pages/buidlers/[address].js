@@ -60,8 +60,6 @@ import OnBoardingLayout from '@/components/OnBoardingLayout';
 import BadgeCard from '@/components/BadgeCard';
 import { BuidlerCard } from '../buidlers';
 
-import memberBadgesData from '../../common/content/memberBadges';
-
 function totalLXPoints(record) {
   if (!record.lxPoints || !record.lxPoints.length) {
     return 0;
@@ -376,6 +374,10 @@ function BuidlerDetails(props) {
     setAccordionOpen(value);
   };
 
+  const earnedBadgeAmount = record?.badges?.filter(
+    (badge) => badge.amount > 0
+  ).length;
+
   return (
     <Container paddingY={isFromOnboarding ? {} : { md: 12, xs: 8 }}>
       {address === record.address &&
@@ -635,6 +637,46 @@ function BuidlerDetails(props) {
                   borderColor: '#E5E5E5',
                 }}
               />
+              {earnedBadgeAmount > 0 && (
+                <Box display="flex" gap="10px" marginY={3}>
+                  {record?.badges &&
+                    record?.badges.map((badge) => {
+                      return badge.amount > 0 ? (
+                        <Box
+                          component={'img'}
+                          src={badge?.image}
+                          width="60px"
+                        />
+                      ) : null;
+                    })}
+                </Box>
+              )}
+              {record.status === 'ACTIVE' ? (
+                <Link
+                  target="_blank"
+                  href={`https://opensea.io/collection/lxdaobuidler`}
+                  sx={{
+                    textDecoration: 'none',
+                  }}
+                >
+                  <Box
+                    marginBottom={3}
+                    width="auto"
+                    display="flex"
+                    justifyContent="center"
+                  >
+                    <img
+                      crossOrigin="anonymous"
+                      style={{
+                        display: 'block',
+                        maxWidth: '100%',
+                      }}
+                      src={`${process.env.NEXT_PUBLIC_LXDAO_BACKEND_API}/buidler/${record.address}/card`}
+                      alt=""
+                    />
+                  </Box>
+                </Link>
+              ) : null}
               {record.description && (
                 <Box marginTop={3}>
                   <Typography sx={{ wordBreak: 'break-all' }}>
@@ -830,32 +872,6 @@ function BuidlerDetails(props) {
               </Box>
             </Link>
           )}
-          {record.status === 'ACTIVE' ? (
-            <Link
-              target="_blank"
-              href={`https://opensea.io/collection/lxdaobuidler`}
-              sx={{
-                textDecoration: 'none',
-              }}
-            >
-              <Box
-                marginTop={2}
-                width={{ lg: '300px', sm: 'auto', xs: '350px' }}
-                display="flex"
-                justifyContent="center"
-              >
-                <img
-                  crossOrigin="anonymous"
-                  style={{
-                    display: 'block',
-                    maxWidth: '100%',
-                  }}
-                  src={`${process.env.NEXT_PUBLIC_LXDAO_BACKEND_API}/buidler/${record.address}/card`}
-                  alt=""
-                />
-              </Box>
-            </Link>
-          ) : null}
         </Box>
         {/* right senction */}
         <Box boxSizing="border-box" flex="1">
@@ -878,10 +894,25 @@ function BuidlerDetails(props) {
               Badges to be earned
             </Typography>
             <Box display="flex" gap="15px" flexDirection="column">
-              {memberBadgesData &&
-                memberBadgesData.map((badge) => {
-                  return <BadgeCard {...badge} />;
+              {record?.badges &&
+                record?.badges.map((badge) => {
+                  if (badge.name === 'Membership badge (NFT)') {
+                    badge.linkText = 'Earn now';
+                    badge.linkUrl = '/firstBadge';
+                  }
+                  return badge.amount === 0 ? <BadgeCard {...badge} /> : null;
                 })}
+              {(record?.status === 'PENDING' ||
+                record?.status === 'READYTOMINT') && (
+                <BadgeCard
+                  image={`${process.env.NEXT_PUBLIC_LXDAO_BACKEND_API}/buidler/${record.address}/card`}
+                  name="Buidler card(SBT)"
+                  description="Governance rights entitled"
+                  eligible="Eligibility: Contribute in projects or working groups to earn up to 600 USDC/LXP reward."
+                  linkText="Contribute to earn"
+                  linkUrl="/SBTCard"
+                />
+              )}
             </Box>
           </Box>
           <Box display="flex" flexDirection="column">
