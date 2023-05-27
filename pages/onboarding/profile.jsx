@@ -1,19 +1,9 @@
-import OnBoardingLayout from '@/components/OnBoardingLayout';
-import LXButton from '@/components/Button';
-import {
-  Box,
-  Typography,
-  Skeleton,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-} from '@mui/material';
 import { useState } from 'react';
 import _ from 'lodash';
-
+import { useRouter } from 'next/router';
 import { useAccount } from 'wagmi';
+import { Box, Typography, Skeleton } from '@mui/material';
 
-import CloseIcon from '@mui/icons-material/Close';
 import ProfileForm from '@/components/ProfileForm';
 import BuidlerContacts from '@/components/BuidlerContacts';
 import { convertIpfsGateway } from '@/utils/utility';
@@ -21,6 +11,7 @@ import Tag from '@/components/Tag';
 import Skills from '@/components/Skills';
 import useBuidler from '@/components/useBuidler';
 import showMessage from '@/components/showMessage';
+import OnBoardingLayout from '@/components/OnBoardingLayout';
 
 import API from '@/common/API';
 
@@ -425,6 +416,8 @@ export default function Profile() {
   const [loading, record, error, refresh] = useBuidler(address);
   const [visible, setVisible] = useState(false);
   const [updating, setUpdating] = useState(false);
+  const router = useRouter();
+
   const saveProfileHandler = async (newMetaData) => {
     setUpdating(true);
     const userProfile = {
@@ -443,6 +436,7 @@ export default function Profile() {
       }
       setVisible(false);
       refresh();
+      router.push(`/buidlers/${address}?isFromOnboarding=true`);
     } catch (err) {
       showMessage({
         type: 'error',
@@ -454,84 +448,37 @@ export default function Profile() {
   };
   return (
     <OnBoardingLayout
-      title="Update your buidler profile on LXDAO"
-      desc="Update your buidler profile on LXDAO"
-      back="/onboarding/follow"
-      next="done"
+      title="Learning about you"
+      back="/onboarding/intro"
+      next={`/buidlers/xxxxx?onboarding=true`}
       disableNext={!record?.name}
+      step={2}
+      hideButton={true}
     >
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          mb: '48px',
+      <ProfileForm
+        updating={updating}
+        innerContainerStyle={{
+          maxWidth: '888px',
+          marginBottom: '48px',
+          border: '0.5px solid #D0D5DD',
+          borderRadius: '12px',
+          padding: '24px 40px',
         }}
-      >
-        <Box width={{ xs: '100%', sm: '505px' }}>
-          <BuidlerCard record={record} />
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            width: { xs: '100%', sm: '505px' },
-            mt: '16px',
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-          }}
-        >
-          <LXButton
-            width={104}
-            variant="gradient"
-            onClick={() => {
-              setVisible(true);
-            }}
-          >
-            Edit
-          </LXButton>
-        </Box>
-      </Box>
-      <Dialog
-        fullWidth={true}
-        maxWidth={'sm'}
-        onClose={(event, reason) => {
-          if (reason && reason == 'backdropClick') return;
-          setVisible(false);
-        }}
-        open={visible}
-      >
-        <Box
-          onClick={() => {
-            setVisible(false);
-          }}
-          sx={{
-            cursor: 'pointer',
-          }}
-          position="absolute"
-          top="16px"
-          right="16px"
-        >
-          <CloseIcon></CloseIcon>
-        </Box>
-        <DialogTitle>Profile Details</DialogTitle>
-        <DialogContent>
-          <ProfileForm
-            updating={updating}
-            values={_.cloneDeep(
-              _.pick(record, [
-                'avatar',
-                'name',
-                'description',
-                'skills',
-                'interests',
-                'contacts',
-                'privateContacts',
-              ])
-            )}
-            saveProfileHandler={saveProfileHandler}
-          />
-        </DialogContent>
-      </Dialog>
+        isOnboardingProcess={true}
+        backUrl="/onboarding/intro"
+        values={_.cloneDeep(
+          _.pick(record, [
+            'avatar',
+            'name',
+            'description',
+            'skills',
+            'interests',
+            'contacts',
+            'privateContacts',
+          ])
+        )}
+        saveProfileHandler={saveProfileHandler}
+      />
     </OnBoardingLayout>
   );
 }
