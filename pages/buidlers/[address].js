@@ -257,6 +257,23 @@ function BuidlerDetails(props) {
   const [ipfsURLOnChain, setIpfsURLOnChain] = useState(null);
   const [accordionOpen, setAccordionOpen] = useState(false);
 
+  const firstMemberBadgeAmount = record?.badges?.find(
+    (badge) => badge.id === 'MemberFirstBadge'
+  )?.amount;
+
+  if (
+    record?.status === 'PENDING' &&
+    firstMemberBadgeAmount === 0 &&
+    (!address || address !== record?.address)
+  ) {
+    return (
+      <Box width="100%" textAlign="center" marginTop="200px" color="red">
+        This member has not yet completed the onboarding process and is
+        temporarily inaccessible.{' '}
+      </Box>
+    );
+  }
+
   useEffect(async () => {
     if (!signer) {
       return;
@@ -896,7 +913,7 @@ function BuidlerDetails(props) {
             <Box display="flex" gap="15px" flexDirection="column">
               {record?.badges &&
                 record?.badges.map((badge) => {
-                  if (badge.name === 'Membership badge (NFT)') {
+                  if (badge?.id === 'MemberFirstBadge') {
                     badge.linkText = 'Earn now';
                     badge.linkUrl = '/firstBadge';
                   }
