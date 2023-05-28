@@ -1349,14 +1349,15 @@ function BuidlerDetails(props) {
 //TODO: load builder on nodejs Muxin
 export default function Buidler() {
   const router = useRouter();
-  const address = router.query.address;
+  const currentAddress = router.query.address;
   const [open, setOpen] = useState(false);
   const { width, height } = useWindowSize();
   const [size, setSize] = useState({
     width: 0,
     height: 0,
   });
-  const [loading, record, error, refresh] = useBuidler(address);
+  const [loading, record, error, refresh] = useBuidler(currentAddress);
+  const { address } = useAccount();
   const isFromOnboarding = router?.query?.isFromOnboarding;
 
   // if (loading) return <Layout>Loading...</Layout>;
@@ -1403,7 +1404,7 @@ export default function Buidler() {
           >
             <img width="80px" src="/icons/no-records.png" />
             <Typography marginTop={4} color="#D0D5DD" fontSize="16px">
-              No Buidler found with the address {address}
+              No Buidler found with the address {currentAddress}
             </Typography>
           </Box>
         )}
@@ -1411,7 +1412,7 @@ export default function Buidler() {
     );
   };
 
-  if (isFromOnboarding) {
+  if (isFromOnboarding && address === currentAddress) {
     return (
       <OnBoardingLayout
         layoutTitle={`${record && record.name} Buidler Profile | LXDAO`}

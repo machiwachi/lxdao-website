@@ -111,7 +111,7 @@ const Footer = () => {
               <NavList
                 title="Buidl Together"
                 items={[
-                  { name: 'Join Us', link: '/joinus' },
+                  { name: 'Join Us', link: '/onboarding/intro' },
                   {
                     name: 'Make a proposal',
                     link: 'https://www.notion.so/lxdao/How-do-we-work-93038c708217465384cc7d9f377547c5',

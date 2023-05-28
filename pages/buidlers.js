@@ -304,7 +304,7 @@ export default function Home() {
             </Typography>
           </Box>
           <Link
-            href={`/joinus`}
+            href={`/onboarding/intro`}
             color="#ffffff"
             sx={{
               textDecoration: 'none',
