@@ -50,10 +50,15 @@ export function CardShow({ path, title, buttonText, tip }) {
         fontSize="48px"
         lineHeight="44px"
         fontWeight="800"
+        marginY="24px"
       >
         Earn your {title}
       </Typography>
-      {buttonText!=""&&<LXButton width="227px" variant="gradient">{buttonText}</LXButton>}
+      {buttonText != '' && (
+        <LXButton width="227px" variant="gradient">
+          {buttonText}
+        </LXButton>
+      )}
       <Typography color="#666F85">{tip}</Typography>
     </Stack>
   );

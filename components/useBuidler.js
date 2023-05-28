@@ -15,6 +15,35 @@ function useBuidler(address) {
       // error
       setError('Cannot get buidler detail');
     }
+
+    if (result?.data?.badges) {
+      const badgesType = result?.data?.badges?.types;
+      const badgesAmount = result?.data?.badges?.amounts.map(
+        (amount) => amount
+      );
+
+      let badgesData = [];
+      if (badgesType?.length) {
+        const badgeMetadataPromises = badgesType.map(async (type) => {
+          const badgeMetadata = await API.get(
+            `/buidler/badge/metadata/${type}`
+          );
+          if (badgeMetadata?.data) {
+            return badgeMetadata?.data;
+          }
+        });
+        badgesData = await Promise.all(badgeMetadataPromises);
+
+        if (badgesData?.length) {
+          badgesData = badgesData.map((badge, index) => {
+            badge.amount = badgesAmount[index];
+            return badge;
+          });
+        }
+        result.data.badges = badgesData;
+      }
+    }
+
     setLoading(false);
     setBuidler(result.data);
   };

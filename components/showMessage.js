@@ -32,27 +32,27 @@ export function SimpleModal(props) {
   return (
     <Dialog onClose={onClose} open={visible}>
       <DialogWrapper>
-        {props.type && (
-          <IconWrapper>
-            {props.type === 'success' ? (
-              <CheckCircleIcon
-                sx={{
-                  fontSize: '40px',
-                }}
-                color="success"
-              ></CheckCircleIcon>
-            ) : (
-              <ErrorIcon
-                sx={{
-                  fontSize: '40px',
-                }}
-                color="error"
-              ></ErrorIcon>
-            )}
-          </IconWrapper>
-        )}
         <Box paddingX={1}>
-          <Box>
+          <Box display="flex" alignItems="center" gap="8px">
+            {props.type && (
+              <IconWrapper>
+                {props.type === 'success' ? (
+                  <CheckCircleIcon
+                    sx={{
+                      fontSize: '40px',
+                    }}
+                    color="success"
+                  ></CheckCircleIcon>
+                ) : (
+                  <ErrorIcon
+                    sx={{
+                      fontSize: '40px',
+                    }}
+                    color="error"
+                  ></ErrorIcon>
+                )}
+              </IconWrapper>
+            )}
             <Typography lineHeight={2} variant="h6">
               {props.title}
             </Typography>
