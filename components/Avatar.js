@@ -6,6 +6,7 @@ import { getLocalStorage } from '@/utils/utility';
 
 function Avatar(props) {
   const [file, setFile] = useState();
+  console.log('file: ', file);
 
   const accessToken = getLocalStorage('accessToken');
 
@@ -122,6 +123,7 @@ function Avatar(props) {
         }}
         onComplete={(file) => {
           setFile(file);
+          console.log('file?.url: ', file?.url);
           props.onChange(file?.url);
         }}
         onCropCancel={(file) => {
