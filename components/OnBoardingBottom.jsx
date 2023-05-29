@@ -1,3 +1,4 @@
+import React from 'react';
 import { useRouter } from 'next/router';
 import { Box } from '@mui/material';
 import { useAccount } from 'wagmi';
@@ -65,8 +66,8 @@ export default function OnBoardingBottom({
                 router.push(next);
               } else {
                 showMessage({
-                  type: 'error',
-                  title: 'Warning',
+                  type: 'info',
+                  title: 'Tips',
                   body: 'Please Connect Your Wallet.',
                 });
               }

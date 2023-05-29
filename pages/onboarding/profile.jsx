@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import _ from 'lodash';
 import { useRouter } from 'next/router';
 import { useAccount } from 'wagmi';

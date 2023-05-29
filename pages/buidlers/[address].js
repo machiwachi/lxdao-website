@@ -257,9 +257,12 @@ function BuidlerDetails(props) {
   const [ipfsURLOnChain, setIpfsURLOnChain] = useState(null);
   const [accordionOpen, setAccordionOpen] = useState(false);
 
-  const firstMemberBadgeAmount = record?.badges?.find(
-    (badge) => badge.id === 'MemberFirstBadge'
-  )?.amount;
+  console.log('record: ', record);
+  // todo Muxin
+  const firstMemberBadgeAmount = 0;
+  // record?.badges?.find(
+  //   (badge) => badge.id === 'MemberFirstBadge'
+  // )?.amount;
 
   if (
     record?.status === 'PENDING' &&
@@ -391,9 +394,12 @@ function BuidlerDetails(props) {
     setAccordionOpen(value);
   };
 
-  const earnedBadgeAmount = record?.badges?.filter(
-    (badge) => badge.amount > 0
-  ).length;
+  // todo Muxin
+  const earnedBadgeAmount = 0;
+
+  // record?.badges?.filter(
+  //   (badge) => badge.amount > 0
+  // ).length;
 
   return (
     <Container paddingY={isFromOnboarding ? {} : { md: 12, xs: 8 }}>
@@ -471,7 +477,7 @@ function BuidlerDetails(props) {
         >
           <Box
             sx={{
-              borderadius: '6px',
+              borderRadius: '6px',
               background: '#fff',
               width: '383px',
               height: '232px',
@@ -911,14 +917,15 @@ function BuidlerDetails(props) {
               Badges to be earned
             </Typography>
             <Box display="flex" gap="15px" flexDirection="column">
-              {record?.badges &&
+              {/* todo Muxin */}
+              {/* {record?.badges &&
                 record?.badges.map((badge) => {
                   if (badge?.id === 'MemberFirstBadge') {
                     badge.linkText = 'Earn now';
                     badge.linkUrl = '/firstBadge';
                   }
                   return badge.amount === 0 ? <BadgeCard {...badge} /> : null;
-                })}
+                })} */}
               {(record?.status === 'PENDING' ||
                 record?.status === 'READYTOMINT') && (
                 <BadgeCard

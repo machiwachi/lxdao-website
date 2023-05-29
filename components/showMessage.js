@@ -6,6 +6,7 @@ import { Box, Dialog, Typography } from '@mui/material';
 import styled from '@emotion/styled';
 import ErrorIcon from '@mui/icons-material/Error';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import InfoIcon from '@mui/icons-material/Info';
 
 import getTheme from '../common/theme';
 
@@ -43,6 +44,13 @@ export function SimpleModal(props) {
                     }}
                     color="success"
                   ></CheckCircleIcon>
+                ) : props.type === 'info' ? (
+                  <InfoIcon
+                    sx={{
+                      fontSize: '40px',
+                    }}
+                    color="info"
+                  ></InfoIcon>
                 ) : (
                   <ErrorIcon
                     sx={{
