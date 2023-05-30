@@ -444,6 +444,7 @@ export default function Profile() {
     }
     setUpdating(false);
   };
+
   return (
     <OnBoardingLayout
       title="Learning about you"
@@ -453,8 +454,8 @@ export default function Profile() {
       currentStep={2}
       hideButton={true}
     >
-      {((address && address === record?.address) ||
-        (address && !record?.avatar)) && (
+      {(address && address === record?.address) ||
+      (address && !record?.avatar) ? (
         <ProfileForm
           updating={updating}
           innerContainerStyle={{
@@ -479,6 +480,10 @@ export default function Profile() {
           )}
           saveProfileHandler={saveProfileHandler}
         />
+      ) : (
+        <Box color="red" textAlign="center">
+          Please connect wallet first.
+        </Box>
       )}
     </OnBoardingLayout>
   );
