@@ -43,12 +43,16 @@ const SectionAnniversary: React.FC = () => {
     }
     try {
       setLoading(true);
-      const res = await writeAsync?.({
+      const tx = await writeAsync?.({
         recklesslySetUnpreparedArgs: [amt],
         recklesslySetUnpreparedOverrides: {
           value: ethers.utils.parseEther((0.02 * amt).toString()),
         },
       });
+      console.log({ tx });
+      const res = await tx?.wait(1);
+      console.log({ res });
+      setTotalSupply((parseInt(totalSupply) + amt).toString());
       setLoading(false);
     } catch (err) {
       if (err.toString().includes('ChainMismatchError')) {
