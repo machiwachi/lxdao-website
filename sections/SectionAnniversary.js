@@ -7,14 +7,21 @@ import showMessage from '@/components/showMessage';
 import LXButton from '@/components/Button';
 import {
   useAccount,
-  useContractRead,
+  // useContractRead,
   useContractWrite,
-  // useConnect,
+  useConnect,
 } from 'wagmi';
+import { ethers } from 'ethers';
 
 import abi from '@/abi/anniversary.json';
 
-const ADDRESS = '0xBf66f2d9630A033022602c3279b04b4a37399927';
+const ADDRESS = '0x98D9457F349B04c7374E2Df011D31b6b118Da01f';
+const CHAIN_ID = parseInt(process.env.NEXT_PUBLIC_CHAIN_ID);
+const RPC_URL =
+  (CHAIN_ID == 1
+    ? 'https://mainnet.infura.io/v3/'
+    : 'https://goerli.infura.io/v3/') + process.env.NEXT_PUBLIC_INFURA_ID;
+// const CHAIN_ID = 5;
 
 const SectionAnniversary = () => {
   const anniversaryContract = {
@@ -22,8 +29,8 @@ const SectionAnniversary = () => {
     contractInterface: abi,
   };
 
-  const { isConnected, address } = useAccount();
-  // const { connect, connectors } = useConnect();
+  const { isConnected } = useAccount();
+  const { connect, connectors } = useConnect();
   const [totalSupply, setTotalSupply] = useState('0');
   const [amt, setAmt] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -32,59 +39,58 @@ const SectionAnniversary = () => {
     ...anniversaryContract,
     functionName: 'mint',
     mode: 'recklesslyUnprepared',
-    chainId: 1,
+    chainId: CHAIN_ID,
   });
-  const {
-    data: readData,
-    isError,
-    error,
-  } = useContractRead({
-    ...anniversaryContract,
-    functionName: 'totalSupply',
-  });
-  console.log(isError, error);
-  useEffect(() => {
-    console.log(readData, !readData);
-    if (!readData?.length) return;
-    setTotalSupply(readData[0]?.toString());
-  }, [readData]);
 
   const handleMint = async () => {
     if (!isConnected) {
-      // connect({ connector: connectors[2] });
+      connect({ connector: connectors[2] });
       return;
     }
     try {
       setLoading(true);
       const res = await writeAsync?.({
-        recklesslySetUnpreparedArgs: [address, amt],
+        recklesslySetUnpreparedArgs: [amt],
+        recklesslySetUnpreparedOverrides: {
+          value: ethers.utils.parseEther((0.02 * amt).toString()),
+        },
       });
 
       console.log(res);
       setLoading(false);
     } catch (err) {
-      console.log(err);
-      showMessage({
-        type: 'error',
-        title: 'Estimate Fail',
-        body: 'You may have already minted or other reason.',
-      });
+      if (err.toString().includes('ChainMismatchError')) {
+        console.log(typeof CHAIN_ID);
+        showMessage({
+          type: 'error',
+          title: 'Wrong Network',
+          body: `Please Change to ${
+            CHAIN_ID == 1 ? 'ETH Mainnet' : 'ETH Goerli'
+          }`,
+        });
+      } else {
+        showMessage({
+          type: 'error',
+          title: 'Estimate Fail',
+          body: 'You may have already minted or other reason.',
+        });
+      }
+
       setLoading(false);
     }
   };
-  // useEffect(() => {
-  //   if (isSuccess) {
-  //     showMessage({
-  //       type: 'success',
-  //       title: `Mint Successfully`,
-  //     });
-  //   }
-  // }, [isSuccess]);
 
+  useEffect(() => {
+    (async () => {
+      const provider = new ethers.providers.JsonRpcProvider(RPC_URL);
+      const anniContract = new ethers.Contract(ADDRESS, abi, provider);
+      const res = await anniContract.totalSupply();
+      setTotalSupply(res.toString() || '0');
+    })();
+  }, []);
   return (
     <Container
-      // height="calc(100vh - 81px)"
-      minHeight={{ xs: '660px', md: '217px' }}
+      minHeight={{ xs: 'calc(100vh - 120px)', md: '217px' }}
       display="flex"
       flexDirection={{ lg: 'row', xs: 'column' }}
       justifyContent="center"
@@ -112,29 +118,36 @@ const SectionAnniversary = () => {
         >
           LXDAO One-Year Anniversary NFT is on sale (limited to 2000)
         </Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <IconButton
-            disabled={amt == 1}
-            onClick={() => setAmt(amt - (amt == 1 ? 0 : 1))}
-          >
-            <RemoveCircleOutlineIcon sx={{ transform: 'scale(1.2)' }} />
-          </IconButton>
-          <InputBase
-            sx={{ width: '10px' }}
-            value={amt}
-            onChange={(e) => {
-              setAmt(e.target.value);
-            }}
-          />
-          <IconButton onClick={() => setAmt(amt + 1)}>
-            <AddCircleOutlineIcon sx={{ transform: 'scale(1.2)' }} />
-          </IconButton>
-          <Typography variant="subtitle2" ml="20px" mr="40px">
-            {0.02 * amt} ETH
-          </Typography>
-          <Typography variant="subtitle2" mr="20px">
-            {totalSupply}/2000
-          </Typography>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: { xs: 'column', md: 'row' },
+            alignItems: 'center',
+            gap: '20px',
+          }}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <IconButton
+              disabled={amt == 1}
+              onClick={() => setAmt(amt - (amt == 1 ? 0 : 1))}
+            >
+              <RemoveCircleOutlineIcon sx={{ transform: 'scale(1.2)' }} />
+            </IconButton>
+            <InputBase
+              sx={{ width: '10px' }}
+              value={amt}
+              onChange={(e) => {
+                setAmt(e.target.value);
+              }}
+            />
+            <IconButton onClick={() => setAmt(amt + 1)}>
+              <AddCircleOutlineIcon sx={{ transform: 'scale(1.2)' }} />
+            </IconButton>
+            <Typography variant="subtitle2" ml="20px" mr="40px">
+              {0.02 * amt} ETH
+            </Typography>
+            <Typography variant="subtitle2">{totalSupply}/2000</Typography>
+          </Box>
 
           <LXButton disabled={loading} onClick={handleMint} variant="gradient">
             Recharge your conscience
