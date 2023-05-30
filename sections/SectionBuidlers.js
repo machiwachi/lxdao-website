@@ -189,7 +189,7 @@ const SectionBuidlers = ({ buidlers }) => {
           })}
         </Box>
         <Link
-          href={`/joinus`}
+          href={`/onboarding/intro`}
           color="#ffffff"
           sx={{
             textDecoration: 'none',

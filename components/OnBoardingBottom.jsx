@@ -1,20 +1,26 @@
+import React from 'react';
 import { useRouter } from 'next/router';
 import { Box } from '@mui/material';
 import { useAccount } from 'wagmi';
+
+import showMessage from '@/components/showMessage';
+
 export default function OnBoardingBottom({
   back = '',
   next = '',
   disableNext = false,
+  step,
 }) {
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
   const router = useRouter();
   return (
     <Box
       sx={{
         display: 'flex',
         flexDirection: { xs: 'column', md: 'row' },
-        justifyContent: { xs: 'center', md: 'space-between' },
+        justifyContent: { xs: 'center', md: 'flex-end' },
         alignItems: 'center',
+        gap: '16px',
       }}
     >
       {
@@ -36,7 +42,6 @@ export default function OnBoardingBottom({
             fontSize: '16px',
             lineHeight: '24px',
             fontWeight: '600',
-            mx: '8px',
             mb: { xs: '8px' },
             background: '#F4F6F8',
             mb: { xs: '10px', md: 0 },
@@ -56,12 +61,19 @@ export default function OnBoardingBottom({
           justifyContent="center"
           visibility={next ? 'visible' : 'hidden'}
           onClick={() => {
-            if (next == 'done') {
-              sessionStorage.setItem('newBuidler', true);
-              router.push(`/buidlers/${address}`);
-              return;
+            if (step === 1) {
+              if (address && isConnected) {
+                router.push(next);
+              } else {
+                showMessage({
+                  type: 'info',
+                  title: 'Tips',
+                  body: 'Please Connect Your Wallet.',
+                });
+              }
+            } else {
+              router.push(next);
             }
-            router.push(next);
           }}
           sx={{
             width: '223px',
@@ -73,7 +85,6 @@ export default function OnBoardingBottom({
             fontSize: '16px',
             lineHeight: '24px',
             fontWeight: '600',
-            mx: '8px',
             pointerEvents: disableNext ? 'none' : 'normal',
             background: disableNext
               ? 'linear-gradient(89.57deg, rgba(41,117,223,0.5) 0.27%, rgba(58,207,227,0.5) 105.82%)'

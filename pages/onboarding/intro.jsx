@@ -1,6 +1,13 @@
 /* eslint-disable no-undef */
 import React from 'react';
-import { Typography, Card, CardContent, Box } from '@mui/material';
+import {
+  Typography,
+  Box,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+} from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import OnBoardingLayout from '@/components/OnBoardingLayout';
 
@@ -8,80 +15,104 @@ export default function Intro() {
   const data = [
     {
       svg: '/icons/mission.svg',
-      title: 'MISSION',
+      title: 'Mission',
       content: `LXDAO is an R&D-focused DAO in Web3. Our mission is gathering the power of buidlers to buidl and support “LX” (valuable) Web3 projects sustainably and welcome 1 billion users into Web3.`,
     },
     {
       svg: '/icons/vision.svg',
-      title: 'VISION',
+      title: 'Vision',
       content: `Our Vision & Consensus - The technologies, concepts and ideas of Web3 will be used by a billion people in a decade.`,
     },
     {
       svg: '/icons/value.svg',
-      title: 'VALUE',
+      title: 'Value',
       content: `LX = 良心 = Conscience`,
+    },
+    {
+      svg: '/icons/bad.svg',
+      title: 'Things We Depreciate',
+      content: (
+        <div>
+          1. Sensitive topics such as politics, religion, and policies, as well
+          as malicious content such as pornography, violence, gambling, scams,
+          viruses, and pyramid schemes.
+          <br /> 2. Malicious behavior such as abusive language, harassment,
+          spamming, and phishing is forbidden.
+          <br /> 3. Uncivilized speech is not allowed, and differing opinions
+          should be discussed rationally without attacking or threatening
+          others.
+          <br /> 4. No invitations or advertising allowed without permission
+          from the community administrators.
+          <br />
+          <br /> Violations of these rules will result in a warning for the
+          first offense and removal from the community for the second offense.
+        </div>
+      ),
     },
   ];
   return (
     <OnBoardingLayout
-      title="LXDAO Introduction"
-      desc="LXDAO INTRODUCTION"
-      next="/onboarding/follow"
+      title="Learning about LXDAO"
+      next="/onboarding/profile"
+      currentStep={1}
     >
       <Box
         sx={{
           display: 'flex',
           flexWrap: 'wrap',
-          flexDirection: { xs: 'column', lg: 'row' },
+          flexDirection: 'column',
           alignItems: 'center',
-          justifyContent: { xs: 'center', md: 'space-between' },
-          mb: { xs: '30px', md: '53px' },
-          mt: { xs: '40px', md: '70px' },
+          justifyContent: 'center',
+          mb: '24px',
           px: 0,
+          gap: '24px',
         }}
       >
         {data.map((value, index) => (
-          <Card
-            key={index}
-            sx={{
-              width: { xs: 300, lg: 389 },
-              height: 460,
-              marginBottom: '20px',
-              border: '0.5px solid #D0D5DD',
-              borderRadius: '6px',
-              position: 'relative',
-            }}
-          >
-            <CardContent sx={{ paddingTop: '77px', paddingX: '19px' }}>
-              <Box component={'img'} src={value.svg} height="92px" />
-              <Typography
-                mt="77px"
-                sx={{
-                  fontWeight: 800,
-                  position: 'relative',
-                }}
-                variant="subtitle1"
-                component="div"
+          <Box width="100%">
+            <Accordion
+              key={index}
+              sx={{
+                boxShadow: 'none',
+                border: '0.5px solid #D0D5DD',
+                borderRadius: '6px',
+              }}
+            >
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                sx={{ padding: '20px' }}
               >
-                {value.title}
                 <Box
-                  component={'div'}
-                  mt="16px"
+                  width="30px"
+                  marginRight="38px"
+                  component={'img'}
+                  src={value.svg}
                   sx={{
-                    width: 99,
-                    height: 12,
-                    backgroundColor: '#36AFF9',
-                    opacity: 0.6,
-                    position: 'absolute',
-                    bottom: '7px',
+                    display: 'block',
                   }}
-                ></Box>
-              </Typography>
-              <Typography mt="27px" variant="body2" color="text.secondary">
-                {value.content}
-              </Typography>
-            </CardContent>
-          </Card>
+                />
+                <Typography fontSize="20px" lineHeight="30px" fontWeight={800}>
+                  {value.title}
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails
+                sx={{
+                  backgroundColor: '#FAFAFA',
+                  padding: '20px 24px',
+                  borderTop: '0.5px solid #D0D5DD',
+                }}
+              >
+                <Typography
+                  color="#666F85"
+                  fontSize="16px"
+                  lineHeight="24px"
+                  fontWeight={400}
+                >
+                  {value.content}
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+          </Box>
         ))}
       </Box>
     </OnBoardingLayout>

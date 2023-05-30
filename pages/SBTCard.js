@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import CustomButton from '@/components/Button';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext'; /* eslint-disable no-undef */
 import WorkingGroupCard from '@/components/WorkingGroupCard';
@@ -20,7 +21,6 @@ import * as bs58 from 'bs58';
 import useBuidler from '@/components/useBuidler';
 import LXButton from '@/components/Button';
 import { useContract, useAccount, useSigner } from 'wagmi';
-// import { Button as LXButton } from '@/components/Button';
 
 import Layout from '@/components/Layout';
 
@@ -36,6 +36,8 @@ export default function FirstBadge() {
   const [minting, setMinting] = React.useState(false);
   const [projects, setProjects] = React.useState([]);
   const [, record, , refresh] = useBuidler(address);
+  const router = useRouter();
+
   const contract = useContract({
     ...contractInfo(),
     signerOrProvider: signer,
@@ -68,6 +70,7 @@ export default function FirstBadge() {
       if (response) {
         await API.post('/buidler/activate');
         refresh();
+        router.push(`/buidlers/${address}`);
       }
     } catch (err) {
       showMessage({
@@ -93,11 +96,15 @@ export default function FirstBadge() {
             separator={<NavigateNextIcon fontSize="small" />}
             aria-label="breadcrumb"
           >
-            <Link underline="hover" color="inherit" href="/">
+            <Link
+              underline="hover"
+              color="inherit"
+              href={`/buidlers/${address}?isFromOnboarding=true`}
+            >
               <Typography variant="body1">Member profile</Typography>
             </Link>
             <Link underline="none" color="#437EF7" aria-current="page">
-              <Typography variant="body1">Earn your first badge</Typography>
+              <Typography variant="body1">Earn your SBT Card</Typography>
             </Link>
           </Breadcrumbs>
         </Box>
@@ -162,8 +169,7 @@ export default function FirstBadge() {
           <LXButton
             variant="gradient"
             width="200px"
-            // disabled={!(record?.status == 'READYTOMINT')}
-            disabled={false}
+            disabled={!(record?.status == 'READYTOMINT')}
             onClick={() => {
               mint();
             }}

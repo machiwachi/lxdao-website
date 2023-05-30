@@ -244,7 +244,16 @@ export default function Home() {
 
       let tempList = [];
       records.forEach((record) => {
-        tempList.push(record);
+        const firstMemberBadgeIndex =
+          record?.badges?.types?.indexOf('MemberFirstBadge');
+        if (
+          record?.status === 'ACTIVE' ||
+          record?.status === 'READYTOMINT' ||
+          (record?.status === 'PENDING' &&
+            record?.badges?.amounts[firstMemberBadgeIndex] > 0)
+        ) {
+          tempList.push(record);
+        }
       });
       setHasMore(tempList.length === 9);
 
@@ -295,7 +304,7 @@ export default function Home() {
             </Typography>
           </Box>
           <Link
-            href={`/joinus`}
+            href={`/onboarding/intro`}
             color="#ffffff"
             sx={{
               textDecoration: 'none',

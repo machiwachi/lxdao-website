@@ -1,17 +1,16 @@
-import NavigateNextIcon from '@mui/icons-material/NavigateNext'; /* eslint-disable no-undef */
 import React from 'react';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext'; /* eslint-disable no-undef */
+import { useAccount } from 'wagmi';
 import {
   Box,
   Stack,
-  Button,
   Typography,
   Breadcrumbs,
   Link,
   Container,
 } from '@mui/material';
-// import { Button as LXButton } from '@/components/Button';
-import { CardShow } from '@/components/CardShow';
 
+import { CardShow } from '@/components/CardShow';
 import Layout from '@/components/Layout';
 
 function OneTask({ iconPath, desc }) {
@@ -22,7 +21,7 @@ function OneTask({ iconPath, desc }) {
         flexDirection: { xs: 'column', md: 'row' },
         border: '0.5px solid #D0D5DD',
         justifyContent: 'space-between',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         borderRadius: '6px',
         p: 3,
       }}
@@ -171,7 +170,7 @@ function MultiTasks() {
 function TaskItems({ children, order, title }) {
   return (
     <Stack>
-      <Typography variant="subtitle2" fontWeight="800">
+      <Typography variant="subtitle2" fontWeight="800" marginBottom="24px">
         <span style={{ color: '#36AFF9' }}>{order} </span>
         {title}
       </Typography>
@@ -181,6 +180,7 @@ function TaskItems({ children, order, title }) {
 }
 
 export default function FirstBadge() {
+  const { address } = useAccount();
   return (
     <Layout>
       <Container
@@ -196,7 +196,11 @@ export default function FirstBadge() {
             separator={<NavigateNextIcon fontSize="small" />}
             aria-label="breadcrumb"
           >
-            <Link underline="hover" color="inherit" href="/">
+            <Link
+              underline="hover"
+              color="inherit"
+              href={`/buidlers/${address}?isFromOnboarding=true`}
+            >
               <Typography variant="body1">Member profile</Typography>
             </Link>
             <Link underline="none" color="#437EF7" aria-current="page">
@@ -204,8 +208,22 @@ export default function FirstBadge() {
             </Link>
           </Breadcrumbs>
         </Box>
-        <CardShow title="first badge" path="/images/badge/first-badge.png" buttonText="" tip={<>Please complete the following 3 tasks and wait for the governance working group to verify (contact <Link underline='none' color="#36AFF9">Marcus</Link> to check the status)</>}/>
-        <Stack sx={{ gap: 3 }}>
+        <CardShow
+          title="first badge"
+          path="/images/badge/first-badge.png"
+          buttonText=""
+          tip={
+            <>
+              Please complete the following 3 tasks and wait for the governance
+              working group to verify (contact{' '}
+              <Link underline="none" color="#36AFF9">
+                Marcus
+              </Link>{' '}
+              to check the status)
+            </>
+          }
+        />
+        <Stack sx={{ gap: 3, marginTop: '68px' }}>
           {[
             {
               order: '1st task',
