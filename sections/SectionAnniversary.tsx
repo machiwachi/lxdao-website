@@ -129,7 +129,8 @@ const SectionAnniversary: React.FC = () => {
               value={amt}
               onChange={(e) => {
                 if (
-                  parseInt(e.target.value) > 2000 - parseInt(totalSupply) ||
+                  parseInt(e.target.value) >
+                    2000 - 100 - parseInt(totalSupply) ||
                   e.toString().length < 1
                 ) {
                   return;
