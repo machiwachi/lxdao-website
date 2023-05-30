@@ -16,7 +16,6 @@ const RPC_URL =
   (CHAIN_ID == 1
     ? 'https://mainnet.infura.io/v3/'
     : 'https://goerli.infura.io/v3/') + process.env.NEXT_PUBLIC_INFURA_ID;
-// const CHAIN_ID = 5;
 
 const SectionAnniversary: React.FC = () => {
   const anniversaryContract = {
