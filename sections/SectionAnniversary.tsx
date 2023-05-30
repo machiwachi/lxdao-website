@@ -88,6 +88,9 @@ const SectionAnniversary: React.FC = () => {
       alignItems="center"
       textAlign="center"
       gap={{ lg: '120px', xs: '40px' }}
+      sx={{
+        borderBottom: '1px solid #F3F3F3',
+      }}
     >
       <Box component="img" src="/images/anniversaryNFT.png" />
       <Box
