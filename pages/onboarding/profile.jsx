@@ -481,9 +481,9 @@ export default function Profile() {
           saveProfileHandler={saveProfileHandler}
         />
       ) : (
-        <Box color="red" textAlign="center">
-          Please connect wallet first.
-        </Box>
+        <div style={{ color: 'red', textAlign: 'center' }}>
+          Please connect your wallet first (no gas fee).
+        </div>
       )}
     </OnBoardingLayout>
   );

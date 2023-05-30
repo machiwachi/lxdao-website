@@ -86,7 +86,7 @@ function ProfileForm(props) {
   return (
     <Box>
       <Box style={props.innerContainerStyle || {}}>
-        <Box marginBottom={4}>
+        <Box marginBottom={4} textAlign="left">
           <Controller
             name={'avatar'}
             control={control}
@@ -157,6 +157,8 @@ function ProfileForm(props) {
             marginBottom={2}
             sx={{
               fontSize: '20px',
+              color: 'rgb(30, 32, 34)',
+              textAlign: 'left',
             }}
           >
             Skills <span style={{ color: 'red' }}>*</span>
@@ -185,6 +187,8 @@ function ProfileForm(props) {
             marginBottom={2}
             sx={{
               fontSize: '20px',
+              color: 'rgb(30, 32, 34)',
+              textAlign: 'left',
             }}
           >
             Interests <span style={{ color: 'red' }}>*</span>
@@ -225,17 +229,22 @@ function ProfileForm(props) {
             marginBottom={2}
             sx={{
               fontSize: '20px',
+              color: 'rgb(30, 32, 34)',
+              textAlign: 'left',
             }}
           >
-            Contacts <span style={{ color: 'red' }}>* </span>
+            Public contacts {` `}
             <span
               style={{
                 fontSize: 14,
                 display: 'inline',
               }}
             >
-              (At least one contacts are required, the following contacts will
-              be publicly available)
+              (
+              <span style={{ color: 'red' }}>
+                At least one contact is required.
+              </span>
+              )
             </span>
           </Typography>
           <Controller
@@ -277,6 +286,8 @@ function ProfileForm(props) {
             marginBottom={2}
             sx={{
               fontSize: '20px',
+              color: 'rgb(30, 32, 34)',
+              textAlign: 'left',
             }}
           >
             Private Contacts{' '}
@@ -326,7 +337,7 @@ function ProfileForm(props) {
         {JSON.stringify(errors) !== '{}' && (
           <Box marginTop={2}>
             <Alert severity="error">
-              Found errors on the form, please check.
+              Please fill in the required fields above.
             </Alert>
           </Box>
         )}
