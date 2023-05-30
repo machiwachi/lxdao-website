@@ -1,8 +1,8 @@
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import CustomButton from '@/components/Button';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext'; /* eslint-disable no-undef */
 import WorkingGroupCard from '@/components/WorkingGroupCard';
-import React from 'react';
 import showMessage from '@/components/showMessage';
 import { contractInfo } from '@/components/ContractsOperation';
 import ProjectCard from '@/components/ProjectCard';
@@ -37,6 +37,13 @@ export default function FirstBadge() {
   const [projects, setProjects] = React.useState([]);
   const [, record, , refresh] = useBuidler(address);
   const router = useRouter();
+  const [currentAddress, setCurrentAddress] = useState('');
+
+  useEffect(() => {
+    if (address) {
+      setCurrentAddress(address);
+    }
+  }, [address]);
 
   const contract = useContract({
     ...contractInfo(),
@@ -60,7 +67,9 @@ export default function FirstBadge() {
     setMinting(true);
     try {
       // get signature
-      const signatureRes = await API.post(`/buidler/${address}/signature`);
+      const signatureRes = await API.post(
+        `/buidler/${currentAddress}/signature`
+      );
       const signature = signatureRes.data.data.signature;
 
       const ipfsURI = record.ipfsURI;
@@ -70,7 +79,7 @@ export default function FirstBadge() {
       if (response) {
         await API.post('/buidler/activate');
         refresh();
-        router.push(`/buidlers/${address}`);
+        router.push(`/buidlers/${currentAddress}`);
       }
     } catch (err) {
       showMessage({
@@ -99,7 +108,7 @@ export default function FirstBadge() {
             <Link
               underline="hover"
               color="inherit"
-              href={`/buidlers/${address}?isFromOnboarding=true`}
+              href={`/buidlers/${currentAddress}?isFromOnboarding=true`}
             >
               <Typography variant="body1">Member profile</Typography>
             </Link>

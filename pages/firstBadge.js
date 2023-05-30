@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext'; /* eslint-disable no-undef */
 import { useAccount } from 'wagmi';
 import {
@@ -179,8 +179,16 @@ function TaskItems({ children, order, title }) {
   );
 }
 
-export default function FirstBadge() {
+const FirstBadge = () => {
   const { address } = useAccount();
+  const [currentAddress, setCurrentAddress] = useState('');
+
+  useEffect(() => {
+    if (address) {
+      setCurrentAddress(address);
+    }
+  }, [address]);
+
   return (
     <Layout>
       <Container
@@ -196,11 +204,7 @@ export default function FirstBadge() {
             separator={<NavigateNextIcon fontSize="small" />}
             aria-label="breadcrumb"
           >
-            <Link
-              underline="hover"
-              color="inherit"
-              href={`/buidlers/${address}?isFromOnboarding=true`}
-            >
+            <Link href={`/buidlers/${currentAddress}?isFromOnboarding=true`}>
               <Typography variant="body1">Member profile</Typography>
             </Link>
             <Link underline="none" color="#437EF7" aria-current="page">
@@ -259,4 +263,6 @@ export default function FirstBadge() {
       </Container>
     </Layout>
   );
-}
+};
+
+export default FirstBadge;

@@ -26,7 +26,7 @@ const BadgeCard: React.FC<BadgeCardProps> = (props) => {
         <Typography sx={{color: '#666F85', fontWeight: 400, fontSize: '16px'}}>{eligible}</Typography>
       </Box>
       {linkText && linkUrl && 
-        <Link href={linkUrl} target="_blank" sx={{textDecoration: 'none', display: 'flex', flex: 1, justifyContent: 'flex-end'}}>
+        <Link href={linkUrl} sx={{textDecoration: 'none', display: 'flex', flex: 1, justifyContent: 'flex-end'}}>
           <Button width="190px" variant='outlined'>{linkText}</Button>
       </Link>
       }
