@@ -411,7 +411,7 @@ function ProfileForm(props) {
                   : 'linear-gradient(90deg, #305FE8 0%, #3AD9E3 100%)',
             }}
           >
-            Next
+            {props.updating ? 'Updating' : 'Next'}
           </Box>
         </Box>
       )}
