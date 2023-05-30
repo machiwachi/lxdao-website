@@ -49,12 +49,9 @@ const SectionAnniversary: React.FC = () => {
           value: ethers.utils.parseEther((0.02 * amt).toString()),
         },
       });
-
-      console.log(res);
       setLoading(false);
     } catch (err) {
       if (err.toString().includes('ChainMismatchError')) {
-        console.log(typeof CHAIN_ID);
         showMessage({
           type: 'error',
           title: 'Wrong Network',
