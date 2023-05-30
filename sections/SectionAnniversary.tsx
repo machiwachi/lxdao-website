@@ -10,7 +10,7 @@ import { ethers } from 'ethers';
 
 import abi from '@/abi/anniversary.json';
 
-const ADDRESS = '0x98D9457F349B04c7374E2Df011D31b6b118Da01f';
+const ADDRESS = process.env.NEXT_PUBLIC_ANNIVERSARY_CONTRACT_ADDRESS;
 const CHAIN_ID = parseInt(process.env.NEXT_PUBLIC_CHAIN_ID);
 const RPC_URL =
   (CHAIN_ID == 1
