@@ -257,12 +257,9 @@ function BuidlerDetails(props) {
   const [ipfsURLOnChain, setIpfsURLOnChain] = useState(null);
   const [accordionOpen, setAccordionOpen] = useState(false);
 
-  console.log('record: ', record);
-  // todo Muxin
-  const firstMemberBadgeAmount = 0;
-  // record?.badges?.find(
-  //   (badge) => badge.id === 'MemberFirstBadge'
-  // )?.amount;
+  const firstMemberBadgeAmount = record?.badges?.find(
+    (badge) => badge.id === 'MemberFirstBadge'
+  )?.amount;
 
   if (
     record?.status === 'PENDING' &&
@@ -394,12 +391,9 @@ function BuidlerDetails(props) {
     setAccordionOpen(value);
   };
 
-  // todo Muxin
-  const earnedBadgeAmount = 0;
-
-  // record?.badges?.filter(
-  //   (badge) => badge.amount > 0
-  // ).length;
+  const earnedBadgeAmount = record?.badges?.filter(
+    (badge) => badge.amount > 0
+  ).length;
 
   return (
     <Container paddingY={isFromOnboarding ? {} : { md: 12, xs: 8 }}>
@@ -898,47 +892,53 @@ function BuidlerDetails(props) {
         </Box>
         {/* right senction */}
         <Box boxSizing="border-box" flex="1">
-          <Box
-            sx={{
-              border: '0.5px solid #D0D5DD',
-              borderRadius: '6px',
-              padding: '30px',
-              marginBottom: '24px',
-            }}
-          >
-            <Typography
+          {((record?.badges && record?.badges.length > 0) ||
+            record?.status === 'PENDING' ||
+            record?.status === 'READYTOMINT') && (
+            <Box
               sx={{
-                fontSize: '16x',
-                fontWeight: 800,
-                color: '#101828',
-                marginBottom: '15px',
+                border: '0.5px solid #D0D5DD',
+                borderRadius: '6px',
+                padding: '30px',
+                marginBottom: '24px',
               }}
             >
-              Badges to be earned
-            </Typography>
-            <Box display="flex" gap="15px" flexDirection="column">
-              {/* todo Muxin */}
-              {/* {record?.badges &&
-                record?.badges.map((badge) => {
-                  if (badge?.id === 'MemberFirstBadge') {
-                    badge.linkText = 'Earn now';
-                    badge.linkUrl = '/firstBadge';
-                  }
-                  return badge.amount === 0 ? <BadgeCard {...badge} /> : null;
-                })} */}
-              {(record?.status === 'PENDING' ||
-                record?.status === 'READYTOMINT') && (
-                <BadgeCard
-                  image={`${process.env.NEXT_PUBLIC_LXDAO_BACKEND_API}/buidler/${record.address}/card`}
-                  name="Buidler card(SBT)"
-                  description="Governance rights entitled"
-                  eligible="Eligibility: Contribute in projects or working groups to earn up to 600 USDC/LXP reward."
-                  linkText="Contribute to earn"
-                  linkUrl="/SBTCard"
-                />
-              )}
+              <Typography
+                sx={{
+                  fontSize: '16x',
+                  fontWeight: 800,
+                  color: '#101828',
+                  marginBottom: '15px',
+                }}
+              >
+                Badges to be earned
+              </Typography>
+              <Box display="flex" gap="15px" flexDirection="column">
+                {record?.badges &&
+                  record?.badges.map((badge, index) => {
+                    if (badge?.id === 'MemberFirstBadge') {
+                      badge.linkText = 'Earn now';
+                      badge.linkUrl = '/firstBadge';
+                    }
+                    return badge.amount === 0 ? (
+                      <BadgeCard key={index} {...badge} />
+                    ) : null;
+                  })}
+                {(record?.status === 'PENDING' ||
+                  record?.status === 'READYTOMINT') && (
+                  <BadgeCard
+                    image={`/images/card.png`}
+                    name="Buidler card(SBT)"
+                    description="Governance rights entitled"
+                    eligible="Eligibility: Contribute in projects or working groups to earn up to 600 USDC/LXP reward."
+                    linkText="Contribute to earn"
+                    linkUrl="/SBTCard"
+                  />
+                )}
+              </Box>
             </Box>
-          </Box>
+          )}
+
           <Box display="flex" flexDirection="column">
             <Accordion
               onChange={handleAccordionOnChange}

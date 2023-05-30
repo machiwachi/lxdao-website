@@ -414,7 +414,6 @@ export function BuidlerCard({ record }) {
 export default function Profile() {
   const { address } = useAccount();
   const [loading, record, error, refresh] = useBuidler(address);
-  const [visible, setVisible] = useState(false);
   const [updating, setUpdating] = useState(false);
   const router = useRouter();
 
@@ -434,7 +433,6 @@ export default function Profile() {
       if (result.status !== 'SUCCESS') {
         throw new Error(result.message);
       }
-      setVisible(false);
       refresh();
       router.push(`/buidlers/${address}?isFromOnboarding=true`);
     } catch (err) {
@@ -455,30 +453,33 @@ export default function Profile() {
       currentStep={2}
       hideButton={true}
     >
-      <ProfileForm
-        updating={updating}
-        innerContainerStyle={{
-          maxWidth: '888px',
-          marginBottom: '48px',
-          border: '0.5px solid #D0D5DD',
-          borderRadius: '12px',
-          padding: '24px 40px',
-        }}
-        isOnboardingProcess={true}
-        backUrl="/onboarding/intro"
-        values={_.cloneDeep(
-          _.pick(record, [
-            'avatar',
-            'name',
-            'description',
-            'skills',
-            'interests',
-            'contacts',
-            'privateContacts',
-          ])
-        )}
-        saveProfileHandler={saveProfileHandler}
-      />
+      {((address && address === record?.address) ||
+        (address && !record?.avatar)) && (
+        <ProfileForm
+          updating={updating}
+          innerContainerStyle={{
+            maxWidth: '888px',
+            marginBottom: '48px',
+            border: '0.5px solid #D0D5DD',
+            borderRadius: '12px',
+            padding: '24px 40px',
+          }}
+          isOnboardingProcess={true}
+          backUrl="/onboarding/intro"
+          values={_.cloneDeep(
+            _.pick(record, [
+              'avatar',
+              'name',
+              'description',
+              'skills',
+              'interests',
+              'contacts',
+              'privateContacts',
+            ])
+          )}
+          saveProfileHandler={saveProfileHandler}
+        />
+      )}
     </OnBoardingLayout>
   );
 }
