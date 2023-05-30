@@ -423,7 +423,7 @@ function BuidlerDetails(props) {
             </Box>
           </Box>
         )}
-      {address === record.address && record.status === 'READYTOMINT' && (
+      {/** {address === record.address && record.status === 'READYTOMINT' && (
         <Box marginTop={4}>
           <Alert severity="info">
             Welcome LXDAO. Your Buidler Card is Ready to Mint.
@@ -445,7 +445,7 @@ function BuidlerDetails(props) {
             </LXButton>
           </Box>
         </Box>
-      )}
+      )}*/}
       {isBuddyChecking && record.status === 'PENDING' && (
         <Box marginTop={4}>
           <Alert severity="info">Enable Mint Access</Alert>
