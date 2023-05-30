@@ -22,7 +22,7 @@ export default function OnBoardingLayout({
 
   return (
     <Layout title={layoutTitle}>
-      <Container paddingY={8} maxWidth={1216}>
+      <Container paddingY={4} maxWidth={1216}>
         <Steps>
           {stepsData.map((step) => {
             return (
@@ -35,8 +35,8 @@ export default function OnBoardingLayout({
           })}
         </Steps>
         <Typography
-          fontSize="48px"
-          lineHeight="44px"
+          fontSize="36px"
+          lineHeight="40px"
           color="#101828"
           letterSpacing="-0.02em"
           mt="36px"

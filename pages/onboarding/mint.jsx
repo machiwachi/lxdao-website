@@ -21,7 +21,6 @@ export function ipfsToBytes(ipfsURI) {
 export default function Mint() {
   const { address } = useAccount();
   const [, record, , refresh] = useBuidler(address);
-  console.log(record);
   const { data: signer } = useSigner();
   const [minting, setMinting] = useState(false);
   const [updating, setUpdating] = useState(false);

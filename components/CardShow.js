@@ -47,7 +47,7 @@ export function CardShow({ path, title, buttonText, tip }) {
 
       <Typography
         fontFamily="Inter"
-        fontSize="48px"
+        fontSize="36px"
         lineHeight="44px"
         fontWeight="800"
         marginY="24px"
