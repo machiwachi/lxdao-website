@@ -5,12 +5,7 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import showMessage from '@/components/showMessage';
 import LXButton from '@/components/Button';
-import {
-  useAccount,
-  // useContractRead,
-  useContractWrite,
-  useConnect,
-} from 'wagmi';
+import { useAccount, useContractWrite, useConnect } from 'wagmi';
 import { ethers } from 'ethers';
 
 import abi from '@/abi/anniversary.json';
@@ -23,7 +18,7 @@ const RPC_URL =
     : 'https://goerli.infura.io/v3/') + process.env.NEXT_PUBLIC_INFURA_ID;
 // const CHAIN_ID = 5;
 
-const SectionAnniversary = () => {
+const SectionAnniversary: React.FC = () => {
   const anniversaryContract = {
     addressOrName: ADDRESS,
     contractInterface: abi,
