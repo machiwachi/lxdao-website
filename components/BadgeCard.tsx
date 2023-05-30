@@ -13,9 +13,9 @@ type BadgeCardProps = {
 };
 
 const BadgeCard: React.FC<BadgeCardProps> = (props) => {
-  const { image, name, description, eligible, linkText, linkUrl } = props;
+  const { image, name, description, eligible, linkText, linkUrl, ...rest } = props;
   return (
-    <Box display='flex' justifyContent='space-between' alignItems='center' sx={{position: 'relative', border: '0.5px solid #D0D5DD', borderRadius: '6px', padding: '27px'}}>
+    <Box {...rest} display='flex' justifyContent='space-between' alignItems='center' sx={{position: 'relative', border: '0.5px solid #D0D5DD', borderRadius: '6px', padding: '27px'}}>
       <Box sx={{position: 'absolute', top: '-21px', left: '-21px'}} component={'img'} src={'/icons/badge-status.svg'}></Box>
       <Box flex={1} display="flex" justifyContent="center">
         <Box component={'img'} src={image} height="124px" />

@@ -83,7 +83,6 @@ function ProfileForm(props) {
     );
   }
 
-  //dissey to do change acatar
   return (
     <Box>
       <Box style={props.innerContainerStyle || {}}>
@@ -160,7 +159,7 @@ function ProfileForm(props) {
               fontSize: '20px',
             }}
           >
-            Skills
+            Skills <span style={{ color: 'red' }}>*</span>
           </Typography>
           <Controller
             name={'skills'}
@@ -188,7 +187,7 @@ function ProfileForm(props) {
               fontSize: '20px',
             }}
           >
-            Interests
+            Interests <span style={{ color: 'red' }}>*</span>
           </Typography>
           <Controller
             name={'interests'}
@@ -228,14 +227,15 @@ function ProfileForm(props) {
               fontSize: '20px',
             }}
           >
-            Contacts{' '}
+            Contacts <span style={{ color: 'red' }}>* </span>
             <span
               style={{
                 fontSize: 14,
                 display: 'inline',
               }}
             >
-              (the following contacts will be publicly available)
+              (At least one contacts are required, the following contacts will
+              be publicly available)
             </span>
           </Typography>
           <Controller
@@ -300,6 +300,7 @@ function ProfileForm(props) {
             render={({ field: { onChange, value } }) => {
               return (
                 <TextField
+                  required
                   fullWidth
                   label="Private Email"
                   value={value?.email}

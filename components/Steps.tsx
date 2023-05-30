@@ -4,7 +4,7 @@ import styled from 'styled-components';
 type StepProps = {
   label: string;
   active: boolean;
-  key: number;
+  index: number | string;
   onClick: () => void;
 };
 
@@ -14,6 +14,8 @@ type StepsProps = {
 
 type StepItemProps = {
   active: boolean;
+  key: number | string;
+  onClick: () => void;
 }
 
 const StepsWrapper = styled.div`
@@ -33,11 +35,12 @@ const StepItem = styled.div<StepItemProps>`
 `;
 
 const Step: React.FC<StepProps> = (props) => {
-  const { label, active, key } = props;
+  const { label, active, index, onClick } = props;
   return (
     <StepItem
       active={active}
-      key={key}
+      key={index}
+      onClick={onClick}
     >
       {label}
     </StepItem>
