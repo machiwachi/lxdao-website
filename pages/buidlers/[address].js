@@ -100,7 +100,7 @@ function LXPointsTable({ points }) {
           <TableRow>
             <TableCell sx={{ paddingLeft: 0 }} width="15%" align="left">
               <Typography color="#666F85" variant="body2" fontWeight="400">
-                Remuneration
+                Compensation
               </Typography>
             </TableCell>
             <TableCell width="20%" align="left">
@@ -981,7 +981,7 @@ function BuidlerDetails(props) {
                       variant="body1"
                       color="#101828"
                     >
-                      All Remuneration{' '}
+                      All Compensation{' '}
                       <Link
                         href="/LXPApplication"
                         target="_blank"

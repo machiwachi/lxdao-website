@@ -48,7 +48,7 @@ function ContactsField(props) {
         <Grid item xs={12}>
           <TextField
             fullWidth
-            label="!!Public!! Email"
+            label="Email"
             value={value.email}
             placeholder="your@email.com"
             onChange={(event) => {

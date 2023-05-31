@@ -99,7 +99,7 @@ export default function OnBoardingAlertBtn() {
           <LightTooltip title="Click me to complete the onborading process.">
             <RotateBorder
               onClick={() => {
-                if (buidler?.avatar) {
+                if (buidler?.name) {
                   router.push(`/buidlers/${address}?isFromOnboarding=true`);
                 } else {
                   router.push('/onboarding/intro');
