@@ -155,7 +155,7 @@ const SectionAnniversary: React.FC = () => {
           </Box>
 
           <LXButton disabled={loading} onClick={handleMint} variant="gradient">
-            Recharge your conscience
+            Mint
           </LXButton>
         </Box>
       </Box>
