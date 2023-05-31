@@ -46,18 +46,28 @@ export default function Home() {
 
   useEffect(async () => {
     try {
-      const res = await API.get('/buidler?per_page=100');
+      const res = await API.get('/buidler?per_page=200');
       const result = res?.data;
       if (result.status !== 'SUCCESS') {
         // error todo Muxin add common alert, wang teng design
         return;
       }
       if (result?.data) {
-        setBuidlers(result?.data);
-        const activeBuidlersNumber = result?.data.filter(
-          (buidler) => buidler.status === 'ACTIVE'
-        )?.length;
-        setActiveBuidlerAmount(activeBuidlersNumber);
+        const members = [];
+        result?.data?.forEach((member) => {
+          const firstMemberBadgeIndex =
+            member?.badges?.types?.indexOf('MemberFirstBadge');
+          if (
+            member?.status === 'ACTIVE' ||
+            member?.status === 'READYTOMINT' ||
+            (member?.status === 'PENDING' &&
+              member?.badges?.amounts[firstMemberBadgeIndex] > 0)
+          ) {
+            members.push(member);
+          }
+        });
+        setBuidlers(members);
+        setActiveBuidlerAmount(members.length);
       }
     } catch (err) {
       console.error(err);

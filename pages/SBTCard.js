@@ -186,7 +186,7 @@ export default function FirstBadge() {
             {minting ? 'Minting...' : 'Mint'}
           </LXButton>
           <Typography fontSize="16px" color="#666F85">
-            Contribute in projects or working groups to earn up to 600 USDC
+            Contribute in projects or working groups to earn up to 500 USDC
             reward. Then request a current member with SBT held to initialize a
             proposal.
           </Typography>

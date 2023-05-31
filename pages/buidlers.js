@@ -274,7 +274,7 @@ export default function Home() {
   }, []);
 
   return (
-    <Layout title="LXDAO Buidlers | LXDAO">
+    <Layout title="LXDAO Members | LXDAO">
       <Container paddingY={{ md: 12, xs: 8 }} maxWidth={1216}>
         <Box
           display="flex"
@@ -290,7 +290,7 @@ export default function Home() {
               lineHeight="70px"
               color="#101828"
             >
-              LXDAO Buidlers
+              LXDAO Members
             </Typography>
             <Typography
               variant="subtitle1"
@@ -325,7 +325,7 @@ export default function Home() {
                 searchList(value, role, skill, 1);
               }}
               label="Search"
-              placeholder="Search buidlers"
+              placeholder="Search members"
             />
           </Grid>
           <Grid item xs={4}>

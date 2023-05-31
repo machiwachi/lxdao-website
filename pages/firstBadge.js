@@ -221,7 +221,7 @@ const FirstBadge = () => {
               Please complete the following 3 tasks and wait for the governance
               working group to verify (contact{' '}
               <Link underline="none" color="#36AFF9">
-                Marcus
+                <a href="mailto: zqsanjingshou@gmail.com">Marcus</a>
               </Link>{' '}
               to check the status)
             </>

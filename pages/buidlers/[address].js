@@ -426,7 +426,7 @@ function BuidlerDetails(props) {
       {/** {address === record.address && record.status === 'READYTOMINT' && (
         <Box marginTop={4}>
           <Alert severity="info">
-            Welcome LXDAO. Your Buidler Card is Ready to Mint.
+            Welcome LXDAO. Your SBT Card is Ready to Mint.
           </Alert>
           <Box
             display="flex"
@@ -928,9 +928,9 @@ function BuidlerDetails(props) {
                   record?.status === 'READYTOMINT') && (
                   <BadgeCard
                     image={`/images/card.png`}
-                    name="Buidler card(SBT)"
+                    name="Buidler card (SBT)"
                     description="Governance rights entitled"
-                    eligible="Eligibility: Contribute in projects or working groups to earn up to 600 USDC/LXP reward."
+                    eligible="Eligibility: Contribute in projects or working groups to earn up to 500 USDC/LXP reward."
                     linkText="Contribute to earn"
                     linkUrl="/SBTCard"
                   />
@@ -1422,7 +1422,7 @@ export default function Buidler() {
   if (isFromOnboarding && address === currentAddress) {
     return (
       <OnBoardingLayout
-        layoutTitle={`${record && record.name} Buidler Profile | LXDAO`}
+        layoutTitle={`${record && record.name} Member Profile | LXDAO`}
         title="Congrats, profile complete!"
         next="done"
         currentStep={3}
@@ -1433,7 +1433,7 @@ export default function Buidler() {
     );
   }
   return (
-    <Layout title={`${record && record.name} Buidler Profile | LXDAO`}>
+    <Layout title={`${record && record.name} Member Profile | LXDAO`}>
       <BuidlerLayout />
     </Layout>
   );
