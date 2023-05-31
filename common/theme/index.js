@@ -94,6 +94,13 @@ const getTheme = (mode) =>
             },
           },
         },
+        MuiFormLabel: {
+          styleOverrides: {
+            asterisk: {
+              color: 'red',
+            },
+          },
+        },
       },
     })
   );

@@ -109,7 +109,7 @@ export default function Buddy() {
               </Typography>
               <Box
                 component="img"
-                src={data.avatar}
+                src={data?.avatar}
                 sx={{
                   width: '80px',
                   height: '80px',

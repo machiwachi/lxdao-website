@@ -99,7 +99,7 @@ const SectionApplicationSteps = () => {
             {steps.map((step, index) => {
               return (
                 <Box key={index} position="relative" flex="1 1 33%">
-                  <Step index={index} stepData={step} />
+                  <Step stepData={step} />
                   {index !== steps.length - 1 ? (
                     <>
                       <Box
