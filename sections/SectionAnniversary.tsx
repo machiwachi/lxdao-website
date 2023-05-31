@@ -25,9 +25,9 @@ const SectionAnniversary: React.FC = () => {
 
   const { isConnected } = useAccount();
   const { connect, connectors } = useConnect();
-  const [totalSupply, setTotalSupply] = useState('0');
+  const [totalSupply, setTotalSupply] = useState('----');
   const [amt, setAmt] = useState(1);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const { writeAsync } = useContractWrite({
     ...anniversaryContract,
@@ -81,6 +81,7 @@ const SectionAnniversary: React.FC = () => {
       const anniContract = new ethers.Contract(ADDRESS, abi, provider);
       const res = await anniContract.totalSupply();
       setTotalSupply(res.toString() || '0');
+      setLoading(false);
     })();
   }, []);
   return (
