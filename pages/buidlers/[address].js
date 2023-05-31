@@ -397,32 +397,34 @@ function BuidlerDetails(props) {
 
   return (
     <Container paddingY={isFromOnboarding ? {} : { md: 12, xs: 8 }}>
-      {address === record.address &&
-        record.status === 'PENDING' &&
-        !isFromOnboarding && (
-          <Box marginTop={4}>
-            <Alert severity="success">
-              Welcome LXDAO. Please fill up the form first, and your Buddy will
-              enable your Mint access on the Onboarding Session. Thanks.
-            </Alert>
-            <Box
-              display="flex"
-              justifyContent="center"
-              marginTop={4}
-              marginBottom={4}
-            >
-              <LXButton width="200px" disabled={true} variant="gradient">
-                {minting ? 'Minting Builder Card...' : 'Mint Builder Card'}
-              </LXButton>
+      {/**
+        {address === record.address &&
+          record.status === 'PENDING' &&
+          !isFromOnboarding && (
+            <Box marginTop={4}>
+              <Alert severity="success">
+                Welcome LXDAO. Please fill up the form first, and your Buddy will
+                enable your Mint access on the Onboarding Session. Thanks.
+              </Alert>
+              <Box
+                display="flex"
+                justifyContent="center"
+                marginTop={4}
+                marginBottom={4}
+              >
+                <LXButton width="200px" disabled={true} variant="gradient">
+                  {minting ? 'Minting Builder Card...' : 'Mint Builder Card'}
+                </LXButton>
+              </Box>
+              <Box display="flex" justifyContent="center" marginBottom={6}>
+                <Typography variant="body1" fontWeight="400">
+                  We will arrange on-boarding as soon as possible and help you
+                  mint buidler card
+                </Typography>
+              </Box>
             </Box>
-            <Box display="flex" justifyContent="center" marginBottom={6}>
-              <Typography variant="body1" fontWeight="400">
-                We will arrange on-boarding as soon as possible and help you
-                mint buidler card
-              </Typography>
-            </Box>
-          </Box>
-        )}
+          )}
+        */}
       {/** {address === record.address && record.status === 'READYTOMINT' && (
         <Box marginTop={4}>
           <Alert severity="info">
