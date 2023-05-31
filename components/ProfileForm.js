@@ -90,21 +90,10 @@ function ProfileForm(props) {
           <Controller
             name={'avatar'}
             control={control}
-            rules={{ required: true }}
             render={({ field: { onChange, value } }) => {
               return <Avatar avatarValue={value} onChange={onChange}></Avatar>;
             }}
           />
-          {errors.avatar && (
-            <Typography
-              fontSize="0.75rem"
-              color="#d32f2f"
-              marginTop={2}
-              marginLeft={3}
-            >
-              Avatar is required
-            </Typography>
-          )}
         </Box>
         <Box marginBottom={2.5}>
           <Controller
@@ -277,7 +266,7 @@ function ProfileForm(props) {
               marginTop={1}
               marginLeft={2}
             >
-              At least one contacts are required, Email must be valid.
+              At least one contacts are required.
             </Typography>
           )}
         </Box>
@@ -411,7 +400,7 @@ function ProfileForm(props) {
                   : 'linear-gradient(90deg, #305FE8 0%, #3AD9E3 100%)',
             }}
           >
-            {props.updating ? 'Updating' : 'Next'}
+            {props.updating ? 'Updating...' : 'Next'}
           </Box>
         </Box>
       )}
