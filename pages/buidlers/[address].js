@@ -930,7 +930,7 @@ function BuidlerDetails(props) {
                     image={`/images/card.png`}
                     name="Buidler card (SBT)"
                     description="Governance rights entitled"
-                    eligible="Eligibility: Contribute in projects or working groups to earn up to 600 USDC/LXP reward."
+                    eligible="Eligibility: Contribute in projects or working groups to earn up to 500 USDC/LXP reward."
                     linkText="Contribute to earn"
                     linkUrl="/SBTCard"
                   />
