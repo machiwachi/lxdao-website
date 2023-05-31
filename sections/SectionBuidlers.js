@@ -153,7 +153,7 @@ const SectionBuidlers = ({ buidlers }) => {
           color="#ffffff"
           marginBottom={3}
         >
-          LXDAO BUIDLERS
+          LXDAO MEMBERS
         </Typography>
         <Typography
           variant="subtitle1"

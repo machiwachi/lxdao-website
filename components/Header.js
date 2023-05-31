@@ -167,7 +167,7 @@ const Header = () => {
               router.push('/buidlers');
             }}
           >
-            Buidlers
+            Members
           </Typography>
           <Link
             href={`https://lxdao.notion.site/`}
