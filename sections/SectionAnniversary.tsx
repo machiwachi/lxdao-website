@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, IconButton, InputBase } from '@mui/material';
+import { Box, Typography, IconButton, InputBase, Link } from '@mui/material';
 import Container from '@/components/Container';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
@@ -158,6 +158,20 @@ const SectionAnniversary: React.FC = () => {
           <LXButton disabled={loading} onClick={handleMint} variant="gradient">
             Mint
           </LXButton>
+        </Box>
+        <Box sx={{ display: 'flex' }} gap={1}>
+          <Link
+            target="_blank"
+            href="https://etherscan.io/address/0x854c0f99f67e37b8f4d5ad92ea7f69cd193b058a"
+          >
+            <Box component="img" src="/images/etherscan.svg" />
+          </Link>
+          <Link
+            target="_blank"
+            href="https://opensea.io/collection/lxdao1stanniversarynft"
+          >
+            <Box component="img" src="/images/opensea.svg" />
+          </Link>
         </Box>
       </Box>
     </Container>
