@@ -395,6 +395,10 @@ function BuidlerDetails(props) {
     (badge) => badge.amount > 0
   ).length;
 
+  const badgesToBeEarnedNumber = record?.badges?.filter(
+    (badge) => badge.amount === 0
+  ).length;
+
   return (
     <Container paddingY={isFromOnboarding ? {} : { md: 12, xs: 8 }}>
       {/**
@@ -894,7 +898,7 @@ function BuidlerDetails(props) {
         </Box>
         {/* right senction */}
         <Box boxSizing="border-box" flex="1">
-          {((record?.badges && record?.badges.length > 0) ||
+          {(badgesToBeEarnedNumber > 0 ||
             record?.status === 'PENDING' ||
             record?.status === 'READYTOMINT') && (
             <Box
@@ -1425,7 +1429,7 @@ export default function Buidler() {
     return (
       <OnBoardingLayout
         layoutTitle={`${record && record.name} Member Profile | LXDAO`}
-        title="Congrats, profile complete!"
+        title="Profile created! Earn your first badge to finish onboarding."
         next="done"
         currentStep={3}
         hideButton={true}
