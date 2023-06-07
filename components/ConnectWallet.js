@@ -135,10 +135,7 @@ const ConnectWalletButton = () => {
     <ConnectButton
       showBalance={false}
       chainStatus="none"
-      accountStatus={{
-        smallScreen: 'avatar',
-        largeScreen: 'full',
-      }}
+      accountStatus="address"
     />
   );
 };
