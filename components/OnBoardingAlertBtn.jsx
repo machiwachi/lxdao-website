@@ -78,6 +78,7 @@ export default function OnBoardingAlertBtn() {
     });
   }, [width, height]);
 
+  // TODO: add buidler badge status check for displaying the alert
   return (
     <>
       <Confetti
@@ -86,42 +87,50 @@ export default function OnBoardingAlertBtn() {
         recycle={false}
         run={open}
       />
-      {(buidler?.status == 'PENDING' || buidler?.status == 'READYTOMINT') &&
-        !buidler?.avatar && (
-          <Box
-            display={router.asPath.includes('onboarding') ? 'none' : 'normal'}
-          >
-            <LightTooltip title="Click me to complete the onborading process.">
-              <RotateBorder
-                onClick={() => {
-                  setOpen(true);
-                }}
-              >
-                <RotateContent>
-                  <Box component="img" src="/icons/user-block.svg"></Box>
-                  <Box
-                    sx={{
-                      position: 'absolute',
-                      width: '24px',
-                      height: '24px',
-                      borderRadius: '50%',
-                      color: '#fff',
-                      fontSize: '16px',
-                      fontWeight: '900',
-                      lineHeight: '20px',
-                      backgroundColor: '#FF0000',
-                      left: '52%',
-                      bottom: '52%',
-                      border: '2px solid #fff',
-                    }}
-                  >
-                    !
-                  </Box>
-                </RotateContent>
-              </RotateBorder>
-            </LightTooltip>
-          </Box>
-        )}
+      {buidler?.status == 'PENDING' && (
+        <Box
+          display={
+            router.asPath.includes('onboarding') ||
+            router.asPath.includes('isFromOnboarding=true')
+              ? 'none'
+              : 'normal'
+          }
+        >
+          <LightTooltip title="Click me to complete the onborading process.">
+            <RotateBorder
+              onClick={() => {
+                if (buidler?.name) {
+                  router.push(`/buidlers/${address}?isFromOnboarding=true`);
+                } else {
+                  router.push('/onboarding/intro');
+                }
+              }}
+            >
+              <RotateContent>
+                <Box component="img" src="/icons/user-block.svg"></Box>
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    width: '24px',
+                    height: '24px',
+                    borderRadius: '50%',
+                    color: '#fff',
+                    fontSize: '16px',
+                    fontWeight: '900',
+                    lineHeight: '20px',
+                    backgroundColor: '#FF0000',
+                    left: '52%',
+                    bottom: '52%',
+                    border: '2px solid #fff',
+                  }}
+                >
+                  !
+                </Box>
+              </RotateContent>
+            </RotateBorder>
+          </LightTooltip>
+        </Box>
+      )}
 
       <Dialog open={open} maxWidth="714px">
         <Box

@@ -56,6 +56,8 @@ import Project from '@/components/Project';
 import { getIpfsCid, groupBy } from '@/utils/utility';
 import LXButton from '@/components/Button';
 import WorkingGroupCard from '@/components/WorkingGroupCard';
+import OnBoardingLayout from '@/components/OnBoardingLayout';
+import BadgeCard from '@/components/BadgeCard';
 import { BuidlerCard } from '../buidlers';
 
 function totalLXPoints(record) {
@@ -122,7 +124,7 @@ function LXPointsTable({ points }) {
           <TableRow>
             <TableCell sx={{ paddingLeft: 0 }} width="15%" align="left">
               <Typography color="#666F85" variant="body2" fontWeight="400">
-                Remuneration
+                Compensation
               </Typography>
             </TableCell>
             <TableCell width="20%" align="left">
@@ -399,6 +401,7 @@ function BuidlerDetails(props) {
   });
 
   const router = useRouter();
+  const isFromOnboarding = router?.query?.isFromOnboarding;
 
   const [visible, setVisible] = useState(false);
   const [minting, setMinting] = useState(false);
@@ -415,6 +418,23 @@ function BuidlerDetails(props) {
   const [ipfsURLOnChain, setIpfsURLOnChain] = useState(null);
   const [accordionOpen, setAccordionOpen] = useState(false);
   const [stableCoinAccordionOpen, setStableCoinAccordionOpen] = useState(false);
+
+  const firstMemberBadgeAmount = record?.badges?.find(
+    (badge) => badge.id === 'MemberFirstBadge'
+  )?.amount;
+
+  if (
+    record?.status === 'PENDING' &&
+    firstMemberBadgeAmount === 0 &&
+    (!address || address !== record?.address)
+  ) {
+    return (
+      <Box width="100%" textAlign="center" marginTop="200px" color="red">
+        This member has not yet completed the onboarding process and is
+        temporarily inaccessible.{' '}
+      </Box>
+    );
+  }
 
   useEffect(async () => {
     if (!signer) {
@@ -537,36 +557,44 @@ function BuidlerDetails(props) {
     setStableCoinAccordionOpen(value);
   };
 
+  const earnedBadgeAmount = record?.badges?.filter(
+    (badge) => badge.amount > 0
+  ).length;
+
   return (
-    <Container paddingY={{ md: 12, xs: 8 }}>
-      {address === record.address && record.status === 'PENDING' && (
-        <Box marginTop={4}>
-          <Alert severity="success">
-            Welcome LXDAO. Please fill up the form first, and your Buddy will
-            enable your Mint access on the Onboarding Session. Thanks.
-          </Alert>
-          <Box
-            display="flex"
-            justifyContent="center"
-            marginTop={4}
-            marginBottom={4}
-          >
-            <LXButton width="200px" disabled={true} variant="gradient">
-              {minting ? 'Minting Builder Card...' : 'Mint Builder Card'}
-            </LXButton>
-          </Box>
-          <Box display="flex" justifyContent="center" marginBottom={6}>
-            <Typography variant="body1" fontWeight="400">
-              We will arrange on-boarding as soon as possible and help you mint
-              buidler card
-            </Typography>
-          </Box>
-        </Box>
-      )}
-      {address === record.address && record.status === 'READYTOMINT' && (
+    <Container paddingY={isFromOnboarding ? {} : { md: 12, xs: 8 }}>
+      {/**
+        {address === record.address &&
+          record.status === 'PENDING' &&
+          !isFromOnboarding && (
+            <Box marginTop={4}>
+              <Alert severity="success">
+                Welcome LXDAO. Please fill up the form first, and your Buddy will
+                enable your Mint access on the Onboarding Session. Thanks.
+              </Alert>
+              <Box
+                display="flex"
+                justifyContent="center"
+                marginTop={4}
+                marginBottom={4}
+              >
+                <LXButton width="200px" disabled={true} variant="gradient">
+                  {minting ? 'Minting Builder Card...' : 'Mint Builder Card'}
+                </LXButton>
+              </Box>
+              <Box display="flex" justifyContent="center" marginBottom={6}>
+                <Typography variant="body1" fontWeight="400">
+                  We will arrange on-boarding as soon as possible and help you
+                  mint buidler card
+                </Typography>
+              </Box>
+            </Box>
+          )}
+        */}
+      {/** {address === record.address && record.status === 'READYTOMINT' && (
         <Box marginTop={4}>
           <Alert severity="info">
-            Welcome LXDAO. Your Buidler Card is Ready to Mint.
+            Welcome LXDAO. Your SBT Card is Ready to Mint.
           </Alert>
           <Box
             display="flex"
@@ -585,7 +613,7 @@ function BuidlerDetails(props) {
             </LXButton>
           </Box>
         </Box>
-      )}
+      )}*/}
       {isBuddyChecking && record.status === 'PENDING' && (
         <Box marginTop={4}>
           <Alert severity="info">Enable Mint Access</Alert>
@@ -611,7 +639,7 @@ function BuidlerDetails(props) {
         >
           <Box
             sx={{
-              borderadius: '6px',
+              borderRadius: '6px',
               background: '#fff',
               width: '383px',
               height: '232px',
@@ -651,7 +679,6 @@ function BuidlerDetails(props) {
           </Box>
         </Dialog>
       )}
-
       {txRes && (
         <Dialog
           maxWidth="383px"
@@ -795,6 +822,46 @@ function BuidlerDetails(props) {
                   borderColor: '#E5E5E5',
                 }}
               />
+              {earnedBadgeAmount > 0 && (
+                <Box display="flex" gap="10px" marginY={3}>
+                  {record?.badges &&
+                    record?.badges.map((badge) => {
+                      return badge.amount > 0 ? (
+                        <Box
+                          component={'img'}
+                          src={badge?.image}
+                          width="60px"
+                        />
+                      ) : null;
+                    })}
+                </Box>
+              )}
+              {record.status === 'ACTIVE' ? (
+                <Link
+                  target="_blank"
+                  href={`https://opensea.io/collection/lxdaobuidler`}
+                  sx={{
+                    textDecoration: 'none',
+                  }}
+                >
+                  <Box
+                    marginBottom={3}
+                    width="auto"
+                    display="flex"
+                    justifyContent="center"
+                  >
+                    <img
+                      crossOrigin="anonymous"
+                      style={{
+                        display: 'block',
+                        maxWidth: '100%',
+                      }}
+                      src={`${process.env.NEXT_PUBLIC_LXDAO_BACKEND_API}/buidler/${record.address}/card`}
+                      alt=""
+                    />
+                  </Box>
+                </Link>
+              ) : null}
               {record.description && (
                 <Box marginTop={3}>
                   <Typography sx={{ wordBreak: 'break-all' }}>
@@ -990,35 +1057,56 @@ function BuidlerDetails(props) {
               </Box>
             </Link>
           )}
-          {record.status === 'ACTIVE' ? (
-            <Link
-              target="_blank"
-              href={`https://opensea.io/collection/lxdaobuidler`}
-              sx={{
-                textDecoration: 'none',
-              }}
-            >
-              <Box
-                marginTop={2}
-                width={{ lg: '300px', sm: 'auto', xs: '350px' }}
-                display="flex"
-                justifyContent="center"
-              >
-                <img
-                  crossOrigin="anonymous"
-                  style={{
-                    display: 'block',
-                    maxWidth: '100%',
-                  }}
-                  src={`${process.env.NEXT_PUBLIC_LXDAO_BACKEND_API}/buidler/${record.address}/card`}
-                  alt=""
-                />
-              </Box>
-            </Link>
-          ) : null}
         </Box>
         {/* right senction */}
         <Box boxSizing="border-box" flex="1">
+          {((record?.badges && record?.badges.length > 0) ||
+            record?.status === 'PENDING' ||
+            record?.status === 'READYTOMINT') && (
+            <Box
+              sx={{
+                border: '0.5px solid #D0D5DD',
+                borderRadius: '6px',
+                padding: '30px',
+                marginBottom: '24px',
+              }}
+            >
+              <Typography
+                sx={{
+                  fontSize: '16x',
+                  fontWeight: 800,
+                  color: '#101828',
+                  marginBottom: '15px',
+                }}
+              >
+                Badges to be earned
+              </Typography>
+              <Box display="flex" gap="15px" flexDirection="column">
+                {record?.badges &&
+                  record?.badges.map((badge, index) => {
+                    if (badge?.id === 'MemberFirstBadge') {
+                      badge.linkText = 'Earn now';
+                      badge.linkUrl = '/firstBadge';
+                    }
+                    return badge.amount === 0 ? (
+                      <BadgeCard key={index} {...badge} />
+                    ) : null;
+                  })}
+                {(record?.status === 'PENDING' ||
+                  record?.status === 'READYTOMINT') && (
+                  <BadgeCard
+                    image={`/images/card.png`}
+                    name="Buidler card (SBT)"
+                    description="Governance rights entitled"
+                    eligible="Eligibility: Contribute in projects or working groups to earn up to 500 USDC/LXP reward."
+                    linkText="Contribute to earn"
+                    linkUrl="/SBTCard"
+                  />
+                )}
+              </Box>
+            </Box>
+          )}
+
           <Box display="flex" flexDirection="column">
             <Accordion
               onChange={handleAccordionOnChange}
@@ -1061,7 +1149,7 @@ function BuidlerDetails(props) {
                       variant="body1"
                       color="#101828"
                     >
-                      All Remuneration{' '}
+                      All Compensation{' '}
                       <Link
                         href="/LXPApplication"
                         target="_blank"
@@ -1549,17 +1637,19 @@ function BuidlerDetails(props) {
   );
 }
 
-// todo load builder on nodejs Muxin
+//TODO: load builder on nodejs Muxin
 export default function Buidler() {
   const router = useRouter();
-  const address = router.query.address;
+  const currentAddress = router.query.address;
   const [open, setOpen] = useState(false);
   const { width, height } = useWindowSize();
   const [size, setSize] = useState({
     width: 0,
     height: 0,
   });
-  const [loading, record, error, refresh] = useBuidler(address);
+  const [loading, record, error, refresh] = useBuidler(currentAddress);
+  const { address } = useAccount();
+  const isFromOnboarding = router?.query?.isFromOnboarding;
 
   // if (loading) return <Layout>Loading...</Layout>;
   useEffect(() => {
@@ -1577,37 +1667,58 @@ export default function Buidler() {
   }, [width, height]);
   if (loading) return null;
 
+  const BuidlerLayout = () => {
+    return (
+      <>
+        {record ? (
+          <>
+            <Confetti
+              width={size.width}
+              height={size.height}
+              recycle={false}
+              run={open}
+            />
+            <BuidlerDetails
+              refresh={() => {
+                refresh();
+              }}
+              record={record}
+            />
+          </>
+        ) : (
+          <Box
+            display="flex"
+            flexDirection="column"
+            width="100%"
+            alignItems="center"
+            paddingY={20}
+          >
+            <img width="80px" src="/icons/no-records.png" />
+            <Typography marginTop={4} color="#D0D5DD" fontSize="16px">
+              No Buidler found with the address {currentAddress}
+            </Typography>
+          </Box>
+        )}
+      </>
+    );
+  };
+
+  if (isFromOnboarding && address === currentAddress) {
+    return (
+      <OnBoardingLayout
+        layoutTitle={`${record && record.name} Member Profile | LXDAO`}
+        title="Congrats, profile complete!"
+        next="done"
+        currentStep={3}
+        hideButton={true}
+      >
+        <BuidlerLayout />
+      </OnBoardingLayout>
+    );
+  }
   return (
-    <Layout title={`${record && record.name} Buidler Profile | LXDAO`}>
-      {record ? (
-        <>
-          <Confetti
-            width={size.width}
-            height={size.height}
-            recycle={false}
-            run={open}
-          />
-          <BuidlerDetails
-            refresh={() => {
-              refresh();
-            }}
-            record={record}
-          />
-        </>
-      ) : (
-        <Box
-          display="flex"
-          flexDirection="column"
-          width="100%"
-          alignItems="center"
-          paddingY={20}
-        >
-          <img width="80px" src="/icons/no-records.png" />
-          <Typography marginTop={4} color="#D0D5DD" fontSize="16px">
-            No Buidler found with the address {address}
-          </Typography>
-        </Box>
-      )}
+    <Layout title={`${record && record.name} Member Profile | LXDAO`}>
+      <BuidlerLayout />
     </Layout>
   );
 }

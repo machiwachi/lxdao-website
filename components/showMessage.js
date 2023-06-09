@@ -6,6 +6,7 @@ import { Box, Dialog, Typography } from '@mui/material';
 import styled from '@emotion/styled';
 import ErrorIcon from '@mui/icons-material/Error';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import InfoIcon from '@mui/icons-material/Info';
 
 import getTheme from '../common/theme';
 
@@ -32,27 +33,34 @@ export function SimpleModal(props) {
   return (
     <Dialog onClose={onClose} open={visible}>
       <DialogWrapper>
-        {props.type && (
-          <IconWrapper>
-            {props.type === 'success' ? (
-              <CheckCircleIcon
-                sx={{
-                  fontSize: '40px',
-                }}
-                color="success"
-              ></CheckCircleIcon>
-            ) : (
-              <ErrorIcon
-                sx={{
-                  fontSize: '40px',
-                }}
-                color="error"
-              ></ErrorIcon>
-            )}
-          </IconWrapper>
-        )}
         <Box paddingX={1}>
-          <Box>
+          <Box display="flex" alignItems="center" gap="8px">
+            {props.type && (
+              <IconWrapper>
+                {props.type === 'success' ? (
+                  <CheckCircleIcon
+                    sx={{
+                      fontSize: '40px',
+                    }}
+                    color="success"
+                  ></CheckCircleIcon>
+                ) : props.type === 'info' ? (
+                  <InfoIcon
+                    sx={{
+                      fontSize: '40px',
+                    }}
+                    color="info"
+                  ></InfoIcon>
+                ) : (
+                  <ErrorIcon
+                    sx={{
+                      fontSize: '40px',
+                    }}
+                    color="error"
+                  ></ErrorIcon>
+                )}
+              </IconWrapper>
+            )}
             <Typography lineHeight={2} variant="h6">
               {props.title}
             </Typography>

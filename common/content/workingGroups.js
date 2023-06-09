@@ -1,23 +1,23 @@
 const workingGroupsData = [
   {
     image: '/images/workingGroups/governance-group.svg',
-    name: 'Governance Group',
-    link: 'https://www.notion.so/lxdao/Governance-Group-a3886d112d3b45c8a4fad6c178e2846b',
+    name: 'Governance Working Group',
+    link: 'https://www.notion.so/lxdao/Governance-Group-b80705fb7f984d4eafe82c35832a1847',
   },
   {
-    image: '/images/workingGroups/onboarding-committee.svg',
-    name: 'Onboarding Committee',
-    link: 'https://www.notion.so/lxdao/Onboarding-Committee-680a0a9e034d482db273f24760d93f83',
+    image: '/images/workingGroups/operation-group.svg',
+    name: 'Operation Working Group',
+    link: 'https://www.notion.so/lxdao/Operation-Group-906983936dc841ceb145339d1fd9c67a',
   },
   {
-    image: '/images/workingGroups/LXDAO-tools.svg',
-    name: 'LXDAO Tools',
+    image: '/images/workingGroups/LXDAO-tools-group.svg',
+    name: 'DAO Tooling Working Group',
     link: 'https://www.notion.so/lxdao/LXDAO-Tools-5425810ff08e42d9913d74a2a883d9c2',
   },
   {
-    image: '/images/workingGroups/LXDAO-dataCenter.svg',
-    name: 'LXDAO DataCenter',
-    link: 'https://www.notion.so/lxdao/LXDAO-DataCenter-40dfb4928f734c8eab0919490881d013',
+    image: '/images/workingGroups/technical-export.svg',
+    name: 'Tech Exports Working Group',
+    link: 'https://www.notion.so/lxdao/Technical-Expert-Working-Group-639e9f137de4464daf20b27418888808',
   },
 ];
 

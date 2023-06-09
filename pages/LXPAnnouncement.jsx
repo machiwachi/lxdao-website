@@ -318,7 +318,7 @@ function UnReleasedTable({ isAccountingTeam, isConnected }) {
                 Address
               </TableCell>
               <TableCell sx={{ color: '#666F85' }} align="center">
-                Remuneration
+                Compensation
               </TableCell>
               <TableCell sx={{ color: '#666F85' }} align="center">
                 Source
@@ -627,7 +627,7 @@ function ReleasedTable({ isAccountingTeam }) {
                   Address
                 </TableCell>
                 <TableCell sx={{ color: '#666F85' }} align="center">
-                  Remuneration
+                  Compensation
                 </TableCell>
                 <TableCell sx={{ color: '#666F85' }} align="center">
                   Source

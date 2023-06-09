@@ -1,5 +1,5 @@
 import { useAccount, useContract, useSigner } from 'wagmi';
-import { useEffect, useState } from 'react';
+import { useState, React } from 'react';
 import * as bs58 from 'bs58';
 
 import { Box, Typography, Fade } from '@mui/material';
@@ -12,7 +12,7 @@ import showMessage from '@/components/showMessage';
 import API from '@/common/API';
 import { Container } from '@mui/system';
 
-function ipfsToBytes(ipfsURI) {
+export function ipfsToBytes(ipfsURI) {
   const ipfsHash = ipfsURI.replace('ipfs://', '');
 
   return bs58.decode(ipfsHash).slice(2);
@@ -21,7 +21,6 @@ function ipfsToBytes(ipfsURI) {
 export default function Mint() {
   const { address } = useAccount();
   const [, record, , refresh] = useBuidler(address);
-  console.log(record);
   const { data: signer } = useSigner();
   const [minting, setMinting] = useState(false);
   const [updating, setUpdating] = useState(false);

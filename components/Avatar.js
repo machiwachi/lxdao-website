@@ -144,7 +144,7 @@ function Avatar(props) {
             <PreviewFile file={file} />
           ) : (
             <Img3
-              style={{ width: 150, height: 150 }}
+              style={{ width: 160, height: 160 }}
               src={props.avatarValue || '/images/placeholder.jpeg'}
             />
           )}

@@ -34,7 +34,7 @@ const BuidlerAvatarBox = ({ buidler, active, display }) => {
 
       <Box
         component="img"
-        src={buidler.avatar || '/images/placeholder.jpeg'}
+        src={buidler?.avatar || '/images/placeholder.jpeg'}
         width={{ lg: '180px', sm: '130px', xs: '100%' }}
         sx={{ aspectRatio: '1 / 1' }}
       />
@@ -153,7 +153,7 @@ const SectionBuidlers = ({ buidlers }) => {
           color="#ffffff"
           marginBottom={3}
         >
-          LXDAO BUIDLERS
+          LXDAO MEMBERS
         </Typography>
         <Typography
           variant="subtitle1"
@@ -189,7 +189,7 @@ const SectionBuidlers = ({ buidlers }) => {
           })}
         </Box>
         <Link
-          href={`/joinus`}
+          href={`/onboarding/intro`}
           color="#ffffff"
           sx={{
             textDecoration: 'none',
