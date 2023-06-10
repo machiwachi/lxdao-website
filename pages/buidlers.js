@@ -224,6 +224,7 @@ export default function Home() {
     if (trimmedSkill) {
       params.push('skill=' + trimmedSkill);
     }
+    params.push('status=ACTIVE&status=READYTOMINT&status=PENDING');
     params.push('page=' + (currentPage || current));
     params.push('per_page=9');
     query += params.join('&');
@@ -244,16 +245,7 @@ export default function Home() {
 
       let tempList = [];
       records.forEach((record) => {
-        const firstMemberBadgeIndex =
-          record?.badges?.types?.indexOf('MemberFirstBadge');
-        if (
-          record?.status === 'ACTIVE' ||
-          record?.status === 'READYTOMINT' ||
-          (record?.status === 'PENDING' &&
-            record?.badges?.amounts[firstMemberBadgeIndex] > 0)
-        ) {
-          tempList.push(record);
-        }
+        tempList.push(record);
       });
       setHasMore(tempList.length === 9);
 
