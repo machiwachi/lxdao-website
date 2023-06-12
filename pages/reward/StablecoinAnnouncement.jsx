@@ -14,6 +14,10 @@ import {
   Tooltip,
   IconButton,
   Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  TextField,
 } from '@mui/material';
 import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
@@ -37,6 +41,8 @@ import useBuidler from '@/components/useBuidler';
 import showMessage from '@/components/showMessage';
 
 import SafeAppsSDK from '@safe-global/safe-apps-sdk';
+import CloseIcon from '@mui/icons-material/Close';
+import ProfileForm from '@/components/ProfileForm';
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -143,7 +149,7 @@ function StatusLabel({ status }) {
   }
 }
 
-function UnReleasedTable({ isAccountingTeam, isConnected }) {
+function UnReleasedTable({ isAccountingTeam }) {
   const router = useRouter();
   const [rows, setRows] = useState([]);
   const [copied, setCopied] = useState(false);
@@ -151,6 +157,8 @@ function UnReleasedTable({ isAccountingTeam, isConnected }) {
   const [page, setPage] = useState(0);
   const [perPage, setPerPage] = useState(25);
   const [pagination, setPagination] = useState({});
+  const [visible, setVisible] = useState(false);
+  const [transaction, setTransaction] = useState('');
 
   const hanldeOperationBtn = async (id, operation) => {
     try {
@@ -198,45 +206,29 @@ function UnReleasedTable({ isAccountingTeam, isConnected }) {
   };
 
   const handleReleaseBtn = async () => {
+    if (transaction.length !== 66 || !transaction.startsWith('0x')) {
+      throw { message: 'transaction error.' };
+    }
+
     // mint all and store the transaction hash
     setDisable(true);
     try {
       // read all record
-      const [addresses, amounts] = await getAllToBeReleasedStablecoin();
-
-      console.log('handleReleaseBtn:', addresses);
+      const [addresses] = await getAllToBeReleasedStablecoin();
 
       if (addresses.length === 0) {
-        throw { message: 'No to be released lxp' };
+        throw { message: 'No to be released stablecoin' };
       }
 
-      const formattedAmounts = amounts.map((value) =>
-        ethers.utils.parseUnits(value.toString(), 'ether')
-      );
-
-      // send gnosis safe tx
-      // const hash = await mintAll(addresses, formattedAmounts);
-
-      const appsSdk = new SafeAppsSDK({
-        allowedDomains: [/gnosis-safe.io$/, /app.safe.global$/],
-        debug: true,
-      });
-      console.log('safe:', appsSdk);
-
-      const balance = await appsSdk.eth.getBalance([
-        '0xB45e9F74D0a35fE1aa0B78feA03877EF96ae8dd2',
-      ]);
-      console.log('balance:', balance);
-
-      // // post to backend
-      // const res = await API.post(`/stablecoin/release`, { hash: hash });
-      // const result = res.data;
-      // if (result.status !== 'SUCCESS') {
-      //   alert(result.message);
-      //   // error todo Muxin add common alert, wang teng design
-      //   return;
-      // }
-      // router.reload(window.location.pathname);
+      // post to backend
+      const res = await API.post(`/stablecoin/release`, { hash: transaction });
+      const result = res.data;
+      if (result.status !== 'SUCCESS') {
+        alert(result.message);
+        // error todo Muxin add common alert, wang teng design
+        return;
+      }
+      router.reload(window.location.pathname);
     } catch (err) {
       setDisable(false);
       showMessage({
@@ -509,10 +501,11 @@ function UnReleasedTable({ isAccountingTeam, isConnected }) {
                 <TableCell colSpan={8}>
                   <Box display="flex" justifyContent="center">
                     <LXButton
-                      width="200px"
+                      width="150px"
                       variant="gradient"
-                      onClick={handleReleaseBtn}
-                      disabled={disable}
+                      onClick={() => {
+                        setVisible(true);
+                      }}
                     >
                       Release
                     </LXButton>
@@ -523,6 +516,65 @@ function UnReleasedTable({ isAccountingTeam, isConnected }) {
           </TableFooter>
         </Table>
       </TableContainer>
+      {visible && (
+        <Dialog
+          fullWidth={true}
+          maxWidth={'sm'}
+          onClose={(event, reason) => {
+            if (reason && reason == 'backdropClick') return;
+            setVisible(false);
+          }}
+          open={visible}
+        >
+          <Box
+            onClick={() => {
+              setVisible(false);
+            }}
+            sx={{
+              cursor: 'pointer',
+            }}
+            position="absolute"
+            top="16px"
+            right="16px"
+          >
+            <CloseIcon></CloseIcon>
+          </Box>
+          <DialogTitle>Input safe transaction</DialogTitle>
+          <DialogContent>
+            <Box
+              display="flex"
+              gap={{ md: '20px', xs: '10px' }}
+              justifyContent="flex-start"
+              marginTop="10px"
+              marginBottom="5px"
+              enable
+            >
+              <Box width="500px">
+                <TextField
+                  id="outlined-basic"
+                  label="transaction"
+                  variant="outlined"
+                  style={{ width: '100%', height: '100%' }}
+                  onChange={(event) => {
+                    setTransaction(event.target.value);
+                  }}
+                />
+              </Box>
+
+              <LXButton
+                width="150px"
+                variant="gradient"
+                onClick={async () => {
+                  await handleReleaseBtn();
+                }}
+                disabled={disable}
+              >
+                Release
+              </LXButton>
+            </Box>
+          </DialogContent>
+        </Dialog>
+      )}
     </Box>
   );
 }
@@ -861,6 +913,7 @@ export default function StablecoinAnnouncement({ days }) {
   const { address, isConnected } = useAccount();
   const [_loading, currentViewer] = useBuidler(address);
   const isAccountingTeam = currentViewer?.role.includes('Accounting Team');
+
   return (
     <Layout title={`Stablecoin Announcement | LXDAO`}>
       <Container
