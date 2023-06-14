@@ -193,8 +193,8 @@ export default function Apply() {
                       }}
                       onBlur={onBlur}
                     >
-                      <MenuItem value={'LXDAOBUILDER'}>LXDAO Builder</MenuItem>
-                      <MenuItem value={'LXDAOMEMBER'}>LXDAO Member</MenuItem>
+                      <MenuItem value={'LXDAOBUILDER'}>Member</MenuItem>
+                      <MenuItem value={'LXDAOMEMBER'}>Non-Member</MenuItem>
                     </Select>
                     <Typography
                       marginTop={1}

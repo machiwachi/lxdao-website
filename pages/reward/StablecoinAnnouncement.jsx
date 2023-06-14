@@ -18,6 +18,7 @@ import {
   DialogTitle,
   DialogContent,
   TextField,
+  Checkbox,
 } from '@mui/material';
 import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
@@ -153,12 +154,20 @@ function UnReleasedTable({ isAccountingTeam }) {
   const router = useRouter();
   const [rows, setRows] = useState([]);
   const [copied, setCopied] = useState(false);
-  const [disable, setDisable] = useState(false);
+  const [disable, setDisable] = useState(true);
   const [page, setPage] = useState(0);
-  const [perPage, setPerPage] = useState(25);
+  const [perPage, setPerPage] = useState(999);
   const [pagination, setPagination] = useState({});
   const [visible, setVisible] = useState(false);
   const [transaction, setTransaction] = useState('');
+  const [totalRemuneration, setTotalRemuneration] = useState(0);
+  const [selected, setSelected] = React.useState([]);
+
+  useEffect(() => {
+    (async () => {
+      await getStablecoinApplications();
+    })();
+  }, [page, perPage]);
 
   const hanldeOperationBtn = async (id, operation) => {
     try {
@@ -183,28 +192,6 @@ function UnReleasedTable({ isAccountingTeam }) {
     }
   };
 
-  const getAllToBeReleasedStablecoin = async () => {
-    let query = `/stablecoin/list?`;
-    let params = [];
-    ['TOBERELEASED'].map((value, index) => {
-      params.push('status=' + value);
-    });
-    params.push('page=1');
-    params.push('per_page=' + 9999);
-    query += params.join('&');
-    const res = await API.get(query);
-    const result = res.data;
-    if (result.status !== 'SUCCESS') {
-      alert(result.message);
-      // error todo Muxin add common alert, wang teng design
-      return;
-    }
-    const rawData = result.data;
-    const addresses = rawData.map((value, index) => value.address);
-    const amounts = rawData.map((value, index) => value.value);
-    return [addresses, amounts];
-  };
-
   const handleReleaseBtn = async () => {
     if (transaction.length !== 66 || !transaction.startsWith('0x')) {
       throw { message: 'transaction error.' };
@@ -213,15 +200,11 @@ function UnReleasedTable({ isAccountingTeam }) {
     // mint all and store the transaction hash
     setDisable(true);
     try {
-      // read all record
-      const [addresses] = await getAllToBeReleasedStablecoin();
-
-      if (addresses.length === 0) {
-        throw { message: 'No to be released stablecoin' };
-      }
-
       // post to backend
-      const res = await API.post(`/stablecoin/release`, { hash: transaction });
+      const res = await API.post(`/stablecoin/release`, {
+        hash: transaction,
+        ids: selected,
+      });
       const result = res.data;
       if (result.status !== 'SUCCESS') {
         alert(result.message);
@@ -237,15 +220,6 @@ function UnReleasedTable({ isAccountingTeam }) {
         body: err.message,
       });
     }
-  };
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangePerPage = (event) => {
-    setPerPage(parseInt(event.target.value, 10));
-    setPage(0);
   };
 
   const getStablecoinApplications = async () => {
@@ -267,6 +241,14 @@ function UnReleasedTable({ isAccountingTeam }) {
         return;
       }
       setRows(result.data);
+
+      // calculate
+      let total = 0;
+      for (let i = 0; i < result.data.length; i++) {
+        total += result.data[i].value;
+      }
+      setTotalRemuneration(total);
+
       setPagination(result.pagination);
     } catch (err) {
       showMessage({
@@ -277,11 +259,40 @@ function UnReleasedTable({ isAccountingTeam }) {
     }
   };
 
-  useEffect(() => {
-    (async () => {
-      await getStablecoinApplications();
-    })();
-  }, [page, perPage]);
+  const isSelected = (id) => selected.indexOf(id) !== -1;
+
+  const handleSelectAllClick = (event) => {
+    if (event.target.checked) {
+      const newSelected = rows.map((n) => n.id);
+      setSelected(newSelected);
+      setDisable(false);
+      return;
+    }
+    setSelected([]);
+    setDisable(true);
+  };
+
+  const handleSelect = (event, id) => {
+    const selectedIndex = selected.indexOf(id);
+    let newSelected = [];
+
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, id);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1)
+      );
+    }
+
+    setSelected(newSelected);
+
+    setDisable(newSelected.length === 0);
+  };
 
   return (
     <Box
@@ -307,6 +318,21 @@ function UnReleasedTable({ isAccountingTeam }) {
         <Table>
           <TableHead>
             <TableRow>
+              <TableCell padding="checkbox">
+                <Checkbox
+                  color="primary"
+                  indeterminate={
+                    selected.length > 0 && selected.length < pagination.total
+                  }
+                  checked={
+                    pagination.total > 0 && selected.length === pagination.total
+                  }
+                  onChange={handleSelectAllClick}
+                  inputProps={{
+                    'aria-label': 'select all desserts',
+                  }}
+                />
+              </TableCell>
               <TableCell sx={{ color: '#666F85' }} align="center">
                 Name
               </TableCell>
@@ -354,8 +380,23 @@ function UnReleasedTable({ isAccountingTeam }) {
               ''
             )}
             {rows.map((row, index) => {
+              const isItemSelected = isSelected(row.id);
+              const labelId = `enhanced-table-checkbox-${index}`;
+
               return (
                 <TableRow key={row.id}>
+                  <TableCell padding="checkbox">
+                    <Checkbox
+                      color="primary"
+                      checked={isItemSelected}
+                      inputProps={{
+                        'aria-labelledby': labelId,
+                      }}
+                      onChange={(event) => {
+                        handleSelect(event, row.id);
+                      }}
+                    />
+                  </TableCell>
                   <TableCell
                     align="center"
                     sx={{
@@ -469,33 +510,15 @@ function UnReleasedTable({ isAccountingTeam }) {
                 </TableRow>
               );
             })}
+            <TableRow>
+              <TableCell align="center">Total</TableCell>
+              <TableCell align="center" />
+              <TableCell align="center" />
+              <TableCell align="center">{totalRemuneration}</TableCell>
+            </TableRow>
           </TableBody>
 
           <TableFooter>
-            {rows.length > 0 ? (
-              <TableRow>
-                <TablePagination
-                  rowsPerPageOptions={[
-                    5,
-                    10,
-                    25,
-                    { label: 'All', value: pagination.total },
-                  ]}
-                  count={pagination?.total}
-                  rowsPerPage={perPage}
-                  page={page}
-                  SelectProps={{
-                    inputProps: {
-                      'aria-label': 'rows per page',
-                    },
-                    native: true,
-                  }}
-                  onPageChange={handleChangePage}
-                  onRowsPerPageChange={handleChangePerPage}
-                  ActionsComponent={TablePaginationActions}
-                />
-              </TableRow>
-            ) : null}
             {isAccountingTeam && (
               <TableRow sx={{ justifyContent: 'center' }}>
                 <TableCell colSpan={8}>
@@ -506,6 +529,7 @@ function UnReleasedTable({ isAccountingTeam }) {
                       onClick={() => {
                         setVisible(true);
                       }}
+                      disabled={selected.length === 0}
                     >
                       Release
                     </LXButton>
