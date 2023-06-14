@@ -510,12 +510,28 @@ function UnReleasedTable({ isAccountingTeam }) {
                 </TableRow>
               );
             })}
-            <TableRow>
-              <TableCell align="center">Total</TableCell>
-              <TableCell align="center" />
-              <TableCell align="center" />
-              <TableCell align="center">{totalRemuneration}</TableCell>
-            </TableRow>
+            {rows.length > 0 && (
+              <TableRow>
+                <TableCell
+                  align="center"
+                  sx={{
+                    fontSize: '18px',
+                  }}
+                >
+                  {'Total'}
+                </TableCell>
+                <TableCell align="center" />
+                <TableCell align="center" />
+                <TableCell
+                  align="center"
+                  sx={{
+                    fontSize: '18px',
+                  }}
+                >
+                  {totalRemuneration}
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
 
           <TableFooter>
