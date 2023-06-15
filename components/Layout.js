@@ -38,7 +38,7 @@ Our mission: Gather the power of buidlers to buidl and support “LX” (valuabl
           property="og:description"
           content={
             description ||
-            'LXDAO is an R&D-focused DAO in Web3. Focus on supporting valuable Web3 Public Goods and Open Source sustainably. Gather the power of buidlers to buidl and support “LX” (valuable) Web3 projects sustainably and welcome 1 billion users into Web3.'
+            'LXDAO is an R&D-focused DAO in Web3. A solution on supporting valuable Web3 Public Goods and Open Source sustainably. Gather the power of buidlers to buidl and support “LX” (valuable) Web3 projects sustainably and welcome 1 billion users into Web3.'
           }
         />
         <meta property="og:url" content="https://lxdao.io/" />
