@@ -94,6 +94,22 @@ const Header = () => {
         </ListItem>
         <ListItem disablePadding>
           <Link
+            href={`/reward/StablecoinAnnouncement`}
+            target="_blank"
+            color={'inherit'}
+            sx={{
+              textDecoration: 'none',
+            }}
+          >
+            <ListItemButton>
+              <Typography sx={{ cursor: 'pointer' }}>
+                Stablecoin Announcement
+              </Typography>
+            </ListItemButton>
+          </Link>
+        </ListItem>
+        <ListItem disablePadding>
+          <Link
             href={`https://forum.lxdao.io/c/governance/10`}
             target="_blank"
             color={'inherit'}
@@ -213,6 +229,23 @@ const Header = () => {
                   }}
                 >
                   LXP Announcement
+                </Link>
+              </MenuItem>
+
+              <MenuItem
+                onClick={() => {
+                  handleGovernanceMenuClose();
+                }}
+              >
+                <Link
+                  href={`/reward/StablecoinAnnouncement`}
+                  target="_blank"
+                  color={'inherit'}
+                  sx={{
+                    textDecoration: 'none',
+                  }}
+                >
+                  Stablecoin Announcement
                 </Link>
               </MenuItem>
 

@@ -849,7 +849,7 @@ export default function LXPAnnouncement({ days }) {
               marginTop={1}
             >
               Ready to submit your LXP application? Click the link:{' '}
-              <Link href="/LXPApplication" target="_blank" color={'#667085'}>
+              <Link href="/reward/apply" target="_blank" color={'#667085'}>
                 LXP Application
               </Link>{' '}
               .

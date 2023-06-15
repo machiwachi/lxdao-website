@@ -207,6 +207,7 @@ function UnReleasedTable({ isAccountingTeam }) {
       });
       const result = res.data;
       if (result.status !== 'SUCCESS') {
+        setDisable(false);
         alert(result.message);
         // error todo Muxin add common alert, wang teng design
         return;

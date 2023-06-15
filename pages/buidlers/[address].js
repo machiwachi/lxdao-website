@@ -59,6 +59,7 @@ import WorkingGroupCard from '@/components/WorkingGroupCard';
 import OnBoardingLayout from '@/components/OnBoardingLayout';
 import BadgeCard from '@/components/BadgeCard';
 import { BuidlerCard } from '../buidlers';
+import Apply from '@/pages/reward/apply';
 
 function totalLXPoints(record) {
   if (!record.lxPoints || !record.lxPoints.length) {
@@ -232,7 +233,7 @@ function LXPointsTable({ points }) {
                       variant="body1"
                       fontWeight="400"
                     >
-                      {point.status == 'RELEASED' && 'View'}
+                      {point.status === 'RELEASED' && 'View'}
                     </Typography>
                   </Link>
                 </TableCell>
@@ -1149,9 +1150,9 @@ function BuidlerDetails(props) {
                       variant="body1"
                       color="#101828"
                     >
-                      All Compensation{' '}
+                      LXP Reward{' '}
                       <Link
-                        href="/LXPApplication"
+                        href="/reward/apply"
                         target="_blank"
                         sx={{
                           display: 'inline',
@@ -1264,7 +1265,7 @@ function BuidlerDetails(props) {
                     >
                       Stablecoin Reward{' '}
                       <Link
-                        href="/reward/StablecoinApplication"
+                        href="/reward/apply"
                         target="_blank"
                         sx={{
                           display: 'inline',

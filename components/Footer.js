@@ -104,6 +104,10 @@ const Footer = () => {
                     name: 'LXP Announcement',
                     link: '/LXPAnnouncement',
                   },
+                  {
+                    name: 'Stablecoin Announcement',
+                    link: '/reward/StablecoinAnnouncement',
+                  },
                 ]}
               />
             </Grid>
@@ -118,7 +122,11 @@ const Footer = () => {
                   },
                   {
                     name: 'Apply LXP',
-                    link: '/LXPApplication',
+                    link: '/reward/apply',
+                  },
+                  {
+                    name: 'Apply Stablecoin',
+                    link: '/reward/apply',
                   },
                 ]}
               />
