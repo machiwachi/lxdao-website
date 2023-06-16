@@ -122,7 +122,7 @@ export default function Apply() {
           setSubmitLoading(false);
           throw new Error(result.message);
         } else {
-          router.push('/LXPAnnouncement');
+          router.push('/reward/announcement');
         }
       } else {
         const response = await API.post(
@@ -135,7 +135,7 @@ export default function Apply() {
           setSubmitLoading(false);
           throw new Error(result.message);
         } else {
-          router.push('/reward/StablecoinAnnouncement');
+          router.push('/reward/announcement');
         }
       }
     } catch (err) {
@@ -213,7 +213,11 @@ export default function Apply() {
                 marginTop={1}
               >
                 Feel free to check the LXP Announcement and history list:{' '}
-                <Link href="/LXPAnnouncement" target="_blank" color={'#667085'}>
+                <Link
+                  href="/reward/announcement"
+                  target="_blank"
+                  color={'#667085'}
+                >
                   Click me!
                 </Link>
               </Typography>
