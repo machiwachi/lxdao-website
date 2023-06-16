@@ -10,7 +10,7 @@ const useStyles = makeStyles({
     backgroundColor: '#ffffff',
     borderRadius: '0',
     width: '420px !important',
-    padding: '36px',
+    padding: '24px',
   },
 });
 

@@ -20,7 +20,7 @@ export default function Profile() {
     setUpdating(true);
     const userProfile = {
       ...newMetaData,
-      role: record.role.length === 0 ? ['Buidler'] : record.role,
+      role: record?.role.length === 0 ? ['Buidler'] : record.role,
       // set the NFT image
       image: `${process.env.NEXT_PUBLIC_LXDAO_BACKEND_API}/buidler/${record.address}/card`,
     };

@@ -1,15 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import { styled } from '@mui/material/styles';
 import { Box, Typography, Link } from '@mui/material';
-
-import API from '@/common/API';
 
 import Container from '@/components/Container';
 import Button from '@/components/Button';
 import StyledTooltip from '@/components/StyledToolTip';
 import Tag from '@/components/Tag';
-import Skills from '@/components/Skills';
 
 const BuidlerAvatarBox = ({ buidler, active, display }) => {
   return (
@@ -21,21 +17,28 @@ const BuidlerAvatarBox = ({ buidler, active, display }) => {
         aspectRatio: '1 / 1',
       }}
       display={display}
-      width={{ lg: '180px', sm: '130px', xs: '130px' }}
-      height={{ lg: '180px', sm: '130px', xs: '130px' }}
+      width={{ lg: '152px', sm: '130px', xs: '130px' }}
+      height={{ lg: '152px', sm: '130px', xs: '130px' }}
       position="relative"
     >
+      {!active && (
+        <Box
+          sx={{ position: 'absolute', zIndex: 1 }}
+          component="img"
+          src={'/icons/onboarding.svg'}
+        />
+      )}
       <Box
-        width={{ lg: '180px', sm: '130px', xs: '100%' }}
+        width={{ lg: '152px', sm: '130px', xs: '100%' }}
         sx={{ position: 'absolute', top: 0, left: 0, aspectRatio: '1 / 1' }}
-        backgroundColor={active ? 'transpent' : 'rgba(0,0,0,0.2)'}
+        backgroundColor={active ? 'transpent' : 'rgba(0,0,0,0.5)'}
         display={{ md: 'block', xs: 'none' }}
       />
 
       <Box
         component="img"
         src={buidler?.avatar || '/images/placeholder.jpeg'}
-        width={{ lg: '180px', sm: '130px', xs: '100%' }}
+        width={{ lg: '152px', sm: '130px', xs: '100%' }}
         sx={{ aspectRatio: '1 / 1' }}
       />
     </Link>
@@ -49,7 +52,7 @@ const BudilerTooltip = ({
   handleBuidlerCardLeave,
   ...rest
 }) => {
-  const BuidlerDetails = ({ name, description, address, role, skills }) => {
+  const BuidlerDetails = ({ name, description, address, role }) => {
     return (
       <Box>
         <Typography
@@ -77,22 +80,6 @@ const BudilerTooltip = ({
             })}
           </Box>
         )}
-        {skills?.length && (
-          <>
-            <Typography
-              variant="body1"
-              color="#101828"
-              lineHeight="24px"
-              fontWeight={500}
-              marginBottom="17px"
-            >
-              Skills
-            </Typography>
-            <Box display="flex" flexWrap="wrap" marginBottom={3}>
-              <Skills skills={skills} />
-            </Box>
-          </>
-        )}
         <Link
           href={`/buidlers/${address}`}
           sx={{ textDecoration: 'none' }}
@@ -112,6 +99,11 @@ const BudilerTooltip = ({
     );
   };
 
+  const firstMemberBadgeIndex =
+    buidler?.badges?.types?.indexOf('MemberFirstBadge');
+  const firstMemberBadgeAmount =
+    buidler?.badges?.amounts[firstMemberBadgeIndex];
+
   return (
     <Box {...rest}>
       <StyledTooltip
@@ -124,7 +116,14 @@ const BudilerTooltip = ({
           onMouseLeave={handleBuidlerCardLeave}
           position="relative"
         >
-          <BuidlerAvatarBox buidler={buidler} active={active} display="block" />
+          <BuidlerAvatarBox
+            buidler={buidler}
+            active={
+              buidler?.status === 'ACITVE' ||
+              (buidler?.status === 'PENDING' && firstMemberBadgeAmount > 0)
+            }
+            display="block"
+          />
         </Box>
       </StyledTooltip>
     </Box>
