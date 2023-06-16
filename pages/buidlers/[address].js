@@ -1067,7 +1067,7 @@ function BuidlerDetails(props) {
                   </Box>
                 </Box>
               </Link>
-            )}    
+            )}
           */}
         </Box>
         {/* right senction */}
@@ -1420,7 +1420,7 @@ function BuidlerDetails(props) {
                         marginLeft={1}
                         sx={{ background: 'rgba(0,159,255,0.4)' }}
                       ></Box>
-                      Jonior
+                      Junior
                     </Typography>
                   </Box>
                 </Box>
