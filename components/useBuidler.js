@@ -41,6 +41,9 @@ function useBuidler(address) {
           });
         }
         result.data.badges = badgesData;
+      } else {
+        // todo Muxin
+        result.data.badges = [];
       }
     }
 

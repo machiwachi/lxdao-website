@@ -235,7 +235,16 @@ const FirstBadge = () => {
               children: (
                 <OneTask
                   iconPath="/images/badge/user.svg"
-                  desc="Go to the forum to introduce yourself and let everyone know you"
+                  desc={
+                    <Link
+                      href="https://forum.lxdao.io/t/about-the-new-to-lxdao-introduction-category/162"
+                      target="_blank"
+                      sx={{ textDecoration: 'none' }}
+                    >
+                      Go to the forum to introduce yourself and let everyone
+                      know you. ->
+                    </Link>
+                  }
                 />
               ),
             },

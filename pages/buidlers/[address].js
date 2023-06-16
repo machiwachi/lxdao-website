@@ -431,8 +431,13 @@ function BuidlerDetails(props) {
   ) {
     return (
       <Box width="100%" textAlign="center" marginTop="200px" color="red">
-        This member has not yet completed the onboarding process and is
-        temporarily inaccessible.{' '}
+        <Typography>
+          This member has not yet completed the onboarding process and is
+          temporarily inaccessible,
+        </Typography>
+        <Typography>
+          or, connect wallet to continue onboarding if this is your profile.
+        </Typography>
       </Box>
     );
   }
@@ -560,6 +565,10 @@ function BuidlerDetails(props) {
 
   const earnedBadgeAmount = record?.badges?.filter(
     (badge) => badge.amount > 0
+  ).length;
+
+  const badgesToBeEarnedNumber = record?.badges?.filter(
+    (badge) => badge.amount === 0
   ).length;
 
   return (
@@ -1022,46 +1031,48 @@ function BuidlerDetails(props) {
               </Box>
             </Box>
           </Box>
-          {record.buddies?.length > 0 && (
-            <Link
-              target="_blank"
-              href={`/buidlers/${record.buddies[0].address}`}
-              sx={{
-                textDecoration: 'none',
-              }}
-            >
-              <Box
-                marginTop={3}
-                border="0.5px solid #D0D5DD"
-                borderRadius="6px"
-                display="flex"
-                justifyContent="space-between"
-                padding="20px 24px"
+          {/**
+            {record.buddies?.length > 0 && (
+              <Link
+                target="_blank"
+                href={`/buidlers/${record.buddies[0].address}`}
+                sx={{
+                  textDecoration: 'none',
+                }}
               >
-                <Box display="flex" alignItems="center">
-                  Buddy
-                </Box>
-
                 <Box
-                  width="80px"
-                  height="80px"
+                  marginTop={3}
                   border="0.5px solid #D0D5DD"
                   borderRadius="6px"
-                  overflow="hidden"
+                  display="flex"
+                  justifyContent="space-between"
+                  padding="20px 24px"
                 >
-                  <img
-                    style={{ display: 'block', width: 80, height: 80 }}
-                    src={record.buddies[0].avatar || '/images/placeholder.jpeg'}
-                    alt=""
-                  />
+                  <Box display="flex" alignItems="center">
+                    Buddy
+                  </Box>
+
+                  <Box
+                    width="80px"
+                    height="80px"
+                    border="0.5px solid #D0D5DD"
+                    borderRadius="6px"
+                    overflow="hidden"
+                  >
+                    <img
+                      style={{ display: 'block', width: 80, height: 80 }}
+                      src={record.buddies[0].avatar || '/images/placeholder.jpeg'}
+                      alt=""
+                    />
+                  </Box>
                 </Box>
-              </Box>
-            </Link>
-          )}
+              </Link>
+            )}    
+          */}
         </Box>
         {/* right senction */}
         <Box boxSizing="border-box" flex="1">
-          {((record?.badges && record?.badges.length > 0) ||
+          {(badgesToBeEarnedNumber > 0 ||
             record?.status === 'PENDING' ||
             record?.status === 'READYTOMINT') && (
             <Box
@@ -1567,29 +1578,31 @@ function BuidlerDetails(props) {
               )}
             </Box>
           </Box>
-          {mates && mates.length > 0 && (
-            <Box marginTop={3} marginBottom={3}>
-              <Box>
-                <Typography
-                  color="#101828"
-                  fontWeight="600"
-                  variant="body1"
-                  marginBottom={2}
-                >
-                  My Buddies
-                </Typography>
-              </Box>
-              <Box display="flex" marginTop={2}>
-                <Grid container spacing={2}>
-                  {mates.map((mate) => (
-                    <Grid key={mate.id} item xs={12} sm={6} lg={4}>
-                      <BuidlerCard simpleMode={true} record={mate} />
+          {/**
+            {mates && mates.length > 0 && (
+                <Box marginTop={3} marginBottom={3}>
+                  <Box>
+                    <Typography
+                      color="#101828"
+                      fontWeight="600"
+                      variant="body1"
+                      marginBottom={2}
+                    >
+                      My Buddies
+                    </Typography>
+                  </Box>
+                  <Box display="flex" marginTop={2}>
+                    <Grid container spacing={2}>
+                      {mates.map((mate) => (
+                        <Grid key={mate.id} item xs={12} sm={6} lg={4}>
+                          <BuidlerCard simpleMode={true} record={mate} />
+                        </Grid>
+                      ))}
                     </Grid>
-                  ))}
-                </Grid>
-              </Box>
-            </Box>
-          )}
+                  </Box>
+                </Box>
+              )}
+          */}
         </Box>
       </Box>
 
@@ -1708,7 +1721,7 @@ export default function Buidler() {
     return (
       <OnBoardingLayout
         layoutTitle={`${record && record.name} Member Profile | LXDAO`}
-        title="Congrats, profile complete!"
+        title="Profile created! Earn your first badge to finish onboarding."
         next="done"
         currentStep={3}
         hideButton={true}

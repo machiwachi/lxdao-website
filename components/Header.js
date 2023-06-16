@@ -1,20 +1,30 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import { Box, Typography, Link, Menu, MenuItem } from '@mui/material';
+import { useAccount } from 'wagmi';
 
+import {
+  Box,
+  Typography,
+  Link,
+  Menu,
+  MenuItem,
+  SwipeableDrawer,
+  List,
+  ListItem,
+  ListItemButton,
+} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
 
 import OnBoardingAlertBtn from './OnBoardingAlertBtn';
 import { ConnectWalletButton } from '@/components/ConnectWallet';
+import useBuidler from '@/components/useBuidler';
 
 const Header = () => {
+  const { address } = useAccount();
   const [openMenu, setOpenMenu] = useState(false);
   const [governance, setGovernance] = useState(null);
+  const [, record, ,] = useBuidler(address);
   const router = useRouter();
 
   const toggleDrawer = (open) => (event) => {
@@ -251,7 +261,30 @@ const Header = () => {
             </Menu>
           </Box>
         </Box>
-        <Box display="flex" gap="40px">
+        <Box display="flex" alignItems="center" gap="20px">
+          {record && (
+            <Link
+              href={`/buidlers/${record?.address}`}
+              sx={{
+                cursor: 'pointer',
+                width: '36px',
+                height: '36px',
+                borderRadius: '50%',
+                border: '0.5px solid #D0D5DD',
+                overflow: 'hidden',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Box
+                component={'img'}
+                src={record?.avatar}
+                width="30px"
+                height="30px"
+              />
+            </Link>
+          )}
           <OnBoardingAlertBtn />
           <ConnectWalletButton />
         </Box>
