@@ -119,7 +119,7 @@ const BudilerTooltip = ({
           <BuidlerAvatarBox
             buidler={buidler}
             active={
-              buidler?.status === 'ACITVE' ||
+              buidler?.status === 'ACTIVE' ||
               (buidler?.status === 'PENDING' && firstMemberBadgeAmount > 0)
             }
             display="block"
