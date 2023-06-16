@@ -111,7 +111,11 @@ const SectionMission = ({ projectAmount, buidlerAmount }) => (
               </div>
             }
           />
-          <DataBox number={buidlerAmount} name="Buidlers" link="/buidlers" />
+          <DataBox
+            number={buidlerAmount}
+            name="Buidler card holders"
+            link="/buidlers"
+          />
           <DataBox number={projectAmount} name="Projects" link="/projects" />
           <DataBox
             number="120k+ USDC"
