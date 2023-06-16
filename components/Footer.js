@@ -101,8 +101,8 @@ const Footer = () => {
                     link: 'https://forum.lxdao.io/c/governance/monthly-ama/12',
                   },
                   {
-                    name: 'LXP Announcement',
-                    link: '/LXPAnnouncement',
+                    name: 'Reward Announcement',
+                    link: '/reward/announcement',
                   },
                 ]}
               />
@@ -117,8 +117,8 @@ const Footer = () => {
                     link: 'https://www.notion.so/lxdao/How-do-we-work-93038c708217465384cc7d9f377547c5',
                   },
                   {
-                    name: 'Apply LXP',
-                    link: '/LXPApplication',
+                    name: 'Apply Reward',
+                    link: '/reward/apply',
                   },
                 ]}
               />

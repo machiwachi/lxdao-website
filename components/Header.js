@@ -88,7 +88,7 @@ const Header = () => {
         </ListItem>
         <ListItem disablePadding>
           <Link
-            href={`/LXPAnnouncement`}
+            href={`/reward/announcement`}
             target="_blank"
             color={'inherit'}
             sx={{
@@ -97,7 +97,7 @@ const Header = () => {
           >
             <ListItemButton>
               <Typography sx={{ cursor: 'pointer' }}>
-                LXP Announcement
+                Reward Announcement
               </Typography>
             </ListItemButton>
           </Link>
@@ -215,14 +215,14 @@ const Header = () => {
                 }}
               >
                 <Link
-                  href={`/LXPAnnouncement`}
+                  href={`/reward/announcement`}
                   target="_blank"
                   color={'inherit'}
                   sx={{
                     textDecoration: 'none',
                   }}
                 >
-                  LXP Announcement
+                  Reward Announcement
                 </Link>
               </MenuItem>
 

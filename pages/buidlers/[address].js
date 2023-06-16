@@ -59,16 +59,17 @@ import WorkingGroupCard from '@/components/WorkingGroupCard';
 import OnBoardingLayout from '@/components/OnBoardingLayout';
 import BadgeCard from '@/components/BadgeCard';
 import { BuidlerCard } from '../buidlers';
+import Apply from '@/pages/reward/apply';
 
 function totalLXPoints(record) {
   if (!record.lxPoints || !record.lxPoints.length) {
     return 0;
   }
-  var lxPointsGroup = groupBy(record.lxPoints, 'unit');
+  const lxPointsGroup = groupBy(record.lxPoints, 'unit');
   return Object.keys(lxPointsGroup)
     .map((key) => {
       const total = lxPointsGroup[key].reduce((total, point) => {
-        if (point.status != 'RELEASED') {
+        if (point.status !== 'RELEASED') {
           return total;
         }
         if (point.operator === '+') {
@@ -80,6 +81,30 @@ function totalLXPoints(record) {
         return total;
       }, 0);
       return `${total} LXP`;
+    })
+    .join(' + ');
+}
+
+function totalStableCoins(record) {
+  if (!record.stableCoins || !record.stableCoins.length) {
+    return 0;
+  }
+  const group = groupBy(record.stableCoins, 'unit');
+  return Object.keys(group)
+    .map((key) => {
+      const total = group[key].reduce((total, point) => {
+        if (point.status !== 'RELEASED') {
+          return total;
+        }
+        if (point.operator === '+') {
+          return total + point.value;
+        }
+        if (point.operator === '-') {
+          return total - point.value;
+        }
+        return total;
+      }, 0);
+      return `${total} U`;
     })
     .join(' + ');
 }
@@ -208,7 +233,144 @@ function LXPointsTable({ points }) {
                       variant="body1"
                       fontWeight="400"
                     >
-                      {point.status == 'RELEASED' && 'View'}
+                      {point.status === 'RELEASED' && 'View'}
+                    </Typography>
+                  </Link>
+                </TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+}
+
+function StableCoinsTable({ points }) {
+  return (
+    <TableContainer
+      component={Paper}
+      sx={{
+        '&.MuiPaper-root': {
+          overflowX: 'unset',
+        },
+        boxShadow: 'none',
+      }}
+    >
+      <Table aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell sx={{ paddingLeft: 0 }} width="15%" align="left">
+              <Typography color="#666F85" variant="body2" fontWeight="400">
+                Remuneration
+              </Typography>
+            </TableCell>
+            <TableCell width="20%" align="left">
+              <Typography color="#666F85" variant="body2" fontWeight="400">
+                Reason
+              </Typography>
+            </TableCell>
+            <TableCell width="15%" align="left">
+              <Typography color="#666F85" variant="body2" fontWeight="400">
+                Source
+              </Typography>
+            </TableCell>
+            <TableCell width="15%" align="left">
+              <Typography
+                sx={{
+                  width: '89px',
+                }}
+                color="#666F85"
+                variant="body2"
+                fontWeight="400"
+              >
+                Release Time
+              </Typography>
+            </TableCell>
+            <TableCell sx={{ paddingRight: 0 }} width="15%" align="right">
+              <Typography
+                sx={{
+                  width: '110px',
+                }}
+                color="#666F85"
+                variant="body2"
+                fontWeight="400"
+              >
+                Transaction Link
+              </Typography>
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {points.map((point) => {
+            let pointStatus = point.status;
+            if (point.status === 'RELEASED') {
+              pointStatus = point.updatedAt.split('T')[0];
+            } else if (point.status !== 'REJECTED') {
+              pointStatus = 'PENDING';
+            }
+            return (
+              <TableRow
+                key={point.id}
+                sx={{
+                  '&:last-child td, &:last-child th': { border: 0 },
+                  borderBottom: '0.5px solid #E5E5E5',
+                }}
+              >
+                <TableCell
+                  sx={{ color: '#101828', paddingLeft: 0 }}
+                  component="th"
+                  scope="row"
+                >
+                  <Typography variant="body1" fontWeight="600">
+                    {`${point.value} U`}
+                  </Typography>
+                </TableCell>
+                <TableCell sx={{ color: '#101828' }} align="left">
+                  <Tooltip title={point.reason}>
+                    <Typography
+                      sx={{
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                        maxWidth: { xs: '150px', sm: '300px' },
+                      }}
+                      variant="body2"
+                      fontWeight="400"
+                    >
+                      {point.reason}
+                    </Typography>
+                  </Tooltip>
+                </TableCell>
+                <TableCell sx={{ color: '#101828' }} align="left">
+                  {point.source}
+                </TableCell>
+                <TableCell sx={{ color: '#101828' }} align="left">
+                  <Typography
+                    sx={{
+                      width: '89px',
+                    }}
+                    variant="body2"
+                    fontWeight="400"
+                  >
+                    {pointStatus}
+                  </Typography>
+                </TableCell>
+                <TableCell sx={{ paddingRight: 0 }} align="right">
+                  <Link
+                    target="_blank"
+                    sx={{ textDecoration: 'none' }}
+                    href={`https://${getPolygonScanDomain()}/tx/${point.hash}`}
+                  >
+                    <Typography
+                      sx={{
+                        width: '110px',
+                      }}
+                      color="#36AFF9"
+                      variant="body1"
+                      fontWeight="400"
+                    >
+                      {point.status === 'RELEASED' && 'View'}
                     </Typography>
                   </Link>
                 </TableCell>
@@ -256,6 +418,7 @@ function BuidlerDetails(props) {
   // ipfsURL on chain
   const [ipfsURLOnChain, setIpfsURLOnChain] = useState(null);
   const [accordionOpen, setAccordionOpen] = useState(false);
+  const [stableCoinAccordionOpen, setStableCoinAccordionOpen] = useState(false);
 
   const firstMemberBadgeAmount = record?.badges?.find(
     (badge) => badge.id === 'MemberFirstBadge'
@@ -394,6 +557,10 @@ function BuidlerDetails(props) {
 
   const handleAccordionOnChange = (e, value) => {
     setAccordionOpen(value);
+  };
+
+  const handleStableCoinAccordionOnChange = (e, value) => {
+    setStableCoinAccordionOpen(value);
   };
 
   const earnedBadgeAmount = record?.badges?.filter(
@@ -900,7 +1067,7 @@ function BuidlerDetails(props) {
                   </Box>
                 </Box>
               </Link>
-            )}    
+            )}
           */}
         </Box>
         {/* right senction */}
@@ -994,9 +1161,9 @@ function BuidlerDetails(props) {
                       variant="body1"
                       color="#101828"
                     >
-                      All Compensation{' '}
+                      LXP Reward{' '}
                       <Link
-                        href="/LXPApplication"
+                        href="/reward/apply"
                         target="_blank"
                         sx={{
                           display: 'inline',
@@ -1061,6 +1228,122 @@ function BuidlerDetails(props) {
                 }}
               >
                 <LXPointsTable maxHeight="235px" points={record.lxPoints} />
+              </AccordionDetails>
+            </Accordion>
+          </Box>
+
+          <Box display="flex" flexDirection="column" marginTop={3}>
+            <Accordion
+              onChange={handleStableCoinAccordionOnChange}
+              sx={{
+                '&.Mui-expanded': {
+                  minHeight: { md: 128, sm: 200 },
+                },
+                '&.MuiPaper-root': {
+                  border: '0.5px solid #D0D5DD',
+                  boxShadow: 'none',
+                },
+              }}
+            >
+              <AccordionSummary
+                height={{ md: '128px', sm: '200px' }}
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+                sx={{
+                  '&.MuiAccordionSummary-root': {
+                    height: { sm: '128px !important', xs: '200px !important' },
+                    borderRadius: '6px',
+                    '.MuiAccordionSummary-expandIconWrapper': {
+                      marginTop: { sm: 0, xs: '84px' },
+                      display: record?.stableCoins.length ? 'block' : 'none',
+                    },
+                  },
+                }}
+              >
+                <Box
+                  width="100%"
+                  display="flex"
+                  alignItems={{ xs: 'flex-start', md: 'center' }}
+                  justifyContent="space-between"
+                  flexDirection={{ xs: 'column', md: 'row' }}
+                >
+                  <Box>
+                    <Typography
+                      fontWeight="600"
+                      variant="body1"
+                      color="#101828"
+                    >
+                      Stablecoin Reward{' '}
+                      <Link
+                        href="/reward/apply"
+                        target="_blank"
+                        sx={{
+                          display: 'inline',
+                          fontSize: '14px',
+                          fontWeight: 500,
+                        }}
+                      >
+                        (Apply Stablecoin ->)
+                      </Link>
+                    </Typography>
+
+                    <Typography
+                      marginTop={1}
+                      fontWeight="600"
+                      variant="h5"
+                      color="#36AFF9"
+                    >
+                      {totalStableCoins(record)}
+                    </Typography>
+                  </Box>
+                  <Box
+                    textAlign={{ xs: 'right' }}
+                    width={{ xs: '100%', md: 'auto' }}
+                    paddingTop={{ xs: '24px', md: 0 }}
+                  >
+                    <Typography
+                      fontWeight="500"
+                      variant="body1"
+                      color="#0D1320"
+                    >
+                      {record?.stableCoins.length > 0
+                        ? stableCoinAccordionOpen
+                          ? 'Put Away'
+                          : 'Record List'
+                        : null}
+                    </Typography>
+                  </Box>
+                </Box>
+              </AccordionSummary>
+              <AccordionDetails
+                sx={{
+                  '&.MuiAccordionDetails-root': {
+                    height: '235px !important',
+                    padding: { sm: '8px 32px 32px 32px', xs: '8px' },
+                    overflowY: 'auto',
+                    overflowX:
+                      record?.stableCoins?.length === 0 ? 'hidden' : 'auto',
+                    '&::-webkit-scrollbar': {
+                      width: '10px',
+                      height: '10px',
+                      background: 'transparent',
+                    },
+                    '&::-webkit-scrollbar-thumb': {
+                      borderRadius: '10px',
+                      background: '#dfdfdf',
+                    },
+                    '&::scrollbar-track': {
+                      borderRadius: 0,
+                      background: '#dfdfdf',
+                    },
+                  },
+                }}
+              >
+                <StableCoinsTable
+                  maxHeight="235px"
+                  points={record.stableCoins}
+                />
               </AccordionDetails>
             </Accordion>
           </Box>

@@ -37,7 +37,7 @@ export default function Flow() {
       title: 'REWARDS',
       content:
         'LXDAO aims to prioritize sustainability. We seek external funding through grants, donations, and investments for our projects. We also compensate LXP as a reward for your work and convert them into tokens or fiat at a later stage.',
-      url: 'https://lxdao.io/LXPApplication',
+      url: 'https://lxdao.io/reward/apply',
     },
   ];
   return (
