@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Container,
@@ -29,17 +30,13 @@ import LastPageIcon from '@mui/icons-material/LastPage';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useTheme } from '@mui/material/styles';
-
 import { useAccount } from 'wagmi';
 import { ethers } from 'ethers';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
-
+import ReasonForm from '@/components/ReasonForm';
 import API from '@/common/API';
 import { getPolygonScanDomain } from '@/utils/utility';
-
 import abi_lxp from '../../abi-lxp.json';
-
 import LXButton from '@/components/Button';
 import Layout from '@/components/Layout';
 import useBuidler from '@/components/useBuidler';
@@ -136,22 +133,51 @@ function TablePaginationActions(props) {
   );
 }
 
-function StatusLabel({ status }) {
+function StatusLabel({ status, record }) {
   switch (status) {
     case 'RELEASED':
       return <Typography color={'#4DCC9E'}>RELEASED</Typography>;
     case 'TOBERELEASED':
       return <Typography color={'#666F85'}>TO BE RELEASED</Typography>;
     case 'REJECTED':
-      return <Typography color={'#D0D5DD'}>REJECTED</Typography>;
+      if (record?.rejectReason) {
+        return (
+          <Tooltip title={record.rejectReason}>
+            <Typography color={'#D0D5DD'}>REJECTED</Typography>
+          </Tooltip>
+        );
+      } else {
+        return <Typography color={'#D0D5DD'}>REJECTED</Typography>;
+      }
+
     case 'MINTED':
       return <Typography color={'#36aff9'}>MINTED</Typography>;
     case 'NEEDTOREVIEW':
-      return <Typography color={'#ffac1d'}>NEED TO REVIEW</Typography>;
+      if (record?.disputeReasons) {
+        return (
+          <Tooltip
+            title={record.disputeReasons?.map((item, index) => (
+              <>
+                <span key={index + 1}>{`${item.name}: ${item.reason}`}</span>
+                <br />
+              </>
+            ))}
+          >
+            <Typography color={'#ffac1d'}>NEED TO REVIEW</Typography>
+          </Tooltip>
+        );
+      } else {
+        return <Typography color={'#ffac1d'}>NEED TO REVIEW</Typography>;
+      }
   }
 }
 
-function UnReleasedLXPTable({ isAccountingTeam }) {
+function UnReleasedLXPTable({
+  isAccountingTeam,
+  hasMemberFirstBadge,
+  address,
+  name,
+}) {
   const router = useRouter();
   const [rows, setRows] = useState([]);
   const [copied, setCopied] = useState(false);
@@ -159,8 +185,23 @@ function UnReleasedLXPTable({ isAccountingTeam }) {
   const [page, setPage] = useState(0);
   const [perPage, setPerPage] = useState(25);
   const [pagination, setPagination] = useState({});
+  const [visible, setVisible] = useState(false);
+  const [updating, setUpdating] = useState(false);
+  const [isDispute, setIsDispute] = useState(true);
+  const [currentLxpointId, setCurrentLxpointId] = useState('');
 
   const hanldeOperationBtn = async (id, operation) => {
+    if (operation === 'REJECT') {
+      setIsDispute(false);
+      setCurrentLxpointId(id);
+      setVisible(true);
+      return;
+    } else if (operation === 'DISPUTE') {
+      setIsDispute(true);
+      setCurrentLxpointId(id);
+      setVisible(true);
+      return;
+    }
     try {
       const res = await API.put(`/lxpoints/${id}`, { operation: operation });
 
@@ -181,6 +222,58 @@ function UnReleasedLXPTable({ isAccountingTeam }) {
         body: err.message,
       });
     }
+  };
+
+  const saveReasonHandler = async (values) => {
+    setUpdating(true);
+    try {
+      let response;
+      if (isDispute) {
+        response = await API.put(
+          `/lxpoints/${currentLxpointId}/updateDisputeReasons`,
+          {
+            id: currentLxpointId,
+            disputeReasons: [
+              {
+                address,
+                name,
+                reason: values.reason,
+              },
+            ],
+            rejectReason: '',
+          }
+        );
+      } else {
+        response = await API.put(
+          `/lxpoints/${currentLxpointId}/updateRejectReason`,
+          {
+            id: currentLxpointId,
+            disputeReasons: [],
+            rejectReason: values.reason,
+          }
+        );
+      }
+
+      const result = response?.data;
+      if (result.status !== 'SUCCESS') {
+        throw new Error(result.message);
+      } else {
+        if (isDispute) {
+          getLXPApplications();
+        } else {
+          router.reload(window.location.pathname);
+        }
+      }
+      setVisible(false);
+      // props.refresh();
+    } catch (err) {
+      showMessage({
+        type: 'error',
+        title: 'Failed to submit',
+        body: err.message,
+      });
+    }
+    setUpdating(false);
   };
 
   const mintAll = async (addresses, amounts) => {
@@ -448,7 +541,7 @@ function UnReleasedLXPTable({ isAccountingTeam }) {
                       fontSize: '16px',
                     }}
                   >
-                    <StatusLabel status={row.status} />
+                    <StatusLabel status={row.status} record={row} />
                   </TableCell>
                   <TableCell align="center" sx={{ fontSize: '16px' }}>
                     {row.status == 'NEEDTOREVIEW' && isAccountingTeam && (
@@ -471,6 +564,20 @@ function UnReleasedLXPTable({ isAccountingTeam }) {
                           }}
                         >
                           Republish
+                        </LXButton>
+                      </>
+                    )}
+                    {row.status == 'TOBERELEASED' && hasMemberFirstBadge && (
+                      <>
+                        <LXButton
+                          width={'100px'}
+                          variant="outlined"
+                          onClick={() => {
+                            setIsDispute(true);
+                            hanldeOperationBtn(row.id, 'DISPUTE');
+                          }}
+                        >
+                          Dispute
                         </LXButton>
                       </>
                     )}
@@ -524,6 +631,37 @@ function UnReleasedLXPTable({ isAccountingTeam }) {
           </TableFooter>
         </Table>
       </TableContainer>
+      <Dialog
+        fullWidth={true}
+        maxWidth={'sm'}
+        onClose={(event, reason) => {
+          setVisible(false);
+        }}
+        open={visible}
+      >
+        <Box
+          onClick={() => {
+            setVisible(false);
+          }}
+          sx={{
+            cursor: 'pointer',
+          }}
+          position="absolute"
+          top="16px"
+          right="16px"
+        >
+          <CloseIcon></CloseIcon>
+        </Box>
+        <DialogTitle>
+          {isDispute ? 'Dispute Reason' : 'Reject Reason'}
+        </DialogTitle>
+        <DialogContent>
+          <ReasonForm
+            updating={updating}
+            saveReasonHandler={saveReasonHandler}
+          />
+        </DialogContent>
+      </Dialog>
     </Box>
   );
 }
@@ -859,7 +997,7 @@ function UnReleasedStablecoinTable({ isAccountingTeam }) {
                       fontSize: '16px',
                     }}
                   >
-                    <StatusLabel status={row.status} />
+                    <StatusLabel status={row.status} record={row} />
                   </TableCell>
                   <TableCell align="center" sx={{ fontSize: '16px' }}>
                     {row.status == 'NEEDTOREVIEW' && isAccountingTeam && (
@@ -1251,7 +1389,7 @@ function ReleasedStablecoinTable({ isAccountingTeam }) {
                       fontSize: '16px',
                     }}
                   >
-                    <StatusLabel status={row.status} />
+                    <StatusLabel status={row.status} record={row} />
                   </TableCell>
                   <TableCell
                     align="center"
@@ -1546,7 +1684,7 @@ function ReleasedLXPTable({ isAccountingTeam }) {
                       fontSize: '16px',
                     }}
                   >
-                    <StatusLabel status={row.status} />
+                    <StatusLabel status={row.status} record={row} />
                   </TableCell>
                   <TableCell
                     align="center"
@@ -1598,6 +1736,8 @@ function ReleasedLXPTable({ isAccountingTeam }) {
 export default function Announcement({ days }) {
   const { address, isConnected } = useAccount();
   const [_loading, currentViewer] = useBuidler(address);
+
+  const [hasMemberFirstBadge, setHasMemberFirstBadge] = useState(false);
   const isAccountingTeam = currentViewer?.role.includes('Accounting Team');
   const [tabIndex, setTabIndex] = React.useState(0);
 
@@ -1605,6 +1745,18 @@ export default function Announcement({ days }) {
     console.log('handleChangeTab', newValue);
     setTabIndex(newValue);
   };
+  useEffect(() => {
+    if (currentViewer) {
+      const { badges } = currentViewer;
+      debugger;
+      const filter = badges.filter((item) => item?.id === 'MemberFirstBadge');
+      if (filter[0] && filter[0].amount) {
+        setHasMemberFirstBadge(true);
+      } else {
+        setHasMemberFirstBadge(false);
+      }
+    }
+  }, [currentViewer]);
 
   return (
     <Layout title={`Announcement | LXDAO`}>
@@ -1728,6 +1880,9 @@ export default function Announcement({ days }) {
             <UnReleasedLXPTable
               isAccountingTeam={isAccountingTeam}
               isConnected={isConnected}
+              hasMemberFirstBadge={hasMemberFirstBadge}
+              address={currentViewer?.address}
+              name={currentViewer?.name}
             />
             <ReleasedLXPTable isAccountingTeam={isAccountingTeam} />
           </Box>

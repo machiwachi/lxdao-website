@@ -36,7 +36,7 @@ function useBuidler(address) {
 
         if (badgesData?.length) {
           badgesData = badgesData.map((badge, index) => {
-            badge.amount = badgesAmount[index];
+            badge && (badge.amount = badgesAmount[index]);
             return badge;
           });
         }
