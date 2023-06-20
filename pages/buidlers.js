@@ -1,174 +1,43 @@
 /* eslint-disable no-undef */
 import React, { useEffect, useState } from 'react';
-import { Typography, Box, Grid, Link, CircularProgress } from '@mui/material';
-import { Img3 } from '@lxdao/img3';
+import {
+  Typography,
+  Box,
+  Link,
+  CircularProgress,
+  TableContainer,
+  Table,
+  TableBody,
+  TableHead,
+  TableFooter,
+  TableRow,
+  TableCell,
+  TablePagination,
+  Paper,
+  Tooltip,
+  IconButton,
+} from '@mui/material';
+import FirstPageIcon from '@mui/icons-material/FirstPage';
+import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
+import LastPageIcon from '@mui/icons-material/LastPage';
+import { useTheme } from '@mui/material/styles';
+
+import API from '@/common/API';
+import {
+  formatAddress,
+  getMemberFirstBadgeAmount,
+  totalLXPoints,
+  totalStableCoins,
+} from '@/utils/utility';
 
 import Layout from '@/components/Layout';
 import SingleSelect from '@/components/Select';
 import DebouncedInput from '@/components/DebouncedInput';
 import Container from '@/components/Container';
-import API from '@/common/API';
-import Tag from '@/components/Tag';
-import Skills from '@/components/Skills';
-import BuidlerContacts from '@/components/BuidlerContacts';
 import Button from '@/components/Button';
-import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
-
-import { getIpfsCid } from '@/utils/utility';
-
-export function BuidlerCard(props) {
-  const record = props.record;
-  const skills = record.skills ? record.skills : [];
-  const simpleMode = props.simpleMode;
-
-  return (
-    <Box
-      border="0.5px solid #D0D5DD"
-      borderRadius="6px"
-      padding={3}
-      position="relative"
-      height="100%"
-    >
-      <Link
-        href={`/buidlers/${record.address}`}
-        target="_blank"
-        color={'inherit'}
-        sx={{
-          textDecoration: 'none',
-        }}
-      >
-        <Box display="flex">
-          <Box
-            flex="0 0 80px"
-            width="80px"
-            height="80px"
-            borderRadius="6px"
-            overflow="hidden"
-            border="0.5px solid #E5E5E5"
-            marginRight={3}
-          >
-            <Img3
-              src={
-                getIpfsCid(record.avatar)
-                  ? `ipfs://${getIpfsCid(record.avatar)}`
-                  : '/images/placeholder.jpeg'
-              }
-              style={{ display: 'block', width: 80, height: 80 }}
-              timeout={3000}
-            />
-          </Box>
-          <Box
-            flex={1}
-            display="flex"
-            width="calc(100% - 85px)"
-            flexDirection="column"
-            justifyContent="space-between"
-          >
-            <Typography
-              variant="h5"
-              sx={{
-                lineHeight: '24px',
-                fontWeight: '500',
-                color: '#000',
-                textOverflow: 'ellipsis',
-                overflow: 'hidden',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              {record.name}
-            </Typography>
-            <Box height={{ sm: '48px', md: '36px' }} overflow="hidden">
-              <BuidlerContacts contacts={record.contacts} />
-            </Box>
-          </Box>
-        </Box>
-        {!simpleMode && record.description && (
-          <Box display="flex" flexWrap="wrap" marginTop={2}>
-            <Typography
-              variant="body1"
-              sx={{
-                lineHeight: '24px',
-                color: '#666F85',
-              }}
-            >
-              {record.description}
-            </Typography>
-          </Box>
-        )}
-        {!simpleMode && record.role.length > 0 ? (
-          <Box display="flex" flexWrap="wrap" marginTop={2}>
-            {record.role.map((item) => {
-              return <Tag key={item} text={item}></Tag>;
-            })}
-          </Box>
-        ) : null}
-        {!simpleMode && skills.length > 0 && (
-          <Box marginTop={2}>
-            <Typography
-              color="#101828"
-              fontWeight="600"
-              marginBottom={1}
-              variant="body1"
-            >
-              Skills
-            </Typography>
-            <Box display="flex" flexWrap="wrap">
-              <Skills skills={skills} />
-            </Box>
-          </Box>
-        )}
-        {!simpleMode &&
-          record.projects.filter((project) => project.status !== 'PENDING')
-            .length > 0 && (
-            <Box marginTop={2}>
-              <Typography
-                color="#101828"
-                fontWeight="600"
-                marginBottom={2}
-                variant="body1"
-              >
-                Projects
-              </Typography>
-              <Box
-                display="flex"
-                gap="10px"
-                flexWrap="noWrap"
-                justifyContent="flex-start"
-                overflow="hidden"
-              >
-                {record.projects
-                  .filter((project) => project.status !== 'PENDING')
-                  .map((project, index) => (
-                    <Link
-                      key={index}
-                      href={`/projects/${project?.project?.number}`}
-                    >
-                      <Box
-                        key={project.id}
-                        width={60}
-                        height={60}
-                        sx={{
-                          border: '0.5px solid #D0D5DD',
-                          borderRadius: '2px',
-                        }}
-                      >
-                        <img
-                          style={{ display: 'block', width: '100%' }}
-                          src={
-                            project.project?.logo || '/images/placeholder.jpeg'
-                          }
-                          alt=""
-                        />
-                      </Box>
-                    </Link>
-                  ))}
-              </Box>
-            </Box>
-          )}
-      </Link>
-    </Box>
-  );
-}
+import CopyText from '@/components/CopyText';
+import Skills from '../components/Skills';
 
 const roleNames = [
   'All',
@@ -179,7 +48,7 @@ const roleNames = [
   'Onboarding Committee',
 ];
 
-let skillNames = [
+const skillNames = [
   'All',
   'UI/UX Design',
   'Project Management',
@@ -193,28 +62,127 @@ let skillNames = [
   'Others',
 ];
 
-export default function Home() {
-  const [loading, setLoading] = useState(true);
-  const [loadingMore, setLoadingMore] = useState(false);
+// const memberStatusNames = [
+//   'All',
+//   'Buidler Card Holder',
+//   'Member',
+//   'Onboarding',
+// ];
+
+function TablePaginationActions(props) {
+  const theme = useTheme();
+  const [pagei, setPagei] = useState(0);
+  const { count, page, rowsPerPage, onPageChange } = props;
+
+  const handlePageInput = (event) => {
+    setPagei(event.target.value - 1);
+  };
+
+  const handlePageInputConfirm = (event) => {
+    if (event.key === 'Enter') {
+      let max = Math.ceil(count / rowsPerPage);
+      if (parseInt(event.target.value) > max) {
+        onPageChange(event, max - 1);
+        return;
+      }
+      setPagei(max - 1);
+      onPageChange(event, pagei);
+    }
+  };
+
+  const handleFirstPageButtonClick = (event) => {
+    onPageChange(event, 0);
+  };
+
+  const handleBackButtonClick = (event) => {
+    onPageChange(event, page - 1);
+  };
+
+  const handleNextButtonClick = (event) => {
+    onPageChange(event, page + 1);
+  };
+
+  const handleLastPageButtonClick = (event) => {
+    onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
+  };
+
+  useEffect(() => {
+    setPagei(page);
+  }, [page]);
+
+  return (
+    <Box sx={{ flexShrink: 0, ml: 2.5 }}>
+      <IconButton
+        onClick={handleFirstPageButtonClick}
+        disabled={page === 0}
+        aria-label="first page"
+      >
+        {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
+      </IconButton>
+      <IconButton
+        onClick={handleBackButtonClick}
+        disabled={page === 0}
+        aria-label="previous page"
+      >
+        {theme.direction === 'rtl' ? (
+          <KeyboardArrowRight />
+        ) : (
+          <KeyboardArrowLeft />
+        )}
+      </IconButton>
+      <input
+        style={{ width: '2rem', textAlign: 'center' }}
+        value={pagei + 1}
+        onChange={handlePageInput}
+        onKeyDown={handlePageInputConfirm}
+      ></input>
+      <IconButton
+        onClick={handleNextButtonClick}
+        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+        aria-label="next page"
+      >
+        {theme.direction === 'rtl' ? (
+          <KeyboardArrowLeft />
+        ) : (
+          <KeyboardArrowRight />
+        )}
+      </IconButton>
+
+      <IconButton
+        onClick={handleLastPageButtonClick}
+        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+        aria-label="last page"
+      >
+        {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
+      </IconButton>
+    </Box>
+  );
+}
+
+export default function Buidlers() {
+  const [loading, setLoading] = useState(false);
   const [list, setList] = useState([]);
   const [search, setSearch] = useState('');
   const [role, setRole] = useState('');
   const [skill, setSkill] = useState('');
-  const [current, setCurrent] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
+  // const [memberStatus, setMemberStatus] = useState('');
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [pagination, setPagination] = useState({});
 
   const searchList = async (
     search = '',
     role = '',
     skill = '',
-    currentPage = 0,
-    isAddMore = false
+    memberStatus = ''
   ) => {
     let query = `/buidler?`;
     let params = [];
     const trimmedSearch = search.trim();
     const trimmedRole = role === 'All' ? '' : role.trim();
     const trimmedSkill = skill === 'All' ? '' : skill.trim();
+    // const trimmedMemberStatus =
+    //   memberStatus === 'All' ? '' : memberStatus.trim();
     if (trimmedSearch) {
       params.push('search=' + trimmedSearch);
     }
@@ -224,16 +192,15 @@ export default function Home() {
     if (trimmedSkill) {
       params.push('skill=' + trimmedSkill);
     }
+    // if (trimmedMemberStatus) {
+    //   params.push('member_status=' + trimmedMemberStatus);
+    // }
     params.push('status=ACTIVE&status=READYTOMINT&status=PENDING');
-    params.push('page=' + (currentPage || current));
-    params.push('per_page=9');
+    params.push(`page=${page + 1}`);
+    params.push(`per_page=${rowsPerPage}`);
     query += params.join('&');
+    setLoading(true);
 
-    if (!isAddMore) {
-      setLoading(true);
-    } else {
-      setLoadingMore(true);
-    }
     try {
       const res = await API.get(query);
       const result = res.data;
@@ -242,28 +209,82 @@ export default function Home() {
         return;
       }
       const records = result.data;
-
-      let tempList = [];
-      records.forEach((record) => {
-        tempList.push(record);
-      });
-      setHasMore(tempList.length === 9);
-
-      isAddMore ? setList([...list, ...tempList]) : setList([...tempList]);
-    } catch (err) {
-      console.error(err);
-    }
-    if (!isAddMore) {
+      setPagination(result.pagination);
       setLoading(false);
-    } else {
-      setLoadingMore(false);
+      setList(records);
+    } catch (err) {
+      setLoading(false);
+      console.error(err);
     }
   };
 
-  // todo Muxin add pagination later with many buidlers
   useEffect(() => {
     searchList();
-  }, []);
+  }, [page, rowsPerPage]);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangePerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const MemberBasicInfo = (props) => {
+    const { avatar, name, address, status, badges } = props;
+
+    let memberStatusImgUrl = '/icons/member-status-grey.svg';
+    let memberStatusText = 'Onboarding';
+    if (status === 'ACTIVE') {
+      memberStatusImgUrl = '/icons/member-status-blue.svg';
+      memberStatusText = 'SBT Card Holder';
+    } else if (
+      (status === 'READYTOMINT' || status === 'PENDING') &&
+      getMemberFirstBadgeAmount(badges) > 0
+    ) {
+      memberStatusImgUrl = '/icons/member-status-green.svg';
+      memberStatusText = 'Member';
+    }
+    return (
+      <Box display="flex" gap="22px" alignItems="center" position="relative">
+        <Tooltip title={memberStatusText}>
+          <Box
+            component="img"
+            src={memberStatusImgUrl}
+            sx={{ position: 'absolute', top: 0 }}
+          />
+        </Tooltip>
+        <Link href={`/buidlers/${address}`} target="_blank">
+          <Box
+            component="img"
+            src={avatar}
+            width="80px"
+            height="80px"
+            sx={{ border: '0.5px solid #E5E5E5', borderRadius: '6px' }}
+          />
+        </Link>
+        <Box display="flex" flexDirection="column" gap="8px">
+          <Link
+            href={`/buidlers/${address}`}
+            target="_blank"
+            sx={{ textDecoration: 'none' }}
+          >
+            <Typography fontSize="22px" lineHeight="24px">
+              {name}
+            </Typography>
+          </Link>
+          <CopyText
+            textAlign="center"
+            textStyle={{ color: '#666F85', fontSize: '14px' }}
+            iconSize="14px"
+            copyTextOriginal={address}
+            copyText={formatAddress(address)}
+          />
+        </Box>
+      </Box>
+    );
+  };
 
   return (
     <Layout title="LXDAO Members | LXDAO">
@@ -307,44 +328,55 @@ export default function Home() {
             </Button>
           </Link>
         </Box>
-        <Grid marginTop={10} container spacing={2}>
-          <Grid item xs={4}>
+        <Box display="flex" flexDirection="column" gap="24px">
+          <Box display="flex" gap="10px" alignItems="center">
             <DebouncedInput
               value={search}
               onChange={(value) => {
-                setCurrent(1);
+                setPage(0);
                 setSearch(value);
-                searchList(value, role, skill, 1);
+                searchList(value, role, skill);
               }}
               label="Search"
               placeholder="Search members"
             />
-          </Grid>
-          <Grid item xs={4}>
+          </Box>
+          <Box display="flex" gap="16px">
             <SingleSelect
               value={role}
               label="Role"
               dropdown={roleNames}
               onChange={(value) => {
-                setCurrent(1);
+                setPage(0);
                 setRole(value);
-                searchList(search, value, skill, 1);
+                searchList(search, value, skill);
               }}
             />
-          </Grid>
-          <Grid item xs={4}>
             <SingleSelect
               value={skill}
               label="Skill"
               dropdown={skillNames}
               onChange={(value) => {
-                setCurrent(1);
+                setPage(0);
                 setSkill(value);
-                searchList(search, role, value, 1);
+                searchList(search, role, value);
               }}
             />
-          </Grid>
-        </Grid>
+            {/* 
+              <SingleSelect
+                value={memberStatus}
+                label="Member Status"
+                dropdown={memberStatusNames}
+                onChange={(value) => {
+                  setPage(1);
+                  setMemberStatus(value);
+                  searchList(search, role, skill, value);
+                }}
+              />
+            */}
+          </Box>
+        </Box>
+
         <Box
           marginTop={10}
           display={loading ? 'flex' : 'none'}
@@ -367,44 +399,128 @@ export default function Home() {
               </Typography>
             </Box>
           ) : (
-            <Box>
-              <ResponsiveMasonry
-                columnsCountBreakPoints={{ 0: 1, 600: 2, 900: 3 }}
-              >
-                <Masonry gutter="16px">
-                  {list.map((item) => {
-                    return (
-                      <Grid key={item.id} item xs={12} sm={6} lg={4}>
-                        <BuidlerCard key={item.id} record={item} />
-                      </Grid>
-                    );
-                  })}
-                </Masonry>
-              </ResponsiveMasonry>
-
-              <Box
-                marginTop={{ md: 6, xs: 3 }}
-                display="flex"
-                justifyContent="center"
-                gap={2}
-              >
-                {loadingMore ? (
-                  <Box marginTop={10} display="flex" justifyContent="center">
-                    <CircularProgress />
-                  </Box>
-                ) : hasMore ? (
-                  <Button
-                    variant="outlined"
-                    onClick={() => {
-                      setCurrent(current + 1);
-                      searchList(search, role, skill, current + 1, true);
-                    }}
-                  >
-                    View More
-                  </Button>
-                ) : null}
-              </Box>
-            </Box>
+            <TableContainer component={Paper} sx={{ boxShadow: 'none' }}>
+              <Table sx={{ minWidth: 700 }} aria-label="customized table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell
+                      align="left"
+                      sx={{
+                        fontSize: '16px',
+                        color: '#666F85',
+                        fontWeight: 400,
+                      }}
+                    >
+                      Name
+                    </TableCell>
+                    <TableCell
+                      align="left"
+                      sx={{
+                        fontSize: '16px',
+                        color: '#666F85',
+                        fontWeight: 400,
+                      }}
+                    >
+                      Skills
+                    </TableCell>
+                    <TableCell
+                      align="left"
+                      sx={{
+                        fontSize: '16px',
+                        color: '#666F85',
+                        fontWeight: 400,
+                      }}
+                      width="200px"
+                    >
+                      Projects involved
+                    </TableCell>
+                    <TableCell
+                      align="left"
+                      sx={{
+                        fontSize: '16px',
+                        color: '#666F85',
+                        fontWeight: 400,
+                      }}
+                    >
+                      Compensation
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {list.map((member, index) => (
+                    <TableRow key={index}>
+                      <TableCell align="left">
+                        <MemberBasicInfo
+                          avatar={member?.avatar}
+                          name={member?.name}
+                          address={member?.address}
+                          status={member?.status}
+                          badges={member?.badges}
+                        />
+                      </TableCell>
+                      <TableCell component="th" scope="row">
+                        <Box display="flex" flexWrap="wrap">
+                          <Skills skills={member?.skills} />
+                        </Box>
+                      </TableCell>
+                      <TableCell align="left">
+                        {member?.projects?.length}
+                      </TableCell>
+                      <TableCell align="left">
+                        <Box>
+                          {totalLXPoints(member) !== 0 && (
+                            <Typography
+                              sx={{
+                                color: '#101828',
+                                fontSize: '16px',
+                                fontWeight: 700,
+                              }}
+                            >{`${totalLXPoints(member)}`}</Typography>
+                          )}
+                          {totalStableCoins(member) !== 0 && (
+                            <Typography
+                              sx={{
+                                color: '#101828',
+                                fontSize: '16px',
+                                fontWeight: 700,
+                              }}
+                            >{`${totalStableCoins(member)}`}</Typography>
+                          )}
+                        </Box>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+                {list.length && (
+                  <TableFooter>
+                    {list.length > 0 ? (
+                      <TableRow>
+                        <TablePagination
+                          rowsPerPageOptions={[
+                            10,
+                            25,
+                            50,
+                            { label: 'All', value: pagination.total },
+                          ]}
+                          count={pagination?.total}
+                          rowsPerPage={rowsPerPage}
+                          page={page}
+                          SelectProps={{
+                            inputProps: {
+                              'aria-label': 'rows per page',
+                            },
+                            native: true,
+                          }}
+                          onPageChange={handleChangePage}
+                          onRowsPerPageChange={handleChangePerPage}
+                          ActionsComponent={TablePaginationActions}
+                        />
+                      </TableRow>
+                    ) : null}
+                  </TableFooter>
+                )}
+              </Table>
+            </TableContainer>
           )}
         </Box>
       </Container>
