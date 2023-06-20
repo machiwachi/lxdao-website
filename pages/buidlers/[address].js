@@ -42,7 +42,7 @@ import {
   getOpenSeaDomain,
   getPolygonScanDomain,
   getIpfsCid,
-  groupBy,
+  totalLXPoints,
 } from '@/utils/utility';
 import badge_abi from '@/abi/badge_abi.json';
 
@@ -62,56 +62,6 @@ import LXButton from '@/components/Button';
 import WorkingGroupCard from '@/components/WorkingGroupCard';
 import OnBoardingLayout from '@/components/OnBoardingLayout';
 import BadgeCard from '@/components/BadgeCard';
-import { BuidlerCard } from '../buidlers';
-import Apply from '@/pages/reward/apply';
-
-function totalLXPoints(record) {
-  if (!record.lxPoints || !record.lxPoints.length) {
-    return 0;
-  }
-  const lxPointsGroup = groupBy(record.lxPoints, 'unit');
-  return Object.keys(lxPointsGroup)
-    .map((key) => {
-      const total = lxPointsGroup[key].reduce((total, point) => {
-        if (point.status !== 'RELEASED') {
-          return total;
-        }
-        if (point.operator === '+') {
-          return total + point.value;
-        }
-        if (point.operator === '-') {
-          return total - point.value;
-        }
-        return total;
-      }, 0);
-      return `${total} LXP`;
-    })
-    .join(' + ');
-}
-
-function totalStableCoins(record) {
-  if (!record.stableCoins || !record.stableCoins.length) {
-    return 0;
-  }
-  const group = groupBy(record.stableCoins, 'unit');
-  return Object.keys(group)
-    .map((key) => {
-      const total = group[key].reduce((total, point) => {
-        if (point.status !== 'RELEASED') {
-          return total;
-        }
-        if (point.operator === '+') {
-          return total + point.value;
-        }
-        if (point.operator === '-') {
-          return total - point.value;
-        }
-        return total;
-      }, 0);
-      return `${total} U`;
-    })
-    .join(' + ');
-}
 
 function LXPointsTable({ points }) {
   return (
@@ -602,57 +552,6 @@ function BuidlerDetails(props) {
         </Box>
       ) : (
         <Container paddingY={isFromOnboarding ? {} : { md: 12, xs: 8 }}>
-          {/**
-        {address === record.address &&
-          record.status === 'PENDING' &&
-          !isFromOnboarding && (
-            <Box marginTop={4}>
-              <Alert severity="success">
-                Welcome LXDAO. Please fill up the form first, and your Buddy will
-                enable your Mint access on the Onboarding Session. Thanks.
-              </Alert>
-              <Box
-                display="flex"
-                justifyContent="center"
-                marginTop={4}
-                marginBottom={4}
-              >
-                <LXButton width="200px" disabled={true} variant="gradient">
-                  {minting ? 'Minting Builder Card...' : 'Mint Builder Card'}
-                </LXButton>
-              </Box>
-              <Box display="flex" justifyContent="center" marginBottom={6}>
-                <Typography variant="body1" fontWeight="400">
-                  We will arrange on-boarding as soon as possible and help you
-                  mint buidler card
-                </Typography>
-              </Box>
-            </Box>
-          )}
-        */}
-          {/** {address === record.address && record.status === 'READYTOMINT' && (
-        <Box marginTop={4}>
-          <Alert severity="info">
-            Welcome LXDAO. Your SBT Card is Ready to Mint.
-          </Alert>
-          <Box
-            display="flex"
-            justifyContent="center"
-            marginTop={4}
-            marginBottom={4}
-          >
-            <LXButton
-              width="220px"
-              variant="gradient"
-              onClick={() => {
-                mint();
-              }}
-            >
-              {minting ? 'Minting Builder Card...' : 'Mint Builder Card'}
-            </LXButton>
-          </Box>
-        </Box>
-      )}*/}
           {isBuddyChecking && record.status === 'PENDING' && (
             <Box marginTop={4}>
               <Alert severity="info">Enable Mint Access</Alert>
@@ -1510,31 +1409,6 @@ function BuidlerDetails(props) {
                   )}
                 </Box>
               </Box>
-              {/**
-            {mates && mates.length > 0 && (
-                <Box marginTop={3} marginBottom={3}>
-                  <Box>
-                    <Typography
-                      color="#101828"
-                      fontWeight="600"
-                      variant="body1"
-                      marginBottom={2}
-                    >
-                      My Buddies
-                    </Typography>
-                  </Box>
-                  <Box display="flex" marginTop={2}>
-                    <Grid container spacing={2}>
-                      {mates.map((mate) => (
-                        <Grid key={mate.id} item xs={12} sm={6} lg={4}>
-                          <BuidlerCard simpleMode={true} record={mate} />
-                        </Grid>
-                      ))}
-                    </Grid>
-                  </Box>
-                </Box>
-              )}
-          */}
             </Box>
           </Box>
 
