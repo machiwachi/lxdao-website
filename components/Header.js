@@ -207,7 +207,10 @@ const Header = () => {
               onClose={() => {
                 handleGovernanceMenuClose();
               }}
-              MenuListProps={{ 'aria-labelledby': 'governance-menu-trigger' }}
+              MenuListProps={{
+                'aria-labelledby': 'governance-menu-trigger',
+              }}
+              PaperProps={{ sx: { width: '210px' } }}
             >
               <MenuItem
                 onClick={() => {
