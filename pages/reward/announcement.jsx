@@ -1897,11 +1897,7 @@ export default function Announcement({ days }) {
                 marginTop={4}
               >
                 Ready to submit your Stablecoin application? Click the link:{' '}
-                <Link
-                  href="/reward/StablecoinApplication"
-                  target="_blank"
-                  color={'#667085'}
-                >
+                <Link href="/reward/apply" target="_blank" color={'#667085'}>
                   Apply
                 </Link>{' '}
                 .
