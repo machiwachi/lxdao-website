@@ -42,6 +42,33 @@ import Layout from '@/components/Layout';
 import useBuidler from '@/components/useBuidler';
 import showMessage from '@/components/showMessage';
 import CloseIcon from '@mui/icons-material/Close';
+import { makeStyles } from '@mui/styles';
+
+
+const useStyles = makeStyles({
+  tooltip: {
+    marginTop: '0px !important',
+    marginBottom: '0px !important',
+    marginLeft: '0px !important',
+    backgroundColor: '#ffffff',
+    borderRadius: '0',
+    width: '420px !important',
+    padding: '24px',
+    border: "1px solid #D0D5DD",
+    borderRadius: '6px'
+  },
+});
+
+function StyledTooltip(props) {
+  const classes = useStyles();
+  return (
+    <Tooltip
+      enterTouchDelay={0}
+      classes={{ tooltip: classes.tooltip }}
+      {...props}
+    />
+  );
+}
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -142,9 +169,20 @@ function StatusLabel({ status, record }) {
     case 'REJECTED':
       if (record?.rejectReason) {
         return (
-          <Tooltip title={record.rejectReason}>
+          <StyledTooltip placement="bottom"
+            title={<Typography
+              variant="subtitle1"
+              lineHeight="20px"
+              fontWeight={400}
+              color="#1e2022"
+
+            >
+              {record.rejectReason}
+            </Typography>
+            }
+          >
             <Typography color={'#D0D5DD'}>REJECTED</Typography>
-          </Tooltip>
+          </StyledTooltip>
         );
       } else {
         return <Typography color={'#D0D5DD'}>REJECTED</Typography>;
@@ -155,16 +193,28 @@ function StatusLabel({ status, record }) {
     case 'NEEDTOREVIEW':
       if (record?.disputeReasons) {
         return (
-          <Tooltip
-            title={record.disputeReasons?.map((item, index) => (
-              <>
-                <span key={index + 1}>{`${item.name}: ${item.reason}`}</span>
-                <br />
-              </>
-            ))}
+          <StyledTooltip placement="bottom"
+            title={
+              <div style={{ color: '#1e2022' }}>
+                {record.disputeReasons?.map((item, index) => (
+                  <>
+                    <Typography
+                      variant="subtitle1"
+                      lineHeight="20px"
+                      fontWeight={400}
+                      color="#1e2022"
+
+                    >
+                      {`${item.name}: ${item.reason}`}
+                    </Typography>
+                    <br />
+                  </>
+                ))}
+              </div>
+            }
           >
             <Typography color={'#ffac1d'}>NEED TO REVIEW</Typography>
-          </Tooltip>
+          </StyledTooltip>
         );
       } else {
         return <Typography color={'#ffac1d'}>NEED TO REVIEW</Typography>;
@@ -185,7 +235,7 @@ function UnReleasedLXPTable({
   const [page, setPage] = useState(0);
   const [perPage, setPerPage] = useState(25);
   const [pagination, setPagination] = useState({});
-  const [visible, setVisible] = useState(false);
+  const [reasonVisible, setReasonVisible] = useState(false);
   const [updating, setUpdating] = useState(false);
   const [isDispute, setIsDispute] = useState(true);
   const [currentLxpointId, setCurrentLxpointId] = useState('');
@@ -195,12 +245,12 @@ function UnReleasedLXPTable({
     if (operation === 'REJECT') {
       setIsDispute(false);
       setCurrentLxpointId(id);
-      setVisible(true);
+      setReasonVisible(true);
       return;
     } else if (operation === 'DISPUTE') {
       setIsDispute(true);
       setCurrentLxpointId(id);
-      setVisible(true);
+      setReasonVisible(true);
       return;
     }
     try {
@@ -250,7 +300,7 @@ function UnReleasedLXPTable({
           {
             id: currentLxpointId,
             disputeReasons: [],
-            rejectReason: values.reason,
+            rejectReason: `${name}: ${values.reason}`,
           }
         );
       }
@@ -260,13 +310,12 @@ function UnReleasedLXPTable({
         throw new Error(result.message);
       } else {
         if (isDispute) {
-          getLXPApplications();
+          await getLXPApplications();
         } else {
           router.reload(window.location.pathname);
         }
       }
-      setVisible(false);
-      // props.refresh();
+      setReasonVisible(false);
     } catch (err) {
       showMessage({
         type: 'error',
@@ -666,13 +715,13 @@ function UnReleasedLXPTable({
         fullWidth={true}
         maxWidth={'sm'}
         onClose={(event, reason) => {
-          setVisible(false);
+          setReasonVisible(false);
         }}
-        open={visible}
+        open={reasonVisible}
       >
         <Box
           onClick={() => {
-            setVisible(false);
+            setReasonVisible(false);
           }}
           sx={{
             cursor: 'pointer',
@@ -697,7 +746,9 @@ function UnReleasedLXPTable({
   );
 }
 
-function UnReleasedStablecoinTable({ isAccountingTeam }) {
+function UnReleasedStablecoinTable({ isAccountingTeam, hasMemberFirstBadge,
+  address,
+  name, }) {
   const router = useRouter();
   const [rows, setRows] = useState([]);
   const [copied, setCopied] = useState(false);
@@ -709,6 +760,11 @@ function UnReleasedStablecoinTable({ isAccountingTeam }) {
   const [transaction, setTransaction] = useState('');
   const [totalRemuneration, setTotalRemuneration] = useState(0);
   const [selected, setSelected] = React.useState([]);
+  const [reasonVisible, setReasonVisible] = useState(false);
+  const [updating, setUpdating] = useState(false);
+  const [isDispute, setIsDispute] = useState(true);
+  const [currentStableCoinId, setCurrentStableCoinId] = useState('');
+
 
   useEffect(() => {
     (async () => {
@@ -717,6 +773,17 @@ function UnReleasedStablecoinTable({ isAccountingTeam }) {
   }, [page, perPage]);
 
   const hanldeOperationBtn = async (id, operation) => {
+    if (operation === 'REJECT') {
+      setIsDispute(false);
+      setCurrentStableCoinId(id);
+      setReasonVisible(true);
+      return;
+    } else if (operation === 'DISPUTE') {
+      setIsDispute(true);
+      setCurrentStableCoinId(id);
+      setReasonVisible(true);
+      return;
+    }
     try {
       const res = await API.put(`/stablecoin/${id}`, { operation: operation });
 
@@ -737,6 +804,58 @@ function UnReleasedStablecoinTable({ isAccountingTeam }) {
         body: err.message,
       });
     }
+  };
+
+  const saveReasonHandler = async (values) => {
+    setUpdating(true);
+    try {
+      let response;
+      if (isDispute) {
+        response = await API.put(
+          `/stablecoin/${currentStableCoinId}/updateDisputeReasons`,
+          {
+            id: currentStableCoinId,
+            disputeReasons: [
+              {
+                address,
+                name,
+                reason: values.reason,
+              },
+            ],
+            rejectReason: '',
+          }
+        );
+      } else {
+        response = await API.put(
+          `/stablecoin/${currentStableCoinId}/updateRejectReason`,
+          {
+            id: currentStableCoinId,
+            disputeReasons: [],
+            rejectReason: `${name}: ${values.reason}`,
+          }
+        );
+      }
+
+      const result = response?.data;
+      if (result.status !== 'SUCCESS') {
+        throw new Error(result.message);
+      } else {
+        if (isDispute) {
+          await getStablecoinApplications();
+        } else {
+          router.reload(window.location.pathname);
+        }
+      }
+
+      setReasonVisible(false);
+    } catch (err) {
+      showMessage({
+        type: 'error',
+        title: 'Failed to submit',
+        body: err.message,
+      });
+    }
+    setUpdating(false);
   };
 
   const handleReleaseBtn = async () => {
@@ -1054,6 +1173,20 @@ function UnReleasedStablecoinTable({ isAccountingTeam }) {
                         </LXButton>
                       </>
                     )}
+                    {row.status == 'TOBERELEASED' && hasMemberFirstBadge && (
+                      <>
+                        <LXButton
+                          width={'100px'}
+                          variant="outlined"
+                          onClick={() => {
+                            setIsDispute(true);
+                            hanldeOperationBtn(row.id, 'DISPUTE');
+                          }}
+                        >
+                          Dispute
+                        </LXButton>
+                      </>
+                    )}
                   </TableCell>
                 </TableRow>
               );
@@ -1163,6 +1296,37 @@ function UnReleasedStablecoinTable({ isAccountingTeam }) {
           </DialogContent>
         </Dialog>
       )}
+      <Dialog
+        fullWidth={true}
+        maxWidth={'sm'}
+        onClose={(event, reason) => {
+          setReasonVisible(false);
+        }}
+        open={reasonVisible}
+      >
+        <Box
+          onClick={() => {
+            setReasonVisible(false);
+          }}
+          sx={{
+            cursor: 'pointer',
+          }}
+          position="absolute"
+          top="16px"
+          right="16px"
+        >
+          <CloseIcon></CloseIcon>
+        </Box>
+        <DialogTitle>
+          {isDispute ? 'Dispute Reason' : 'Reject Reason'}
+        </DialogTitle>
+        <DialogContent>
+          <ReasonForm
+            updating={updating}
+            saveReasonHandler={saveReasonHandler}
+          />
+        </DialogContent>
+      </Dialog>
     </Box>
   );
 }
@@ -1927,10 +2091,13 @@ export default function Announcement({ days }) {
                 marginTop={4}
               >
                 Ready to submit your Stablecoin application? Click the link:{' '}
-                <Link href="/reward/apply" target="_blank" color={'#667085'}>
+                <Link
+                  href="/reward/apply"
+                  target="_blank"
+                  color={'#667085'}
+                >
                   Apply
-                </Link>{' '}
-                .
+                </Link>
               </Typography>
             </Box>
             <Box width={'100%'} marginTop={4}>
@@ -1953,13 +2120,16 @@ export default function Announcement({ days }) {
                     color={'#36AFF9'}
                   >
                     {days < 0 ? -days : days}
-                  </span>{' '}
+                  </span>
                   {Math.abs(days) === 1 ? 'Day' : 'Days'}
                 </Typography>
               </Box>
               <UnReleasedStablecoinTable
                 isAccountingTeam={isAccountingTeam}
                 isConnected={isConnected}
+                hasMemberFirstBadge={hasMemberFirstBadge}
+                address={currentViewer?.address}
+                name={currentViewer?.name}
               />
               <ReleasedStablecoinTable isAccountingTeam={isAccountingTeam} />
             </Box>
