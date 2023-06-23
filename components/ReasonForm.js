@@ -1,8 +1,8 @@
 /* eslint-disable no-undef */
 import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { Box, Button, Alert } from '@mui/material';
-
+import { Box } from '@mui/material';
+import LXButton from '@/components/Button';
 import TextInput from './TextInput';
 
 function ReasonForm(props) {
@@ -27,25 +27,28 @@ function ReasonForm(props) {
   function SubmitButton() {
     if (JSON.stringify(errors) !== '{}') {
       return (
-        <Button variant="contained" size="large" disabled={true}>
+        <LXButton
+          variant="gradient"
+          disabled={true}
+        >
           Submit
-        </Button>
+        </LXButton>
       );
     }
 
     // todo add more steps and tips, like uploading to IPFS etc.
     if (props.updating) {
       return (
-        <Button variant="contained" size="large" disabled={true}>
+        <LXButton variant="gradient" disabled={true}>
           Submit...
-        </Button>
+        </LXButton>
       );
     }
 
     return (
-      <Button variant="contained" size="large" onClick={handleSubmit(onSubmit)}>
+      <LXButton variant="gradient" onClick={handleSubmit(onSubmit)}>
         Submit
-      </Button>
+      </LXButton>
     );
   }
 
@@ -84,7 +87,7 @@ function ReasonForm(props) {
           </Box>
         )}
         {!props.isOnboardingProcess && (
-          <Box marginTop={2}>
+          <Box marginTop={2} style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <SubmitButton />
           </Box>
         )}
