@@ -189,6 +189,7 @@ function UnReleasedLXPTable({
   const [updating, setUpdating] = useState(false);
   const [isDispute, setIsDispute] = useState(true);
   const [currentLxpointId, setCurrentLxpointId] = useState('');
+  const [totalRemuneration, setTotalRemuneration] = useState(0);
 
   const hanldeOperationBtn = async (id, operation) => {
     if (operation === 'REJECT') {
@@ -368,6 +369,14 @@ function UnReleasedLXPTable({
         // error todo Muxin add common alert, wang teng design
         return;
       }
+
+      // calculate
+      let total = 0;
+      for (let i = 0; i < result.data.length; i++) {
+        total += result.data[i].value;
+      }
+      setTotalRemuneration(total);
+
       setRows(result.data);
       setPagination(result.pagination);
     } catch (err) {
@@ -585,6 +594,28 @@ function UnReleasedLXPTable({
                 </TableRow>
               );
             })}
+
+            {rows.length > 0 && (
+              <TableRow>
+                <TableCell
+                  align="center"
+                  sx={{
+                    fontSize: '18px',
+                  }}
+                >
+                  {'Total'}
+                </TableCell>
+                <TableCell align="center" />
+                <TableCell
+                  align="center"
+                  sx={{
+                    fontSize: '18px',
+                  }}
+                >
+                  {totalRemuneration}
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
 
           <TableFooter>
@@ -1748,7 +1779,6 @@ export default function Announcement({ days }) {
   useEffect(() => {
     if (currentViewer) {
       const { badges } = currentViewer;
-      debugger;
       const filter = badges.filter((item) => item?.id === 'MemberFirstBadge');
       if (filter[0] && filter[0].amount) {
         setHasMemberFirstBadge(true);
