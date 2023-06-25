@@ -44,17 +44,16 @@ import showMessage from '@/components/showMessage';
 import CloseIcon from '@mui/icons-material/Close';
 import { makeStyles } from '@mui/styles';
 
-
 const useStyles = makeStyles({
   tooltip: {
     marginTop: '0px !important',
     marginBottom: '0px !important',
     marginLeft: '0px !important',
-    backgroundColor: '#ffffff', 
+    backgroundColor: '#ffffff',
     width: '420px !important',
     padding: '24px',
-    border: "1px solid #D0D5DD",
-    borderRadius: '6px'
+    border: '1px solid #D0D5DD',
+    borderRadius: '6px',
   },
 });
 
@@ -168,16 +167,17 @@ function StatusLabel({ status, record }) {
     case 'REJECTED':
       if (record?.rejectReason) {
         return (
-          <StyledTooltip placement="bottom"
-            title={<Typography
-              variant="subtitle1"
-              lineHeight="20px"
-              fontWeight={400}
-              color="#1e2022"
-
-            >
-              {record.rejectReason}
-            </Typography>
+          <StyledTooltip
+            placement="bottom"
+            title={
+              <Typography
+                variant="subtitle1"
+                lineHeight="20px"
+                fontWeight={400}
+                color="#1e2022"
+              >
+                {record.rejectReason}
+              </Typography>
             }
           >
             <Typography color={'#D0D5DD'}>REJECTED</Typography>
@@ -192,7 +192,8 @@ function StatusLabel({ status, record }) {
     case 'NEEDTOREVIEW':
       if (record?.disputeReasons) {
         return (
-          <StyledTooltip placement="bottom"
+          <StyledTooltip
+            placement="bottom"
             title={
               <div style={{ color: '#1e2022' }}>
                 {record.disputeReasons?.map((item, index) => (
@@ -202,7 +203,6 @@ function StatusLabel({ status, record }) {
                       lineHeight="20px"
                       fontWeight={400}
                       color="#1e2022"
-
                     >
                       {`${item.name}: ${item.reason}`}
                     </Typography>
@@ -473,7 +473,7 @@ function UnReleasedLXPTable({
                 Address
               </TableCell>
               <TableCell sx={{ color: '#666F85' }} align="center">
-                Compensation
+                Reward
               </TableCell>
               <TableCell sx={{ color: '#666F85' }} align="center">
                 Source
@@ -745,9 +745,12 @@ function UnReleasedLXPTable({
   );
 }
 
-function UnReleasedStablecoinTable({ isAccountingTeam, hasMemberFirstBadge,
+function UnReleasedStablecoinTable({
+  isAccountingTeam,
+  hasMemberFirstBadge,
   address,
-  name, }) {
+  name,
+}) {
   const router = useRouter();
   const [rows, setRows] = useState([]);
   const [copied, setCopied] = useState(false);
@@ -763,7 +766,6 @@ function UnReleasedStablecoinTable({ isAccountingTeam, hasMemberFirstBadge,
   const [updating, setUpdating] = useState(false);
   const [isDispute, setIsDispute] = useState(true);
   const [currentStableCoinId, setCurrentStableCoinId] = useState('');
-
 
   useEffect(() => {
     (async () => {
@@ -984,7 +986,7 @@ function UnReleasedStablecoinTable({ isAccountingTeam, hasMemberFirstBadge,
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell padding="checkbox">
+              <TableCell>
                 <Checkbox
                   color="primary"
                   indeterminate={
@@ -1006,7 +1008,7 @@ function UnReleasedStablecoinTable({ isAccountingTeam, hasMemberFirstBadge,
                 Address
               </TableCell>
               <TableCell sx={{ color: '#666F85' }} align="center">
-                Remuneration
+                Reward
               </TableCell>
               <TableCell sx={{ color: '#666F85' }} align="center">
                 Source
@@ -1051,7 +1053,7 @@ function UnReleasedStablecoinTable({ isAccountingTeam, hasMemberFirstBadge,
 
               return (
                 <TableRow key={row.id}>
-                  <TableCell padding="checkbox">
+                  <TableCell sx={{ maxWidth: '50px' }}>
                     <Checkbox
                       color="primary"
                       checked={isItemSelected}
@@ -1469,7 +1471,7 @@ function ReleasedStablecoinTable({ isAccountingTeam }) {
                   Address
                 </TableCell>
                 <TableCell sx={{ color: '#666F85' }} align="center">
-                  Remuneration
+                  Reward
                 </TableCell>
                 <TableCell sx={{ color: '#666F85' }} align="center">
                   Source
@@ -1564,7 +1566,7 @@ function ReleasedStablecoinTable({ isAccountingTeam }) {
                   </TableCell>
                   <TableCell
                     align="center"
-                    sx={{ minWidth: '200px', fontSize: '16px' }}
+                    sx={{ minWidth: '150px', fontSize: '16px' }}
                   >
                     {row.reason}
                   </TableCell>
@@ -1764,7 +1766,7 @@ function ReleasedLXPTable({ isAccountingTeam }) {
                   Address
                 </TableCell>
                 <TableCell sx={{ color: '#666F85' }} align="center">
-                  Compensation
+                  Reward
                 </TableCell>
                 <TableCell sx={{ color: '#666F85' }} align="center">
                   Source
@@ -1859,7 +1861,7 @@ function ReleasedLXPTable({ isAccountingTeam }) {
                   </TableCell>
                   <TableCell
                     align="center"
-                    sx={{ minWidth: '200px', fontSize: '16px' }}
+                    sx={{ minWidth: '150px', fontSize: '16px' }}
                   >
                     {row.reason}
                   </TableCell>
@@ -2090,11 +2092,7 @@ export default function Announcement({ days }) {
                 marginTop={4}
               >
                 Ready to submit your Stablecoin application? Click the link:{' '}
-                <Link
-                  href="/reward/apply"
-                  target="_blank"
-                  color={'#667085'}
-                >
+                <Link href="/reward/apply" target="_blank" color={'#667085'}>
                   Apply
                 </Link>
               </Typography>
