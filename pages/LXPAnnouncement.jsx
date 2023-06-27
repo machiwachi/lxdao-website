@@ -894,9 +894,9 @@ function getDays() {
   if (now.getDate() > 7) {
     // how many day from now to next start.
     if (now.getMonth() == 11) {
-      var next = new Date(now.getFullYear() + 1, 0, 1);
+      var next = new Date(now.getFullYear() + 1, 0, 3);
     } else {
-      var next = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+      var next = new Date(now.getFullYear(), now.getMonth() + 1, 3);
     }
 
     days = Math.ceil((next.getTime() - now.getTime()) / (1000 * 3600 * 24));
