@@ -62,12 +62,12 @@ const skillNames = [
   'Others',
 ];
 
-// const memberStatusNames = [
-//   'All',
-//   'Buidler Card Holder',
-//   'Member',
-//   'Onboarding',
-// ];
+const memberStatusNames = [
+  'All',
+  'Buidler Card Holder',
+  'Member',
+  'Onboarding',
+];
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -165,7 +165,7 @@ export default function Buidlers() {
   const [search, setSearch] = useState('');
   const [role, setRole] = useState('');
   const [skill, setSkill] = useState('');
-  // const [memberStatus, setMemberStatus] = useState('');
+  const [memberStatus, setMemberStatus] = useState('');
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [pagination, setPagination] = useState({});
@@ -181,8 +181,8 @@ export default function Buidlers() {
     const trimmedSearch = search.trim();
     const trimmedRole = role === 'All' ? '' : role.trim();
     const trimmedSkill = skill === 'All' ? '' : skill.trim();
-    // const trimmedMemberStatus =
-    //   memberStatus === 'All' ? '' : memberStatus.trim();
+    const trimmedMemberStatus =
+      memberStatus === 'All' ? '' : memberStatus.trim();
     if (trimmedSearch) {
       params.push('search=' + trimmedSearch);
     }
@@ -192,10 +192,19 @@ export default function Buidlers() {
     if (trimmedSkill) {
       params.push('skill=' + trimmedSkill);
     }
-    // if (trimmedMemberStatus) {
-    //   params.push('member_status=' + trimmedMemberStatus);
-    // }
-    params.push('status=ACTIVE&status=READYTOMINT&status=PENDING');
+    if (trimmedMemberStatus) {
+      if (trimmedMemberStatus === 'Buidler Card Holder') {
+        params.push('status=ACTIVE');
+      } else if (trimmedMemberStatus === 'Member') {
+        params.push('status=ACTIVE&status=PENDING&status=READYTOMINT');
+        params.push(`memberFirstBadge=1`);
+      } else if (trimmedMemberStatus === 'Onboarding') {
+        params.push('status=PENDING');
+        params.push(`memberFirstBadge=0`);
+      }
+    } else {
+      params.push('status=ACTIVE&status=READYTOMINT&status=PENDING');
+    }
     params.push(`page=${page + 1}`);
     params.push(`per_page=${rowsPerPage}`);
     query += params.join('&');
@@ -335,7 +344,7 @@ export default function Buidlers() {
               onChange={(value) => {
                 setPage(0);
                 setSearch(value);
-                searchList(value, role, skill);
+                searchList(value, role, skill, memberStatus);
               }}
               label="Search"
               placeholder="Search members"
@@ -349,7 +358,7 @@ export default function Buidlers() {
               onChange={(value) => {
                 setPage(0);
                 setRole(value);
-                searchList(search, value, skill);
+                searchList(search, value, skill, memberStatus);
               }}
             />
             <SingleSelect
@@ -359,21 +368,19 @@ export default function Buidlers() {
               onChange={(value) => {
                 setPage(0);
                 setSkill(value);
-                searchList(search, role, value);
+                searchList(search, role, value, memberStatus);
               }}
             />
-            {/* 
-              <SingleSelect
-                value={memberStatus}
-                label="Member Status"
-                dropdown={memberStatusNames}
-                onChange={(value) => {
-                  setPage(1);
-                  setMemberStatus(value);
-                  searchList(search, role, skill, value);
-                }}
-              />
-            */}
+            <SingleSelect
+              value={memberStatus}
+              label="Member Status"
+              dropdown={memberStatusNames}
+              onChange={(value) => {
+                setPage(0);
+                setMemberStatus(value);
+                searchList(search, role, skill, value);
+              }}
+            />
           </Box>
         </Box>
 
