@@ -49,9 +49,7 @@ const SectionAnniversary: React.FC = () => {
           value: ethers.utils.parseEther((0.02 * amt).toString()),
         },
       });
-      console.log({ tx });
       const res = await tx?.wait(1);
-      console.log({ res });
       setTotalSupply((parseInt(totalSupply) + amt).toString());
       setLoading(false);
     } catch (err) {

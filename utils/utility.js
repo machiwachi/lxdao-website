@@ -150,12 +150,11 @@ export function removeItem(array, item) {
 }
 
 export function getMemberFirstBadgeAmount(badges) {
-  let amount = 0;
-  if (badges) {
-    const firstMemberBadgeIndex = badges?.types?.indexOf('MemberFirstBadge');
-    amount = badges?.amounts[firstMemberBadgeIndex];
+  let firstMemberBadgeAmount = 0;
+  if (badges && Object.keys(badges).length > 0) {
+    firstMemberBadgeAmount = badges['MemberFirstBadge'] || 0;
   }
-  return amount;
+  return firstMemberBadgeAmount;
 }
 
 export function totalLXPoints(record) {

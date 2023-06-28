@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { Box, Typography, Link } from '@mui/material';
 
+import { getMemberFirstBadgeAmount } from '@/utils/utility';
+
 import Container from '@/components/Container';
 import Button from '@/components/Button';
 import StyledTooltip from '@/components/StyledToolTip';
@@ -99,10 +101,7 @@ const BudilerTooltip = ({
     );
   };
 
-  const firstMemberBadgeIndex =
-    buidler?.badges?.types?.indexOf('MemberFirstBadge');
-  const firstMemberBadgeAmount =
-    buidler?.badges?.amounts[firstMemberBadgeIndex];
+  const firstMemberBadgeAmount = getMemberFirstBadgeAmount(buidler?.badges);
 
   return (
     <Box {...rest}>
