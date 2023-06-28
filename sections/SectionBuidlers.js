@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useRouter } from 'next/router';
 import { Box, Typography, Link } from '@mui/material';
 
 import { getMemberFirstBadgeAmount } from '@/utils/utility';
@@ -118,7 +117,7 @@ const BudilerTooltip = ({
           <BuidlerAvatarBox
             buidler={buidler}
             active={
-              buidler?.status === 'ACITVE' ||
+              buidler?.status === 'ACTIVE' ||
               (buidler?.status === 'PENDING' && firstMemberBadgeAmount > 0)
             }
             display="block"
@@ -131,7 +130,6 @@ const BudilerTooltip = ({
 
 const SectionBuidlers = ({ buidlers }) => {
   const [activeBuidlerIndex, setActiveBuidlerIndex] = useState(null);
-  const router = useRouter();
 
   const handleBuidlerHover = (index) => {
     setActiveBuidlerIndex(index);
@@ -164,6 +162,9 @@ const SectionBuidlers = ({ buidlers }) => {
         </Typography>
         <Box display="flex" flexWrap="wrap" width={{ sm: '100%', xs: '100%' }}>
           {buidlers.map((buidler, index) => {
+            const firstMemberBadgeAmount = getMemberFirstBadgeAmount(
+              buidler?.badges
+            );
             return (
               <Box key={index}>
                 <BudilerTooltip
@@ -179,7 +180,11 @@ const SectionBuidlers = ({ buidlers }) => {
                 />
                 <BuidlerAvatarBox
                   buidler={buidler}
-                  active={activeBuidlerIndex === index}
+                  active={
+                    buidler?.status === 'ACTIVE' ||
+                    (buidler?.status === 'PENDING' &&
+                      firstMemberBadgeAmount > 0)
+                  }
                   display={{ md: 'none', xs: 'block' }}
                 />
               </Box>
