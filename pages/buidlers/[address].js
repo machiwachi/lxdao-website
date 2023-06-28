@@ -525,8 +525,7 @@ function BuidlerDetails(props) {
     );
     if (tx) {
       const updatedBuidler = await API.post(
-        `/buidler/${record.address}/updateBadges`,
-        { badges: { types: ['MemberFirstBadge'], amounts: [1] } }
+        `/buidler/${record.address}/updateBadges`
       );
 
       if (updatedBuidler?.data?.status === 'SUCCESS') {

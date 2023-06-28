@@ -1938,14 +1938,13 @@ export default function Announcement({ days }) {
   const [tabIndex, setTabIndex] = React.useState(0);
 
   const handleChangeTab = (event, newValue) => {
-    console.log('handleChangeTab', newValue);
     setTabIndex(newValue);
   };
   useEffect(() => {
     if (currentViewer) {
       const { badges } = currentViewer;
       const filter = badges.filter((item) => item?.id === 'MemberFirstBadge');
-      if (filter[0] && filter[0].amount) {
+      if (filter[0] && filter[0]?.amount > 0) {
         setHasMemberFirstBadge(true);
       } else {
         setHasMemberFirstBadge(false);

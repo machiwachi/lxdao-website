@@ -16,35 +16,26 @@ function useBuidler(address) {
       setError('Cannot get buidler detail');
     }
 
-    if (result?.data?.badges) {
-      const badgesType = result?.data?.badges?.types;
-      const badgesAmount = result?.data?.badges?.amounts.map(
-        (amount) => amount
-      );
-
+    const badges = result?.data?.badges;
+    if (badges && Object.keys(badges).length) {
       let badgesData = [];
-      if (badgesType?.length) {
-        const badgeMetadataPromises = badgesType.map(async (type) => {
-          const badgeMetadata = await API.get(
-            `/buidler/badge/metadata/${type}`
-          );
-          if (badgeMetadata?.data) {
-            return badgeMetadata?.data;
-          }
-        });
-        badgesData = await Promise.all(badgeMetadataPromises);
-
-        if (badgesData?.length) {
-          badgesData = badgesData.map((badge, index) => {
-            badge && (badge.amount = badgesAmount[index]);
-            return badge;
-          });
+      const badgeMetadataPromises = Object.keys(badges).map(async (key) => {
+        const badgeMetadata = await API.get(`/buidler/badge/metadata/${key}`);
+        if (badgeMetadata?.data) {
+          return badgeMetadata?.data;
         }
-        result.data.badges = badgesData;
-      } else {
-        // todo Muxin
-        result.data.badges = [];
+      });
+
+      badgesData = await Promise.all(badgeMetadataPromises);
+      if (badgesData?.length) {
+        badgesData = badgesData.map((badge) => {
+          badge.amount = badges[badge?.id];
+          return badge;
+        });
       }
+      result.data.badges = badgesData;
+    } else {
+      result.data.badges = [];
     }
 
     setLoading(false);
