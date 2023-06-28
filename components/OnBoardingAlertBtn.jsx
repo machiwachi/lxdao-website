@@ -78,6 +78,10 @@ export default function OnBoardingAlertBtn() {
     });
   }, [width, height]);
 
+  const firstMemberBadgeAmount =
+    buidler?.badges?.filter((badge) => badge.id === 'MemberFirstBadge')[0]
+      ?.amount || 0;
+
   // TODO: add buidler badge status check for displaying the alert
   return (
     <>
@@ -87,7 +91,7 @@ export default function OnBoardingAlertBtn() {
         recycle={false}
         run={open}
       />
-      {buidler?.status == 'PENDING' && (
+      {buidler?.status == 'PENDING' && firstMemberBadgeAmount === 0 && (
         <Box
           display={
             router.asPath.includes('onboarding') ||
