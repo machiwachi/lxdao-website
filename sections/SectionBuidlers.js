@@ -165,17 +165,12 @@ const SectionBuidlers = ({ buidlers }) => {
             const firstMemberBadgeAmount = getMemberFirstBadgeAmount(
               buidler?.badges
             );
+
             return (
               <Box key={index}>
                 <BudilerTooltip
-                  handleBuidlerCardHover={() => {
-                    handleBuidlerHover(index);
-                  }}
-                  handleBuidlerCardLeave={() => {
-                    handleBuidlerLeave(index);
-                  }}
                   buidler={buidler}
-                  active={activeBuidlerIndex === index}
+                  active={isActive}
                   display={{ md: 'block', xs: 'none' }}
                 />
                 <BuidlerAvatarBox

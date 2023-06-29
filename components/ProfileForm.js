@@ -129,7 +129,7 @@ function ProfileForm(props) {
                   rows={2}
                   placeholder="Self introduction"
                   fullWidth
-                  label="Description"
+                  label="Bio"
                   onChange={onChange}
                   value={value}
                   error={!!errors.description}
