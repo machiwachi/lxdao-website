@@ -170,7 +170,11 @@ const SectionBuidlers = ({ buidlers }) => {
               <Box key={index}>
                 <BudilerTooltip
                   buidler={buidler}
-                  active={isActive}
+                  active={
+                    buidler?.status === 'ACTIVE' ||
+                    (buidler?.status === 'PENDING' &&
+                      firstMemberBadgeAmount > 0)
+                  }
                   display={{ md: 'block', xs: 'none' }}
                 />
                 <BuidlerAvatarBox
