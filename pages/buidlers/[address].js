@@ -510,27 +510,47 @@ function BuidlerDetails(props) {
   )?.amount;
 
   const airDropMembershipBadge = async () => {
-    const badgeContractAddress = process.env.NEXT_PUBLIC_BADGE_CONTRACT_ADDRESS;
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
-    const badgeContract = new ethers.Contract(
-      badgeContractAddress,
-      badge_abi,
-      signer
-    );
-    const tx = await badgeContract.mintAndAirdrop(
-      'MemberFirstBadge',
-      [record.address],
-      [1]
-    );
-    if (tx) {
-      const updatedBuidler = await API.post(
-        `/buidler/${record.address}/updateBadges`
+    try {
+      const badgeContractAddress =
+        process.env.NEXT_PUBLIC_BADGE_CONTRACT_ADDRESS;
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const badgeContract = new ethers.Contract(
+        badgeContractAddress,
+        badge_abi,
+        signer
       );
 
-      if (updatedBuidler?.data?.status === 'SUCCESS') {
-        props.refresh();
+      const tx = await badgeContract.mintAndAirdrop(
+        'MemberFirstBadge',
+        [record.address],
+        [1]
+      );
+      showMessage({
+        type: 'info',
+        title: 'Waiting...',
+      });
+      const receipt = await tx.wait();
+
+      if (receipt?.status) {
+        const updatedBuidler = await API.post(
+          `/buidler/${record.address}/updateBadges`
+        );
+
+        if (updatedBuidler?.data?.status === 'SUCCESS') {
+          showMessage({
+            type: 'success',
+            title: 'Success!',
+          });
+          props.refresh();
+        }
       }
+    } catch (err) {
+      showMessage({
+        type: 'error',
+        title: 'Failed to airdrop membership badge',
+        body: err.message,
+      });
     }
   };
 
