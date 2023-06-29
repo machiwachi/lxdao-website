@@ -2116,7 +2116,7 @@ export default function Announcement({ days }) {
                     color={'#36AFF9'}
                   >
                     {days < 0 ? -days : days}
-                  </span>
+                  </span>{' '}
                   {Math.abs(days) === 1 ? 'Day' : 'Days'}
                 </Typography>
               </Box>
