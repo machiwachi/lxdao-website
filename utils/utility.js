@@ -148,3 +148,59 @@ export function removeItem(array, item) {
   }
   return tempArray;
 }
+
+export function getMemberFirstBadgeAmount(badges) {
+  let firstMemberBadgeAmount = 0;
+  if (badges && Object.keys(badges).length > 0) {
+    firstMemberBadgeAmount = badges['MemberFirstBadge'] || 0;
+  }
+  return firstMemberBadgeAmount;
+}
+
+export function totalLXPoints(record) {
+  if (!record.lxPoints || !record.lxPoints.length) {
+    return 0;
+  }
+  const lxPointsGroup = groupBy(record.lxPoints, 'unit');
+  return Object.keys(lxPointsGroup)
+    .map((key) => {
+      const total = lxPointsGroup[key].reduce((total, point) => {
+        if (point.status !== 'RELEASED') {
+          return total;
+        }
+        if (point.operator === '+') {
+          return total + point.value;
+        }
+        if (point.operator === '-') {
+          return total - point.value;
+        }
+        return total;
+      }, 0);
+      return `${total} LXP`;
+    })
+    .join(' + ');
+}
+
+export function totalStableCoins(record) {
+  if (!record.stableCoins || !record.stableCoins.length) {
+    return 0;
+  }
+  const group = groupBy(record.stableCoins, 'unit');
+  return Object.keys(group)
+    .map((key) => {
+      const total = group[key].reduce((total, point) => {
+        if (point.status !== 'RELEASED') {
+          return total;
+        }
+        if (point.operator === '+') {
+          return total + point.value;
+        }
+        if (point.operator === '-') {
+          return total - point.value;
+        }
+        return total;
+      }, 0);
+      return `${total} U`;
+    })
+    .join(' + ');
+}

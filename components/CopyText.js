@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Tooltip, Box } from '@mui/material';
 
-function CopyText({ copyText, copyTextOriginal }) {
+function CopyText({ copyText, copyTextOriginal, textStyle, iconSize }) {
   const [copyTip, setCopyTip] = useState('Copy to Clipboard');
 
   return (
@@ -20,12 +20,13 @@ function CopyText({ copyText, copyTextOriginal }) {
           display="flex"
           sx={{
             cursor: 'pointer',
+            ...textStyle,
           }}
         >
           {copyText}
           <Box
             marginLeft={1}
-            width="20px"
+            width={iconSize || '20px'}
             component={'img'}
             src={`/icons/copy.svg`}
             sx={{

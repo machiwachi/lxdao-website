@@ -3,7 +3,6 @@ import {
   Container,
   Typography,
   InputAdornment,
-  Grid,
   OutlinedInput,
   Checkbox,
   FormControlLabel,
@@ -16,7 +15,7 @@ import {
 } from '@mui/material';
 
 import { useRouter } from 'next/router';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 
 import API from '@/common/API';
@@ -63,17 +62,14 @@ export default function Apply() {
   const router = useRouter();
 
   const [type, setType] = useState('');
+  const [member, setMember] = useState('');
   const [open, setOpen] = useState(false);
-  const [disabltSubmitBtn, setDisabltSubmitBtn] = useState(false);
+  const [disabletSubmitBtn, setDisableSubmitBtn] = useState(false);
   const [submitLoading, setSubmitLoading] = useState(false);
   const [options, setOptions] = useState([]);
   const loading = open && options.length === 0;
 
-  const BuilderList = async (
-    search = '',
-    currentPage = 0,
-    isAddMore = false
-  ) => {
+  const BuilderList = async () => {
     let query = `/buidler?`;
     let params = [];
     params.push('per_page=1000');
@@ -104,11 +100,10 @@ export default function Apply() {
   };
 
   const applicationHandler = async (raw) => {
-    setDisabltSubmitBtn(true);
+    setDisableSubmitBtn(true);
     setSubmitLoading(true);
     try {
       const data = {
-        type: raw.type,
         name: raw.name,
         address: raw.address,
         buidlerId: raw.buidlerId,
@@ -116,20 +111,35 @@ export default function Apply() {
         value: parseInt(raw.amount),
         reason: raw.reason,
       };
-      const response = await API.post(
-        `/lxpoints/${raw.address}/createLXPoints`,
-        data
-      );
-      const result = response?.data;
-      if (result.status !== 'SUCCESS') {
-        setDisabltSubmitBtn(false);
-        setSubmitLoading(false);
-        throw new Error(result.message);
+      if (type === 'LXP') {
+        const response = await API.post(
+          `/lxpoints/${raw.address}/createLXPoints`,
+          data
+        );
+        const result = response?.data;
+        if (result.status !== 'SUCCESS') {
+          setDisableSubmitBtn(false);
+          setSubmitLoading(false);
+          throw new Error(result.message);
+        } else {
+          router.push('/reward/announcement');
+        }
       } else {
-        router.push('/LXPAnnouncement');
+        const response = await API.post(
+          `/stablecoin/${raw.address}/apply`,
+          data
+        );
+        const result = response?.data;
+        if (result.status !== 'SUCCESS') {
+          setDisableSubmitBtn(false);
+          setSubmitLoading(false);
+          throw new Error(result.message);
+        } else {
+          router.push('/reward/announcement');
+        }
       }
     } catch (err) {
-      setDisabltSubmitBtn(false);
+      setDisableSubmitBtn(false);
       setSubmitLoading(false);
       showMessage({
         type: 'error',
@@ -140,23 +150,16 @@ export default function Apply() {
   };
 
   useEffect(() => {
-    let active = false;
-
-    if (!loading) {
-      return undefined;
-    }
-
     (async () => {
-      BuilderList();
+      if (!loading) {
+        return;
+      }
+      await BuilderList();
     })();
-
-    return () => {
-      active = false;
-    };
   }, [loading]);
 
   return (
-    <Layout title={`LXP Application | LXDAO`}>
+    <Layout title={`Apply Reward | LXDAO`}>
       <Container
         sx={{
           mt: 12,
@@ -180,37 +183,45 @@ export default function Apply() {
               lineHeight="70px"
               color="#101828"
             >
-              Apply LXP
+              Apply Reward
             </Typography>
-            <Typography
-              variant="subtitle1"
-              fontWeight={400}
-              lineHeight="30px"
-              color="#667085"
-              marginTop={4}
-            >
-              Ready to start applying LXP? Learn more about the{' '}
-              <Link
-                href="https://www.notion.so/lxdao/LXP-Rules-80afdaa00f754fb6a222313d5e322917"
-                target="_blank"
-                color={'#667085'}
+            {type === 'LXP' && (
+              <Typography
+                variant="subtitle1"
+                fontWeight={400}
+                lineHeight="30px"
+                color="#667085"
+                marginTop={4}
               >
-                LXP rule
-              </Link>{' '}
-              and how you can get started!
-            </Typography>
-            <Typography
-              variant="subtitle1"
-              fontWeight={400}
-              lineHeight="30px"
-              color="#667085"
-              marginTop={1}
-            >
-              Feel free to check the LXP Announcement and history list:{' '}
-              <Link href="/LXPAnnouncement" target="_blank" color={'#667085'}>
-                Click me!
-              </Link>
-            </Typography>
+                Ready to start applying LXP? Learn more about the{' '}
+                <Link
+                  href="https://www.notion.so/lxdao/LXP-Rules-80afdaa00f754fb6a222313d5e322917"
+                  target="_blank"
+                  color={'#667085'}
+                >
+                  LXP rule
+                </Link>
+                and how you can get started!
+              </Typography>
+            )}
+            {type === 'LXP' && (
+              <Typography
+                variant="subtitle1"
+                fontWeight={400}
+                lineHeight="30px"
+                color="#667085"
+                marginTop={1}
+              >
+                Feel free to check the LXP Announcement and history list:{' '}
+                <Link
+                  href="/reward/announcement"
+                  target="_blank"
+                  color={'#667085'}
+                >
+                  Click me!
+                </Link>
+              </Typography>
+            )}
           </Box>
         </Box>
         <Box maxWidth={1000} marginTop="50px">
@@ -239,14 +250,11 @@ export default function Apply() {
                         onChange={(event) => {
                           onChange(event.target.value);
                           setType(event.target.value);
-                          setValue('buidlerId', null);
                         }}
                         onBlur={onBlur}
                       >
-                        <MenuItem value={'LXDAOBUILDER'}>
-                          LXDAO Builder
-                        </MenuItem>
-                        <MenuItem value={'LXDAOMEMBER'}>LXDAO Member</MenuItem>
+                        <MenuItem value={'LXP'}>LXP</MenuItem>
+                        <MenuItem value={'Stablecoin'}>Stablecoin</MenuItem>
                       </Select>
                       <Typography
                         marginTop={1}
@@ -268,9 +276,55 @@ export default function Apply() {
             marginBottom={{ xs: '0', sm: '15px' }}
           >
             <Box marginRight="10px">
+              <Label required={true} value={'Member: '} />
+            </Box>
+            <Box flex={1}>
+              <Controller
+                name={'member'}
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { onChange, value, onBlur } }) => {
+                  return (
+                    <>
+                      <Select
+                        sx={{ width: '100%', height: 56 }}
+                        displayEmpty
+                        inputProps={{ 'aria-label': 'Without label' }}
+                        value={value}
+                        defaultValue={''}
+                        onChange={(event) => {
+                          onChange(event.target.value);
+                          setMember(event.target.value);
+                          setValue('buidlerId', null);
+                        }}
+                        onBlur={onBlur}
+                      >
+                        <MenuItem value={'MEMBER'}>Member</MenuItem>
+                        <MenuItem value={'NONMEMBER'}>Non-Member</MenuItem>
+                      </Select>
+                      <Typography
+                        marginTop={1}
+                        fontSize="0.85rem"
+                        color="#d32f2f"
+                        marginLeft={2}
+                      >
+                        {errors?.type ? 'Member is required' : ''}
+                      </Typography>
+                    </>
+                  );
+                }}
+              />
+            </Box>
+          </Box>
+          <Box
+            display="flex"
+            flexDirection={{ xs: 'column', sm: 'row' }}
+            marginBottom={{ xs: '0', sm: '15px' }}
+          >
+            <Box marginRight="10px">
               <Label required={true} value={'Name: '} />
             </Box>
-            {type === 'LXDAOBUILDER' ? (
+            {member === 'MEMBER' ? (
               <Box flex={1}>
                 <Controller
                   name={'name'}
@@ -448,7 +502,7 @@ export default function Apply() {
                 render={({ field: { onChange, value, onBlur } }) => {
                   return (
                     <OutlinedInput
-                      placeholder="These LXPs source, e.g. xxx project, xxx event, core team salary"
+                      placeholder="e.g. xxx project, xxx event, core team salary"
                       sx={{ height: 56, width: '100%' }}
                       value={value}
                       onChange={onChange}
@@ -492,7 +546,7 @@ export default function Apply() {
                         return 'Please enter a number';
                       }
                       if (v.length > 6) {
-                        return 'Too much LXP, please check with the team first';
+                        return 'Too much reward, please check with the team first';
                       }
                     },
                   },
@@ -502,7 +556,9 @@ export default function Apply() {
                     <>
                       <OutlinedInput
                         endAdornment={
-                          <InputAdornment position="end">LXP</InputAdornment>
+                          <InputAdornment position="end">
+                            {type === 'LXP' ? 'LXP' : 'USDT/USDC'}
+                          </InputAdornment>
                         }
                         sx={{ height: 56, width: '100%' }}
                         value={value}
@@ -621,7 +677,7 @@ export default function Apply() {
           onClick={handleSubmit((data) => {
             applicationHandler(data);
           })}
-          disabled={JSON.stringify(errors) != '{}' || disabltSubmitBtn}
+          disabled={JSON.stringify(errors) !== '{}' || disabletSubmitBtn}
         >
           {submitLoading ? 'Submitting' : 'Submit'}
         </LXButton>

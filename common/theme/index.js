@@ -101,6 +101,13 @@ const getTheme = (mode) =>
             },
           },
         },
+        MuiTablePagination: {
+          styleOverrides: {
+            root: {
+              borderBottom: 'none',
+            },
+          },
+        },
       },
     })
   );

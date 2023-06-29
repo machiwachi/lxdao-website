@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Typography, Link } from '@mui/material';
+
+import { getMemberFirstBadgeAmount } from '@/utils/utility';
 
 import Container from '@/components/Container';
 import Button from '@/components/Button';
@@ -98,6 +100,8 @@ const BudilerTooltip = ({
     );
   };
 
+  const firstMemberBadgeAmount = getMemberFirstBadgeAmount(buidler?.badges);
+
   return (
     <Box {...rest}>
       <StyledTooltip
@@ -110,7 +114,14 @@ const BudilerTooltip = ({
           onMouseLeave={handleBuidlerCardLeave}
           position="relative"
         >
-          <BuidlerAvatarBox buidler={buidler} active={active} display="block" />
+          <BuidlerAvatarBox
+            buidler={buidler}
+            active={
+              buidler?.status === 'ACTIVE' ||
+              (buidler?.status === 'PENDING' && firstMemberBadgeAmount > 0)
+            }
+            display="block"
+          />
         </Box>
       </StyledTooltip>
     </Box>
@@ -118,6 +129,16 @@ const BudilerTooltip = ({
 };
 
 const SectionBuidlers = ({ buidlers }) => {
+  const [activeBuidlerIndex, setActiveBuidlerIndex] = useState(null);
+
+  const handleBuidlerHover = (index) => {
+    setActiveBuidlerIndex(index);
+  };
+
+  const handleBuidlerLeave = () => {
+    setActiveBuidlerIndex(null);
+  };
+
   return (
     <Box backgroundColor="#000000" boxSizing="border-box">
       <Container paddingY={{ md: '112px', xs: 8 }}>
@@ -141,13 +162,10 @@ const SectionBuidlers = ({ buidlers }) => {
         </Typography>
         <Box display="flex" flexWrap="wrap" width={{ sm: '100%', xs: '100%' }}>
           {buidlers.map((buidler, index) => {
-            const firstMemberBadgeIndex =
-              buidler?.badges?.types?.indexOf('MemberFirstBadge');
-            const firstMemberBadgeAmount =
-              buidler?.badges?.amounts[firstMemberBadgeIndex];
-            const isActive =
-              buidler?.status === 'ACTIVE' ||
-              (buidler?.status === 'PENDING' && firstMemberBadgeAmount > 0);
+            const firstMemberBadgeAmount = getMemberFirstBadgeAmount(
+              buidler?.badges
+            );
+
             return (
               <Box key={index}>
                 <BudilerTooltip
@@ -157,7 +175,11 @@ const SectionBuidlers = ({ buidlers }) => {
                 />
                 <BuidlerAvatarBox
                   buidler={buidler}
-                  active={isActive}
+                  active={
+                    buidler?.status === 'ACTIVE' ||
+                    (buidler?.status === 'PENDING' &&
+                      firstMemberBadgeAmount > 0)
+                  }
                   display={{ md: 'none', xs: 'block' }}
                 />
               </Box>

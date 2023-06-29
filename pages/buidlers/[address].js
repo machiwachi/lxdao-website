@@ -33,6 +33,19 @@ import _ from 'lodash';
 import { useContract, useAccount, useSigner } from 'wagmi';
 import * as bs58 from 'bs58';
 import { Img3 } from '@lxdao/img3';
+import { ethers } from 'ethers';
+
+import API from '@/common/API';
+import {
+  formatAddress,
+  getEtherScanDomain,
+  getOpenSeaDomain,
+  getPolygonScanDomain,
+  getIpfsCid,
+  totalLXPoints,
+  totalStableCoins,
+} from '@/utils/utility';
+import badge_abi from '@/abi/badge_abi.json';
 
 import Layout from '@/components/Layout';
 import CopyText from '@/components/CopyText';
@@ -41,48 +54,15 @@ import ProfileForm from '@/components/ProfileForm';
 import useBuidler from '@/components/useBuidler';
 import useMate from '@/components/useMate';
 import Skills from '@/components/Skills';
-import { formatAddress } from '@/utils/utility';
-import API from '@/common/API';
-import {
-  getEtherScanDomain,
-  getOpenSeaDomain,
-  getPolygonScanDomain,
-} from '@/utils/utility';
 import { contractInfo } from '@/components/ContractsOperation';
 import BuidlerContacts from '@/components/BuidlerContacts';
 import Tag from '@/components/Tag';
 import showMessage from '@/components/showMessage';
 import Project from '@/components/Project';
-import { getIpfsCid, groupBy } from '@/utils/utility';
 import LXButton from '@/components/Button';
 import WorkingGroupCard from '@/components/WorkingGroupCard';
 import OnBoardingLayout from '@/components/OnBoardingLayout';
 import BadgeCard from '@/components/BadgeCard';
-import { BuidlerCard } from '../buidlers';
-
-function totalLXPoints(record) {
-  if (!record.lxPoints || !record.lxPoints.length) {
-    return 0;
-  }
-  var lxPointsGroup = groupBy(record.lxPoints, 'unit');
-  return Object.keys(lxPointsGroup)
-    .map((key) => {
-      const total = lxPointsGroup[key].reduce((total, point) => {
-        if (point.status != 'RELEASED') {
-          return total;
-        }
-        if (point.operator === '+') {
-          return total + point.value;
-        }
-        if (point.operator === '-') {
-          return total - point.value;
-        }
-        return total;
-      }, 0);
-      return `${total} LXP`;
-    })
-    .join(' + ');
-}
 
 function LXPointsTable({ points }) {
   return (
@@ -208,7 +188,144 @@ function LXPointsTable({ points }) {
                       variant="body1"
                       fontWeight="400"
                     >
-                      {point.status == 'RELEASED' && 'View'}
+                      {point.status === 'RELEASED' && 'View'}
+                    </Typography>
+                  </Link>
+                </TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+}
+
+function StableCoinsTable({ points }) {
+  return (
+    <TableContainer
+      component={Paper}
+      sx={{
+        '&.MuiPaper-root': {
+          overflowX: 'unset',
+        },
+        boxShadow: 'none',
+      }}
+    >
+      <Table aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell sx={{ paddingLeft: 0 }} width="15%" align="left">
+              <Typography color="#666F85" variant="body2" fontWeight="400">
+                Remuneration
+              </Typography>
+            </TableCell>
+            <TableCell width="20%" align="left">
+              <Typography color="#666F85" variant="body2" fontWeight="400">
+                Reason
+              </Typography>
+            </TableCell>
+            <TableCell width="15%" align="left">
+              <Typography color="#666F85" variant="body2" fontWeight="400">
+                Source
+              </Typography>
+            </TableCell>
+            <TableCell width="15%" align="left">
+              <Typography
+                sx={{
+                  width: '89px',
+                }}
+                color="#666F85"
+                variant="body2"
+                fontWeight="400"
+              >
+                Release Time
+              </Typography>
+            </TableCell>
+            <TableCell sx={{ paddingRight: 0 }} width="15%" align="right">
+              <Typography
+                sx={{
+                  width: '110px',
+                }}
+                color="#666F85"
+                variant="body2"
+                fontWeight="400"
+              >
+                Transaction Link
+              </Typography>
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {points.map((point) => {
+            let pointStatus = point.status;
+            if (point.status === 'RELEASED') {
+              pointStatus = point.updatedAt.split('T')[0];
+            } else if (point.status !== 'REJECTED') {
+              pointStatus = 'PENDING';
+            }
+            return (
+              <TableRow
+                key={point.id}
+                sx={{
+                  '&:last-child td, &:last-child th': { border: 0 },
+                  borderBottom: '0.5px solid #E5E5E5',
+                }}
+              >
+                <TableCell
+                  sx={{ color: '#101828', paddingLeft: 0 }}
+                  component="th"
+                  scope="row"
+                >
+                  <Typography variant="body1" fontWeight="600">
+                    {`${point.value} U`}
+                  </Typography>
+                </TableCell>
+                <TableCell sx={{ color: '#101828' }} align="left">
+                  <Tooltip title={point.reason}>
+                    <Typography
+                      sx={{
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                        maxWidth: { xs: '150px', sm: '300px' },
+                      }}
+                      variant="body2"
+                      fontWeight="400"
+                    >
+                      {point.reason}
+                    </Typography>
+                  </Tooltip>
+                </TableCell>
+                <TableCell sx={{ color: '#101828' }} align="left">
+                  {point.source}
+                </TableCell>
+                <TableCell sx={{ color: '#101828' }} align="left">
+                  <Typography
+                    sx={{
+                      width: '89px',
+                    }}
+                    variant="body2"
+                    fontWeight="400"
+                  >
+                    {pointStatus}
+                  </Typography>
+                </TableCell>
+                <TableCell sx={{ paddingRight: 0 }} align="right">
+                  <Link
+                    target="_blank"
+                    sx={{ textDecoration: 'none' }}
+                    href={`https://${getPolygonScanDomain()}/tx/${point.hash}`}
+                  >
+                    <Typography
+                      sx={{
+                        width: '110px',
+                      }}
+                      color="#36AFF9"
+                      variant="body1"
+                      fontWeight="400"
+                    >
+                      {point.status === 'RELEASED' && 'View'}
                     </Typography>
                   </Link>
                 </TableCell>
@@ -230,6 +347,7 @@ function ipfsToBytes(ipfsURI) {
 function BuidlerDetails(props) {
   const record = props.record;
   const { address, isConnected } = useAccount();
+  const [, buidlerRecord, ,] = useBuidler(address);
 
   const [_loadingMates, mates] = useMate(record.address);
   const [_loading, currentViewer] = useBuidler(address);
@@ -256,28 +374,7 @@ function BuidlerDetails(props) {
   // ipfsURL on chain
   const [ipfsURLOnChain, setIpfsURLOnChain] = useState(null);
   const [accordionOpen, setAccordionOpen] = useState(false);
-
-  const firstMemberBadgeAmount = record?.badges?.find(
-    (badge) => badge.id === 'MemberFirstBadge'
-  )?.amount;
-
-  if (
-    record?.status === 'PENDING' &&
-    firstMemberBadgeAmount === 0 &&
-    (!address || address !== record?.address)
-  ) {
-    return (
-      <Box width="100%" textAlign="center" marginTop="200px" color="red">
-        <Typography>
-          This member has not yet completed the onboarding process and is
-          temporarily inaccessible,
-        </Typography>
-        <Typography>
-          or, connect wallet to continue onboarding if this is your profile.
-        </Typography>
-      </Box>
-    );
-  }
+  const [stableCoinAccordionOpen, setStableCoinAccordionOpen] = useState(false);
 
   useEffect(async () => {
     if (!signer) {
@@ -396,6 +493,10 @@ function BuidlerDetails(props) {
     setAccordionOpen(value);
   };
 
+  const handleStableCoinAccordionOnChange = (e, value) => {
+    setStableCoinAccordionOpen(value);
+  };
+
   const earnedBadgeAmount = record?.badges?.filter(
     (badge) => badge.amount > 0
   ).length;
@@ -404,467 +505,473 @@ function BuidlerDetails(props) {
     (badge) => badge.amount === 0
   ).length;
 
+  const firstMemberBadgeAmount = record?.badges?.find(
+    (badge) => badge.id === 'MemberFirstBadge'
+  )?.amount;
+
+  const airDropMembershipBadge = async () => {
+    const badgeContractAddress = process.env.NEXT_PUBLIC_BADGE_CONTRACT_ADDRESS;
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const badgeContract = new ethers.Contract(
+      badgeContractAddress,
+      badge_abi,
+      signer
+    );
+    const tx = await badgeContract.mintAndAirdrop(
+      'MemberFirstBadge',
+      [record.address],
+      [1]
+    );
+    if (tx) {
+      const updatedBuidler = await API.post(
+        `/buidler/${record.address}/updateBadges`
+      );
+
+      if (updatedBuidler?.data?.status === 'SUCCESS') {
+        props.refresh();
+      }
+    }
+  };
+
   return (
-    <Container paddingY={isFromOnboarding ? {} : { md: 12, xs: 8 }}>
-      {/**
-        {address === record.address &&
-          record.status === 'PENDING' &&
-          !isFromOnboarding && (
+    <>
+      {record?.status === 'PENDING' &&
+      firstMemberBadgeAmount === 0 &&
+      (!address ||
+        (address !== record?.address &&
+          !buidlerRecord?.role?.includes('Onboarding Committee'))) ? (
+        <Box width="100%" textAlign="center" marginTop="200px" color="red">
+          <Typography>
+            This member has not yet completed the onboarding process and is
+            temporarily inaccessible,
+          </Typography>
+          <Typography>
+            or, connect wallet to continue onboarding if this is your profile.
+          </Typography>
+        </Box>
+      ) : (
+        <Container paddingY={isFromOnboarding ? {} : { md: 12, xs: 8 }}>
+          {isBuddyChecking && record.status === 'PENDING' && (
             <Box marginTop={4}>
-              <Alert severity="success">
-                Welcome LXDAO. Please fill up the form first, and your Buddy will
-                enable your Mint access on the Onboarding Session. Thanks.
-              </Alert>
-              <Box
-                display="flex"
-                justifyContent="center"
-                marginTop={4}
-                marginBottom={4}
-              >
-                <LXButton width="200px" disabled={true} variant="gradient">
-                  {minting ? 'Minting Builder Card...' : 'Mint Builder Card'}
-                </LXButton>
-              </Box>
-              <Box display="flex" justifyContent="center" marginBottom={6}>
-                <Typography variant="body1" fontWeight="400">
-                  We will arrange on-boarding as soon as possible and help you
-                  mint buidler card
-                </Typography>
+              <Alert severity="info">Enable Mint Access</Alert>
+              <Box marginTop={2} marginBottom={2}>
+                <Button
+                  onClick={() => {
+                    enableMint();
+                  }}
+                  variant="outlined"
+                >
+                  Enable Mint Access
+                </Button>
               </Box>
             </Box>
           )}
-        */}
-      {/** {address === record.address && record.status === 'READYTOMINT' && (
-        <Box marginTop={4}>
-          <Alert severity="info">
-            Welcome LXDAO. Your SBT Card is Ready to Mint.
-          </Alert>
-          <Box
-            display="flex"
-            justifyContent="center"
-            marginTop={4}
-            marginBottom={4}
-          >
-            <LXButton
-              width="220px"
-              variant="gradient"
-              onClick={() => {
-                mint();
+          {tx && (
+            <Dialog
+              maxWidth="383px"
+              onClose={(event) => {
+                setTxOpen(false);
               }}
+              open={txOpen}
             >
-              {minting ? 'Minting Builder Card...' : 'Mint Builder Card'}
-            </LXButton>
-          </Box>
-        </Box>
-      )}*/}
-      {isBuddyChecking && record.status === 'PENDING' && (
-        <Box marginTop={4}>
-          <Alert severity="info">Enable Mint Access</Alert>
-          <Box marginTop={2} marginBottom={2}>
-            <Button
-              onClick={() => {
-                enableMint();
-              }}
-              variant="outlined"
-            >
-              Enable Mint Access
-            </Button>
-          </Box>
-        </Box>
-      )}
-      {tx && (
-        <Dialog
-          maxWidth="383px"
-          onClose={(event) => {
-            setTxOpen(false);
-          }}
-          open={txOpen}
-        >
-          <Box
-            sx={{
-              borderRadius: '6px',
-              background: '#fff',
-              width: '383px',
-              height: '232px',
-              padding: '32px',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'flex-start',
-            }}
-          >
-            <Box component={'img'} src={'/icons/setting.svg'} />
-            <Typography
-              variant="body1"
-              fontWeight="500"
-              textAlign="center"
-              color="#000"
-              marginTop={2}
-              marginBottom={2}
-            >
-              Minting...
-            </Typography>
-            <Box
-              sx={{
-                display: 'inline-block',
-                fontWeight: '400',
-                color: '#666F85',
-              }}
-            >
-              tx:{' '}
-              <Link
-                target="_blank"
-                sx={{ wordBreak: 'break-all' }}
-                href={`https://${getEtherScanDomain()}/tx/${tx.hash}`}
-              >
-                {tx.hash}
-              </Link>
-            </Box>
-          </Box>
-        </Dialog>
-      )}
-      {txRes && (
-        <Dialog
-          maxWidth="383px"
-          onClose={(event) => {
-            setTxResOpen(false);
-          }}
-          open={txResOpen}
-        >
-          <Box
-            sx={{
-              borderadius: '6px',
-              background: '#fff',
-              width: '383px',
-              height: '532.8px',
-              padding: '32px',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'flex-start',
-            }}
-          >
-            <Box component={'img'} src={'/icons/check.svg'} />
-            <Typography
-              variant="body1"
-              fontWeight="500"
-              color="#000"
-              textAlign="left"
-              marginTop={2}
-            >
-              Congratulations, LXDAO Buidler card Mint succeeded！
-            </Typography>
-            <Box marginTop={3} marginBottom={3} margin="auto">
-              <img
-                crossOrigin="anonymous"
-                style={{ display: 'block', width: 271 }}
-                src={`${process.env.NEXT_PUBLIC_LXDAO_BACKEND_API}/buidler/${record.address}/card`}
-                alt=""
-              />
-            </Box>
-            <Box
-              sx={{ display: 'inline-block', color: '#666F85' }}
-              marginBottom={3}
-            >
-              Go To{' '}
-              <Link
-                target="_blank"
-                sx={{ wordBreak: 'break-all' }}
-                href={`https://${getOpenSeaDomain()}/account`}
-              >
-                OpenSea
-              </Link>{' '}
-              To View
-            </Box>
-            <Box
-              sx={{
-                display: 'inline-block',
-                fontWeight: '400',
-                color: '#666F85',
-              }}
-              marginBottom={3}
-            >
-              tx:{' '}
-              <Link
-                target="_blank"
-                sx={{ wordBreak: 'break-all' }}
-                href={`https://${getEtherScanDomain()}/tx/${
-                  txRes.transactionHash
-                }`}
-              >
-                {txRes.transactionHash}
-              </Link>
-            </Box>
-            <Box width="100%" display="flex" justifyContent="flex-end">
-              <LXButton
-                width="94px"
-                variant="gradient"
-                onClick={() => {
-                  handleTxResClose();
-                }}
-              >
-                OK
-              </LXButton>
-            </Box>
-          </Box>
-        </Dialog>
-      )}
-      <Box
-        display="flex"
-        flexDirection={{
-          md: 'row',
-          xs: 'column',
-        }}
-        gap="24px"
-      >
-        {/* left section*/}
-        <Box width={{ md: '300px', sm: 'auto', xs: 'auto' }}>
-          <Box
-            border="0.5px solid #D0D5DD"
-            borderRadius="6px"
-            display="flex"
-            padding={3}
-          >
-            <Box width="100%">
               <Box
-                width="252px"
-                height="252px"
-                border="0.5px solid #D0D5DD"
-                borderRadius="6px"
-                overflow="hidden"
-                margin="auto"
-              >
-                <Img3
-                  src={
-                    getIpfsCid(record.avatar)
-                      ? `ipfs://${getIpfsCid(record.avatar)}`
-                      : '/images/placeholder.jpeg'
-                  }
-                  style={{ display: 'block', width: 252, height: 252 }}
-                  timeout={3000}
-                />
-              </Box>
-              <Typography
-                variant="h5"
-                fontWeight="500"
-                textAlign="center"
-                color="#000"
-                marginTop={3}
-                marginBottom={1}
-              >
-                {record.name}
-              </Typography>
-              <Box display="flex" justifyContent="center">
-                <CopyText
-                  textAlign="center"
-                  copyTextOriginal={record.address}
-                  copyText={formatAddress(record.address)}
-                />
-              </Box>
-              <Divider
                 sx={{
-                  marginTop: '24px',
-                  borderColor: '#E5E5E5',
+                  borderRadius: '6px',
+                  background: '#fff',
+                  width: '383px',
+                  height: '232px',
+                  padding: '32px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'flex-start',
                 }}
-              />
-              {earnedBadgeAmount > 0 && (
-                <Box display="flex" gap="10px" marginY={3}>
-                  {record?.badges &&
-                    record?.badges.map((badge) => {
-                      return badge.amount > 0 ? (
-                        <Box
-                          component={'img'}
-                          src={badge?.image}
-                          width="60px"
-                        />
-                      ) : null;
-                    })}
-                </Box>
-              )}
-              {record.status === 'ACTIVE' ? (
-                <Link
-                  target="_blank"
-                  href={`https://opensea.io/collection/lxdaobuidler`}
+              >
+                <Box component={'img'} src={'/icons/setting.svg'} />
+                <Typography
+                  variant="body1"
+                  fontWeight="500"
+                  textAlign="center"
+                  color="#000"
+                  marginTop={2}
+                  marginBottom={2}
+                >
+                  Minting...
+                </Typography>
+                <Box
                   sx={{
-                    textDecoration: 'none',
+                    display: 'inline-block',
+                    fontWeight: '400',
+                    color: '#666F85',
                   }}
                 >
-                  <Box
-                    marginBottom={3}
-                    width="auto"
-                    display="flex"
-                    justifyContent="center"
+                  tx:{' '}
+                  <Link
+                    target="_blank"
+                    sx={{ wordBreak: 'break-all' }}
+                    href={`https://${getEtherScanDomain()}/tx/${tx.hash}`}
                   >
-                    <img
-                      crossOrigin="anonymous"
-                      style={{
-                        display: 'block',
-                        maxWidth: '100%',
-                      }}
-                      src={`${process.env.NEXT_PUBLIC_LXDAO_BACKEND_API}/buidler/${record.address}/card`}
-                      alt=""
-                    />
-                  </Box>
-                </Link>
-              ) : null}
-              {record.description && (
-                <Box marginTop={3}>
-                  <Typography sx={{ wordBreak: 'break-all' }}>
-                    {record.description}
-                  </Typography>
+                    {tx.hash}
+                  </Link>
                 </Box>
-              )}
-              {record.role?.length > 0 && (
-                <Grid marginTop={3} item>
-                  <Box display="flex" flexWrap="wrap">
-                    {record.role.map((item) => {
-                      return <Tag key={item} text={item} />;
-                    })}
-                  </Box>
-                </Grid>
-              )}
-              {record.contacts && (
-                <Box
+              </Box>
+            </Dialog>
+          )}
+          {txRes && (
+            <Dialog
+              maxWidth="383px"
+              onClose={(event) => {
+                setTxResOpen(false);
+              }}
+              open={txResOpen}
+            >
+              <Box
+                sx={{
+                  borderadius: '6px',
+                  background: '#fff',
+                  width: '383px',
+                  height: '532.8px',
+                  padding: '32px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'flex-start',
+                }}
+              >
+                <Box component={'img'} src={'/icons/check.svg'} />
+                <Typography
+                  variant="body1"
+                  fontWeight="500"
+                  color="#000"
+                  textAlign="left"
                   marginTop={2}
-                  display="flex"
-                  flexWrap="wrap"
-                  alignItems="flex-start"
-                  width="176px"
                 >
-                  <BuidlerContacts
-                    sx={{ flexWrap: 'wrap' }}
-                    contacts={record.contacts}
+                  Congratulations, LXDAO Buidler card Mint succeeded！
+                </Typography>
+                <Box marginTop={3} marginBottom={3} margin="auto">
+                  <img
+                    crossOrigin="anonymous"
+                    style={{ display: 'block', width: 271 }}
+                    src={`${process.env.NEXT_PUBLIC_LXDAO_BACKEND_API}/buidler/${record.address}/card`}
+                    alt=""
                   />
                 </Box>
-              )}
-              {record.role?.length > 0 &&
-                record.description &&
-                record.contacts && (
+                <Box
+                  sx={{ display: 'inline-block', color: '#666F85' }}
+                  marginBottom={3}
+                >
+                  Go To{' '}
+                  <Link
+                    target="_blank"
+                    sx={{ wordBreak: 'break-all' }}
+                    href={`https://${getOpenSeaDomain()}/account`}
+                  >
+                    OpenSea
+                  </Link>{' '}
+                  To View
+                </Box>
+                <Box
+                  sx={{
+                    display: 'inline-block',
+                    fontWeight: '400',
+                    color: '#666F85',
+                  }}
+                  marginBottom={3}
+                >
+                  tx:{' '}
+                  <Link
+                    target="_blank"
+                    sx={{ wordBreak: 'break-all' }}
+                    href={`https://${getEtherScanDomain()}/tx/${
+                      txRes.transactionHash
+                    }`}
+                  >
+                    {txRes.transactionHash}
+                  </Link>
+                </Box>
+                <Box width="100%" display="flex" justifyContent="flex-end">
+                  <LXButton
+                    width="94px"
+                    variant="gradient"
+                    onClick={() => {
+                      handleTxResClose();
+                    }}
+                  >
+                    OK
+                  </LXButton>
+                </Box>
+              </Box>
+            </Dialog>
+          )}
+          <Box
+            display="flex"
+            flexDirection={{
+              md: 'row',
+              xs: 'column',
+            }}
+            gap="24px"
+          >
+            {/* left section*/}
+            <Box width={{ md: '300px', sm: 'auto', xs: 'auto' }}>
+              <Box
+                border="0.5px solid #D0D5DD"
+                borderRadius="6px"
+                display="flex"
+                padding={3}
+              >
+                <Box width="100%">
+                  <Box
+                    width="252px"
+                    height="252px"
+                    border="0.5px solid #D0D5DD"
+                    borderRadius="6px"
+                    overflow="hidden"
+                    margin="auto"
+                  >
+                    <Img3
+                      src={
+                        getIpfsCid(record.avatar)
+                          ? `ipfs://${getIpfsCid(record.avatar)}`
+                          : '/images/placeholder.jpeg'
+                      }
+                      style={{ display: 'block', width: 252, height: 252 }}
+                      timeout={3000}
+                    />
+                  </Box>
+                  <Typography
+                    variant="h5"
+                    fontWeight="500"
+                    textAlign="center"
+                    color="#000"
+                    marginTop={3}
+                    marginBottom={1}
+                  >
+                    {record.name}
+                  </Typography>
+                  <Box display="flex" justifyContent="center">
+                    <CopyText
+                      textAlign="center"
+                      copyTextOriginal={record.address}
+                      copyText={formatAddress(record.address)}
+                    />
+                  </Box>
                   <Divider
                     sx={{
                       marginTop: '24px',
                       borderColor: '#E5E5E5',
                     }}
                   />
-                )}
-              {createdAt.length === 4 && (
-                <Box paddingTop={3} display="flex" justifyContent="center">
-                  <Typography>{`Joined ${createdAt[1]} ${createdAt[3]}`}</Typography>
-                </Box>
-              )}
-              {address === record.address && (
-                <Divider
-                  sx={{
-                    marginTop: 2,
-                    marginBottom: 3,
-                    borderColor: '#E5E5E5',
-                  }}
-                />
-              )}
-              <Box
-                display="flex"
-                justifyContent="center"
-                flexWrap="wrap"
-                gap={1}
-              >
-                {address === record.address ? (
-                  <LXButton
-                    onClick={() => {
-                      setVisible(true);
-                    }}
-                    variant="outlined"
+                  {earnedBadgeAmount > 0 && (
+                    <Box display="flex" gap="10px" marginY={3}>
+                      {record?.badges &&
+                        record?.badges.map((badge) => {
+                          return badge.amount > 0 ? (
+                            <Box
+                              component={'img'}
+                              src={badge?.image}
+                              width="60px"
+                            />
+                          ) : null;
+                        })}
+                    </Box>
+                  )}
+                  {record.status === 'ACTIVE' ? (
+                    <Link
+                      target="_blank"
+                      href={`https://opensea.io/collection/lxdaobuidler`}
+                      sx={{
+                        textDecoration: 'none',
+                      }}
+                    >
+                      <Box
+                        marginBottom={3}
+                        width="auto"
+                        display="flex"
+                        justifyContent="center"
+                      >
+                        <img
+                          crossOrigin="anonymous"
+                          style={{
+                            display: 'block',
+                            maxWidth: '100%',
+                          }}
+                          src={`${process.env.NEXT_PUBLIC_LXDAO_BACKEND_API}/buidler/${record.address}/card`}
+                          alt=""
+                        />
+                      </Box>
+                    </Link>
+                  ) : null}
+                  {record.description && (
+                    <Box marginTop={3}>
+                      <Typography sx={{ wordBreak: 'break-all' }}>
+                        {record.description}
+                      </Typography>
+                    </Box>
+                  )}
+                  {record.role?.length > 0 && (
+                    <Grid marginTop={3} item>
+                      <Box display="flex" flexWrap="wrap">
+                        {record.role.map((item) => {
+                          return <Tag key={item} text={item} />;
+                        })}
+                      </Box>
+                    </Grid>
+                  )}
+                  {record.contacts && (
+                    <Box
+                      marginTop={2}
+                      display="flex"
+                      flexWrap="wrap"
+                      alignItems="flex-start"
+                      width="176px"
+                    >
+                      <BuidlerContacts
+                        sx={{ flexWrap: 'wrap' }}
+                        contacts={record.contacts}
+                      />
+                    </Box>
+                  )}
+                  {record.role?.length > 0 &&
+                    record.description &&
+                    record.contacts && (
+                      <Divider
+                        sx={{
+                          marginTop: '24px',
+                          borderColor: '#E5E5E5',
+                        }}
+                      />
+                    )}
+                  {createdAt.length === 4 && (
+                    <Box paddingTop={3} display="flex" justifyContent="center">
+                      <Typography>{`Joined ${createdAt[1]} ${createdAt[3]}`}</Typography>
+                    </Box>
+                  )}
+                  {address === record.address && (
+                    <Divider
+                      sx={{
+                        marginTop: 2,
+                        marginBottom: 3,
+                        borderColor: '#E5E5E5',
+                      }}
+                    />
+                  )}
+                  <Box
+                    display="flex"
+                    justifyContent="center"
+                    flexWrap="wrap"
+                    gap={1}
                   >
-                    Edit
-                  </LXButton>
-                ) : null}
-                {address === record.address &&
-                  !!ipfsURLOnChain &&
-                  ipfsURLOnChain !== record.ipfsURI && (
-                    <LXButton
-                      onClick={async () => {
-                        setSyncing(true);
-                        try {
-                          const syncInfoRes = await API.post(
-                            `/buidler/${address}/syncInfo`
-                          );
-                          if (syncInfoRes?.data?.status !== 'SUCCESS') {
-                            throw new Error(syncInfoRes?.data.message);
-                          }
-                          const { signature, ipfsURI } =
-                            syncInfoRes?.data?.data || {};
-                          const tx = await contract.updateMetadata(
-                            tokenId,
-                            ipfsToBytes(ipfsURI),
-                            signature
-                          );
-                          await tx.wait();
-                          await getToken(address);
-                          // todo add tx to the page
-                        } catch (err) {
-                          showMessage({
-                            type: 'error',
-                            title: 'Failed to update metadata',
-                            body: err.message,
+                    {address === record.address ? (
+                      <LXButton
+                        onClick={() => {
+                          setVisible(true);
+                        }}
+                        variant="outlined"
+                      >
+                        Edit
+                      </LXButton>
+                    ) : null}
+                    {address === record.address &&
+                      !!ipfsURLOnChain &&
+                      ipfsURLOnChain !== record.ipfsURI && (
+                        <LXButton
+                          onClick={async () => {
+                            setSyncing(true);
+                            try {
+                              const syncInfoRes = await API.post(
+                                `/buidler/${address}/syncInfo`
+                              );
+                              if (syncInfoRes?.data?.status !== 'SUCCESS') {
+                                throw new Error(syncInfoRes?.data.message);
+                              }
+                              const { signature, ipfsURI } =
+                                syncInfoRes?.data?.data || {};
+                              const tx = await contract.updateMetadata(
+                                tokenId,
+                                ipfsToBytes(ipfsURI),
+                                signature
+                              );
+                              await tx.wait();
+                              await getToken(address);
+                              // todo add tx to the page
+                            } catch (err) {
+                              showMessage({
+                                type: 'error',
+                                title: 'Failed to update metadata',
+                                body: err.message,
+                              });
+                            }
+                            setSyncing(false);
+                          }}
+                          color="#36AFF9"
+                          variant="outlined"
+                          disabled={syncing}
+                        >
+                          {syncing ? 'Syncing...' : 'Sync on Chain'}
+                        </LXButton>
+                      )}
+                    {address === record.address &&
+                    record.role.includes('Onboarding Committee') ? (
+                      <LXButton
+                        onClick={async () => {
+                          const newAddress =
+                            window.prompt('New joiner address');
+                          const data = await API.post(`/buidler`, {
+                            address: newAddress,
                           });
-                        }
-                        setSyncing(false);
-                      }}
-                      color="#36AFF9"
-                      variant="outlined"
-                      disabled={syncing}
-                    >
-                      {syncing ? 'Syncing...' : 'Sync on Chain'}
-                    </LXButton>
-                  )}
-                {address === record.address &&
-                record.role.includes('Onboarding Committee') ? (
-                  <LXButton
-                    onClick={async () => {
-                      const newAddress = window.prompt('New joiner address');
-                      const data = await API.post(`/buidler`, {
-                        address: newAddress,
-                      });
-                      const result = data?.data;
-                      if (result.status === 'SUCCESS') {
-                        alert('created!');
-                      }
-                    }}
-                    variant="outlined"
-                  >
-                    Onboarding
-                  </LXButton>
-                ) : null}
+                          const result = data?.data;
+                          if (result.status === 'SUCCESS') {
+                            alert('created!');
+                          }
+                        }}
+                        variant="outlined"
+                      >
+                        Onboarding
+                      </LXButton>
+                    ) : null}
 
-                {/* todo only show this button to Onboarding Committee */}
-                {address !== record.address && (
-                  <Divider
-                    sx={{
-                      width: '100%',
-                      marginTop: 2,
-                      marginBottom: 3,
-                      borderColor: '#E5E5E5',
-                    }}
-                  />
-                )}
-                {currentViewer &&
-                  currentViewer.role.includes('Onboarding Committee') && (
-                    <LXButton
-                      onClick={async () => {
-                        const data = await API.post(
-                          `/buidler/${record.address}/uploadIPFS`
-                        );
-                        const result = data?.data;
-                        if (result.status === 'SUCCESS') {
-                          alert('Synced!');
-                        }
-                      }}
-                      variant="outlined"
-                    >
-                      Sync to IPFS
-                    </LXButton>
-                  )}
+                    {/* todo only show this button to Onboarding Committee */}
+                    {address !== record.address && (
+                      <Divider
+                        sx={{
+                          width: '100%',
+                          marginTop: 2,
+                          marginBottom: 3,
+                          borderColor: '#E5E5E5',
+                        }}
+                      />
+                    )}
+                    {currentViewer &&
+                      currentViewer.role.includes('Onboarding Committee') && (
+                        <LXButton
+                          onClick={async () => {
+                            const data = await API.post(
+                              `/buidler/${record.address}/uploadIPFS`
+                            );
+                            const result = data?.data;
+                            if (result.status === 'SUCCESS') {
+                              alert('Synced!');
+                            }
+                          }}
+                          variant="outlined"
+                        >
+                          Sync to IPFS
+                        </LXButton>
+                      )}
+                    {record?.status === 'PENDING' &&
+                      firstMemberBadgeAmount === 0 &&
+                      address &&
+                      buidlerRecord?.role?.includes('Onboarding Committee') && (
+                        <LXButton
+                          onClick={airDropMembershipBadge}
+                          variant="outlined"
+                        >
+                          AirDrop Badge
+                        </LXButton>
+                      )}
+                  </Box>
+                </Box>
               </Box>
-            </Box>
-          </Box>
-          {/**
+              {/**
             {record.buddies?.length > 0 && (
               <Link
                 target="_blank"
@@ -900,471 +1007,576 @@ function BuidlerDetails(props) {
                   </Box>
                 </Box>
               </Link>
-            )}    
+            )}
           */}
-        </Box>
-        {/* right senction */}
-        <Box boxSizing="border-box" flex="1">
-          {(badgesToBeEarnedNumber > 0 ||
-            record?.status === 'PENDING' ||
-            record?.status === 'READYTOMINT') && (
-            <Box
-              sx={{
-                border: '0.5px solid #D0D5DD',
-                borderRadius: '6px',
-                padding: '30px',
-                marginBottom: '24px',
-              }}
-            >
-              <Typography
-                sx={{
-                  fontSize: '16x',
-                  fontWeight: 800,
-                  color: '#101828',
-                  marginBottom: '15px',
-                }}
-              >
-                Badges to be earned
-              </Typography>
-              <Box display="flex" gap="15px" flexDirection="column">
-                {record?.badges &&
-                  record?.badges.map((badge, index) => {
-                    if (badge?.id === 'MemberFirstBadge') {
-                      badge.linkText = 'Earn now';
-                      badge.linkUrl = '/firstBadge';
-                    }
-                    return badge.amount === 0 ? (
-                      <BadgeCard key={index} {...badge} />
-                    ) : null;
-                  })}
-                {(record?.status === 'PENDING' ||
-                  record?.status === 'READYTOMINT') && (
-                  <BadgeCard
-                    image={`/images/card.png`}
-                    name="Buidler card (SBT)"
-                    description="Governance rights entitled"
-                    eligible="Eligibility: Contribute in projects or working groups to earn up to 500 USDC/LXP reward."
-                    linkText="Contribute to earn"
-                    linkUrl="/SBTCard"
-                  />
-                )}
-              </Box>
             </Box>
-          )}
-
-          <Box display="flex" flexDirection="column">
-            <Accordion
-              onChange={handleAccordionOnChange}
-              sx={{
-                '&.Mui-expanded': {
-                  minHeight: { md: 128, sm: 200 },
-                },
-                '&.MuiPaper-root': {
-                  border: '0.5px solid #D0D5DD',
-                  boxShadow: 'none',
-                },
-              }}
-            >
-              <AccordionSummary
-                height={{ md: '128px', sm: '200px' }}
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-                sx={{
-                  '&.MuiAccordionSummary-root': {
-                    height: { sm: '128px !important', xs: '200px !important' },
-                    borderRadius: '6px',
-                    '.MuiAccordionSummary-expandIconWrapper': {
-                      marginTop: { sm: 0, xs: '84px' },
-                      display: record?.lxPoints.length ? 'block' : 'none',
-                    },
-                  },
-                }}
-              >
+            {/* right senction */}
+            <Box boxSizing="border-box" flex="1">
+              {(badgesToBeEarnedNumber > 0 ||
+                record?.status === 'PENDING' ||
+                record?.status === 'READYTOMINT') && (
                 <Box
-                  width="100%"
-                  display="flex"
-                  alignItems={{ xs: 'flex-start', md: 'center' }}
-                  justifyContent="space-between"
-                  flexDirection={{ xs: 'column', md: 'row' }}
+                  sx={{
+                    border: '0.5px solid #D0D5DD',
+                    borderRadius: '6px',
+                    padding: '30px',
+                    marginBottom: '24px',
+                  }}
                 >
-                  <Box>
-                    <Typography
-                      fontWeight="600"
-                      variant="body1"
-                      color="#101828"
-                    >
-                      All Compensation{' '}
-                      <Link
-                        href="/LXPApplication"
-                        target="_blank"
-                        sx={{
-                          display: 'inline',
-                          fontSize: '14px',
-                          fontWeight: 500,
-                        }}
-                      >
-                        (Apply LXP ->)
-                      </Link>
-                    </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: '16x',
+                      fontWeight: 800,
+                      color: '#101828',
+                      marginBottom: '15px',
+                    }}
+                  >
+                    Badges to be earned
+                  </Typography>
+                  <Box display="flex" gap="15px" flexDirection="column">
+                    {record?.badges &&
+                      record?.badges.map((badge, index) => {
+                        if (badge?.id === 'MemberFirstBadge') {
+                          badge.linkText = 'Earn now';
+                          badge.linkUrl = '/firstBadge';
+                        }
+                        return badge.amount === 0 ? (
+                          <BadgeCard key={index} {...badge} />
+                        ) : null;
+                      })}
+                    {(record?.status === 'PENDING' ||
+                      record?.status === 'READYTOMINT') && (
+                      <BadgeCard
+                        image={`/images/card.png`}
+                        name="Buidler card (SBT)"
+                        description="Governance rights entitled"
+                        eligible="Eligibility: Contribute in projects or working groups to earn up to 500 USDC/LXP reward."
+                        linkText="Contribute to earn"
+                        linkUrl="/SBTCard"
+                      />
+                    )}
+                  </Box>
+                </Box>
+              )}
 
-                    <Typography
-                      marginTop={1}
-                      fontWeight="600"
-                      variant="h5"
-                      color="#36AFF9"
+              <Box display="flex" flexDirection="column">
+                <Accordion
+                  onChange={handleAccordionOnChange}
+                  sx={{
+                    '&.Mui-expanded': {
+                      minHeight: { md: 128, sm: 200 },
+                    },
+                    '&.MuiPaper-root': {
+                      border: '0.5px solid #D0D5DD',
+                      boxShadow: 'none',
+                    },
+                  }}
+                >
+                  <AccordionSummary
+                    height={{ md: '128px', sm: '200px' }}
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                    sx={{
+                      '&.MuiAccordionSummary-root': {
+                        height: {
+                          sm: '128px !important',
+                          xs: '200px !important',
+                        },
+                        borderRadius: '6px',
+                        '.MuiAccordionSummary-expandIconWrapper': {
+                          marginTop: { sm: 0, xs: '84px' },
+                          display: record?.lxPoints.length ? 'block' : 'none',
+                        },
+                      },
+                    }}
+                  >
+                    <Box
+                      width="100%"
+                      display="flex"
+                      alignItems={{ xs: 'flex-start', md: 'center' }}
+                      justifyContent="space-between"
+                      flexDirection={{ xs: 'column', md: 'row' }}
                     >
-                      {totalLXPoints(record)}
-                    </Typography>
+                      <Box>
+                        <Typography
+                          fontWeight="600"
+                          variant="body1"
+                          color="#101828"
+                        >
+                          LXP Reward{' '}
+                          <Link
+                            href="/reward/apply"
+                            target="_blank"
+                            sx={{
+                              display: 'inline',
+                              fontSize: '14px',
+                              fontWeight: 500,
+                            }}
+                          >
+                            (Apply LXP ->)
+                          </Link>
+                        </Typography>
+
+                        <Typography
+                          marginTop={1}
+                          fontWeight="600"
+                          variant="h5"
+                          color="#36AFF9"
+                        >
+                          {totalLXPoints(record)}
+                        </Typography>
+                      </Box>
+                      <Box
+                        textAlign={{ xs: 'right' }}
+                        width={{ xs: '100%', md: 'auto' }}
+                        paddingTop={{ xs: '24px', md: 0 }}
+                      >
+                        <Typography
+                          fontWeight="500"
+                          variant="body1"
+                          color="#0D1320"
+                        >
+                          {record?.lxPoints.length > 0
+                            ? accordionOpen
+                              ? 'Put Away'
+                              : 'Record List'
+                            : null}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </AccordionSummary>
+                  <AccordionDetails
+                    sx={{
+                      '&.MuiAccordionDetails-root': {
+                        height: '235px !important',
+                        padding: { sm: '8px 32px 32px 32px', xs: '8px' },
+                        overflowY: 'auto',
+                        overflowX:
+                          record?.lxPoints?.length === 0 ? 'hidden' : 'auto',
+                        '&::-webkit-scrollbar': {
+                          width: '10px',
+                          height: '10px',
+                          background: 'transparent',
+                        },
+                        '&::-webkit-scrollbar-thumb': {
+                          borderRadius: '10px',
+                          background: '#dfdfdf',
+                        },
+                        '&::scrollbar-track': {
+                          borderRadius: 0,
+                          background: '#dfdfdf',
+                        },
+                      },
+                    }}
+                  >
+                    <LXPointsTable maxHeight="235px" points={record.lxPoints} />
+                  </AccordionDetails>
+                </Accordion>
+              </Box>
+
+              <Box display="flex" flexDirection="column" marginTop={3}>
+                <Accordion
+                  onChange={handleStableCoinAccordionOnChange}
+                  sx={{
+                    '&.Mui-expanded': {
+                      minHeight: { md: 128, sm: 200 },
+                    },
+                    '&.MuiPaper-root': {
+                      border: '0.5px solid #D0D5DD',
+                      boxShadow: 'none',
+                    },
+                  }}
+                >
+                  <AccordionSummary
+                    height={{ md: '128px', sm: '200px' }}
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                    sx={{
+                      '&.MuiAccordionSummary-root': {
+                        height: {
+                          sm: '128px !important',
+                          xs: '200px !important',
+                        },
+                        borderRadius: '6px',
+                        '.MuiAccordionSummary-expandIconWrapper': {
+                          marginTop: { sm: 0, xs: '84px' },
+                          display: record?.stableCoins.length
+                            ? 'block'
+                            : 'none',
+                        },
+                      },
+                    }}
+                  >
+                    <Box
+                      width="100%"
+                      display="flex"
+                      alignItems={{ xs: 'flex-start', md: 'center' }}
+                      justifyContent="space-between"
+                      flexDirection={{ xs: 'column', md: 'row' }}
+                    >
+                      <Box>
+                        <Typography
+                          fontWeight="600"
+                          variant="body1"
+                          color="#101828"
+                        >
+                          Stablecoin Reward{' '}
+                          <Link
+                            href="/reward/apply"
+                            target="_blank"
+                            sx={{
+                              display: 'inline',
+                              fontSize: '14px',
+                              fontWeight: 500,
+                            }}
+                          >
+                            (Apply Stablecoin ->)
+                          </Link>
+                        </Typography>
+
+                        <Typography
+                          marginTop={1}
+                          fontWeight="600"
+                          variant="h5"
+                          color="#36AFF9"
+                        >
+                          {totalStableCoins(record)}
+                        </Typography>
+                      </Box>
+                      <Box
+                        textAlign={{ xs: 'right' }}
+                        width={{ xs: '100%', md: 'auto' }}
+                        paddingTop={{ xs: '24px', md: 0 }}
+                      >
+                        <Typography
+                          fontWeight="500"
+                          variant="body1"
+                          color="#0D1320"
+                        >
+                          {record?.stableCoins.length > 0
+                            ? stableCoinAccordionOpen
+                              ? 'Put Away'
+                              : 'Record List'
+                            : null}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </AccordionSummary>
+                  <AccordionDetails
+                    sx={{
+                      '&.MuiAccordionDetails-root': {
+                        height: '235px !important',
+                        padding: { sm: '8px 32px 32px 32px', xs: '8px' },
+                        overflowY: 'auto',
+                        overflowX:
+                          record?.stableCoins?.length === 0 ? 'hidden' : 'auto',
+                        '&::-webkit-scrollbar': {
+                          width: '10px',
+                          height: '10px',
+                          background: 'transparent',
+                        },
+                        '&::-webkit-scrollbar-thumb': {
+                          borderRadius: '10px',
+                          background: '#dfdfdf',
+                        },
+                        '&::scrollbar-track': {
+                          borderRadius: 0,
+                          background: '#dfdfdf',
+                        },
+                      },
+                    }}
+                  >
+                    <StableCoinsTable
+                      maxHeight="235px"
+                      points={record.stableCoins}
+                    />
+                  </AccordionDetails>
+                </Accordion>
+              </Box>
+
+              <Box flex="1 1" marginTop={3}>
+                <Box
+                  sx={{
+                    display: 'grid',
+                    gap: 3,
+                    gridTemplateColumns: {
+                      xs: 'repeat(1, 1fr)',
+                      sm: 'repeat(2, 1fr)',
+                    },
+                  }}
+                >
+                  <Box
+                    border="0.5px solid #D0D5DD"
+                    borderRadius="6px"
+                    padding="22px 17px 26.66px 31px"
+                  >
+                    <Box display="flex" justifyContent="space-between">
+                      <Typography
+                        fontWeight="600"
+                        variant="body1"
+                        marginBottom={2}
+                        display="inline-block"
+                      >
+                        Skills
+                      </Typography>
+                      <Box display="inline-block">
+                        <Typography
+                          fontWeight="400"
+                          variant="body2"
+                          display="inline-block"
+                        >
+                          <Box
+                            width="10px"
+                            height="10px"
+                            borderRadius="50%"
+                            display="inline-block"
+                            marginRight={1}
+                            marginLeft={1}
+                            sx={{ background: '#009FFF' }}
+                          ></Box>
+                          Senior
+                        </Typography>
+                        <Typography
+                          fontWeight="400"
+                          variant="body2"
+                          display="inline-block"
+                        >
+                          <Box
+                            width="10px"
+                            height="10px"
+                            borderRadius="50%"
+                            display="inline-block"
+                            marginRight={1}
+                            marginLeft={1}
+                            sx={{ background: 'rgba(0,159,255,0.7)' }}
+                          ></Box>
+                          Intermediate
+                        </Typography>
+                        <Typography
+                          fontWeight="400"
+                          variant="body2"
+                          display="inline-block"
+                        >
+                          <Box
+                            width="10px"
+                            height="10px"
+                            borderRadius="50%"
+                            display="inline-block"
+                            marginRight={1}
+                            marginLeft={1}
+                            sx={{ background: 'rgba(0,159,255,0.4)' }}
+                          ></Box>
+                          Junior
+                        </Typography>
+                      </Box>
+                    </Box>
+                    <Box display="flex" flexWrap="wrap">
+                      <Skills skills={record.skills} />
+                    </Box>
                   </Box>
                   <Box
-                    textAlign={{ xs: 'right' }}
-                    width={{ xs: '100%', md: 'auto' }}
-                    paddingTop={{ xs: '24px', md: 0 }}
+                    border="0.5px solid #D0D5DD"
+                    borderRadius="6px"
+                    padding="22px 17px 26.66px 31px"
+                    sx={{ height: '100%' }}
                   >
-                    <Typography
-                      fontWeight="500"
-                      variant="body1"
-                      color="#0D1320"
-                    >
-                      {record?.lxPoints.length > 0
-                        ? accordionOpen
-                          ? 'Put Away'
-                          : 'Record List'
-                        : null}
-                    </Typography>
-                  </Box>
-                </Box>
-              </AccordionSummary>
-              <AccordionDetails
-                sx={{
-                  '&.MuiAccordionDetails-root': {
-                    height: '235px !important',
-                    padding: { sm: '8px 32px 32px 32px', xs: '8px' },
-                    overflowY: 'auto',
-                    overflowX:
-                      record?.lxPoints?.length === 0 ? 'hidden' : 'auto',
-                    '&::-webkit-scrollbar': {
-                      width: '10px',
-                      height: '10px',
-                      background: 'transparent',
-                    },
-                    '&::-webkit-scrollbar-thumb': {
-                      borderRadius: '10px',
-                      background: '#dfdfdf',
-                    },
-                    '&::scrollbar-track': {
-                      borderRadius: 0,
-                      background: '#dfdfdf',
-                    },
-                  },
-                }}
-              >
-                <LXPointsTable maxHeight="235px" points={record.lxPoints} />
-              </AccordionDetails>
-            </Accordion>
-          </Box>
-
-          <Box flex="1 1" marginTop={3}>
-            <Box
-              sx={{
-                display: 'grid',
-                gap: 3,
-                gridTemplateColumns: {
-                  xs: 'repeat(1, 1fr)',
-                  sm: 'repeat(2, 1fr)',
-                },
-              }}
-            >
-              <Box
-                border="0.5px solid #D0D5DD"
-                borderRadius="6px"
-                padding="22px 17px 26.66px 31px"
-              >
-                <Box display="flex" justifyContent="space-between">
-                  <Typography
-                    fontWeight="600"
-                    variant="body1"
-                    marginBottom={2}
-                    display="inline-block"
-                  >
-                    Skills
-                  </Typography>
-                  <Box display="inline-block">
-                    <Typography
-                      fontWeight="400"
-                      variant="body2"
-                      display="inline-block"
-                    >
-                      <Box
-                        width="10px"
-                        height="10px"
-                        borderRadius="50%"
+                    <Box>
+                      <Typography
+                        fontWeight="600"
+                        variant="body1"
+                        marginBottom={2}
                         display="inline-block"
-                        marginRight={1}
-                        marginLeft={1}
-                        sx={{ background: '#009FFF' }}
-                      ></Box>
-                      Senior
-                    </Typography>
-                    <Typography
-                      fontWeight="400"
-                      variant="body2"
-                      display="inline-block"
-                    >
-                      <Box
-                        width="10px"
-                        height="10px"
-                        borderRadius="50%"
-                        display="inline-block"
-                        marginRight={1}
-                        marginLeft={1}
-                        sx={{ background: 'rgba(0,159,255,0.7)' }}
-                      ></Box>
-                      Intermediate
-                    </Typography>
-                    <Typography
-                      fontWeight="400"
-                      variant="body2"
-                      display="inline-block"
-                    >
-                      <Box
-                        width="10px"
-                        height="10px"
-                        borderRadius="50%"
-                        display="inline-block"
-                        marginRight={1}
-                        marginLeft={1}
-                        sx={{ background: 'rgba(0,159,255,0.4)' }}
-                      ></Box>
-                      Junior
-                    </Typography>
-                  </Box>
-                </Box>
-                <Box display="flex" flexWrap="wrap">
-                  <Skills skills={record.skills} />
-                </Box>
-              </Box>
-              <Box
-                border="0.5px solid #D0D5DD"
-                borderRadius="6px"
-                padding="22px 17px 26.66px 31px"
-                sx={{ height: '100%' }}
-              >
-                <Box>
-                  <Typography
-                    fontWeight="600"
-                    variant="body1"
-                    marginBottom={2}
-                    display="inline-block"
-                  >
-                    Interests
-                  </Typography>
-                </Box>
-                <Box display="flex" flexWrap="wrap">
-                  {record.interests.map((item) => {
-                    return (
-                      <Tag
-                        background="rgba(255,184,0,0.1)"
-                        color="#FFB800"
-                        key={item}
-                        text={item}
-                      />
-                    );
-                  })}
-                </Box>
-              </Box>
-            </Box>
-          </Box>
-
-          <Box marginTop={3}>
-            <Box>
-              <Typography
-                color="#101828"
-                fontWeight="600"
-                variant="body1"
-                marginBottom={2}
-              >
-                Project
-              </Typography>
-            </Box>
-            <Box display="flex" marginTop={2}>
-              {projects.length ? (
-                <Grid container spacing={4}>
-                  {projects.map((project) => {
-                    return (
-                      <Grid item xs={12} md={6} key={project.id}>
-                        <Project data={project} />
-                      </Grid>
-                    );
-                  })}
-                </Grid>
-              ) : (
-                <Box
-                  display="flex"
-                  flexDirection="column"
-                  width="100%"
-                  height="148px"
-                  alignItems="center"
-                  border="0.5px solid #D0D5DD"
-                  borderRadius="6px"
-                  padding={2}
-                >
-                  <Typography
-                    marginTop={{ xs: 0, sm: 2 }}
-                    marginBottom={{ xs: '16px', sm: '21px' }}
-                    color="#D0D5DD"
-                    variant="body1"
-                    fontWeight="400"
-                  >
-                    You have not participated in the project, Go and choose one
-                    to join.
-                  </Typography>
-                  <LXButton size="small" variant="outlined">
-                    <Link
-                      href={`/projects`}
-                      target="_blank"
-                      sx={{
-                        textDecoration: 'none',
-                      }}
-                    >
-                      View Product List
-                    </Link>
-                  </LXButton>
-                </Box>
-              )}
-            </Box>
-          </Box>
-
-          <Box marginTop={3} marginBottom={3}>
-            <Box>
-              <Typography
-                color="#101828"
-                fontWeight="600"
-                variant="body1"
-                marginBottom={2}
-              >
-                Working Group
-              </Typography>
-            </Box>
-            <Box display="flex" marginTop={2}>
-              {record?.workingGroups?.length ? (
-                <Box width="100%">
-                  <Grid container spacing={3}>
-                    {record?.workingGroups?.length > 0 &&
-                      record?.workingGroups?.map((group, index) => {
+                      >
+                        Interests
+                      </Typography>
+                    </Box>
+                    <Box display="flex" flexWrap="wrap">
+                      {record.interests.map((item) => {
                         return (
-                          <WorkingGroupCard hasBorder key={index} {...group} />
+                          <Tag
+                            background="rgba(255,184,0,0.1)"
+                            color="#FFB800"
+                            key={item}
+                            text={item}
+                          />
                         );
                       })}
-                  </Grid>
+                    </Box>
+                  </Box>
                 </Box>
-              ) : (
-                <Box
-                  display="flex"
-                  flexDirection="column"
-                  width="100%"
-                  height="148px"
-                  alignItems="center"
-                  border="0.5px solid #D0D5DD"
-                  borderRadius="6px"
-                  padding={2}
-                >
+              </Box>
+
+              <Box marginTop={3}>
+                <Box>
                   <Typography
-                    marginTop={{ xs: 0, sm: 2 }}
-                    marginBottom={{ xs: '16px', sm: '21px' }}
-                    color="#D0D5DD"
+                    color="#101828"
+                    fontWeight="600"
                     variant="body1"
-                    fontWeight="400"
+                    marginBottom={2}
                   >
-                    You haven&apos;t joined the workgroup, go and choose one to
-                    join
+                    Project
                   </Typography>
-                  <LXButton size="small" variant="outlined">
-                    <Link
-                      href={`https://lxdao.notion.site/95fde886aef24c9ca63b8bae95fa8456`}
-                      target="_blank"
-                      sx={{
-                        textDecoration: 'none',
-                      }}
-                    >
-                      View Working Group
-                    </Link>
-                  </LXButton>
                 </Box>
-              )}
+                <Box display="flex" marginTop={2}>
+                  {projects.length ? (
+                    <Grid container spacing={4}>
+                      {projects.map((project) => {
+                        return (
+                          <Grid item xs={12} md={6} key={project.id}>
+                            <Project data={project} />
+                          </Grid>
+                        );
+                      })}
+                    </Grid>
+                  ) : (
+                    <Box
+                      display="flex"
+                      flexDirection="column"
+                      width="100%"
+                      height="148px"
+                      alignItems="center"
+                      border="0.5px solid #D0D5DD"
+                      borderRadius="6px"
+                      padding={2}
+                    >
+                      <Typography
+                        marginTop={{ xs: 0, sm: 2 }}
+                        marginBottom={{ xs: '16px', sm: '21px' }}
+                        color="#D0D5DD"
+                        variant="body1"
+                        fontWeight="400"
+                      >
+                        You have not participated in the project, Go and choose
+                        one to join.
+                      </Typography>
+                      <LXButton size="small" variant="outlined">
+                        <Link
+                          href={`/projects`}
+                          target="_blank"
+                          sx={{
+                            textDecoration: 'none',
+                          }}
+                        >
+                          View Product List
+                        </Link>
+                      </LXButton>
+                    </Box>
+                  )}
+                </Box>
+              </Box>
+
+              <Box marginTop={3} marginBottom={3}>
+                <Box>
+                  <Typography
+                    color="#101828"
+                    fontWeight="600"
+                    variant="body1"
+                    marginBottom={2}
+                  >
+                    Working Group
+                  </Typography>
+                </Box>
+                <Box display="flex" marginTop={2}>
+                  {record?.workingGroups?.length ? (
+                    <Box width="100%">
+                      <Grid container spacing={3}>
+                        {record?.workingGroups?.length > 0 &&
+                          record?.workingGroups?.map((group, index) => {
+                            return (
+                              <WorkingGroupCard
+                                hasBorder
+                                key={index}
+                                {...group}
+                              />
+                            );
+                          })}
+                      </Grid>
+                    </Box>
+                  ) : (
+                    <Box
+                      display="flex"
+                      flexDirection="column"
+                      width="100%"
+                      height="148px"
+                      alignItems="center"
+                      border="0.5px solid #D0D5DD"
+                      borderRadius="6px"
+                      padding={2}
+                    >
+                      <Typography
+                        marginTop={{ xs: 0, sm: 2 }}
+                        marginBottom={{ xs: '16px', sm: '21px' }}
+                        color="#D0D5DD"
+                        variant="body1"
+                        fontWeight="400"
+                      >
+                        You haven&apos;t joined the workgroup, go and choose one
+                        to join
+                      </Typography>
+                      <LXButton size="small" variant="outlined">
+                        <Link
+                          href={`https://lxdao.notion.site/95fde886aef24c9ca63b8bae95fa8456`}
+                          target="_blank"
+                          sx={{
+                            textDecoration: 'none',
+                          }}
+                        >
+                          View Working Group
+                        </Link>
+                      </LXButton>
+                    </Box>
+                  )}
+                </Box>
+              </Box>
             </Box>
           </Box>
-          {/**
-            {mates && mates.length > 0 && (
-                <Box marginTop={3} marginBottom={3}>
-                  <Box>
-                    <Typography
-                      color="#101828"
-                      fontWeight="600"
-                      variant="body1"
-                      marginBottom={2}
-                    >
-                      My Buddies
-                    </Typography>
-                  </Box>
-                  <Box display="flex" marginTop={2}>
-                    <Grid container spacing={2}>
-                      {mates.map((mate) => (
-                        <Grid key={mate.id} item xs={12} sm={6} lg={4}>
-                          <BuidlerCard simpleMode={true} record={mate} />
-                        </Grid>
-                      ))}
-                    </Grid>
-                  </Box>
-                </Box>
-              )}
-          */}
-        </Box>
-      </Box>
 
-      <Dialog
-        fullWidth={true}
-        maxWidth={'sm'}
-        onClose={(event, reason) => {
-          if (reason && reason == 'backdropClick') return;
-          setVisible(false);
-        }}
-        open={visible}
-      >
-        <Box
-          onClick={() => {
-            setVisible(false);
-          }}
-          sx={{
-            cursor: 'pointer',
-          }}
-          position="absolute"
-          top="16px"
-          right="16px"
-        >
-          <CloseIcon></CloseIcon>
-        </Box>
-        <DialogTitle>Profile Details</DialogTitle>
-        <DialogContent>
-          <ProfileForm
-            updating={updating}
-            values={_.cloneDeep(
-              _.pick(record, [
-                'avatar',
-                'name',
-                'description',
-                'skills',
-                'interests',
-                'contacts',
-                'privateContacts',
-              ])
-            )}
-            saveProfileHandler={saveProfileHandler}
-          />
-        </DialogContent>
-      </Dialog>
-    </Container>
+          <Dialog
+            fullWidth={true}
+            maxWidth={'sm'}
+            onClose={(event, reason) => {
+              if (reason && reason == 'backdropClick') return;
+              setVisible(false);
+            }}
+            open={visible}
+          >
+            <Box
+              onClick={() => {
+                setVisible(false);
+              }}
+              sx={{
+                cursor: 'pointer',
+              }}
+              position="absolute"
+              top="16px"
+              right="16px"
+            >
+              <CloseIcon></CloseIcon>
+            </Box>
+            <DialogTitle>Profile Details</DialogTitle>
+            <DialogContent>
+              <ProfileForm
+                updating={updating}
+                values={_.cloneDeep(
+                  _.pick(record, [
+                    'avatar',
+                    'name',
+                    'description',
+                    'skills',
+                    'interests',
+                    'contacts',
+                    'privateContacts',
+                  ])
+                )}
+                saveProfileHandler={saveProfileHandler}
+              />
+            </DialogContent>
+          </Dialog>
+        </Container>
+      )}
+    </>
   );
 }
 
