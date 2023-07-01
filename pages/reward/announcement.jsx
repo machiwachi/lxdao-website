@@ -1931,7 +1931,7 @@ export default function Announcement({ isStart, days }) {
   const [currentViewer] = useBuidler(address);
 
   const [hasMemberFirstBadge, setHasMemberFirstBadge] = useState(false);
-  const isAccountingTeam = currentViewer?.role.includes('Accounting Team');
+  const isAccountingTeam = currentViewer?.role?.includes('Accounting Team');
   const [tabIndex, setTabIndex] = React.useState(0);
 
   const handleChangeTab = (event, newValue) => {
@@ -1940,8 +1940,8 @@ export default function Announcement({ isStart, days }) {
   useEffect(() => {
     if (currentViewer) {
       const { badges } = currentViewer;
-      const filter = badges.filter((item) => item?.id === 'MemberFirstBadge');
-      if (filter[0] && filter[0]?.amount > 0) {
+      const filter = badges?.filter((item) => item?.id === 'MemberFirstBadge');
+      if (filter && filter[0] && filter[0]?.amount > 0) {
         setHasMemberFirstBadge(true);
       } else {
         setHasMemberFirstBadge(false);
@@ -2141,11 +2141,11 @@ function getDays() {
 
   const day = now.getDate();
 
-  if (day <= 3) {
+  if (day < 3) {
     // how many day from now to next start.
     isStart = true;
     days = 3 - day;
-  } else if (day > 10) {
+  } else if (day >= 10) {
     // how many day from now to next start.
     isStart = true;
 
@@ -2158,7 +2158,7 @@ function getDays() {
     days = Math.ceil((next.getTime() - now.getTime()) / (1000 * 3600 * 24));
   } else {
     // how many day from now to the end.
-    days = 10 - day + 1;
+    days = 10 - day;
   }
   return { isStart, days };
 }
