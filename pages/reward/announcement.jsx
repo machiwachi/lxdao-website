@@ -2138,27 +2138,29 @@ function getDays() {
   const now = new Date();
   let isStart = false;
   let days = 0;
+  const START_DATE = 3;
+  const END_DATE = 10;
 
   const day = now.getDate();
 
-  if (day < 3) {
+  if (day < START_DATE) {
     // how many day from now to next start.
     isStart = true;
-    days = 3 - day;
-  } else if (day >= 10) {
+    days = START_DATE - day;
+  } else if (day >= END_DATE) {
     // how many day from now to next start.
     isStart = true;
 
     let next;
     if (now.getMonth() === 11) {
-      next = new Date(now.getFullYear() + 1, 0, 3);
+      next = new Date(now.getFullYear() + 1, 0, START_DATE);
     } else {
-      next = new Date(now.getFullYear(), now.getMonth() + 1, 3);
+      next = new Date(now.getFullYear(), now.getMonth() + 1, START_DATE);
     }
     days = Math.ceil((next.getTime() - now.getTime()) / (1000 * 3600 * 24));
   } else {
     // how many day from now to the end.
-    days = 10 - day;
+    days = END_DATE - day;
   }
   return { isStart, days };
 }
