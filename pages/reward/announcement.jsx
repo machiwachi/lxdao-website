@@ -196,7 +196,7 @@ function StatusLabel({ status, record }) {
             placement="bottom"
             title={
               <div style={{ color: '#1e2022' }}>
-                {record.disputeReasons?.map((item, index) => (
+                {record.disputeReasons?.map((item) => (
                   <>
                     <Typography
                       variant="subtitle1"
@@ -337,7 +337,7 @@ function UnReleasedLXPTable({
   const getAllTOBERELEASEDLXP = async () => {
     let query = `/lxpoints/list?`;
     let params = [];
-    ['TOBERELEASED'].map((value, _) => {
+    ['TOBERELEASED'].map((value) => {
       params.push('status=' + value);
     });
     params.push('page=1');
@@ -351,8 +351,8 @@ function UnReleasedLXPTable({
       return;
     }
     const rawData = result.data;
-    const addresses = rawData.map((value, _) => value.address);
-    const amounts = rawData.map((value, _) => value.value);
+    const addresses = rawData.map((value) => value.address);
+    const amounts = rawData.map((value) => value.value);
     return [addresses, amounts];
   };
 
@@ -402,7 +402,7 @@ function UnReleasedLXPTable({
   const getLXPApplications = async () => {
     let query = `/lxpoints/list?`;
     let params = [];
-    ['NEEDTOREVIEW', 'TOBERELEASED'].map((value, _) => {
+    ['NEEDTOREVIEW', 'TOBERELEASED'].map((value) => {
       params.push('status=' + value);
     });
     params.push('page=' + (page + 1));
@@ -512,7 +512,7 @@ function UnReleasedLXPTable({
             ) : (
               ''
             )}
-            {rows.map((row, _) => {
+            {rows.map((row) => {
               return (
                 <TableRow key={row.id}>
                   <TableCell
@@ -713,7 +713,7 @@ function UnReleasedLXPTable({
       <Dialog
         fullWidth={true}
         maxWidth={'sm'}
-        onClose={(event, reason) => {
+        onClose={() => {
           setReasonVisible(false);
         }}
         open={reasonVisible}
@@ -755,8 +755,8 @@ function UnReleasedStablecoinTable({
   const [rows, setRows] = useState([]);
   const [copied, setCopied] = useState(false);
   const [disable, setDisable] = useState(true);
-  const [page, setPage] = useState(0);
-  const [perPage, setPerPage] = useState(999);
+  const [page] = useState(0);
+  const [perPage] = useState(999);
   const [pagination, setPagination] = useState({});
   const [visible, setVisible] = useState(false);
   const [transaction, setTransaction] = useState('');
@@ -893,7 +893,7 @@ function UnReleasedStablecoinTable({
   const getStablecoinApplications = async () => {
     let query = `/stablecoin/list?`;
     let params = [];
-    ['NEEDTOREVIEW', 'TOBERELEASED'].map((value, index) => {
+    ['NEEDTOREVIEW', 'TOBERELEASED'].map((value) => {
       params.push('status=' + value);
     });
     params.push('page=' + (page + 1));
@@ -1300,7 +1300,7 @@ function UnReleasedStablecoinTable({
       <Dialog
         fullWidth={true}
         maxWidth={'sm'}
-        onClose={(event, reason) => {
+        onClose={() => {
           setReasonVisible(false);
         }}
         open={reasonVisible}
@@ -1332,7 +1332,7 @@ function UnReleasedStablecoinTable({
   );
 }
 
-function ReleasedStablecoinTable({ isAccountingTeam }) {
+function ReleasedStablecoinTable() {
   const router = useRouter();
   const [hideHistory, setHideHistory] = useState(true);
   const [rows, setRows] = useState([]);
@@ -1662,16 +1662,13 @@ function ReleasedStablecoinTable({ isAccountingTeam }) {
   );
 }
 
-function ReleasedLXPTable({ isAccountingTeam }) {
+function ReleasedLXPTable() {
   const [hideHistory, setHideHistory] = useState(true);
   const [rows, setRows] = useState([]);
   const [copied, setCopied] = useState(false);
   const [page, setPage] = useState(0);
   const [perPage, setPerPage] = useState(25);
   const [pagination, setPagination] = useState({});
-
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * perPage - rows.length) : 0;
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -1685,7 +1682,7 @@ function ReleasedLXPTable({ isAccountingTeam }) {
   const getLXPApplications = async () => {
     let query = `/lxpoints/list?`;
     let params = [];
-    ['RELEASED', 'REJECTED'].map((value, index) => {
+    ['RELEASED', 'REJECTED'].map((value) => {
       params.push('status=' + value);
     });
     params.push('page=' + (page + 1));
@@ -1929,9 +1926,9 @@ function ReleasedLXPTable({ isAccountingTeam }) {
   );
 }
 
-export default function Announcement({ days }) {
+export default function Announcement({ isStart, days }) {
   const { address, isConnected } = useAccount();
-  const [_loading, currentViewer] = useBuidler(address);
+  const [currentViewer] = useBuidler(address);
 
   const [hasMemberFirstBadge, setHasMemberFirstBadge] = useState(false);
   const isAccountingTeam = currentViewer?.role.includes('Accounting Team');
@@ -2059,14 +2056,15 @@ export default function Announcement({ days }) {
                 fontWeight={400}
                 color={'#666F85'}
               >
-                LXP announcement {days < 0 ? 'ends in' : 'starts after'}{' '}
+                LXP announcement{' '}
+                {isStart === false ? 'ends in' : 'starts after'}{' '}
                 <span
                   style={{ fontSize: 52, fontWeight: 'bold', color: '#36AFF9' }}
                   fontSize={52}
                   fontWeight={600}
                   color={'#36AFF9'}
                 >
-                  {days < 0 ? -days : days}
+                  {days}
                 </span>{' '}
                 {Math.abs(days) === 1 ? 'Day' : 'Days'}
               </Typography>
@@ -2104,7 +2102,7 @@ export default function Announcement({ days }) {
                   color={'#666F85'}
                 >
                   Stablecoin announcement{' '}
-                  {days < 0 ? 'ends in' : 'starts after'}{' '}
+                  {isStart === false ? 'ends in' : 'starts after'}{' '}
                   <span
                     style={{
                       fontSize: 52,
@@ -2115,7 +2113,7 @@ export default function Announcement({ days }) {
                     fontWeight={600}
                     color={'#36AFF9'}
                   >
-                    {days < 0 ? -days : days}
+                    {days}
                   </span>{' '}
                   {Math.abs(days) === 1 ? 'Day' : 'Days'}
                 </Typography>
@@ -2138,25 +2136,34 @@ export default function Announcement({ days }) {
 
 function getDays() {
   const now = new Date();
+  let isStart = false;
   let days = 0;
 
-  if (now.getDate() > 7) {
-    // how many day from now to next start.
-    if (now.getMonth() == 11) {
-      var next = new Date(now.getFullYear() + 1, 0, 3);
-    } else {
-      var next = new Date(now.getFullYear(), now.getMonth() + 1, 3);
-    }
+  const day = now.getDate();
 
+  if (day <= 3) {
+    // how many day from now to next start.
+    isStart = true;
+    days = 3 - day;
+  } else if (day > 10) {
+    // how many day from now to next start.
+    isStart = true;
+
+    let next;
+    if (now.getMonth() === 11) {
+      next = new Date(now.getFullYear() + 1, 0, 3);
+    } else {
+      next = new Date(now.getFullYear(), now.getMonth() + 1, 3);
+    }
     days = Math.ceil((next.getTime() - now.getTime()) / (1000 * 3600 * 24));
   } else {
     // how many day from now to the end.
-    days = now.getDate() - 8;
+    days = 10 - day + 1;
   }
-  return days;
+  return { isStart, days };
 }
 
 export async function getServerSideProps() {
-  const days = getDays();
-  return { props: { days } };
+  const { isStart, days } = getDays();
+  return { props: { isStart, days } };
 }
