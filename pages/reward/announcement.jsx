@@ -1928,7 +1928,7 @@ function ReleasedLXPTable() {
 
 export default function Announcement({ isStart, days }) {
   const { address, isConnected } = useAccount();
-  const [currentViewer] = useBuidler(address);
+  const [loading, currentViewer] = useBuidler(address);
 
   const [hasMemberFirstBadge, setHasMemberFirstBadge] = useState(false);
   const isAccountingTeam = currentViewer?.role?.includes('Accounting Team');
