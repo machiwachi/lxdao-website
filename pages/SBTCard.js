@@ -186,9 +186,16 @@ export default function FirstBadge() {
             {minting ? 'Minting...' : 'Mint'}
           </LXButton>
           <Typography fontSize="16px" color="#666F85">
-            Contribute in projects or working groups to earn up to 500 USDC
-            reward. Then request a current member with SBT held to initialize a
-            proposal.
+            Contribute in projects, working groups or pick up some bounty tasks
+            from{' '}
+            <Link
+              href="https://www.notion.so/lxdao/1341eee9bd9343a7a60b211de7822af3?v=101f42763e12488999211f15a7b75b81"
+              target="_blank"
+            >
+              here
+            </Link>{' '}
+            to earn up to 500 USDC reward. Then request a current member with
+            SBT held to initialize a proposal.
           </Typography>
         </Stack>
         <Stack gap={3} mb={3}>

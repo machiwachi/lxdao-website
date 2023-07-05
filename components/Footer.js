@@ -120,6 +120,10 @@ const Footer = () => {
                     name: 'Apply Reward',
                     link: '/reward/apply',
                   },
+                  {
+                    name: 'Bounty Task',
+                    link: 'https://www.notion.so/lxdao/1341eee9bd9343a7a60b211de7822af3?v=101f42763e12488999211f15a7b75b81',
+                  },
                 ]}
               />
             </Grid>
