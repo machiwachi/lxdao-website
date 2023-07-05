@@ -130,6 +130,20 @@ const Header = () => {
             </ListItemButton>
           </Link>
         </ListItem>
+        <ListItem disablePadding>
+          <Link
+            href={`https://www.notion.so/lxdao/1341eee9bd9343a7a60b211de7822af3?v=101f42763e12488999211f15a7b75b81`}
+            target="_blank"
+            color={'inherit'}
+            sx={{
+              textDecoration: 'none',
+            }}
+          >
+            <ListItemButton>
+              <Typography sx={{ cursor: 'pointer' }}>Bounty Task</Typography>
+            </ListItemButton>
+          </Link>
+        </ListItem>
       </List>
     </Box>
   );
@@ -263,6 +277,16 @@ const Header = () => {
               </MenuItem>
             </Menu>
           </Box>
+          <Link
+            href={`https://www.notion.so/lxdao/1341eee9bd9343a7a60b211de7822af3?v=101f42763e12488999211f15a7b75b81`}
+            target="_blank"
+            color={'inherit'}
+            sx={{
+              textDecoration: 'none',
+            }}
+          >
+            <Typography>Bounty Task</Typography>
+          </Link>
         </Box>
         <Box display="flex" alignItems="center" gap="20px">
           {record && (
