@@ -482,9 +482,6 @@ function BuidlerDetails(props) {
     return project.status === 'ACTIVE';
   });
 
-  const buddies = record.buddies.map((buddy) => buddy.address);
-  const isBuddyChecking = buddies.includes(address);
-
   const createdAt =
     record.createdAt &&
     new Date(Date.parse(record.createdAt)).toDateString().split(' ');
@@ -572,21 +569,23 @@ function BuidlerDetails(props) {
         </Box>
       ) : (
         <Container paddingY={isFromOnboarding ? {} : { md: 12, xs: 8 }}>
-          {isBuddyChecking && record.status === 'PENDING' && (
-            <Box marginTop={4}>
-              <Alert severity="info">Enable Mint Access</Alert>
-              <Box marginTop={2} marginBottom={2}>
-                <Button
-                  onClick={() => {
-                    enableMint();
-                  }}
-                  variant="outlined"
-                >
-                  Enable Mint Access
-                </Button>
+          {record.status === 'PENDING' &&
+            address &&
+            firstMemberBadgeAmount === 1 &&
+            buidlerRecord?.role?.includes('Onboarding Committee') && (
+              <Box marginTop={4}>
+                <Box marginTop={2} marginBottom={2}>
+                  <Button
+                    onClick={() => {
+                      enableMint();
+                    }}
+                    variant="outlined"
+                  >
+                    Enable SBT Card Mint Access
+                  </Button>
+                </Box>
               </Box>
-            </Box>
-          )}
+            )}
           {tx && (
             <Dialog
               maxWidth="383px"
