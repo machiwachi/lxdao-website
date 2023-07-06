@@ -162,7 +162,7 @@ export default function Apply() {
     <Layout title={`Apply Reward | LXDAO`}>
       <Container
         sx={{
-          mt: 12,
+          mt: 4,
           maxWidth: 1216,
           display: 'flex',
           flexDirection: 'column',
