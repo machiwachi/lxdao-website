@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, IconButton, InputBase, Link } from '@mui/material';
-import Container from '@/components/Container';
+import {
+  Box,
+  Typography,
+  IconButton,
+  InputBase,
+  Link,
+  Button,
+} from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import showMessage from '@/components/showMessage';
-import LXButton from '@/components/Button';
 import { useAccount, useContractWrite, useConnect } from 'wagmi';
 import { ethers } from 'ethers';
 
@@ -83,88 +88,79 @@ const SectionAnniversary: React.FC = () => {
     })();
   }, []);
   return (
-    <Container
-      minHeight={{ xs: 'calc(100vh - 120px)', md: '217px' }}
-      display="flex"
-      flexDirection={{ lg: 'row', xs: 'column' }}
-      justifyContent="center"
-      alignItems="center"
-      textAlign="center"
-      gap={{ lg: '120px', xs: '40px' }}
-      sx={{
-        borderBottom: '1px solid #F3F3F3',
-      }}
-    >
-      <Box component="img" src="/images/anniversaryNFT.png" />
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '24px',
-        }}
-      >
-        <Typography
-          variant="h6"
-          fontWeight="500"
-          sx={{
-            background: 'linear-gradient(to right, #366eff, #23e5ff, #ff7fdb)',
-            WebkitBackgroundClip: 'text',
-            color: 'transparent',
-          }}
-        >
-          LXDAO One-Year Anniversary NFT is on sale (limited to 2000)
+    <Box display="flex">
+      <Box flex={1}>
+        <Typography variant="body1" color="#101828" fontWeight={600}>
+          Mint LXDAO One-year Anniversary NFT
         </Typography>
+
         <Box
+          mt={1}
+          mb={2}
           sx={{
             display: 'flex',
-            flexDirection: { xs: 'column', md: 'row' },
             alignItems: 'center',
-            gap: '20px',
           }}
         >
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <IconButton
-              disabled={amt == 1}
-              onClick={() => setAmt(amt - (amt == 1 ? 0 : 1))}
-            >
-              <RemoveCircleOutlineIcon sx={{ transform: 'scale(1.2)' }} />
-            </IconButton>
-            <InputBase
-              sx={{ width: amt.toString().length * 10 + 'px' }}
-              value={amt}
-              onChange={(e) => {
-                if (
-                  parseInt(e.target.value) >
-                    2000 - 100 - parseInt(totalSupply) ||
-                  e.toString().length < 1
-                ) {
-                  return;
-                }
-                setAmt(parseInt(e.target.value) || 1);
-              }}
-            />
-            <IconButton onClick={() => setAmt(amt + 1)}>
-              <AddCircleOutlineIcon sx={{ transform: 'scale(1.2)' }} />
-            </IconButton>
-            <Typography variant="subtitle2" ml="20px" mr="40px">
-              {0.02 * amt} ETH
-            </Typography>
-            <Typography variant="subtitle2">{totalSupply}/2000</Typography>
-          </Box>
+          <IconButton
+            sx={{ width: '20px', height: '20px', marginRight: '8px' }}
+            disabled={amt == 1}
+            onClick={() => setAmt(amt - (amt == 1 ? 0 : 1))}
+          >
+            <RemoveCircleOutlineIcon sx={{ transform: 'scale(0.9)' }} />
+          </IconButton>
+          <InputBase
+            sx={{ width: amt.toString().length * 10 + 'px' }}
+            value={amt}
+            onChange={(e) => {
+              if (
+                parseInt(e.target.value) > 2000 - 100 - parseInt(totalSupply) ||
+                e.toString().length < 1
+              ) {
+                return;
+              }
+              setAmt(parseInt(e.target.value) || 1);
+            }}
+          />
+          <IconButton
+            sx={{ width: '20px', height: '20px', marginLeft: '8px' }}
+            onClick={() => setAmt(amt + 1)}
+          >
+            <AddCircleOutlineIcon sx={{ transform: 'scale(0.9)' }} />
+          </IconButton>
 
-          <LXButton disabled={loading} onClick={handleMint} variant="gradient">
-            Mint
-          </LXButton>
+          <Typography
+            variant="subtitle2"
+            mx={3}
+            fontSize="16px"
+            color="#666F85"
+          >
+            {0.02 * amt} ETH
+          </Typography>
+          <Typography variant="subtitle2" color="#646F7C">
+            {totalSupply}/2000
+          </Typography>
         </Box>
-        <Box sx={{ display: 'flex' }} gap={1}>
+
+        <Box display="flex" alignItems="center">
+          <Button
+            variant="outlined"
+            sx={{ padding: '11px 20px', boxSizing: 'border-box' }}
+            disabled={loading}
+            onClick={handleMint}
+          >
+            Mint
+          </Button>
+
           <Link
+            ml={3}
             target="_blank"
             href="https://etherscan.io/address/0x854c0f99f67e37b8f4d5ad92ea7f69cd193b058a"
           >
             <Box component="img" src="/images/etherscan.svg" />
           </Link>
           <Link
+            ml={1}
             target="_blank"
             href="https://opensea.io/collection/lxdao1stanniversarynft"
           >
@@ -172,7 +168,15 @@ const SectionAnniversary: React.FC = () => {
           </Link>
         </Box>
       </Box>
-    </Container>
+      <Box>
+        <Box
+          component="img"
+          width={[0, 0, 151, 151]}
+          src="/images/anniversaryNFT.png?v=1"
+          alt="anniversary NFT"
+        />
+      </Box>
+    </Box>
   );
 };
 

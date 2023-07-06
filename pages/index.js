@@ -8,7 +8,7 @@ import SectionWorkSteps from '@/sections/SectionWorkSteps';
 import SectionHomepageProjects from '@/sections/SectionHomepageProjects';
 import SectionBuidlers from '@/sections/SectionBuidlers';
 import SectionWorkingGroup from '@/sections/SectionWorkingGroup';
-import SectionAnniversary from '@/sections/SectionAnniversary';
+import SupportUs from '@/sections/SupportUs';
 // import SectionActivities from '@/sections/SectionActivities';
 import SectionPartners from '@/sections/SectionPartners';
 
@@ -79,8 +79,8 @@ export default function Home() {
 
   return (
     <Layout>
-      <SectionAnniversary />
       <SectionHero />
+      <SupportUs />
       <SectionMission
         projectAmount={projects.length}
         buidlerAmount={activeBuidlerAmount}
