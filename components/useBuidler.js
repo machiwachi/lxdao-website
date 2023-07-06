@@ -35,7 +35,9 @@ function useBuidler(address) {
       }
       result.data.badges = badgesData;
     } else {
-      result.data.badges = [];
+      if (result.data) {
+        result.data.badges = [];
+      }
     }
 
     setLoading(false);

@@ -232,7 +232,7 @@ function UnReleasedLXPTable({
   const [copied, setCopied] = useState(false);
   const [disable, setDisable] = useState(false);
   const [page, setPage] = useState(0);
-  const [perPage, setPerPage] = useState(25);
+  const [perPage, setPerPage] = useState(999);
   const [pagination, setPagination] = useState({});
   const [reasonVisible, setReasonVisible] = useState(false);
   const [updating, setUpdating] = useState(false);
@@ -390,14 +390,14 @@ function UnReleasedLXPTable({
     }
   };
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+  // const handleChangePage = (event, newPage) => {
+  //   setPage(newPage);
+  // };
 
-  const handleChangePerPage = (event) => {
-    setPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+  // const handleChangePerPage = (event) => {
+  //   setPerPage(parseInt(event.target.value, 10));
+  //   setPage(0);
+  // };
 
   const getLXPApplications = async () => {
     let query = `/lxpoints/list?`;
@@ -482,7 +482,7 @@ function UnReleasedLXPTable({
                 Reason
               </TableCell>
               <TableCell sx={{ color: '#666F85' }} align="center">
-                Apply Date
+                Date
               </TableCell>
               <TableCell sx={{ color: '#666F85' }} align="center">
                 Status
@@ -567,7 +567,7 @@ function UnReleasedLXPTable({
                   <TableCell
                     align="left"
                     sx={{
-                      minWidth: '300px',
+                      maxWidth: '300px',
                       fontSize: '16px',
                     }}
                   >
@@ -667,30 +667,30 @@ function UnReleasedLXPTable({
           </TableBody>
 
           <TableFooter>
-            {rows.length > 0 ? (
-              <TableRow>
-                <TablePagination
-                  rowsPerPageOptions={[
-                    5,
-                    10,
-                    25,
-                    { label: 'All', value: pagination.total },
-                  ]}
-                  count={pagination?.total}
-                  rowsPerPage={perPage}
-                  page={page}
-                  SelectProps={{
-                    inputProps: {
-                      'aria-label': 'rows per page',
-                    },
-                    native: true,
-                  }}
-                  onPageChange={handleChangePage}
-                  onRowsPerPageChange={handleChangePerPage}
-                  ActionsComponent={TablePaginationActions}
-                />
-              </TableRow>
-            ) : null}
+            {/*{rows.length > 0 ? (*/}
+            {/*  <TableRow>*/}
+            {/*    <TablePagination*/}
+            {/*      rowsPerPageOptions={[*/}
+            {/*        5,*/}
+            {/*        10,*/}
+            {/*        25,*/}
+            {/*        { label: 'All', value: pagination.total },*/}
+            {/*      ]}*/}
+            {/*      count={pagination?.total}*/}
+            {/*      rowsPerPage={perPage}*/}
+            {/*      page={page}*/}
+            {/*      SelectProps={{*/}
+            {/*        inputProps: {*/}
+            {/*          'aria-label': 'rows per page',*/}
+            {/*        },*/}
+            {/*        native: true,*/}
+            {/*      }}*/}
+            {/*      onPageChange={handleChangePage}*/}
+            {/*      onRowsPerPageChange={handleChangePerPage}*/}
+            {/*      ActionsComponent={TablePaginationActions}*/}
+            {/*    />*/}
+            {/*  </TableRow>*/}
+            {/*) : null}*/}
             {isAccountingTeam && (
               <TableRow sx={{ justifyContent: 'center' }}>
                 <TableCell colSpan={8}>
@@ -1017,7 +1017,7 @@ function UnReleasedStablecoinTable({
                 Reason
               </TableCell>
               <TableCell sx={{ color: '#666F85' }} align="center">
-                Apply Date
+                Date
               </TableCell>
               <TableCell sx={{ color: '#666F85' }} align="center">
                 Status
@@ -1117,7 +1117,7 @@ function UnReleasedStablecoinTable({
                   <TableCell
                     align="left"
                     sx={{
-                      minWidth: '300px',
+                      maxWidth: '300px',
                       fontSize: '16px',
                     }}
                   >
@@ -1332,7 +1332,7 @@ function UnReleasedStablecoinTable({
   );
 }
 
-function ReleasedStablecoinTable() {
+function ReleasedStablecoinTable({ isAccountingTeam }) {
   const router = useRouter();
   const [hideHistory, setHideHistory] = useState(true);
   const [rows, setRows] = useState([]);
@@ -1626,7 +1626,7 @@ function ReleasedStablecoinTable() {
                   />
                 </TableRow>
               ) : null}
-              {
+              {isAccountingTeam && (
                 <TableRow sx={{ justifyContent: 'center' }}>
                   <TableCell colSpan={8}>
                     <Box display="flex" justifyContent="center">
@@ -1653,7 +1653,7 @@ function ReleasedStablecoinTable() {
                     </Box>
                   </TableCell>
                 </TableRow>
-              }
+              )}
             </TableFooter>
           </Table>
         )}
@@ -1953,9 +1953,9 @@ export default function Announcement({ isStart, days }) {
     <Layout title={`Announcement | LXDAO`}>
       <Container
         sx={{
-          mt: 12,
+          mt: 4,
           mb: 8,
-          maxWidth: 1216,
+          maxWidth: '1216px',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -1967,6 +1967,7 @@ export default function Announcement({ isStart, days }) {
           gap={6}
           alignItems={{ lg: 'center', xs: 'center' }}
           textAlign={{ lg: 'center', xs: 'center' }}
+          width="100%"
         >
           <Box textAlign="center" gap={6} width="100%">
             <Typography
@@ -2045,7 +2046,7 @@ export default function Announcement({ isStart, days }) {
               >
                 Ready to submit your LXP application? Click the link:{' '}
                 <Link href="/reward/apply" target="_blank" color={'#667085'}>
-                  LXP Application
+                  Apply
                 </Link>{' '}
                 .
               </Typography>
