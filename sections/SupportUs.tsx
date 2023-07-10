@@ -24,7 +24,7 @@ export default function SupportUs() {
           mt={3}
           mb={6}
         >
-          LXDAO is raising funds for Stage 2 expansion. Support LXDAO by:
+          LXDAO needs your support for Stage 2 expansion. Support LXDAO by:
         </Typography>
 
         <Box
@@ -42,11 +42,13 @@ export default function SupportUs() {
             display="flex"
           >
             <Box flex={1}>
-              <Typography variant="body1" color="#101828" fontWeight={600}>
-                Investing LXDAO Seed Round
-              </Typography>
-              <Typography mt={1} mb={3} variant="body1" color="#646F7C">
-                Seed round, $1.5M at $15M FDV. SAFT.
+              <Typography
+                mb={4}
+                variant="body1"
+                color="#101828"
+                fontWeight={600}
+              >
+                Checking our Deck
               </Typography>
               <Button
                 variant="outlined"
