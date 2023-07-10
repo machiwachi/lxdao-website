@@ -173,7 +173,15 @@ const SectionProjectDetail = ({ projectId }) => {
   }, [project]);
 
   const getBuidlersData = (project) => {
-    API.get(`/buidler?status=ACTIVE&per_page=100`)
+    let query = `/buidler?`;
+    const params = [];
+    params.push('status=ACTIVE&status=PENDING&status=READYTOMINT');
+    params.push(`memberFirstBadge=1`);
+    params.push(`page=1`);
+    params.push(`per_page=999`);
+    query += params.join('&');
+
+    API.get(query)
       .then((res) => {
         if (res?.data?.data) {
           const activeBuidlers = [];
@@ -313,7 +321,7 @@ const SectionProjectDetail = ({ projectId }) => {
           if (res?.data?.status === 'SUCCESS') {
             getProjectData();
             setAlert(
-              'Invite buidler successfully, please wait for the buidler to accept the invitation',
+              'Invite member successfully, please wait for the member to accept the invitation',
               'success'
             );
           } else {
@@ -621,7 +629,7 @@ const SectionProjectDetail = ({ projectId }) => {
                 marginBottom={2}
                 textAlign="left"
               >
-                Buidlers
+                Members
               </Typography>
               <Box
                 display="flex"
