@@ -13,7 +13,7 @@ export default function SupportUs() {
           lineHeight="44px"
           textTransform="uppercase"
         >
-          Support us
+          Support LXDAO
         </Typography>
 
         <Typography
@@ -22,9 +22,9 @@ export default function SupportUs() {
           fontSize="21px"
           lineHeight="30px"
           mt={3}
-          mb={8}
+          mb={6}
         >
-          LXDAO is raising funds for Stage 2 expansion Support LXDAO by
+          LXDAO is raising funds for Stage 2 expansion. Support LXDAO by:
         </Typography>
 
         <Box
@@ -46,7 +46,7 @@ export default function SupportUs() {
                 Investing LXDAO Seed Round
               </Typography>
               <Typography mt={1} mb={3} variant="body1" color="#646F7C">
-                Seed round, $1.5M at $15M FDV.SAFT.
+                Seed round, $1.5M at $15M FDV. SAFT.
               </Typography>
               <Button
                 variant="outlined"
@@ -57,11 +57,17 @@ export default function SupportUs() {
                 Deck link
               </Button>
             </Box>
-            <Box
-              component="img"
-              width={[0, 0, 200, 200]}
-              src="/images/deck.png"
-            />
+            <a
+              href="https://docsend.com/view/7c5nu26eexpt4adj"
+              target="_blank"
+              style={{ height: '128px', display: 'block' }}
+            >
+              <Box
+                component="img"
+                width={[0, 0, 200, 200]}
+                src="/images/deck.png"
+              />
+            </a>
           </Box>
 
           <Box
