@@ -42,13 +42,15 @@ export default function SupportUs() {
             display="flex"
           >
             <Box flex={1}>
-              <Typography
-                mb={4}
-                variant="body1"
-                color="#101828"
-                fontWeight={600}
-              >
+              <Typography variant="body1" color="#101828" fontWeight={600}>
                 Checking our Deck
+              </Typography>
+              <Typography mt={1} mb={3} variant="body1" color="#646F7C">
+                Interested? Contact{' '}
+                <a href="https://telegram.me/brucexu_eth" target="_blank">
+                  Bruce
+                </a>
+                .
               </Typography>
               <Button
                 variant="outlined"
