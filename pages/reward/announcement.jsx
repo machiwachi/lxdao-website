@@ -35,7 +35,7 @@ import { ethers } from 'ethers';
 import { useRouter } from 'next/router';
 import ReasonForm from '@/components/ReasonForm';
 import API from '@/common/API';
-import { getPolygonScanDomain } from '@/utils/utility';
+import { getEtherScanDomain, getPolygonScanDomain } from '@/utils/utility';
 import abi_lxp from '../../abi-lxp.json';
 import LXButton from '@/components/Button';
 import Layout from '@/components/Layout';
@@ -1593,7 +1593,7 @@ function ReleasedStablecoinTable({ isAccountingTeam }) {
                   >
                     <Link
                       target="_blank"
-                      href={`https://${getPolygonScanDomain()}/tx/${row.hash}`}
+                      href={`https://${getEtherScanDomain()}/tx/${row.hash}`}
                     >
                       {row.status == 'RELEASED' && 'View'}
                     </Link>
