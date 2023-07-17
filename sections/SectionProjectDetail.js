@@ -636,7 +636,7 @@ const SectionProjectDetail = ({ projectId }) => {
                 alignItems="center"
                 justifyContent="space-between"
               >
-                <Box display="flex">
+                <Box display="flex" flexWrap="wrap" gap="10px">
                   {project.buidlersOnProject
                     .sort((a, b) => {
                       if (a.projectRole.includes('Project Manager')) return -1;
