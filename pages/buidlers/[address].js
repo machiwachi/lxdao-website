@@ -482,9 +482,6 @@ function BuidlerDetails(props) {
     return project.status === 'ACTIVE';
   });
 
-  const buddies = record.buddies.map((buddy) => buddy.address);
-  const isBuddyChecking = buddies.includes(address);
-
   const createdAt =
     record.createdAt &&
     new Date(Date.parse(record.createdAt)).toDateString().split(' ');
@@ -510,27 +507,47 @@ function BuidlerDetails(props) {
   )?.amount;
 
   const airDropMembershipBadge = async () => {
-    const badgeContractAddress = process.env.NEXT_PUBLIC_BADGE_CONTRACT_ADDRESS;
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
-    const badgeContract = new ethers.Contract(
-      badgeContractAddress,
-      badge_abi,
-      signer
-    );
-    const tx = await badgeContract.mintAndAirdrop(
-      'MemberFirstBadge',
-      [record.address],
-      [1]
-    );
-    if (tx) {
-      const updatedBuidler = await API.post(
-        `/buidler/${record.address}/updateBadges`
+    try {
+      const badgeContractAddress =
+        process.env.NEXT_PUBLIC_BADGE_CONTRACT_ADDRESS;
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const badgeContract = new ethers.Contract(
+        badgeContractAddress,
+        badge_abi,
+        signer
       );
 
-      if (updatedBuidler?.data?.status === 'SUCCESS') {
-        props.refresh();
+      const tx = await badgeContract.mintAndAirdrop(
+        'MemberFirstBadge',
+        [record.address],
+        [1]
+      );
+      showMessage({
+        type: 'info',
+        title: 'Waiting...',
+      });
+      const receipt = await tx.wait();
+
+      if (receipt?.status) {
+        const updatedBuidler = await API.post(
+          `/buidler/${record.address}/updateBadges`
+        );
+
+        if (updatedBuidler?.data?.status === 'SUCCESS') {
+          showMessage({
+            type: 'success',
+            title: 'Success!',
+          });
+          props.refresh();
+        }
       }
+    } catch (err) {
+      showMessage({
+        type: 'error',
+        title: 'Failed to airdrop membership badge',
+        body: err.message,
+      });
     }
   };
 
@@ -552,21 +569,23 @@ function BuidlerDetails(props) {
         </Box>
       ) : (
         <Container paddingY={isFromOnboarding ? {} : { md: 12, xs: 8 }}>
-          {isBuddyChecking && record.status === 'PENDING' && (
-            <Box marginTop={4}>
-              <Alert severity="info">Enable Mint Access</Alert>
-              <Box marginTop={2} marginBottom={2}>
-                <Button
-                  onClick={() => {
-                    enableMint();
-                  }}
-                  variant="outlined"
-                >
-                  Enable Mint Access
-                </Button>
+          {record.status === 'PENDING' &&
+            address &&
+            firstMemberBadgeAmount === 1 &&
+            buidlerRecord?.role?.includes('Onboarding Committee') && (
+              <Box marginTop={4}>
+                <Box marginTop={2} marginBottom={2}>
+                  <Button
+                    onClick={() => {
+                      enableMint();
+                    }}
+                    variant="outlined"
+                  >
+                    Enable SBT Card Mint Access
+                  </Button>
+                </Box>
               </Box>
-            </Box>
-          )}
+            )}
           {tx && (
             <Dialog
               maxWidth="383px"
