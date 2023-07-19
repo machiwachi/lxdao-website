@@ -46,7 +46,7 @@ import useBuidler from '@/components/useBuidler';
 import showMessage from '@/components/showMessage';
 import CloseIcon from '@mui/icons-material/Close';
 import { makeStyles } from '@mui/styles';
-import { RewardLabels } from '@/pages/reward/define';
+import { RewardLabels } from '@/common/define';
 
 const useStyles = makeStyles({
   tooltip: {
