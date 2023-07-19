@@ -62,7 +62,7 @@ const SectionPartners = () => (
         </Typography>
         <Box
           display="flex"
-          gap={3}
+          gap={2}
           flexWrap="wrap"
           justifyContent={{ md: 'center', sm: 'center', xs: 'center' }}
         >
