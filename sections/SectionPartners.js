@@ -34,6 +34,16 @@ const partnersData = [
     logo: '/images/partners/ethsign-logo.svg',
     link: 'https://www.ethsign.xyz/',
   },
+  {
+    name: 'Plancker',
+    logo: '/images/partners/plancker-logo.svg',
+    link: 'https://plancker.org/',
+  },
+  {
+    name: '8dao',
+    logo: '/images/partners/8dao-logo.svg',
+    link: 'https://8dao.io/',
+  },
 ];
 
 const SectionPartners = () => (
