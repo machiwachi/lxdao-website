@@ -600,14 +600,6 @@ export default function Apply() {
                           );
                         })}
                       </Select>
-                      <Typography
-                        marginTop={1}
-                        fontSize="0.85rem"
-                        color="#d32f2f"
-                        marginLeft={2}
-                      >
-                        {errors?.type ? 'Member is required' : ''}
-                      </Typography>
                     </>
                   );
                 }}
