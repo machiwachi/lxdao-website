@@ -681,7 +681,7 @@ function UnReleasedLXPTable({
                           variant="outlined"
                           onClick={() => {
                             setIsDispute(true);
-                            hanldeOperationBtn(row.id, 'DISPUTE');
+                            handleOperationBtn(row.id, 'DISPUTE');
                           }}
                         >
                           Dispute
@@ -817,11 +817,14 @@ function UnReleasedStablecoinTable({
   const [isDispute, setIsDispute] = useState(true);
   const [currentStableCoinId, setCurrentStableCoinId] = useState('');
 
+  const allLabels = ['All', 'Myself', ...RewardLabels];
+  const [labels, setLabels] = useState(['All']);
+
   useEffect(() => {
     (async () => {
       await getStablecoinApplications();
     })();
-  }, [page, perPage]);
+  }, [page, perPage, labels]);
 
   const hanldeOperationBtn = async (id, operation) => {
     if (operation === 'REJECT') {
@@ -909,6 +912,15 @@ function UnReleasedStablecoinTable({
     setUpdating(false);
   };
 
+  const handleSelectLabels = async (event) => {
+    let {
+      target: { value },
+    } = event;
+
+    let parse = typeof value === 'string' ? value.split(',') : value;
+    setLabels(parse);
+  };
+
   const handleReleaseBtn = async () => {
     if (transaction.length !== 66 || !transaction.startsWith('0x')) {
       throw { message: 'transaction error.' };
@@ -946,6 +958,17 @@ function UnReleasedStablecoinTable({
     ['NEEDTOREVIEW', 'TOBERELEASED'].map((value) => {
       params.push('status=' + value);
     });
+
+    labels.map((value) => {
+      if (value !== 'All') {
+        if (value === 'Myself') {
+          params.push('address=' + address);
+        } else {
+          params.push('labels=' + value);
+        }
+      }
+    });
+
     params.push('page=' + (page + 1));
     params.push('per_page=' + perPage);
     query += params.join('&');
@@ -1033,6 +1056,30 @@ function UnReleasedStablecoinTable({
           backgroundColor: '#F3FAFF',
         }}
       >
+        <Box
+          display="flex"
+          alignItems="center"
+          gap={1}
+          sx={{ width: '100%', marginBottom: '10px' }}
+        >
+          <InputLabel id="reward-select-label">Labels filter:</InputLabel>
+          <Select
+            labelId="reward-select-label"
+            id="reward-select-label"
+            value={labels}
+            onChange={handleSelectLabels}
+            sx={{ height: '44px' }}
+          >
+            {allLabels.map((item, index) => {
+              return (
+                <MenuItem key={index} value={item}>
+                  {item}
+                </MenuItem>
+              );
+            })}
+          </Select>
+        </Box>
+
         <Table>
           <TableHead>
             <TableRow>
