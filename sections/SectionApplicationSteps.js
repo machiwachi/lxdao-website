@@ -74,22 +74,6 @@ const SectionApplicationSteps = () => {
           >
             How to contribute？
           </Typography>
-          <Typography
-            variant="subtitle1"
-            fontWeight="400"
-            lineHeight="28px"
-            textAlign="center"
-            color="red"
-            marginBottom={8}
-          >
-            <b>!!IMPORTANT:</b> We are refreshing the onboarding process, before
-            proceeding with the onboarding process, it's crucial that you
-            contact <b>Marcus</b> by{' '}
-            <a href="mailto: zqsanjingshou@gmail.com">
-              zqsanjingshou@gmail.com
-            </a>{' '}
-            first to add your address to the website.
-          </Typography>
           <Box
             display="flex"
             flexDirection={{ lg: 'row', xs: 'column' }}
