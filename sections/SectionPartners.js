@@ -36,7 +36,7 @@ const partnersData = [
   },
   {
     name: 'Plancker',
-    logo: '/images/partners/plancker-logo.svg',
+    logo: '/images/partners/Plancker-logo.svg',
     link: 'https://plancker.org/',
   },
   {
