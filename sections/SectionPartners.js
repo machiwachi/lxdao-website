@@ -34,6 +34,16 @@ const partnersData = [
     logo: '/images/partners/ethsign-logo.svg',
     link: 'https://www.ethsign.xyz/',
   },
+  {
+    name: 'Plancker',
+    logo: '/images/partners/Plancker-logo.svg',
+    link: 'https://plancker.org/',
+  },
+  {
+    name: '8dao',
+    logo: '/images/partners/8dao-logo.svg',
+    link: 'https://8dao.io/',
+  },
 ];
 
 const SectionPartners = () => (
@@ -52,7 +62,7 @@ const SectionPartners = () => (
         </Typography>
         <Box
           display="flex"
-          gap={3}
+          gap={2}
           flexWrap="wrap"
           justifyContent={{ md: 'center', sm: 'center', xs: 'center' }}
         >

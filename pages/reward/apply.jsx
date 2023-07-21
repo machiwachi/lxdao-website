@@ -12,6 +12,7 @@ import {
   Autocomplete,
   CircularProgress,
   TextField,
+  Chip,
 } from '@mui/material';
 
 import { useRouter } from 'next/router';
@@ -41,6 +42,19 @@ function Label({ required, value }) {
   );
 }
 
+const RewardLabels = [
+  'Governance WG',
+  'Operation WG',
+  'DAO Tools WG',
+  'Expert WG',
+  'SteadyForce WG',
+  'EIPs Fun Project',
+  'Donate3 Project',
+  'Bounty',
+  'Fixed Salary',
+  'Other',
+];
+
 export default function Apply() {
   const {
     handleSubmit,
@@ -55,6 +69,7 @@ export default function Apply() {
       address: '',
       amount: '',
       source: '',
+      labels: [],
       reason: '',
       check: false,
     },
@@ -99,7 +114,7 @@ export default function Apply() {
     }
   };
 
-  const applicationHandler = async (raw) => {
+  const applicationHandler = async (raw, applyAgain) => {
     setDisableSubmitBtn(true);
     setSubmitLoading(true);
     try {
@@ -110,7 +125,9 @@ export default function Apply() {
         source: raw.source,
         value: parseInt(raw.amount),
         reason: raw.reason,
+        labels: raw.labels,
       };
+
       if (type === 'LXP') {
         const response = await API.post(
           `/lxpoints/${raw.address}/createLXPoints`,
@@ -122,7 +139,11 @@ export default function Apply() {
           setSubmitLoading(false);
           throw new Error(result.message);
         } else {
-          router.push('/reward/announcement');
+          if (applyAgain) {
+            await router.reload('/reward/apply');
+          } else {
+            await router.push('/reward/announcement');
+          }
         }
       } else {
         const response = await API.post(
@@ -135,7 +156,11 @@ export default function Apply() {
           setSubmitLoading(false);
           throw new Error(result.message);
         } else {
-          router.push('/reward/announcement');
+          if (applyAgain) {
+            await router.reload('/reward/apply');
+          } else {
+            await router.push('/reward/announcement');
+          }
         }
       }
     } catch (err) {
@@ -486,6 +511,7 @@ export default function Apply() {
                 )}
             </Box>
           </Box>
+
           <Box
             display="flex"
             flexDirection={{ xs: 'column', sm: 'row' }}
@@ -523,6 +549,64 @@ export default function Apply() {
               )}
             </Box>
           </Box>
+
+          <Box
+            display="flex"
+            flexDirection={{ xs: 'column', sm: 'row' }}
+            marginBottom={{ xs: '0', sm: '15px' }}
+          >
+            <Box marginRight="10px">
+              <Label value={'Labels: '} />
+            </Box>
+
+            <Box flex={1}>
+              <Controller
+                name={'labels'}
+                control={control}
+                rules={{ required: false }}
+                render={({ field: { onChange, value, onBlur } }) => {
+                  return (
+                    <>
+                      <Select
+                        sx={{ width: '100%', height: 56 }}
+                        displayEmpty
+                        multiple
+                        renderValue={(selected) => (
+                          <Box
+                            sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}
+                          >
+                            {selected.map((value) => (
+                              <Chip key={value} label={value} />
+                            ))}
+                          </Box>
+                        )}
+                        MenuProps={{
+                          PaperProps: {
+                            style: {
+                              maxHeight: 48 * 4.5 + 8,
+                              width: 250,
+                            },
+                          },
+                        }}
+                        value={value}
+                        onChange={onChange}
+                        onBlur={onBlur}
+                      >
+                        {RewardLabels.map((item, index) => {
+                          return (
+                            <MenuItem key={index} value={item}>
+                              {item}
+                            </MenuItem>
+                          );
+                        })}
+                      </Select>
+                    </>
+                  );
+                }}
+              />
+            </Box>
+          </Box>
+
           <Box
             display="flex"
             flexDirection={{ xs: 'column', sm: 'row' }}
@@ -669,18 +753,35 @@ export default function Apply() {
             )}
           </Box>
         </Box>
-        <LXButton
-          width="200px"
-          variant="gradient"
-          marginTop={'69px'}
+        <Box
+          display="flex"
+          marginTop="69px"
           marginBottom="40px"
-          onClick={handleSubmit((data) => {
-            applicationHandler(data);
-          })}
-          disabled={JSON.stringify(errors) !== '{}' || disabletSubmitBtn}
+          justifyContent="space-between"
+          gap="50px"
         >
-          {submitLoading ? 'Submitting' : 'Submit'}
-        </LXButton>
+          <LXButton
+            width="200px"
+            variant="gradient"
+            onClick={handleSubmit((data) => {
+              applicationHandler(data, false);
+            })}
+            disabled={JSON.stringify(errors) !== '{}' || disabletSubmitBtn}
+          >
+            {submitLoading ? 'Submitting' : 'Submit'}
+          </LXButton>
+
+          <LXButton
+            width="200px"
+            variant="gradient"
+            onClick={handleSubmit((data) => {
+              applicationHandler(data, true);
+            })}
+            disabled={JSON.stringify(errors) !== '{}' || disabletSubmitBtn}
+          >
+            {submitLoading ? 'Submitting' : 'Submit and apply'}
+          </LXButton>
+        </Box>
       </Container>
     </Layout>
   );
