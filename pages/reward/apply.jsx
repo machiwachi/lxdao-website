@@ -779,7 +779,7 @@ export default function Apply() {
             })}
             disabled={JSON.stringify(errors) !== '{}' || disabletSubmitBtn}
           >
-            {submitLoading ? 'Submitting' : 'Submit and apply'}
+            {submitLoading ? 'Submitting' : 'Submit & continue to add'}
           </LXButton>
         </Box>
       </Container>

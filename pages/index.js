@@ -59,7 +59,7 @@ export default function Home() {
         const ActiveMembers = [];
         result?.data?.forEach((member) => {
           members.push(member);
-          if (member?.status === 'ACTIVE') {
+          if (member?.badges && member?.badges['MemberFirstBadge'] >= 1) {
             ActiveMembers.push(member);
           }
         });
