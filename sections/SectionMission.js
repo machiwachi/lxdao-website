@@ -88,37 +88,33 @@ const SectionMission = ({ projectAmount, buidlerAmount }) => (
           gap={2}
         >
           <DataBox
-            number="12k+"
+            number="16k+"
             name="Influence"
             detail={
               <div>
                 <div>
                   <span>Discord: </span>
-                  <span>700+</span>
+                  <span>955+</span>
                 </div>
                 <div>
-                  <span>Twitter: </span>
-                  <span>6.5k+</span>
+                  <span>Media: </span>
+                  <span>12k+</span>
                 </div>
                 <div>
                   <span>WeChat: </span>
                   <span>3k+</span>
-                </div>
-                <div>
-                  <span>WeChat Official Accounts: </span>
-                  <span>1.8k+</span>
                 </div>
               </div>
             }
           />
           <DataBox
             number={buidlerAmount}
-            name="Buidler card holders"
+            name="Registered members"
             link="/buidlers"
           />
           <DataBox number={projectAmount} name="Projects" link="/projects" />
           <DataBox
-            number="120k+ USDC"
+            number="90k+ USDC"
             name="Treasury"
             link="https://gnosis-safe.io/app/eth:0xB45e9F74D0a35fE1aa0B78feA03877EF96ae8dd2/home"
           />
