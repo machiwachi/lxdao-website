@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { useContract, useAccount, useSigner } from 'wagmi';
 import { useRouter } from 'next/router';
-import CustomButton from '@/components/Button';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext'; /* eslint-disable no-undef */
-import WorkingGroupCard from '@/components/WorkingGroupCard';
-import showMessage from '@/components/showMessage';
-import { contractInfo } from '@/components/ContractsOperation';
-import ProjectCard from '@/components/ProjectCard';
+import * as bs58 from 'bs58';
 import {
   Box,
   Stack,
@@ -15,14 +11,18 @@ import {
   Container,
   Grid,
 } from '@mui/material';
-import workingGroupsData from '@/common/content/workingGroups';
+
 import API from '@/common/API';
-import * as bs58 from 'bs58';
+
+import CustomButton from '@/components/Button';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext'; /* eslint-disable no-undef */
+import showMessage from '@/components/showMessage';
+import { contractInfo } from '@/components/ContractsOperation';
+import ProjectCard from '@/components/ProjectCard';
 import useBuidler from '@/components/useBuidler';
 import LXButton from '@/components/Button';
-import { useContract, useAccount, useSigner } from 'wagmi';
-
 import Layout from '@/components/Layout';
+import { WorkingGroupCard } from '../pages/workingGroups/list';
 
 function ipfsToBytes(ipfsURI) {
   const ipfsHash = ipfsURI.replace('ipfs://', '');
@@ -38,6 +38,7 @@ export default function FirstBadge() {
   const [, record, , refresh] = useBuidler(address);
   const router = useRouter();
   const [currentAddress, setCurrentAddress] = useState('');
+  const [workingGroupsData, setWorkingGroupsData] = useState([]);
 
   useEffect(() => {
     if (address) {
@@ -45,11 +46,29 @@ export default function FirstBadge() {
     }
   }, [address]);
 
+  useEffect(async () => {
+    try {
+      const res = await API.get('/workinggroup/list');
+      const result = res?.data;
+      if (result?.status === 'SUCCESS') {
+        setWorkingGroupsData(result?.data);
+      } else {
+        throw new Error(result.message);
+      }
+    } catch (err) {
+      showMessage({
+        type: 'error',
+        title: 'Failed to get the working group list',
+        body: err.message,
+      });
+    }
+  }, []);
+
   const contract = useContract({
     ...contractInfo(),
     signerOrProvider: signer,
   });
-  React.useEffect(() => {
+  useEffect(() => {
     API.get(`/project?page=1&per_page=30`)
       .then((res) => {
         if (res?.data?.status === 'SUCCESS') {
@@ -202,14 +221,14 @@ export default function FirstBadge() {
           <Typography variant="subtitle2" fontWeight="800">
             Working groups
           </Typography>
-          <Grid container spacing={2}>
+          <Box display="flex" gap="24px" flexWrap="wrap">
             {workingGroupsData.length > 0 &&
-              workingGroupsData.map((group, index) => {
+              workingGroupsData.map((item, index) => {
                 return (
-                  <WorkingGroupCard hasBorder={true} key={index} {...group} />
+                  <WorkingGroupCard key={index} data={item} width="368px" />
                 );
               })}
-          </Grid>
+          </Box>
         </Stack>
         <Stack gap={3}>
           <Typography variant="subtitle2" fontWeight="800">
