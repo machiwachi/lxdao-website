@@ -121,7 +121,7 @@ export default function WorkingGroupDetail() {
 
   return (
     <Layout title={'LXDAO Working Group: ' + data?.name + ' | LXDAO'}>
-      <Container maxWidth="778px">
+      <Container maxWidth="778px" marginX={{ md: 'auto', xs: '20px' }}>
         <Box display="flex" flexDirection="column" gap="16px">
           <Box
             height="320px"
