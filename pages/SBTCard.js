@@ -221,7 +221,12 @@ export default function FirstBadge() {
           <Typography variant="subtitle2" fontWeight="800">
             Working groups
           </Typography>
-          <Box display="flex" gap="24px" flexWrap="wrap">
+          <Box
+            display="flex"
+            gap="24px"
+            flexWrap="wrap"
+            justifyContent="center"
+          >
             {workingGroupsData.length > 0 &&
               workingGroupsData.map((item, index) => {
                 return (

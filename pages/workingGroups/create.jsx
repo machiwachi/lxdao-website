@@ -25,11 +25,11 @@ function CreateWorkingGroup() {
       const result = response?.data;
       if (result.status !== 'SUCCESS') {
         throw new Error(result.message);
+      } else {
+        if (result?.data?.id) {
+          router.push(`/workingGroups/${result?.data?.id}`);
+        }
       }
-      // TODO: redirect to the working group detail page
-      //  else {
-      //   router.push(`/workingGroups/${result}`);
-      // }
     } catch (err) {
       showMessage({
         type: 'error',

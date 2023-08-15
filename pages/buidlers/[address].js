@@ -59,7 +59,7 @@ import Tag from '@/components/Tag';
 import showMessage from '@/components/showMessage';
 import Project from '@/components/Project';
 import LXButton from '@/components/Button';
-import WorkingGroupCard from '@/components/WorkingGroupCard';
+import WorkingGroupSimpleCard from '@/components/WorkingGroupSimpleCard';
 import OnBoardingLayout from '@/components/OnBoardingLayout';
 import BadgeCard from '@/components/BadgeCard';
 
@@ -1503,10 +1503,11 @@ function BuidlerDetails(props) {
                         {record?.workingGroups?.length > 0 &&
                           record?.workingGroups?.map((group, index) => {
                             return (
-                              <WorkingGroupCard
-                                hasBorder
+                              <WorkingGroupSimpleCard
                                 key={index}
-                                {...group}
+                                id={group?.workingGroup?.id}
+                                role={group.role}
+                                name={group?.workingGroup?.name}
                               />
                             );
                           })}

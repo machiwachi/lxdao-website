@@ -145,7 +145,13 @@ export default function WorkingGroupList() {
           </Link>
         </Box>
 
-        <Box display="flex" gap="24px" flexWrap="wrap" marginTop="96px">
+        <Box
+          display="flex"
+          gap="24px"
+          flexWrap="wrap"
+          marginTop="96px"
+          justifyContent="center"
+        >
           {listData &&
             listData.length &&
             listData.map((item, index) => {

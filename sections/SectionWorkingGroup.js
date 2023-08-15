@@ -39,7 +39,13 @@ const SectionWorkingGroup = () => {
         >
           LXDAO Working Groups
         </Typography>
-        <Box display="flex" gap="24px" flexWrap="wrap" marginTop="48px">
+        <Box
+          display="flex"
+          gap="24px"
+          flexWrap="wrap"
+          marginTop="48px"
+          justifyContent="center"
+        >
           {workingGroupsData.length > 0 &&
             workingGroupsData.map((item, index) => {
               return <WorkingGroupCard key={index} data={item} />;
