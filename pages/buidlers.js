@@ -228,7 +228,7 @@ export default function Buidlers() {
   };
 
   useEffect(() => {
-    searchList();
+    searchList(search, role, skill, memberStatus);
   }, [page, rowsPerPage]);
 
   const handleChangePage = (event, newPage) => {
