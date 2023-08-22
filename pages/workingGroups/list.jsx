@@ -10,6 +10,12 @@ import Container from '@/components/Container';
 import showMessage from '@/components/showMessage';
 
 export function WorkingGroupCard({ key, data, width }) {
+  const normalMembers = data?.membersInWorkingGroup?.filter(
+    (member) => !member?.role?.includes('Working Group Leader')
+  );
+  const leader = data?.membersInWorkingGroup?.filter((member) =>
+    member?.role?.includes('Working Group Leader')
+  );
   return (
     <Link
       href={`/workingGroups/${data?.id}`}
@@ -52,8 +58,8 @@ export function WorkingGroupCard({ key, data, width }) {
           Members
         </Typography>
         <Box display="flex" gap="10px" overflow="hidden">
-          {data?.membersInWorkingGroup &&
-            data?.membersInWorkingGroup?.map((member, index) => (
+          {leader &&
+            leader.map((member, index) => (
               <Link
                 sx={{
                   border: '0.5px solid #d0d5dd',
@@ -72,24 +78,44 @@ export function WorkingGroupCard({ key, data, width }) {
                   height="59px"
                   src={member?.member?.avatar}
                 />
-                {member?.role.includes('Working Group Leader') && (
-                  <Typography
-                    position="absolute"
-                    sx={{
-                      right: 0,
-                      bottom: 0,
-                      fontSize: '12px',
-                      lineHeight: '15px',
-                      color: '#fff',
-                      background: '#36AFF9',
-                      width: '26px',
-                      zIndex: 3,
-                      textAlign: 'center',
-                    }}
-                  >
-                    TL
-                  </Typography>
-                )}
+                <Typography
+                  position="absolute"
+                  sx={{
+                    right: 0,
+                    bottom: 0,
+                    fontSize: '10px',
+                    lineHeight: '12px',
+                    color: '#fff',
+                    background: '#36AFF9',
+                    width: '28px',
+                    zIndex: 3,
+                    textAlign: 'center',
+                  }}
+                >
+                  Lead
+                </Typography>
+              </Link>
+            ))}
+          {normalMembers &&
+            normalMembers.map((member, index) => (
+              <Link
+                sx={{
+                  border: '0.5px solid #d0d5dd',
+                  borderRadius: '2px',
+                  width: '60px',
+                  height: '60px',
+                  position: 'relative',
+                }}
+                target="_blank"
+                href={`/buidlers/${member?.member?.address}`}
+                key={index}
+              >
+                <Box
+                  component="img"
+                  width="59px"
+                  height="59px"
+                  src={member?.member?.avatar}
+                />
               </Link>
             ))}
         </Box>
@@ -140,7 +166,7 @@ export default function WorkingGroupList() {
         <Box display="flex" justifyContent="center">
           <Link sx={{ textDecoration: 'none' }} href={`/workingGroups/create`}>
             <Button variant="gradient" width="250px">
-              Create A Working Group
+              Create a working group
             </Button>
           </Link>
         </Box>

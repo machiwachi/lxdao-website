@@ -75,6 +75,13 @@ export default function WorkingGroupDetail() {
     member.role.includes('Working Group Leader')
   )?.member?.address;
 
+  const normalMembers = data?.membersInWorkingGroup?.filter(
+    (member) => !member?.role?.includes('Working Group Leader')
+  );
+  const leader = data?.membersInWorkingGroup?.filter((member) =>
+    member?.role?.includes('Working Group Leader')
+  );
+
   const updateWorkingGroupHandler = async (values) => {
     const formattedValues = values?.leaderId?.id
       ? { ...values, leaderId: values?.leaderId?.id }
@@ -157,7 +164,7 @@ export default function WorkingGroupDetail() {
                     setUpdateDialogVisible(true);
                   }}
                 >
-                  Update
+                  Edit
                 </Button>
               )}
             </Box>
@@ -175,8 +182,8 @@ export default function WorkingGroupDetail() {
               Members
             </Typography>
             <Box display="flex" gap="10px" marginTop="15px">
-              {data?.membersInWorkingGroup &&
-                data?.membersInWorkingGroup.map((member, index) => (
+              {leader &&
+                leader.map((member, index) => (
                   <Link
                     sx={{
                       border: '0.5px solid #d0d5dd',
@@ -195,24 +202,44 @@ export default function WorkingGroupDetail() {
                       height="59px"
                       src={member?.member?.avatar}
                     />
-                    {member?.role.includes('Working Group Leader') && (
-                      <Typography
-                        position="absolute"
-                        sx={{
-                          right: 0,
-                          bottom: 0,
-                          fontSize: '12px',
-                          lineHeight: '15px',
-                          color: '#fff',
-                          background: '#36AFF9',
-                          width: '26px',
-                          zIndex: 3,
-                          textAlign: 'center',
-                        }}
-                      >
-                        TL
-                      </Typography>
-                    )}
+                    <Typography
+                      position="absolute"
+                      sx={{
+                        right: 0,
+                        bottom: 0,
+                        fontSize: '10px',
+                        lineHeight: '12px',
+                        color: '#fff',
+                        background: '#36AFF9',
+                        width: '28px',
+                        zIndex: 3,
+                        textAlign: 'center',
+                      }}
+                    >
+                      Lead
+                    </Typography>
+                  </Link>
+                ))}
+              {normalMembers &&
+                normalMembers.map((member, index) => (
+                  <Link
+                    sx={{
+                      border: '0.5px solid #d0d5dd',
+                      borderRadius: '2px',
+                      width: '60px',
+                      height: '60px',
+                      position: 'relative',
+                    }}
+                    target="_blank"
+                    href={`/buidlers/${member?.member?.address}`}
+                    key={index}
+                  >
+                    <Box
+                      component="img"
+                      width="59px"
+                      height="59px"
+                      src={member?.member?.avatar}
+                    />
                   </Link>
                 ))}
             </Box>
