@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-
 import { Box, Typography, Link } from '@mui/material';
+import { useAccount } from 'wagmi';
 
 import API from '@/common/API';
 
@@ -8,6 +8,7 @@ import Layout from '@/components/Layout';
 import Button from '@/components/Button';
 import Container from '@/components/Container';
 import showMessage from '@/components/showMessage';
+import useBuidler from '@/components/useBuidler';
 
 export function WorkingGroupCard({ key, data, width }) {
   const normalMembers = data?.membersInWorkingGroup?.filter(
@@ -126,6 +127,8 @@ export function WorkingGroupCard({ key, data, width }) {
 
 export default function WorkingGroupList() {
   const [listData, setListData] = useState([]);
+  const { address } = useAccount();
+  const [, currentViewer, ,] = useBuidler(address);
 
   useEffect(async () => {
     try {
@@ -163,14 +166,18 @@ export default function WorkingGroupList() {
         >
           LXDAO WORKING GROUPS
         </Typography>
-        <Box display="flex" justifyContent="center">
-          <Link sx={{ textDecoration: 'none' }} href={`/workingGroups/create`}>
-            <Button variant="gradient" width="250px">
-              Create a working group
-            </Button>
-          </Link>
-        </Box>
-
+        {currentViewer && currentViewer?.role?.includes('Administrator') && (
+          <Box display="flex" justifyContent="center">
+            <Link
+              sx={{ textDecoration: 'none' }}
+              href={`/workingGroups/create`}
+            >
+              <Button variant="gradient" width="250px">
+                Create a working group
+              </Button>
+            </Link>
+          </Box>
+        )}
         <Box
           display="flex"
           gap="24px"
@@ -179,7 +186,7 @@ export default function WorkingGroupList() {
           justifyContent="center"
         >
           {listData &&
-            listData.length &&
+            listData.length > 0 &&
             listData.map((item, index) => {
               return <WorkingGroupCard key={index} data={item} />;
             })}

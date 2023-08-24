@@ -14,7 +14,10 @@ import showMessage from './showMessage';
 import Select from './Select';
 import LXButton from './Button';
 
-const memberType = ['STABLE', 'UNSTABLE'];
+const memberType = [
+  { label: 'Fixed Member', value: 'STABLE' },
+  { label: 'Flexible Member', value: 'UNSTABLE' },
+];
 
 function MemberTypeField(props) {
   const [openMemberDropdownIndex, setOpenMemberDropdownIndex] = useState();
@@ -110,7 +113,7 @@ function MemberTypeField(props) {
         return (
           <Box key={index} display="flex" marginBottom={2.5}>
             <Grid container spacing={2}>
-              <Grid item xs={7}>
+              <Grid item xs={6}>
                 <Autocomplete
                   open={index === openMemberDropdownIndex}
                   onOpen={() => {
@@ -169,7 +172,7 @@ function MemberTypeField(props) {
                   }}
                 />
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={5}>
                 <Select
                   label="Type"
                   dropdown={memberType}

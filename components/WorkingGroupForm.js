@@ -61,7 +61,7 @@ function WorkingGroupForm(props) {
     if (JSON.stringify(errors) !== '{}') {
       return (
         <Button variant="gradient" size="large" width={200} disabled={true}>
-          Create
+          {isUpdate ? 'Save' : 'Create'}
         </Button>
       );
     }
@@ -70,7 +70,7 @@ function WorkingGroupForm(props) {
     if (props.updating) {
       return (
         <Button variant="gradient" size="large" width={200} disabled={true}>
-          Create...
+          {isUpdate ? 'Save...' : 'Create...'}
         </Button>
       );
     }
@@ -82,7 +82,7 @@ function WorkingGroupForm(props) {
         width={200}
         onClick={handleSubmit(onSubmit)}
       >
-        Create
+        {isUpdate ? 'Save' : 'Create'}
       </Button>
     );
   }
@@ -502,7 +502,7 @@ function WorkingGroupForm(props) {
           </Typography>
         </Box>
       </Box>
-      <Box
+      {/*<Box
         display="flex"
         flexDirection={{ xs: 'column', sm: 'row' }}
         marginBottom={{ xs: '0', sm: '15px' }}
@@ -528,7 +528,7 @@ function WorkingGroupForm(props) {
             }}
           />
         </Box>
-      </Box>
+          </Box>*/}
       {JSON.stringify(errors) !== '{}' && (
         <Box marginTop={2}>
           <Alert severity="error">
