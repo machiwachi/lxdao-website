@@ -31,7 +31,16 @@ export function WorkingGroupCard({ key, data, width }) {
       }}
       key={key}
     >
-      <Box component="img" src={data?.bannerURI} width="100%" height="160px" />
+      <Box
+        sx={{
+          backgroundImage: `url(${data?.bannerURI})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          borderRadius: '5px 5px 0 0',
+        }}
+        width="100%"
+        height="160px"
+      />
       <Box padding="16px 24px" textAlign="left">
         <Typography
           color="#101828"
