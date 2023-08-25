@@ -136,14 +136,12 @@ export default function WorkingGroupDetail() {
             border="0.5px solid #d0d5dd"
             borderRadius="6px"
             marginBottom="32px"
-          >
-            <Box
-              component="img"
-              src={data?.bannerURI}
-              width="100%"
-              height="100%"
-            />
-          </Box>
+            sx={{
+              backgroundImage: `url(${data?.bannerURI})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
+          />
           <Box>
             <Box
               display="flex"
@@ -244,39 +242,47 @@ export default function WorkingGroupDetail() {
                 ))}
             </Box>
           </Box>
-          <Box marginBottom="120px">
-            <Typography
-              fontSize="16px"
-              fontWeight={600}
-              color="#101828"
-              lineHeight="20px"
-            >
-              Links
-            </Typography>
-            <Box
-              display="flex"
-              flexDirection="column"
-              gap="24px"
-              marginTop="16px"
-            >
-              {data?.weeklyMeetingLink && (
-                <LinkItem
-                  title="Weekly meeting"
-                  link={data?.weeklyMeetingLink}
-                  description={data?.weeklyMeetingTime}
-                />
-              )}
-              {data?.weeklyUpdateLink && (
-                <LinkItem title="Weekly update" link={data?.weeklyUpdateLink} />
-              )}
-              {data?.bountyTaskLink && (
-                <LinkItem title="Bounty task" link={data?.bountyTaskLink} />
-              )}
-              {data?.roadmapLink && (
-                <LinkItem title="Roadmap" link={data?.roadmapLink} />
-              )}
+          {(data?.weeklyMeetingLink ||
+            data?.weeklyUpdateLink ||
+            data?.bountyTaskLink ||
+            data?.roadmapLink) && (
+            <Box marginBottom="120px">
+              <Typography
+                fontSize="16px"
+                fontWeight={600}
+                color="#101828"
+                lineHeight="20px"
+              >
+                Links
+              </Typography>
+              <Box
+                display="flex"
+                flexDirection="column"
+                gap="24px"
+                marginTop="16px"
+              >
+                {data?.weeklyMeetingLink && (
+                  <LinkItem
+                    title="Weekly meeting"
+                    link={data?.weeklyMeetingLink}
+                    description={data?.weeklyMeetingTime}
+                  />
+                )}
+                {data?.weeklyUpdateLink && (
+                  <LinkItem
+                    title="Weekly update"
+                    link={data?.weeklyUpdateLink}
+                  />
+                )}
+                {data?.bountyTaskLink && (
+                  <LinkItem title="Bounty task" link={data?.bountyTaskLink} />
+                )}
+                {data?.roadmapLink && (
+                  <LinkItem title="Roadmap" link={data?.roadmapLink} />
+                )}
+              </Box>
             </Box>
-          </Box>
+          )}
         </Box>
         <Dialog
           fullWidth={true}

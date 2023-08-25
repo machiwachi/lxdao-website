@@ -27,7 +27,12 @@ function CreateWorkingGroup() {
         throw new Error(result.message);
       } else {
         if (result?.data?.id) {
-          router.push(`/workingGroups/${result?.data?.id}`);
+          showMessage({
+            type: 'success',
+            title: 'Working group created',
+          });
+          // reload the page for hiding the popup
+          window.location.href = `${window.location.origin}/workingGroups/${result?.data?.id}`;
         }
       }
     } catch (err) {
@@ -66,16 +71,20 @@ function CreateWorkingGroup() {
               Create a new Working Group
             </Typography>
           </Box>
-          {currentViewer && currentViewer?.role?.includes('Administrator') ? (
-            <WorkingGroupForm
-              values={{}}
-              isUpdate={false}
-              saveWorkingGroupHandler={saveWorkingGroupHandler}
-            />
+          {currentViewer ? (
+            currentViewer?.role?.includes('Administrator') ? (
+              <WorkingGroupForm
+                values={{}}
+                isUpdate={false}
+                saveWorkingGroupHandler={saveWorkingGroupHandler}
+              />
+            ) : (
+              <Box color="red">
+                You don't have access to create a working group.
+              </Box>
+            )
           ) : (
-            <Box color="red">
-              You don't have access to create a working group.
-            </Box>
+            <></>
           )}
         </Box>
       </Container>
