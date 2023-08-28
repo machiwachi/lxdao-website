@@ -42,7 +42,6 @@ export default function OnBoardingBottom({
             fontSize: '16px',
             lineHeight: '24px',
             fontWeight: '600',
-            mb: { xs: '8px' },
             background: '#F4F6F8',
             mb: { xs: '10px', md: 0 },
             '&:hover': {

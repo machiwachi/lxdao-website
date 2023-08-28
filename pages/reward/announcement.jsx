@@ -33,8 +33,8 @@ import LastPageIcon from '@mui/icons-material/LastPage';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useTheme } from '@mui/material/styles';
-import { useAccount } from 'wagmi';
-import { ethers } from 'ethers';
+import { useAccount, useContractWrite } from 'wagmi';
+import { formatEther } from 'viem';
 import { useRouter } from 'next/router';
 import ReasonForm from '@/components/ReasonForm';
 import API from '@/common/API';
@@ -235,9 +235,9 @@ function UnReleasedLXPTable({
   const [rows, setRows] = useState([]);
   const [copied, setCopied] = useState(false);
   const [disable, setDisable] = useState(false);
-  const [page, setPage] = useState(0);
-  const [perPage, setPerPage] = useState(999);
-  const [pagination, setPagination] = useState({});
+  const [page] = useState(0);
+  const [perPage] = useState(999);
+  // const [pagination, setPagination] = useState({});
   const [reasonVisible, setReasonVisible] = useState(false);
   const [updating, setUpdating] = useState(false);
   const [isDispute, setIsDispute] = useState(true);
@@ -246,6 +246,12 @@ function UnReleasedLXPTable({
 
   const allLabels = ['All', 'Myself', ...RewardLabels];
   const [labels, setLabels] = useState(['All']);
+  const { data, write } = useContractWrite({
+    address: process.env.NEXT_PUBLIC_LXP_CONTRACT_ADDRESS,
+    abi: abi_lxp,
+    functionName: 'batchMint',
+    account: address,
+  });
 
   useEffect(() => {
     (async () => {
@@ -339,12 +345,8 @@ function UnReleasedLXPTable({
   };
 
   const mintAll = async (addresses, amounts) => {
-    const lxpAddress = process.env.NEXT_PUBLIC_LXP_CONTRACT_ADDRESS;
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
-    const lxpContract = new ethers.Contract(lxpAddress, abi_lxp, signer);
-    const tx = await lxpContract.batchMint(addresses, amounts);
-    return tx.hash;
+    await write({ args: [addresses, amounts] });
+    return data.hash;
   };
 
   const getAllTOBERELEASEDLXP = async () => {
@@ -389,7 +391,7 @@ function UnReleasedLXPTable({
       }
 
       const formattedAmounts = amounts.map((value) =>
-        ethers.utils.parseUnits(value.toString(), 'ether')
+        formatEther(value.toString())
       );
 
       const hash = await mintAll(addresses, formattedAmounts);
@@ -459,7 +461,7 @@ function UnReleasedLXPTable({
       setTotalRemuneration(total);
 
       setRows(result.data);
-      setPagination(result.pagination);
+      // setPagination(result.pagination);
     } catch (err) {
       showMessage({
         type: 'error',
@@ -2025,7 +2027,7 @@ function ReleasedLXPTable() {
 
 export default function Announcement({ isStart, days }) {
   const { address, isConnected } = useAccount();
-  const [loading, currentViewer] = useBuidler(address);
+  const [, currentViewer] = useBuidler(address);
 
   const [hasMemberFirstBadge, setHasMemberFirstBadge] = useState(false);
   const isAccountingTeam = currentViewer?.role?.includes('Accounting Team');

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import CustomButton from '@/components/Button';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext'; /* eslint-disable no-undef */
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import WorkingGroupCard from '@/components/WorkingGroupCard';
 import showMessage from '@/components/showMessage';
 import { contractInfo } from '@/components/ContractsOperation';
@@ -20,7 +20,7 @@ import API from '@/common/API';
 import * as bs58 from 'bs58';
 import useBuidler from '@/components/useBuidler';
 import LXButton from '@/components/Button';
-import { useContract, useAccount, useSigner } from 'wagmi';
+import { useAccount, useContractWrite } from 'wagmi';
 
 import Layout from '@/components/Layout';
 
@@ -32,7 +32,6 @@ function ipfsToBytes(ipfsURI) {
 
 export default function FirstBadge() {
   const { address } = useAccount();
-  const { data: signer } = useSigner();
   const [minting, setMinting] = React.useState(false);
   const [projects, setProjects] = React.useState([]);
   const [, record, , refresh] = useBuidler(address);
@@ -45,10 +44,6 @@ export default function FirstBadge() {
     }
   }, [address]);
 
-  const contract = useContract({
-    ...contractInfo(),
-    signerOrProvider: signer,
-  });
   React.useEffect(() => {
     API.get(`/project?page=1&per_page=30`)
       .then((res) => {
@@ -62,6 +57,13 @@ export default function FirstBadge() {
         console.error(err);
       });
   }, []);
+
+  const { error, isError, isSuccess, write } = useContractWrite({
+    ...contractInfo(),
+    functionName: 'mint',
+    account: address,
+  });
+
   const mint = async () => {
     if (minting) return;
     setMinting(true);
@@ -74,12 +76,19 @@ export default function FirstBadge() {
 
       const ipfsURI = record.ipfsURI;
       const bytes = ipfsToBytes(ipfsURI);
-      const tx = await contract.mint(bytes, signature);
-      const response = await tx.wait();
-      if (response) {
+      await write({ args: [bytes, signature] });
+      if (isSuccess) {
         await API.post('/buidler/activate');
         refresh();
         router.push(`/buidlers/${currentAddress}`);
+      }
+
+      if (isError && error) {
+        showMessage({
+          type: 'error',
+          title: 'Failed to mint',
+          body: <>{error.toString()}</>,
+        });
       }
     } catch (err) {
       showMessage({

@@ -1,3 +1,4 @@
+import React from 'react';
 import { Box, Typography, Tooltip, Dialog, Button } from '@mui/material';
 import { tooltipClasses } from '@mui/material/Tooltip';
 import { styled as muistyle } from '@mui/material/styles';
@@ -14,7 +15,7 @@ import useBuidler from '@/components/useBuidler';
 
 const LightTooltip = muistyle(({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} />
-))(({ theme }) => ({
+))(() => ({
   [`& .${tooltipClasses.tooltip}`]: {
     background: '#FFFFFF',
     boxShadow: '0px 2px 20px rgba(0, 0, 0, 0.05)',

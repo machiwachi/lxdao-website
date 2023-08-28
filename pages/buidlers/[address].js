@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-undef */
 import React, { useEffect, useState } from 'react';
 import {
   Box,
@@ -10,7 +8,6 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  Alert,
   Divider,
   TableContainer,
   Table,
@@ -30,10 +27,9 @@ import useWindowSize from 'react-use/lib/useWindowSize';
 import CloseIcon from '@mui/icons-material/Close';
 import { useRouter } from 'next/router';
 import _ from 'lodash';
-import { useContract, useAccount, useSigner } from 'wagmi';
+import { useAccount, useContractWrite, usePublicClient } from 'wagmi';
 import * as bs58 from 'bs58';
 import { Img3 } from '@lxdao/img3';
-import { ethers } from 'ethers';
 
 import API from '@/common/API';
 import {
@@ -52,7 +48,7 @@ import CopyText from '@/components/CopyText';
 import Container from '@/components/Container';
 import ProfileForm from '@/components/ProfileForm';
 import useBuidler from '@/components/useBuidler';
-import useMate from '@/components/useMate';
+// import useMate from '@/components/useMate';
 import Skills from '@/components/Skills';
 import { contractInfo } from '@/components/ContractsOperation';
 import BuidlerContacts from '@/components/BuidlerContacts';
@@ -346,27 +342,79 @@ function ipfsToBytes(ipfsURI) {
 
 function BuidlerDetails(props) {
   const record = props.record;
-  const { address, isConnected } = useAccount();
+  const { address } = useAccount();
+  const publicClient = usePublicClient();
   const [, buidlerRecord, ,] = useBuidler(address);
+  const [, currentViewer] = useBuidler(address);
+  const [balanceOf, setBalanceOf] = useState(0);
+  const contractInfoObj = contractInfo();
 
-  const [_loadingMates, mates] = useMate(record.address);
-  const [_loading, currentViewer] = useBuidler(address);
-  const { data: signer } = useSigner();
-  const contract = useContract({
-    ...contractInfo(),
-    signerOrProvider: signer,
+  useEffect(async () => {
+    const balance = await publicClient.readContract({
+      ...contractInfoObj,
+      functionName: 'balanceOf',
+      args: [address],
+      watch: true,
+    });
+    setBalanceOf(Number(balance));
+  }, []);
+
+  useEffect(async () => {
+    if (balanceOf === 0) {
+      return;
+    }
+    try {
+      const tokenId = await publicClient.readContract({
+        ...contractInfoObj,
+        functionName: 'tokenIdOfOwner',
+        args: [address],
+        watch: true,
+      });
+      setTokenId(Number(tokenId));
+    } catch (e) {
+      console.log(e);
+    }
+  }, [balanceOf]);
+
+  useEffect(async () => {
+    if (!tokenId) {
+      return;
+    }
+    try {
+      const tokenURI = await publicClient.readContract({
+        ...contractInfoObj,
+        functionName: 'tokenURI',
+        args: [tokenId],
+        watch: true,
+      });
+      setIpfsURLOnChain(tokenURI);
+    } catch (e) {
+      console.log(e);
+    }
+  }, [tokenId]);
+
+  const {
+    data: metaData,
+    isSuccess: metaDataIsSuccess,
+    write,
+  } = useContractWrite({
+    ...contractInfoObj,
+    functionName: 'updateMetadata',
+    account: address,
   });
 
   const router = useRouter();
   const isFromOnboarding = router?.query?.isFromOnboarding;
 
   const [visible, setVisible] = useState(false);
-  const [minting, setMinting] = useState(false);
   const [updating, setUpdating] = useState(false);
   const [syncing, setSyncing] = useState(false);
   const [txOpen, setTxOpen] = useState(false);
   const [txResOpen, setTxResOpen] = useState(false);
-  const [tx, setTx] = useState(null);
+  const [
+    tx,
+    // setTx
+  ] = useState(null);
   const [txRes, setTxRes] = useState(null);
 
   // tokenId on chain
@@ -376,70 +424,61 @@ function BuidlerDetails(props) {
   const [accordionOpen, setAccordionOpen] = useState(false);
   const [stableCoinAccordionOpen, setStableCoinAccordionOpen] = useState(false);
 
-  useEffect(async () => {
-    if (!signer) {
-      return;
+  useEffect(() => {
+    if (metaDataIsSuccess) {
+      setTxRes(metaData);
     }
-    if (isConnected && address === record.address) {
-      await getToken(address);
-    }
-  }, [isConnected, signer]);
+  }, [metaData, metaDataIsSuccess]);
 
-  const getToken = async (address) => {
-    let result = await contract.balanceOf(address);
-    if (result.toNumber() === 0) {
-      return;
-    }
+  const {
+    data: airdrop,
+    isSuccess: airdropIsSuccess,
+    isLoading: airdropIsLoading,
+    isError: airdropIsError,
+    error: airdropError,
+    write: airdropWrite,
+  } = useContractWrite({
+    address: process.env.NEXT_PUBLIC_BADGE_CONTRACT_ADDRESS,
+    abi: badge_abi,
+    functionName: 'mintAndAirdrop',
+    account: address,
+  });
 
-    const tokenId = await contract.tokenIdOfOwner(address);
-    setTokenId(tokenId.toNumber());
-    await getOnChainIpfsURL(tokenId);
-  };
+  // const mint = async () => {
+  //   if (minting) return;
+  //   setMinting(true);
+  //   try {
+  //     // get signature
+  //     const signatureRes = await API.post(`/buidler/${address}/signature`);
+  //     const signature = signatureRes.data.data.signature;
 
-  const getOnChainIpfsURL = async (tokenId) => {
-    const result = await contract.tokenURI(tokenId);
-    if (result && result.length > 0) {
-      setIpfsURLOnChain(result);
-    }
-  };
-
-  const mint = async () => {
-    if (minting) return;
-    setMinting(true);
-    try {
-      // get signature
-      const signatureRes = await API.post(`/buidler/${address}/signature`);
-      const signature = signatureRes.data.data.signature;
-
-      const ipfsURI = record.ipfsURI;
-      const bytes = ipfsToBytes(ipfsURI);
-      const tx = await contract.mint(bytes, signature);
-      setTx(tx);
-      setTxOpen(true);
-      const response = await tx.wait();
-      setTxRes(response);
-      setTxOpen(false);
-      setTxResOpen(true);
-      if (response) {
-        await API.post('/buidler/activate');
-        props.refresh();
-      }
-    } catch (err) {
-      showMessage({
-        type: 'error',
-        title: 'Failed to mint',
-        body: err.message,
-      });
-    }
-    setMinting(false);
-  };
+  //     const ipfsURI = record.ipfsURI;
+  //     const bytes = ipfsToBytes(ipfsURI);
+  //     const tx = await contract.mint(bytes, signature);
+  //     setTx(tx);
+  //     setTxOpen(true);
+  //     const response = await tx.wait();
+  //     setTxRes(response);
+  //     setTxOpen(false);
+  //     setTxResOpen(true);
+  //     if (response) {
+  //       await API.post('/buidler/activate');
+  //       props.refresh();
+  //     }
+  //   } catch (err) {
+  //     showMessage({
+  //       type: 'error',
+  //       title: 'Failed to mint',
+  //       body: err.message,
+  //     });
+  //   }
+  //   setMinting(false);
+  // };
 
   const enableMint = async () => {
     try {
-      const enableMintRes = await API.post(
-        `/buidler/${record.address}/enableMint`
-      );
-      const data = enableMintRes.data.data;
+      await API.post(`/buidler/${record.address}/enableMint`);
+      // const data = enableMintRes.data.data;
       alert('Success!');
     } catch (err) {
       showMessage({
@@ -508,28 +547,17 @@ function BuidlerDetails(props) {
 
   const airDropMembershipBadge = async () => {
     try {
-      const badgeContractAddress =
-        process.env.NEXT_PUBLIC_BADGE_CONTRACT_ADDRESS;
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner();
-      const badgeContract = new ethers.Contract(
-        badgeContractAddress,
-        badge_abi,
-        signer
-      );
-
-      const tx = await badgeContract.mintAndAirdrop(
-        'MemberFirstBadge',
-        [record.address],
-        [1]
-      );
-      showMessage({
-        type: 'info',
-        title: 'Waiting...',
+      await airdropWrite({
+        args: ['MemberFirstBadge', [record.address], [1]],
       });
-      const receipt = await tx.wait();
 
-      if (receipt?.status) {
+      airdropIsLoading &&
+        showMessage({
+          type: 'info',
+          title: 'Waiting...',
+        });
+
+      if (airdropIsSuccess && airdrop) {
         const updatedBuidler = await API.post(
           `/buidler/${record.address}/updateBadges`
         );
@@ -541,6 +569,14 @@ function BuidlerDetails(props) {
           });
           props.refresh();
         }
+      }
+
+      if (airdropIsError) {
+        showMessage({
+          type: 'error',
+          title: 'Failed to airdrop membership badge',
+          body: <>{airdropError.toString()}</>,
+        });
       }
     } catch (err) {
       showMessage({
@@ -589,7 +625,7 @@ function BuidlerDetails(props) {
           {tx && (
             <Dialog
               maxWidth="383px"
-              onClose={(event) => {
+              onClose={() => {
                 setTxOpen(false);
               }}
               open={txOpen}
@@ -639,14 +675,14 @@ function BuidlerDetails(props) {
           {txRes && (
             <Dialog
               maxWidth="383px"
-              onClose={(event) => {
+              onClose={() => {
                 setTxResOpen(false);
               }}
               open={txResOpen}
             >
               <Box
                 sx={{
-                  borderadius: '6px',
+                  borderRadius: '6px',
                   background: '#fff',
                   width: '383px',
                   height: '532.8px',
@@ -712,7 +748,7 @@ function BuidlerDetails(props) {
                     width="94px"
                     variant="gradient"
                     onClick={() => {
-                      handleTxResClose();
+                      setTxResOpen(false);
                     }}
                   >
                     OK
@@ -785,6 +821,7 @@ function BuidlerDetails(props) {
                         record?.badges.map((badge) => {
                           return badge.amount > 0 ? (
                             <Box
+                              key={badge?.image}
                               component={'img'}
                               src={badge?.image}
                               width="60px"
@@ -904,13 +941,13 @@ function BuidlerDetails(props) {
                               }
                               const { signature, ipfsURI } =
                                 syncInfoRes?.data?.data || {};
-                              const tx = await contract.updateMetadata(
-                                tokenId,
-                                ipfsToBytes(ipfsURI),
-                                signature
-                              );
-                              await tx.wait();
-                              await getToken(address);
+                              await write({
+                                args: [
+                                  tokenId,
+                                  ipfsToBytes(ipfsURI),
+                                  signature,
+                                ],
+                              });
                               // todo add tx to the page
                             } catch (err) {
                               showMessage({
@@ -1133,7 +1170,7 @@ function BuidlerDetails(props) {
                               fontWeight: 500,
                             }}
                           >
-                            (Apply LXP ->)
+                            (Apply LXP {'->'})
                           </Link>
                         </Typography>
 
@@ -1251,7 +1288,7 @@ function BuidlerDetails(props) {
                               fontWeight: 500,
                             }}
                           >
-                            (Apply Stablecoin ->)
+                            (Apply Stablecoin {'->'})
                           </Link>
                         </Typography>
 
@@ -1609,7 +1646,7 @@ export default function Buidler() {
     width: 0,
     height: 0,
   });
-  const [loading, record, error, refresh] = useBuidler(currentAddress);
+  const [loading, record, , refresh] = useBuidler(currentAddress);
   const { address } = useAccount();
   const isFromOnboarding = router?.query?.isFromOnboarding;
 

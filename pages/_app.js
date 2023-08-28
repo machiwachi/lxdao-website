@@ -6,7 +6,7 @@ import { Img3Provider } from '@lxdao/img3';
 
 import getTheme from '@/common/theme';
 import { AlertProvider } from '@/context/AlertContext';
-import { wagmiClient, chains } from '@/components/ConnectWallet';
+import { wagmiConfig, chains } from '@/components/ConnectWallet';
 import AlertPopup from '@/components/AlertPopup';
 
 // Import Swiper styles
@@ -27,7 +27,7 @@ function MyApp({ Component, pageProps }) {
         ]}
       >
         <AlertProvider>
-          <WagmiConfig client={wagmiClient}>
+          <WagmiConfig config={wagmiConfig}>
             <RainbowKitProvider
               theme={lightTheme({
                 borderRadius: 'small',

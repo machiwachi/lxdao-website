@@ -1,15 +1,14 @@
-/* eslint-disable no-undef */
 import React, { useRef, useEffect } from 'react';
-import { Link, Box } from '@mui/material';
+// import { Link, Box } from '@mui/material';
 import { getDefaultWallets, ConnectButton } from '@rainbow-me/rainbowkit';
 import {
-  chain,
   configureChains,
-  createClient,
+  createConfig,
   useAccount,
   useSignMessage,
   useDisconnect,
 } from 'wagmi';
+import { mainnet, goerli, polygon, polygonMumbai } from 'wagmi/chains';
 import { publicProvider } from 'wagmi/providers/public';
 import { infuraProvider } from 'wagmi/providers/infura';
 
@@ -23,8 +22,8 @@ import showMessage from '@/components/showMessage';
 
 import '@rainbow-me/rainbowkit/styles.css';
 
-const { chains, provider } = configureChains(
-  [chain.mainnet, chain.goerli, chain.polygon, chain.polygonMumbai],
+const { chains, publicClient } = configureChains(
+  [mainnet, goerli, polygon, polygonMumbai],
   [
     infuraProvider({ apiKey: process.env.NEXT_PUBLIC_INFURA_ID }),
     publicProvider(),
@@ -33,13 +32,14 @@ const { chains, provider } = configureChains(
 
 const { connectors } = getDefaultWallets({
   appName: 'LXDAO Official Website',
+  projectId: '58b867c450327eddf81f05730f3c05b8',
   chains,
 });
 
-const wagmiClient = createClient({
+const wagmiConfig = createConfig({
   autoConnect: true,
   connectors,
-  provider,
+  publicClient,
 });
 
 const ConnectWalletButton = () => {
@@ -140,4 +140,4 @@ const ConnectWalletButton = () => {
   );
 };
 
-export { wagmiClient, chains, ConnectWalletButton };
+export { wagmiConfig, chains, ConnectWalletButton };

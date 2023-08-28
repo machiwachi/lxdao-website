@@ -10,22 +10,23 @@ import {
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import showMessage from '@/components/showMessage';
-import { useAccount, useContractWrite, useConnect } from 'wagmi';
-import { ethers } from 'ethers';
+import {
+  useAccount,
+  useConnect,
+  useContractRead,
+  useContractWrite,
+} from 'wagmi';
+import { parseEther } from 'viem';
 
 import abi from '@/abi/anniversary.json';
 
 const ADDRESS = process.env.NEXT_PUBLIC_ANNIVERSARY_CONTRACT_ADDRESS;
 const CHAIN_ID = parseInt(process.env.NEXT_PUBLIC_CHAIN_ID);
-const RPC_URL =
-  (CHAIN_ID == 1
-    ? 'https://mainnet.infura.io/v3/'
-    : 'https://goerli.infura.io/v3/') + process.env.NEXT_PUBLIC_INFURA_ID;
 
 const SectionAnniversary: React.FC = () => {
   const anniversaryContract = {
-    addressOrName: ADDRESS,
-    contractInterface: abi,
+    address: ADDRESS,
+    abi,
   };
 
   const { isConnected } = useAccount();
@@ -34,12 +35,23 @@ const SectionAnniversary: React.FC = () => {
   const [amt, setAmt] = useState(1);
   const [loading, setLoading] = useState(true);
 
-  const { writeAsync } = useContractWrite({
+  const { write } = useContractWrite({
     ...anniversaryContract,
     functionName: 'mint',
-    mode: 'recklesslyUnprepared',
     chainId: CHAIN_ID,
   });
+
+  const { data, isSuccess } = useContractRead({
+    ...anniversaryContract,
+    functionName: 'totalSupply',
+  });
+
+  useEffect(() => {
+    if (isSuccess) {
+      setTotalSupply(data.toString() || '0');
+      setLoading(false);
+    }
+  }, [data, isSuccess]);
 
   const handleMint = async () => {
     if (!isConnected) {
@@ -48,13 +60,10 @@ const SectionAnniversary: React.FC = () => {
     }
     try {
       setLoading(true);
-      const tx = await writeAsync?.({
-        recklesslySetUnpreparedArgs: [amt],
-        recklesslySetUnpreparedOverrides: {
-          value: ethers.utils.parseEther((0.02 * amt).toString()),
-        },
+      await write({
+        args: [amt],
+        value: parseEther((0.02 * amt).toString()),
       });
-      const res = await tx?.wait(1);
       setTotalSupply((parseInt(totalSupply) + amt).toString());
       setLoading(false);
     } catch (err) {
@@ -78,15 +87,6 @@ const SectionAnniversary: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    (async () => {
-      const provider = new ethers.providers.JsonRpcProvider(RPC_URL);
-      const anniContract = new ethers.Contract(ADDRESS, abi, provider);
-      const res = await anniContract.totalSupply();
-      setTotalSupply(res.toString() || '0');
-      setLoading(false);
-    })();
-  }, []);
   return (
     <Box display="flex">
       <Box flex={1}>
