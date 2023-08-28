@@ -56,7 +56,7 @@ import Tag from '@/components/Tag';
 import showMessage from '@/components/showMessage';
 import Project from '@/components/Project';
 import LXButton from '@/components/Button';
-import WorkingGroupCard from '@/components/WorkingGroupCard';
+import WorkingGroupSimpleCard from '@/components/WorkingGroupSimpleCard';
 import OnBoardingLayout from '@/components/OnBoardingLayout';
 import BadgeCard from '@/components/BadgeCard';
 
@@ -1106,7 +1106,7 @@ function BuidlerDetails(props) {
                         image={`/images/card.png`}
                         name="Buidler card (SBT)"
                         description="Governance rights entitled"
-                        eligible="Eligibility: Contribute in projects or working groups to earn up to 500 USDC/LXP reward."
+                        eligible="Eligibility: Contribute in projects or working groups to earn up to 500 LXU reward."
                         linkText="Contribute to earn"
                         linkUrl="/SBTCard"
                       />
@@ -1541,10 +1541,11 @@ function BuidlerDetails(props) {
                         {record?.workingGroups?.length > 0 &&
                           record?.workingGroups?.map((group, index) => {
                             return (
-                              <WorkingGroupCard
-                                hasBorder
+                              <WorkingGroupSimpleCard
                                 key={index}
-                                {...group}
+                                id={group?.workingGroup?.id}
+                                role={group.role}
+                                name={group?.workingGroup?.name}
                               />
                             );
                           })}
