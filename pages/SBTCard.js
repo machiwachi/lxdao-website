@@ -22,7 +22,7 @@ import ProjectCard from '@/components/ProjectCard';
 import useBuidler from '@/components/useBuidler';
 import LXButton from '@/components/Button';
 
-import WorkingGroupCard from '@/components/WorkingGroupCard';
+import { WorkingGroupCard } from '../pages/workingGroups/list';
 
 import Layout from '@/components/Layout';
 

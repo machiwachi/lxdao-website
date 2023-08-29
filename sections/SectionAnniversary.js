@@ -23,7 +23,7 @@ import abi from '@/abi/anniversary.json';
 const ADDRESS = process.env.NEXT_PUBLIC_ANNIVERSARY_CONTRACT_ADDRESS;
 const CHAIN_ID = parseInt(process.env.NEXT_PUBLIC_CHAIN_ID);
 
-const SectionAnniversary: React.FC = () => {
+const SectionAnniversary = () => {
   const anniversaryContract = {
     address: ADDRESS,
     abi,
