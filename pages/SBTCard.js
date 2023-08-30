@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react';
+// import { useContract, useAccount, useSigner } from 'wagmi';
 import { useRouter } from 'next/router';
-import CustomButton from '@/components/Button';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext'; /* eslint-disable no-undef */
-import WorkingGroupCard from '@/components/WorkingGroupCard';
-import showMessage from '@/components/showMessage';
-import { contractInfo } from '@/components/ContractsOperation';
-import ProjectCard from '@/components/ProjectCard';
+import { useAccount, useContractWrite } from 'wagmi';
+import * as bs58 from 'bs58';
 import {
   Box,
   Stack,
@@ -13,14 +10,19 @@ import {
   Breadcrumbs,
   Link,
   Container,
-  Grid,
 } from '@mui/material';
-import workingGroupsData from '@/common/content/workingGroups';
+
 import API from '@/common/API';
-import * as bs58 from 'bs58';
+
+import CustomButton from '@/components/Button';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext'; /* eslint-disable no-undef */
+import showMessage from '@/components/showMessage';
+import { contractInfo } from '@/components/ContractsOperation';
+import ProjectCard from '@/components/ProjectCard';
 import useBuidler from '@/components/useBuidler';
 import LXButton from '@/components/Button';
-import { useContract, useAccount, useSigner } from 'wagmi';
+
+import { WorkingGroupCard } from '../pages/workingGroups/list';
 
 import Layout from '@/components/Layout';
 
@@ -32,12 +34,12 @@ function ipfsToBytes(ipfsURI) {
 
 export default function FirstBadge() {
   const { address } = useAccount();
-  const { data: signer } = useSigner();
   const [minting, setMinting] = React.useState(false);
   const [projects, setProjects] = React.useState([]);
   const [, record, , refresh] = useBuidler(address);
   const router = useRouter();
   const [currentAddress, setCurrentAddress] = useState('');
+  const [workingGroupsData, setWorkingGroupsData] = useState([]);
 
   useEffect(() => {
     if (address) {
@@ -45,11 +47,25 @@ export default function FirstBadge() {
     }
   }, [address]);
 
-  const contract = useContract({
-    ...contractInfo(),
-    signerOrProvider: signer,
-  });
-  React.useEffect(() => {
+  useEffect(async () => {
+    try {
+      const res = await API.get('/workinggroup/list');
+      const result = res?.data;
+      if (result?.status === 'SUCCESS') {
+        setWorkingGroupsData(result?.data);
+      } else {
+        throw new Error(result.message);
+      }
+    } catch (err) {
+      showMessage({
+        type: 'error',
+        title: 'Failed to get the working group list',
+        body: err.message,
+      });
+    }
+  }, []);
+
+  useEffect(() => {
     API.get(`/project?page=1&per_page=30`)
       .then((res) => {
         if (res?.data?.status === 'SUCCESS') {
@@ -62,6 +78,13 @@ export default function FirstBadge() {
         console.error(err);
       });
   }, []);
+
+  const { error, isError, isSuccess, write } = useContractWrite({
+    ...contractInfo(),
+    functionName: 'mint',
+    account: address,
+  });
+
   const mint = async () => {
     if (minting) return;
     setMinting(true);
@@ -74,12 +97,19 @@ export default function FirstBadge() {
 
       const ipfsURI = record.ipfsURI;
       const bytes = ipfsToBytes(ipfsURI);
-      const tx = await contract.mint(bytes, signature);
-      const response = await tx.wait();
-      if (response) {
+      await write({ args: [bytes, signature] });
+      if (isSuccess) {
         await API.post('/buidler/activate');
         refresh();
         router.push(`/buidlers/${currentAddress}`);
+      }
+
+      if (isError && error) {
+        showMessage({
+          type: 'error',
+          title: 'Failed to mint',
+          body: <>{error.toString()}</>,
+        });
       }
     } catch (err) {
       showMessage({
@@ -194,22 +224,27 @@ export default function FirstBadge() {
             >
               here
             </Link>{' '}
-            to earn up to 500 USDC reward. Then request a current member with
-            SBT held to initialize a proposal.
+            to earn up to 500 LXU reward. Then request a current member with SBT
+            held to initialize a proposal.
           </Typography>
         </Stack>
         <Stack gap={3} mb={3}>
           <Typography variant="subtitle2" fontWeight="800">
             Working groups
           </Typography>
-          <Grid container spacing={2}>
+          <Box
+            display="flex"
+            gap="24px"
+            flexWrap="wrap"
+            justifyContent="center"
+          >
             {workingGroupsData.length > 0 &&
-              workingGroupsData.map((group, index) => {
+              workingGroupsData.map((item, index) => {
                 return (
-                  <WorkingGroupCard hasBorder={true} key={index} {...group} />
+                  <WorkingGroupCard key={index} data={item} width="368px" />
                 );
               })}
-          </Grid>
+          </Box>
         </Stack>
         <Stack gap={3}>
           <Typography variant="subtitle2" fontWeight="800">

@@ -2,28 +2,14 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "*"
-      ],
-      "@/common/*": [
-        "common/*"
-      ],
-      "@/components/*": [
-        "components/*"
-      ],
-      "@/sections/*": [
-        "sections/*"
-      ],
-      "@/utils/*": [
-        "utils/*"
-      ]
+      "@/*": ["*"],
+      "@/common/*": ["common/*"],
+      "@/components/*": ["components/*"],
+      "@/sections/*": ["sections/*"],
+      "@/utils/*": ["utils/*"]
     },
     "target": "es6",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -36,15 +22,8 @@
     "jsx": "preserve",
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
-    "moduleResolution": "node",
+    "moduleResolution": "node"
   },
-  "exclude": [
-    "node_modules",
-    ".next"
-  ],
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx"
-  ]
+  "exclude": ["node_modules", ".next"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
 }

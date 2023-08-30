@@ -1,5 +1,5 @@
-import { useAccount, useContract, useSigner } from 'wagmi';
-import { useState, React } from 'react';
+import { useAccount, useContractWrite } from 'wagmi';
+import React, { useState } from 'react';
 import * as bs58 from 'bs58';
 
 import { Box, Typography, Fade } from '@mui/material';
@@ -21,18 +21,13 @@ export function ipfsToBytes(ipfsURI) {
 export default function Mint() {
   const { address } = useAccount();
   const [, record, , refresh] = useBuidler(address);
-  const { data: signer } = useSigner();
   const [minting, setMinting] = useState(false);
-  const [updating, setUpdating] = useState(false);
-  const [syncing, setSyncing] = useState(false);
-  const [txOpen, setTxOpen] = useState(false);
-  const [txResOpen, setTxResOpen] = useState(false);
-  const [tx, setTx] = useState(null);
-  const [txRes, setTxRes] = useState(null);
   const [animation, setAnimation] = useState(false);
-  const contract = useContract({
+
+  const { data, isError, isSuccess, error, write } = useContractWrite({
     ...contractInfo(),
-    signerOrProvider: signer,
+    functionName: 'mint',
+    account: address,
   });
 
   const mint = async () => {
@@ -45,16 +40,17 @@ export default function Mint() {
 
       const ipfsURI = record.ipfsURI;
       const bytes = ipfsToBytes(ipfsURI);
-      const tx = await contract.mint(bytes, signature);
-      setTx(tx);
-      setTxOpen(true);
-      const response = await tx.wait();
-      setTxRes(response);
-      setTxOpen(false);
-      setTxResOpen(true);
-      if (response) {
+      await write({ args: [bytes, signature] });
+      if (isSuccess && data) {
         await API.post('/buidler/activate');
         refresh();
+      }
+      if (isError ** error) {
+        showMessage({
+          type: 'error',
+          title: 'Failed to mint',
+          body: <>{error.toString()}</>,
+        });
       }
     } catch (err) {
       showMessage({

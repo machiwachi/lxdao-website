@@ -1,3 +1,4 @@
+import React from 'react';
 import { useAccount } from 'wagmi';
 import { useRouter } from 'next/router';
 import { Box, Typography, Link } from '@mui/material';
@@ -8,16 +9,16 @@ import useBuidler from '@/components/useBuidler';
 export default function Buddy() {
   const { address } = useAccount();
   const router = useRouter();
-  const [loading, record, error, refresh] = useBuidler(address);
+  const [, record] = useBuidler(address);
   const data = {
     address: record?.buddies[0]?.address,
     name: record?.buddies[0]?.name,
     avatar: record?.buddies[0]?.avatar,
   };
-  let host = '';
-  if (typeof window !== 'undefined') {
-    host = window.location.protocol + '//' + window.location.host;
-  }
+  // let host = '';
+  // if (typeof window !== 'undefined') {
+  //   host = window.location.protocol + '//' + window.location.host;
+  // }
   return (
     <OnBoardingLayout
       title="LXDAO Introduction"

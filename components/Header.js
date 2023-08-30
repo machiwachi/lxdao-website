@@ -57,6 +57,15 @@ const Header = () => {
         <ListItem disablePadding>
           <ListItemButton
             onClick={() => {
+              router.push('/buidlers');
+            }}
+          >
+            <Typography sx={{ cursor: 'pointer' }}>Members</Typography>
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton
+            onClick={() => {
               router.push('/projects');
             }}
           >
@@ -66,12 +75,13 @@ const Header = () => {
         <ListItem disablePadding>
           <ListItemButton
             onClick={() => {
-              router.push('/buidlers');
+              router.push('/workingGroups/list');
             }}
           >
-            <Typography sx={{ cursor: 'pointer' }}>Buidlers</Typography>
+            <Typography sx={{ cursor: 'pointer' }}>Working Groups</Typography>
           </ListItemButton>
         </ListItem>
+
         <ListItem disablePadding>
           <Link
             href={`https://lxdao.notion.site/`}
@@ -180,6 +190,14 @@ const Header = () => {
           <Typography
             sx={{ cursor: 'pointer' }}
             onClick={() => {
+              router.push('/buidlers');
+            }}
+          >
+            Members
+          </Typography>
+          <Typography
+            sx={{ cursor: 'pointer' }}
+            onClick={() => {
               router.push('/projects');
             }}
           >
@@ -188,10 +206,10 @@ const Header = () => {
           <Typography
             sx={{ cursor: 'pointer' }}
             onClick={() => {
-              router.push('/buidlers');
+              router.push('/workingGroups/list');
             }}
           >
-            Members
+            Working Groups
           </Typography>
           <Link
             href={`https://lxdao.notion.site/`}

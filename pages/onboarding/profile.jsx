@@ -12,7 +12,7 @@ import API from '@/common/API';
 
 export default function Profile() {
   const { address } = useAccount();
-  const [loading, record, error, refresh] = useBuidler(address);
+  const [, record, , refresh] = useBuidler(address);
   const [updating, setUpdating] = useState(false);
   const router = useRouter();
 

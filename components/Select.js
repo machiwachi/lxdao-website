@@ -15,10 +15,11 @@ function SingleSelect(props) {
           props.onChange && props.onChange(event.target.value);
         }}
       >
-        {props.dropdown.map((name, index) => {
+        {props.dropdown.map((item, index) => {
+          const isObject = typeof item === 'object';
           return (
-            <MenuItem value={name} key={index}>
-              {name}
+            <MenuItem value={isObject ? item?.value : item} key={index}>
+              {isObject ? item?.label : item}
             </MenuItem>
           );
         })}

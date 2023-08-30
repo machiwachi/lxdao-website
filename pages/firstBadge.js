@@ -242,7 +242,7 @@ const FirstBadge = () => {
                       sx={{ textDecoration: 'none' }}
                     >
                       Go to the forum to introduce yourself and let everyone
-                      know you. ->
+                      know you. {'->'}
                     </Link>
                   }
                 />
