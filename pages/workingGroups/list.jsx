@@ -192,7 +192,7 @@ export default function WorkingGroupList() {
           gap="24px"
           flexWrap="wrap"
           marginTop="96px"
-          justifyContent="center"
+          justifyContent={{ xs: 'center', md: 'center', lg: 'flex-start' }}
         >
           {listData &&
             listData.length > 0 &&

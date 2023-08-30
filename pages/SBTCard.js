@@ -236,7 +236,7 @@ export default function FirstBadge() {
             display="flex"
             gap="24px"
             flexWrap="wrap"
-            justifyContent="center"
+            justifyContent={{ xs: 'center', md: 'center', lg: 'flex-start' }}
           >
             {workingGroupsData.length > 0 &&
               workingGroupsData.map((item, index) => {

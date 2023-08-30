@@ -44,7 +44,7 @@ const SectionWorkingGroup = () => {
           gap="24px"
           flexWrap="wrap"
           marginTop="48px"
-          justifyContent="center"
+          justifyContent={{ xs: 'center', md: 'center', lg: 'flex-start' }}
         >
           {workingGroupsData.length > 0 &&
             workingGroupsData.map((item, index) => {
