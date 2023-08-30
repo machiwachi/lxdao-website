@@ -32,7 +32,7 @@ const { chains, publicClient } = configureChains(
 
 const { connectors } = getDefaultWallets({
   appName: 'LXDAO Official Website',
-  projectId: '58b867c450327eddf81f05730f3c05b8',
+  projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID,
   chains,
 });
 
