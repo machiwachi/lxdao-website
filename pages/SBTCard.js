@@ -28,8 +28,8 @@ import Layout from '@/components/Layout';
 
 function ipfsToBytes(ipfsURI) {
   const ipfsHash = ipfsURI.replace('ipfs://', '');
-
-  return bs58.decode(ipfsHash).slice(2);
+  return ipfsHash.slice(2);
+  // return bs58.decode(ipfsHash).slice(2);
 }
 
 export default function FirstBadge() {
