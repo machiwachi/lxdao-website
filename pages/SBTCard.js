@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 // import { useContract, useAccount, useSigner } from 'wagmi';
 import { useRouter } from 'next/router';
 import { useAccount, useContractWrite } from 'wagmi';
-import * as bs58 from 'bs58';
+import { stringToHex } from 'viem';
+// import * as bs58 from 'bs58';
 import {
   Box,
   Stack,
@@ -28,8 +29,9 @@ import Layout from '@/components/Layout';
 
 function ipfsToBytes(ipfsURI) {
   const ipfsHash = ipfsURI.replace('ipfs://', '');
-  return ipfsHash.slice(2);
+  // return ipfsHash.slice(2);
   // return bs58.decode(ipfsHash).slice(2);
+  return stringToHex(ipfsHash);
 }
 
 export default function FirstBadge() {
