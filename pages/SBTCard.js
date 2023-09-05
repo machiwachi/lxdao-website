@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
-// import { useContract, useAccount, useSigner } from 'wagmi';
 import { useRouter } from 'next/router';
-import { useAccount, useContractWrite } from 'wagmi';
-import { stringToHex } from 'viem';
-// import * as bs58 from 'bs58';
+import { useAccount } from 'wagmi';
 import {
   Box,
   Stack,
@@ -12,8 +9,11 @@ import {
   Link,
   Container,
 } from '@mui/material';
+import { Contract } from 'ethers';
 
 import API from '@/common/API';
+import { useEthersSigner } from '@/pages/hooks';
+import { ipfsToBytes } from '@/utils/utility';
 
 import CustomButton from '@/components/Button';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext'; /* eslint-disable no-undef */
@@ -27,13 +27,6 @@ import { WorkingGroupCard } from '../pages/workingGroups/list';
 
 import Layout from '@/components/Layout';
 
-function ipfsToBytes(ipfsURI) {
-  const ipfsHash = ipfsURI.replace('ipfs://', '');
-  // return ipfsHash.slice(2);
-  // return bs58.decode(ipfsHash).slice(2);
-  return stringToHex(ipfsHash);
-}
-
 export default function FirstBadge() {
   const { address } = useAccount();
   const [minting, setMinting] = React.useState(false);
@@ -42,6 +35,7 @@ export default function FirstBadge() {
   const router = useRouter();
   const [currentAddress, setCurrentAddress] = useState('');
   const [workingGroupsData, setWorkingGroupsData] = useState([]);
+  const signer = useEthersSigner();
 
   useEffect(() => {
     if (address) {
@@ -81,12 +75,6 @@ export default function FirstBadge() {
       });
   }, []);
 
-  const { error, isError, isSuccess, write } = useContractWrite({
-    ...contractInfo(),
-    functionName: 'mint',
-    account: address,
-  });
-
   const mint = async () => {
     if (minting) return;
     setMinting(true);
@@ -96,22 +84,17 @@ export default function FirstBadge() {
         `/buidler/${currentAddress}/signature`
       );
       const signature = signatureRes.data.data.signature;
-
       const ipfsURI = record.ipfsURI;
       const bytes = ipfsToBytes(ipfsURI);
-      await write({ args: [bytes, signature] });
-      if (isSuccess) {
+
+      const { address, abi } = contractInfo();
+      const contract = new Contract(address, abi, signer);
+      const response = await contract.mint(bytes, signature);
+
+      if (response) {
         await API.post('/buidler/activate');
         refresh();
         router.push(`/buidlers/${currentAddress}`);
-      }
-
-      if (isError && error) {
-        showMessage({
-          type: 'error',
-          title: 'Failed to mint',
-          body: <>{error.toString()}</>,
-        });
       }
     } catch (err) {
       showMessage({

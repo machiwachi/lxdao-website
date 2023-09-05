@@ -1,3 +1,5 @@
+import * as bs58 from 'bs58';
+
 export const formatAddress = (address) => {
   return `${address.substring(0, 6)}...${address.substring(
     address.length - 4
@@ -203,4 +205,9 @@ export function totalStableCoins(record) {
       return `${total} U`;
     })
     .join(' + ');
+}
+
+export function ipfsToBytes(ipfsURI) {
+  const ipfsHash = ipfsURI.replace('ipfs://', '');
+  return bs58.decode(ipfsHash).slice(2);
 }
