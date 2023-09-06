@@ -2049,7 +2049,7 @@ export default function Announcement({ isStart, days }) {
   }, [currentViewer]);
 
   return (
-    <Layout title={`Announcement | LXDAO`}>
+    <Layout title={`Compensation | LXDAO`}>
       <Container
         sx={{
           mt: 4,
