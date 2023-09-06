@@ -27,7 +27,12 @@ import useWindowSize from 'react-use/lib/useWindowSize';
 import CloseIcon from '@mui/icons-material/Close';
 import { useRouter } from 'next/router';
 import _ from 'lodash';
-import { useAccount, useContractWrite, usePublicClient } from 'wagmi';
+import {
+  useAccount,
+  useContractWrite,
+  usePublicClient,
+  useContractRead,
+} from 'wagmi';
 import { Img3 } from '@lxdao/img3';
 import { Contract } from 'ethers';
 
@@ -342,21 +347,21 @@ function BuidlerDetails(props) {
   const publicClient = usePublicClient();
   const [, buidlerRecord, ,] = useBuidler(address);
   const [, currentViewer] = useBuidler(address);
-  const [balanceOf, setBalanceOf] = useState(0);
   const contractInfoObj = contractInfo();
 
-  useEffect(async () => {
-    const balance = await publicClient.readContract({
-      ...contractInfoObj,
-      functionName: 'balanceOf',
-      args: [address],
-      watch: true,
-    });
-    setBalanceOf(Number(balance));
-  }, []);
+  const {
+    data: balanceOf = 0,
+    isError,
+    isLoading,
+    error,
+  } = useContractRead({
+    ...contractInfoObj,
+    functionName: 'balanceOf',
+    args: [address],
+  });
 
   useEffect(async () => {
-    if (balanceOf === 0) {
+    if (!balanceOf || balanceOf === 0) {
       return;
     }
     try {

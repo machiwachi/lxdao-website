@@ -69,7 +69,7 @@ export default function Intro() {
         }}
       >
         {data.map((value, index) => (
-          <Box width="100%">
+          <Box width="100%" key={index}>
             <Accordion
               key={index}
               sx={{
