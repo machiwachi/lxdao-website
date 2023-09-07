@@ -65,7 +65,7 @@ import LXButton from '@/components/Button';
 import WorkingGroupSimpleCard from '@/components/WorkingGroupSimpleCard';
 import OnBoardingLayout from '@/components/OnBoardingLayout';
 import BadgeCard from '@/components/BadgeCard';
-import { useEthersSigner } from '@/pages/hooks';
+import { useEthersSigner } from '@/hooks';
 
 function LXPointsTable({ points }) {
   return (
