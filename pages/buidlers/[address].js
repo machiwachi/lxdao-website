@@ -27,9 +27,14 @@ import useWindowSize from 'react-use/lib/useWindowSize';
 import CloseIcon from '@mui/icons-material/Close';
 import { useRouter } from 'next/router';
 import _ from 'lodash';
-import { useAccount, useContractWrite, usePublicClient } from 'wagmi';
-import * as bs58 from 'bs58';
+import {
+  useAccount,
+  useContractWrite,
+  usePublicClient,
+  useContractRead,
+} from 'wagmi';
 import { Img3 } from '@lxdao/img3';
+import { Contract } from 'ethers';
 
 import API from '@/common/API';
 import {
@@ -40,6 +45,7 @@ import {
   getIpfsCid,
   totalLXPoints,
   totalStableCoins,
+  ipfsToBytes,
 } from '@/utils/utility';
 import badge_abi from '@/abi/badge_abi.json';
 
@@ -59,6 +65,7 @@ import LXButton from '@/components/Button';
 import WorkingGroupSimpleCard from '@/components/WorkingGroupSimpleCard';
 import OnBoardingLayout from '@/components/OnBoardingLayout';
 import BadgeCard from '@/components/BadgeCard';
+import { useEthersSigner } from '@/pages/hooks';
 
 function LXPointsTable({ points }) {
   return (
@@ -334,33 +341,27 @@ function StableCoinsTable({ points }) {
   );
 }
 
-function ipfsToBytes(ipfsURI) {
-  const ipfsHash = ipfsURI.replace('ipfs://', '');
-  return ipfsHash.slice(2);
-  // return bs58.decode(ipfsHash).slice(2);
-}
-
 function BuidlerDetails(props) {
   const record = props.record;
   const { address } = useAccount();
   const publicClient = usePublicClient();
   const [, buidlerRecord, ,] = useBuidler(address);
   const [, currentViewer] = useBuidler(address);
-  const [balanceOf, setBalanceOf] = useState(0);
   const contractInfoObj = contractInfo();
 
-  useEffect(async () => {
-    const balance = await publicClient.readContract({
-      ...contractInfoObj,
-      functionName: 'balanceOf',
-      args: [address],
-      watch: true,
-    });
-    setBalanceOf(Number(balance));
-  }, []);
+  const {
+    data: balanceOf = 0,
+    isError,
+    isLoading,
+    error,
+  } = useContractRead({
+    ...contractInfoObj,
+    functionName: 'balanceOf',
+    args: [address],
+  });
 
   useEffect(async () => {
-    if (balanceOf === 0) {
+    if (!balanceOf || balanceOf === 0) {
       return;
     }
     try {
@@ -393,16 +394,6 @@ function BuidlerDetails(props) {
     }
   }, [tokenId]);
 
-  const {
-    data: metaData,
-    isSuccess: metaDataIsSuccess,
-    write,
-  } = useContractWrite({
-    ...contractInfoObj,
-    functionName: 'updateMetadata',
-    account: address,
-  });
-
   const router = useRouter();
   const isFromOnboarding = router?.query?.isFromOnboarding;
 
@@ -423,12 +414,7 @@ function BuidlerDetails(props) {
   const [ipfsURLOnChain, setIpfsURLOnChain] = useState(null);
   const [accordionOpen, setAccordionOpen] = useState(false);
   const [stableCoinAccordionOpen, setStableCoinAccordionOpen] = useState(false);
-
-  useEffect(() => {
-    if (metaDataIsSuccess) {
-      setTxRes(metaData);
-    }
-  }, [metaData, metaDataIsSuccess]);
+  const signer = useEthersSigner();
 
   const {
     data: airdrop,
@@ -586,6 +572,36 @@ function BuidlerDetails(props) {
       });
     }
   };
+
+  async function syncOnChain() {
+    setSyncing(true);
+    try {
+      const syncInfoRes = await API.post(`/buidler/${address}/syncInfo`);
+      if (syncInfoRes?.data?.status !== 'SUCCESS') {
+        throw new Error(syncInfoRes?.data.message);
+      }
+      const { signature, ipfsURI } = syncInfoRes?.data?.data || {};
+      const contract = new Contract(
+        contractInfoObj.address,
+        contractInfoObj.abi,
+        signer
+      );
+      const response = await contract.updateMetadata(
+        tokenId,
+        ipfsToBytes(ipfsURI),
+        signature
+      );
+      setTxRes(response);
+      // todo add tx to the page
+    } catch (err) {
+      showMessage({
+        type: 'error',
+        title: 'Failed to update metadata',
+        body: err.message,
+      });
+    }
+    setSyncing(false);
+  }
 
   return (
     <>
@@ -930,34 +946,7 @@ function BuidlerDetails(props) {
                       !!ipfsURLOnChain &&
                       ipfsURLOnChain !== record.ipfsURI && (
                         <LXButton
-                          onClick={async () => {
-                            setSyncing(true);
-                            try {
-                              const syncInfoRes = await API.post(
-                                `/buidler/${address}/syncInfo`
-                              );
-                              if (syncInfoRes?.data?.status !== 'SUCCESS') {
-                                throw new Error(syncInfoRes?.data.message);
-                              }
-                              const { signature, ipfsURI } =
-                                syncInfoRes?.data?.data || {};
-                              await write({
-                                args: [
-                                  tokenId,
-                                  ipfsToBytes(ipfsURI),
-                                  signature,
-                                ],
-                              });
-                              // todo add tx to the page
-                            } catch (err) {
-                              showMessage({
-                                type: 'error',
-                                title: 'Failed to update metadata',
-                                body: err.message,
-                              });
-                            }
-                            setSyncing(false);
-                          }}
+                          onClick={syncOnChain}
                           color="#36AFF9"
                           variant="outlined"
                           disabled={syncing}

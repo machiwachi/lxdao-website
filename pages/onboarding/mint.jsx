@@ -1,6 +1,6 @@
 import { useAccount, useContractWrite } from 'wagmi';
 import React, { useState } from 'react';
-import * as bs58 from 'bs58';
+import { Contract } from 'ethers';
 
 import { Box, Typography, Fade } from '@mui/material';
 
@@ -11,24 +11,15 @@ import OnBoardingLayout from '@/components/OnBoardingLayout';
 import showMessage from '@/components/showMessage';
 import API from '@/common/API';
 import { Container } from '@mui/system';
-
-export function ipfsToBytes(ipfsURI) {
-  const ipfsHash = ipfsURI.replace('ipfs://', '');
-  return ipfsHash.slice(2);
-  // return bs58.decode(ipfsHash).slice(2);
-}
+import { ipfsToBytes } from '@/utils/utility';
+import { useEthersSigner } from '@/pages/hooks';
 
 export default function Mint() {
   const { address } = useAccount();
   const [, record, , refresh] = useBuidler(address);
   const [minting, setMinting] = useState(false);
   const [animation, setAnimation] = useState(false);
-
-  const { data, isError, isSuccess, error, write } = useContractWrite({
-    ...contractInfo(),
-    functionName: 'mint',
-    account: address,
-  });
+  const signer = useEthersSigner();
 
   const mint = async () => {
     if (minting) return;
@@ -40,17 +31,14 @@ export default function Mint() {
 
       const ipfsURI = record.ipfsURI;
       const bytes = ipfsToBytes(ipfsURI);
-      await write({ args: [bytes, signature] });
-      if (isSuccess && data) {
+
+      const { address, abi } = contractInfo();
+      const contract = new Contract(address, abi, signer);
+      const response = await contract.mint(bytes, signature);
+
+      if (response) {
         await API.post('/buidler/activate');
         refresh();
-      }
-      if (isError ** error) {
-        showMessage({
-          type: 'error',
-          title: 'Failed to mint',
-          body: <>{error.toString()}</>,
-        });
       }
     } catch (err) {
       showMessage({

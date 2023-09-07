@@ -237,7 +237,7 @@ export default function Apply() {
                 color="#667085"
                 marginTop={1}
               >
-                Feel free to check the LXP Announcement and history list:{' '}
+                Feel free to check the LXP Compensation and history list:{' '}
                 <Link
                   href="/reward/announcement"
                   target="_blank"
