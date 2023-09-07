@@ -12,7 +12,7 @@ import {
 import { Contract } from 'ethers';
 
 import API from '@/common/API';
-import { useEthersSigner } from '@/pages/hooks';
+import { useEthersSigner } from '@/hooks';
 import { ipfsToBytes } from '@/utils/utility';
 
 import CustomButton from '@/components/Button';

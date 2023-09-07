@@ -12,7 +12,7 @@ import showMessage from '@/components/showMessage';
 import API from '@/common/API';
 import { Container } from '@mui/system';
 import { ipfsToBytes } from '@/utils/utility';
-import { useEthersSigner } from '@/pages/hooks';
+import { useEthersSigner } from '@/hooks';
 
 export default function Mint() {
   const { address } = useAccount();
