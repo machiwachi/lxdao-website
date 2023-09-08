@@ -36,7 +36,7 @@ export default function Mint() {
       const contract = new Contract(address, abi, signer);
       const response = await contract.mint(bytes, signature);
 
-      if (response) {
+      if (response && response.hash) {
         await API.post('/buidler/activate');
         refresh();
       }

@@ -90,8 +90,7 @@ export default function FirstBadge() {
       const { address, abi } = contractInfo();
       const contract = new Contract(address, abi, signer);
       const response = await contract.mint(bytes, signature);
-
-      if (response) {
+      if (response && response.hash) {
         await API.post('/buidler/activate');
         refresh();
         router.push(`/buidlers/${currentAddress}`);
