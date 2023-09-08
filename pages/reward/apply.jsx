@@ -123,7 +123,7 @@ export default function Apply() {
         address: raw.address,
         buidlerId: raw.buidlerId,
         source: raw.source,
-        value: parseInt(raw.amount),
+        value: parseFloat(raw.amount),
         reason: raw.reason,
         labels: raw.labels,
       };
