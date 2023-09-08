@@ -194,7 +194,9 @@ function ProfileForm(props) {
                     let lastValue = values.pop();
                     if (lastValue === 'Others') {
                       lastValue = window.prompt('Please input your interest');
+                      if (!lastValue) return;
                     }
+                    
                     onChange([...values, lastValue]);
                   }}
                   dropdown={interestNames}
