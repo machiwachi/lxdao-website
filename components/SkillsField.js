@@ -103,6 +103,7 @@ function SkillsField(props) {
                 let newValue = value;
                 if (value === 'Others') {
                   newValue = prompt('Please enter the skill name');
+                  if (!newValue) return;
                   skillNames.push(newValue);
                 }
                 createSkill('name', newValue);

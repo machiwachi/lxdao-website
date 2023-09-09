@@ -591,7 +591,11 @@ function BuidlerDetails(props) {
         ipfsToBytes(ipfsURI),
         signature
       );
-      setTxRes(response);
+      if (response && response.transactionHash) {
+        setTxRes(response);
+      } else {
+        throw new Error(response);
+      }
       // todo add tx to the page
     } catch (err) {
       showMessage({
