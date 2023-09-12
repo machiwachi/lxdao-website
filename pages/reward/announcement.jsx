@@ -34,7 +34,7 @@ import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useTheme } from '@mui/material/styles';
 import { useAccount, useContractWrite } from 'wagmi';
-import { formatEther } from 'viem';
+import { ethers } from 'ethers';
 import { useRouter } from 'next/router';
 import ReasonForm from '@/components/ReasonForm';
 import API from '@/common/API';
@@ -246,7 +246,7 @@ function UnReleasedLXPTable({
 
   const allLabels = ['All', 'Myself', ...RewardLabels];
   const [labels, setLabels] = useState(['All']);
-  const { data, write } = useContractWrite({
+  const { data, write, error, isSuccess } = useContractWrite({
     address: process.env.NEXT_PUBLIC_LXP_CONTRACT_ADDRESS,
     abi: abi_lxp,
     functionName: 'batchMint',
@@ -346,7 +346,10 @@ function UnReleasedLXPTable({
 
   const mintAll = async (addresses, amounts) => {
     await write({ args: [addresses, amounts] });
-    return data.hash;
+    if (isSuccess && data) {
+      return data.hash;
+    }
+    return false;
   };
 
   const getAllTOBERELEASEDLXP = async () => {
@@ -389,12 +392,14 @@ function UnReleasedLXPTable({
       if (addresses.length === 0) {
         throw { message: 'No to be released lxp' };
       }
-
       const formattedAmounts = amounts.map((value) =>
-        formatEther(value.toString())
+        ethers.parseUnits(value.toString(), 'ether')
       );
-
       const hash = await mintAll(addresses, formattedAmounts);
+      console.log(data, hash);
+      if (!hash || !isSuccess) {
+        throw new Error(error);
+      }
       // post to backend
       const res = await API.post(`/lxpoints/release`, { hash: hash });
       const result = res.data;
