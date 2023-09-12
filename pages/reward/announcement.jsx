@@ -393,7 +393,7 @@ function UnReleasedLXPTable({
         throw { message: 'No to be released lxp' };
       }
       const formattedAmounts = amounts.map((value) =>
-        ethers.parseUnits(value.toString(), 'wei')
+        ethers.parseUnits(value.toString(), 'ether')
       );
       const hash = await mintAll(addresses, formattedAmounts);
       console.log(data, hash);
