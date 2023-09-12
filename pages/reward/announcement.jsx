@@ -246,7 +246,7 @@ function UnReleasedLXPTable({
 
   const allLabels = ['All', 'Myself', ...RewardLabels];
   const [labels, setLabels] = useState(['All']);
-  const { data, write } = useContractWrite({
+  const { data, write, error, isSuccess } = useContractWrite({
     address: process.env.NEXT_PUBLIC_LXP_CONTRACT_ADDRESS,
     abi: abi_lxp,
     functionName: 'batchMint',
@@ -346,7 +346,10 @@ function UnReleasedLXPTable({
 
   const mintAll = async (addresses, amounts) => {
     await write({ args: [addresses, amounts] });
-    return data.hash;
+    if (isSuccess && data) {
+      return data.hash;
+    }
+    return false;
   };
 
   const getAllTOBERELEASEDLXP = async () => {
@@ -395,6 +398,9 @@ function UnReleasedLXPTable({
       );
 
       const hash = await mintAll(addresses, formattedAmounts);
+      if (!hash || !isSuccess) {
+        throw new Error(error);
+      }
       // post to backend
       const res = await API.post(`/lxpoints/release`, { hash: hash });
       const result = res.data;
