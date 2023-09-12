@@ -44,6 +44,11 @@ const partnersData = [
     logo: '/images/partners/8dao-logo.svg',
     link: 'https://8dao.io/',
   },
+  {
+    name: 'Uncommons',
+    logo: '/images/partners/Uncommons-logo.svg',
+    link: 'https://www.notion.so/Uncommons-04ea0224d3cd4fe9b5181b6dd22d02b4',
+  },
 ];
 
 const SectionPartners = () => (

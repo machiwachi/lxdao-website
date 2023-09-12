@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Typography, Link, Tooltip } from '@mui/material';
-
+import API from '@/common/API';
 import Container from '@/components/Container';
 
 const DataBox = ({ number, name, link, detail }) => (
@@ -57,71 +57,93 @@ const DataBox = ({ number, name, link, detail }) => (
   </Link>
 );
 
-const SectionMission = ({ projectAmount, buidlerAmount }) => (
-  <Box
-    sx={{ background: 'linear-gradient(90deg, #2A76DF 0%, #0FDBC2 100%)' }}
-    width="100%"
-    color="#ffffff"
-  >
-    <Container paddingY={{ md: '112px', xs: 8 }} margin="0 auto">
-      <Box
-        width="100%"
-        display="flex"
-        justifyContent="flex-start"
-        flexDirection="column"
-        gap={{ md: '64px', sm: '56px', xs: '56px' }}
-      >
-        <Typography variant="subtitle1" lineHeight="30px" fontWeight={500}>
-          Our Mission
-        </Typography>
-        <Typography
-          variant="h2"
-          lineHeight={{ md: '70px', sm: '50px', xs: '50px' }}
-          fontWeight={500}
-        >
-          Gather the power of buidlers to buidl and support “LX” (valuable) Web3
-          projects sustainably and welcome 1 billion users into Web3.
-        </Typography>
+const SectionMission = ({ projectAmount, buidlerAmount }) => {
+  const [treasuryAmount, setTreasuryAmount] = useState(330);
+  useEffect(() => {
+    getTreasuryAmount();
+  }, []);
+  async function getTreasuryAmount() {
+    try {
+      const response = await API.get(
+        'https://safe-transaction-mainnet.safe.global/api/v1/safes/0xB45e9F74D0a35fE1aa0B78feA03877EF96ae8dd2/balances/usd/?trusted=true&exclude_spam=false'
+      );
+      if (response && response.data) {
+        const amount = response.data.reduce(
+          (l, n) => l + Number(n.fiatBalance),
+          0
+        );
+        setTreasuryAmount((amount / 1000).toFixed(0));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  return (
+    <Box
+      sx={{ background: 'linear-gradient(90deg, #2A76DF 0%, #0FDBC2 100%)' }}
+      width="100%"
+      color="#ffffff"
+    >
+      <Container paddingY={{ md: '112px', xs: 8 }} margin="0 auto">
         <Box
+          width="100%"
           display="flex"
-          flexDirection={{ md: 'row', sm: 'column', xs: 'column' }}
-          gap={2}
+          justifyContent="flex-start"
+          flexDirection="column"
+          gap={{ md: '64px', sm: '56px', xs: '56px' }}
         >
-          <DataBox
-            number="16k+"
-            name="Influence"
-            detail={
-              <div>
+          <Typography variant="subtitle1" lineHeight="30px" fontWeight={500}>
+            Our Mission
+          </Typography>
+          <Typography
+            variant="h2"
+            lineHeight={{ md: '70px', sm: '50px', xs: '50px' }}
+            fontWeight={500}
+          >
+            Gather the power of buidlers to buidl and support “LX” (valuable)
+            Web3 projects sustainably and welcome 1 billion users into Web3.
+          </Typography>
+          <Box
+            display="flex"
+            flexDirection={{ md: 'row', sm: 'column', xs: 'column' }}
+            gap={2}
+          >
+            <DataBox
+              number="16k+"
+              name="Influence"
+              detail={
                 <div>
-                  <span>Discord: </span>
-                  <span>955+</span>
+                  <div>
+                    <span>Discord: </span>
+                    <span>955+</span>
+                  </div>
+                  <div>
+                    <span>Media: </span>
+                    <span>12k+</span>
+                  </div>
+                  <div>
+                    <span>WeChat: </span>
+                    <span>3k+</span>
+                  </div>
                 </div>
-                <div>
-                  <span>Media: </span>
-                  <span>12k+</span>
-                </div>
-                <div>
-                  <span>WeChat: </span>
-                  <span>3k+</span>
-                </div>
-              </div>
-            }
-          />
-          <DataBox
-            number={buidlerAmount}
-            name="Registered members"
-            link="/buidlers"
-          />
-          <DataBox number={projectAmount} name="Projects" link="/projects" />
-          <DataBox
-            number="90k+ USDC"
-            name="Treasury"
-            link="https://gnosis-safe.io/app/eth:0xB45e9F74D0a35fE1aa0B78feA03877EF96ae8dd2/home"
-          />
+              }
+            />
+            <DataBox
+              number={buidlerAmount}
+              name="Registered members"
+              link="/buidlers"
+            />
+            <DataBox number={projectAmount} name="Projects" link="/projects" />
+            <DataBox
+              number={`${treasuryAmount}k+ USDC`}
+              name="Treasury"
+              link="https://gnosis-safe.io/app/eth:0xB45e9F74D0a35fE1aa0B78feA03877EF96ae8dd2/home"
+            />
+          </Box>
         </Box>
-      </Box>
-    </Container>
-  </Box>
-);
+      </Container>
+    </Box>
+  );
+};
 
 export default SectionMission;
