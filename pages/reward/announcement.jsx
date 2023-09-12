@@ -34,7 +34,7 @@ import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useTheme } from '@mui/material/styles';
 import { useAccount, useContractWrite } from 'wagmi';
-import { formatEther } from 'viem';
+import { ethers } from 'ethers';
 import { useRouter } from 'next/router';
 import ReasonForm from '@/components/ReasonForm';
 import API from '@/common/API';
@@ -392,12 +392,11 @@ function UnReleasedLXPTable({
       if (addresses.length === 0) {
         throw { message: 'No to be released lxp' };
       }
-
       const formattedAmounts = amounts.map((value) =>
-        formatEther(value.toString())
+        ethers.parseUnits(value.toString(), 'wei')
       );
-
       const hash = await mintAll(addresses, formattedAmounts);
+      console.log(data, hash);
       if (!hash || !isSuccess) {
         throw new Error(error);
       }
