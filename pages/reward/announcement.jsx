@@ -347,10 +347,7 @@ function UnReleasedLXPTable({
 
   const mintAll = async (addresses, amounts) => {
     await write({ args: [addresses, amounts] });
-    if (isSuccess && data) {
-      return data.hash;
-    }
-    return false;
+    return data?.hash;
   };
 
   const getAllTOBERELEASEDLXP = async () => {
@@ -399,11 +396,9 @@ function UnReleasedLXPTable({
       const formattedAmounts = amounts.map((value) =>
         ethers.parseUnits(value.toString(), 'ether')
       );
-      console.log(formattedAmounts, amounts);
-      const hash = await mintAll(addresses, amounts);
-      console.log(data, hash);
-      if (isError) {
-        throw new Error(error);
+      const hash = await mintAll(addresses, formattedAmounts);
+      if (isError || !hash) {
+        throw new Error(error || 'hash error');
       }
       // post to backend
       const res = await API.post(`/lxpoints/release`, { hash: hash });
