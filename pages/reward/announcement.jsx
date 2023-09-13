@@ -246,7 +246,8 @@ function UnReleasedLXPTable({
 
   const allLabels = ['All', 'Myself', ...RewardLabels];
   const [labels, setLabels] = useState(['All']);
-  const { data, write, error, isSuccess } = useContractWrite({
+  const [, buidlerRecord, ,] = useBuidler(address);
+  const { data, write, error, isError, isSuccess } = useContractWrite({
     address: process.env.NEXT_PUBLIC_LXP_CONTRACT_ADDRESS,
     abi: abi_lxp,
     functionName: 'batchMint',
@@ -387,6 +388,9 @@ function UnReleasedLXPTable({
     // mint all and store the transaction hash
     setDisable(true);
     try {
+      if (!buidlerRecord) {
+        throw { message: 'Please connect wallet' };
+      }
       // read all record
       const [addresses, amounts] = await getAllTOBERELEASEDLXP();
       if (addresses.length === 0) {
@@ -395,9 +399,10 @@ function UnReleasedLXPTable({
       const formattedAmounts = amounts.map((value) =>
         ethers.parseUnits(value.toString(), 'ether')
       );
-      const hash = await mintAll(addresses, formattedAmounts);
+      console.log(formattedAmounts, amounts);
+      const hash = await mintAll(addresses, amounts);
       console.log(data, hash);
-      if (!hash || !isSuccess) {
+      if (isError) {
         throw new Error(error);
       }
       // post to backend
