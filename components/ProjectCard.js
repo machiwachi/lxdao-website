@@ -174,7 +174,6 @@ const ProjectCard = ({ project, index }) => {
           color="#666f85"
           textAlign="left"
           variant="body1"
-          maxWidth="351px"
           sx={{
             overflow: 'hidden',
             textOverflow: 'ellipsis',
