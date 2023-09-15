@@ -45,14 +45,22 @@ function Label({ required, value }) {
 const RewardLabels = [
   'Governance WG',
   'Operation WG',
-  'DAO Tools WG',
+  'Financing WG',
   'Expert WG',
   'SteadyForce WG',
-  'EIPs Fun Project',
-  'Donate3 Project',
-  'Bounty',
-  'Fixed Salary',
-  'Other',
+  'Mississippi',
+  'FairSharing',
+  'EIP Fun',
+  'MyFirstLayer2',
+  'Img3',
+  'MobyMask',
+  'HashDNA',
+  'Donate3',
+  'Mirror',
+  'Marry3',
+  'Web3 in 2032',
+  'MetaPavo',
+  'MyFirstNFT',
 ];
 
 export default function Apply() {
