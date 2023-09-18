@@ -58,26 +58,26 @@ const DataBox = ({ number, name, link, detail }) => (
 );
 
 const SectionMission = ({ projectAmount, buidlerAmount }) => {
-  const [treasuryAmount, setTreasuryAmount] = useState(330);
-  useEffect(() => {
-    getTreasuryAmount();
-  }, []);
-  async function getTreasuryAmount() {
-    try {
-      const response = await API.get(
-        'https://safe-transaction-mainnet.safe.global/api/v1/safes/0xB45e9F74D0a35fE1aa0B78feA03877EF96ae8dd2/balances/usd/?trusted=true&exclude_spam=false'
-      );
-      if (response && response.data) {
-        const amount = response.data.reduce(
-          (l, n) => l + Number(n.fiatBalance),
-          0
-        );
-        setTreasuryAmount((amount / 1000).toFixed(0));
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  // const [treasuryAmount, setTreasuryAmount] = useState(330);
+  // useEffect(() => {
+  //   getTreasuryAmount();
+  // }, []);
+  // async function getTreasuryAmount() {
+  //   try {
+  //     const response = await API.get(
+  //       'https://safe-transaction-mainnet.safe.global/api/v1/safes/0xB45e9F74D0a35fE1aa0B78feA03877EF96ae8dd2/balances/usd/?trusted=true&exclude_spam=false'
+  //     );
+  //     if (response && response.data) {
+  //       const amount = response.data.reduce(
+  //         (l, n) => l + Number(n.fiatBalance),
+  //         0
+  //       );
+  //       setTreasuryAmount((amount / 1000).toFixed(0));
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
   return (
     <Box
       sx={{ background: 'linear-gradient(90deg, #2A76DF 0%, #0FDBC2 100%)' }}
@@ -135,7 +135,7 @@ const SectionMission = ({ projectAmount, buidlerAmount }) => {
             />
             <DataBox number={projectAmount} name="Projects" link="/projects" />
             <DataBox
-              number={`${treasuryAmount}k+ USDC`}
+              number={`335k+ USDC`}
               name="Treasury"
               link="https://gnosis-safe.io/app/eth:0xB45e9F74D0a35fE1aa0B78feA03877EF96ae8dd2/home"
             />
