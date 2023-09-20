@@ -49,6 +49,11 @@ const partnersData = [
     logo: '/images/partners/Uncommons-logo.svg',
     link: 'https://www.notion.so/Uncommons-04ea0224d3cd4fe9b5181b6dd22d02b4',
   },
+  {
+    name: 'AAStar',
+    logo: '/images/partners/AAStar-logo.svg',
+    link: 'https://www.aastar.xyz/',
+  },
 ];
 
 const SectionPartners = () => (
