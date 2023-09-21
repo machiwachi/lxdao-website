@@ -3,6 +3,7 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import { useForm, Controller } from 'react-hook-form';
 import { Box, Typography, Button, Alert, TextField } from '@mui/material';
+import showMessage from '@/components/showMessage';
 
 import { removeEmpty } from '@/utils/utility';
 import SkillsField from './SkillsField';
@@ -53,6 +54,13 @@ function ProfileForm(props) {
     );
 
   const onSubmit = (data) => {
+    if (!data.avatar) {
+      showMessage({
+        type: 'info',
+        title: 'Please upload avatar',
+      });
+      return;
+    }
     if (saveProfileHandler) {
       saveProfileHandler(data);
     }
@@ -196,7 +204,7 @@ function ProfileForm(props) {
                       lastValue = window.prompt('Please input your interest');
                       if (!lastValue) return;
                     }
-                    
+
                     onChange([...values, lastValue]);
                   }}
                   dropdown={interestNames}

@@ -25,7 +25,11 @@ import {
   MenuItem,
   InputLabel,
   Select,
+  Collapse,
 } from '@mui/material';
+
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
@@ -244,8 +248,8 @@ function UnReleasedLXPTable({
   const [currentLxpointId, setCurrentLxpointId] = useState('');
   const [totalRemuneration, setTotalRemuneration] = useState(0);
 
-  const allLabels = ['All', 'Myself', ...RewardLabels];
-  const [labels, setLabels] = useState(['All']);
+  const allLabels = ['All labels', 'Myself', ...RewardLabels];
+  const [labels, setLabels] = useState(['All labels']);
   const [, buidlerRecord, ,] = useBuidler(address);
   const { data, write, error, isError, isSuccess } = useContractWrite({
     address: process.env.NEXT_PUBLIC_LXP_CONTRACT_ADDRESS,
@@ -436,7 +440,7 @@ function UnReleasedLXPTable({
     });
 
     labels.map((value) => {
-      if (value !== 'All') {
+      if (value !== 'All labels') {
         if (value === 'Myself') {
           params.push('address=' + address);
         } else {
@@ -464,8 +468,37 @@ function UnReleasedLXPTable({
         total += result.data[i].value;
       }
       setTotalRemuneration(total);
+      console.log('rows', result.data);
 
-      setRows(result.data);
+      const rowsObj = {};
+      result.data?.forEach((item) => {
+        const address = item.address;
+        if (!rowsObj[address]) {
+          rowsObj[address] = [item];
+        } else {
+          rowsObj[address].push(item);
+        }
+      });
+      const newData = Object.entries(rowsObj).map(([address, info]) => {
+        const labels = new Set([]);
+        let name;
+        console.log(address, info);
+        const totalValue = info.reduce((acc, cur) => {
+          labels.add(...cur.labels);
+          name = cur.name;
+          return acc + cur.value;
+        }, 0);
+        return {
+          name,
+          address,
+          rows: info,
+          labels: Array.from(labels),
+          totalValue,
+        };
+      });
+      console.log('newData', newData);
+
+      setRows(newData);
       // setPagination(result.pagination);
     } catch (err) {
       showMessage({
@@ -475,6 +508,258 @@ function UnReleasedLXPTable({
       });
     }
   };
+
+  function AddressTip({ address = '' }) {
+    return (
+      <Tooltip
+        title={copied ? 'copied!' : address}
+        onClick={(e) => {
+          e.preventDefault();
+          navigator.clipboard.writeText(address).then(
+            function () {
+              setCopied(true);
+              setTimeout(() => {
+                setCopied(false);
+              }, 500);
+            },
+            function (e) {
+              console.error(e);
+            }
+          );
+        }}
+      >
+        <span style={{ cursor: 'pointer' }}>
+          {address.slice(0, 4)}...
+          {address.slice(-4)}
+        </span>
+      </Tooltip>
+    );
+  }
+
+  function Row(props) {
+    const { row } = props;
+    const [open, setOpen] = React.useState(false);
+
+    return (
+      <React.Fragment>
+        <TableRow
+          sx={{ '& > *': { borderBottom: 'unset' } }}
+          onClick={() => setOpen(!open)}
+        >
+          <TableCell align="center">
+            <IconButton aria-label="expand row" size="small">
+              {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            </IconButton>
+          </TableCell>
+          <TableCell align="center" component="th" scope="row">
+            {row.name}
+          </TableCell>
+          <TableCell align="center">
+            <AddressTip address={row.address} />
+          </TableCell>
+          <TableCell align="center">{row.totalValue}</TableCell>
+          <TableCell align="center">{row.labels.toString()}</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+            <Collapse in={open} timeout="auto" unmountOnExit>
+              <Box sx={{ margin: 1 }}>
+                <Typography variant="h6" gutterBottom component="div">
+                  Detail
+                </Typography>
+                <RowItem rows={row.rows} />
+              </Box>
+            </Collapse>
+          </TableCell>
+        </TableRow>
+      </React.Fragment>
+    );
+  }
+
+  function RowItem({ rows = [] }) {
+    return (
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell sx={{ color: '#666F85' }} align="center">
+              Name
+            </TableCell>
+            <TableCell sx={{ color: '#666F85' }} align="center">
+              Address
+            </TableCell>
+            <TableCell sx={{ color: '#666F85' }} align="center">
+              Reward
+            </TableCell>
+            <TableCell sx={{ color: '#666F85' }} align="center">
+              Source
+            </TableCell>
+            <TableCell sx={{ color: '#666F85' }} align="center">
+              Reason
+            </TableCell>
+            <TableCell sx={{ color: '#666F85' }} align="center">
+              Date
+            </TableCell>
+            <TableCell sx={{ color: '#666F85' }} align="center">
+              Status
+            </TableCell>
+            <TableCell sx={{ color: '#666F85' }} align="center">
+              Action
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody sx={{ fontSize: '16px' }}>
+          {rows.length <= 0 ? (
+            <TableRow>
+              <TableCell
+                colSpan="7"
+                align="center"
+                sx={{
+                  textAlign: 'center',
+                  width: '100%',
+                  height: '60px',
+                  lineHeight: '60px',
+                  color: '#666F85',
+                }}
+              >
+                No data
+              </TableCell>
+            </TableRow>
+          ) : (
+            ''
+          )}
+          {rows.map((row) => {
+            return (
+              <TableRow key={row.id}>
+                <TableCell
+                  align="center"
+                  sx={{
+                    maxWidth: '100px',
+                    textOverflow: 'ellipsis',
+                    overflow: 'hidden',
+                  }}
+                >
+                  <Tooltip title={row.name}>
+                    <Link href={`/buidlers/${row.address}`} target="_blank">
+                      <span>{row.name}</span>
+                    </Link>
+                  </Tooltip>
+                </TableCell>
+                <TableCell align="center" sx={{ maxWidth: '100px' }}>
+                  <AddressTip address={row.address} />
+                </TableCell>
+                <TableCell
+                  align="center"
+                  sx={{ maxWidth: '100px', fontSize: '16px' }}
+                >
+                  {row.value}
+                </TableCell>
+                <TableCell
+                  align="left"
+                  sx={{ minWidth: '100px', fontSize: '16px' }}
+                >
+                  {row.source}
+                </TableCell>
+                <TableCell
+                  align="left"
+                  sx={{
+                    maxWidth: '300px',
+                    fontSize: '16px',
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      display: '-webkit-box',
+                      WebkitBoxOrient: 'vertical',
+                      WebkitLineClamp: '3',
+                    }}
+                  >
+                    {row.reason}
+                  </Typography>
+                </TableCell>
+                <TableCell
+                  align="center"
+                  sx={{ maxWidth: '100px', fontSize: '16px' }}
+                >
+                  {new Date(row.createdAt)
+                    .toISOString()
+                    .split('T')[0]
+                    .replaceAll('-', '.')}
+                </TableCell>
+                <TableCell
+                  align="center"
+                  sx={{
+                    fontSize: '16px',
+                  }}
+                >
+                  <StatusLabel status={row.status} record={row} />
+                </TableCell>
+                <TableCell align="center" sx={{ fontSize: '16px' }}>
+                  {row.status === 'NEEDTOREVIEW' && isAccountingTeam && (
+                    <>
+                      <LXButton
+                        width={'100px'}
+                        variant="outlined"
+                        onClick={() => {
+                          handleOperationBtn(row.id, 'REJECT');
+                        }}
+                      >
+                        Reject
+                      </LXButton>
+                      <LXButton
+                        marginTop={'10px'}
+                        width={'100px'}
+                        variant="outlined"
+                        onClick={() => {
+                          handleOperationBtn(row.id, 'REPUBLISH');
+                        }}
+                      >
+                        Republish
+                      </LXButton>
+                    </>
+                  )}
+                  {row.status == 'TOBERELEASED' && hasMemberFirstBadge && (
+                    <>
+                      <LXButton
+                        width={'100px'}
+                        variant="outlined"
+                        onClick={() => {
+                          setIsDispute(true);
+                          handleOperationBtn(row.id, 'DISPUTE');
+                        }}
+                      >
+                        Dispute
+                      </LXButton>
+                    </>
+                  )}
+                </TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
+
+        <TableFooter>
+          {isAccountingTeam && (
+            <TableRow sx={{ justifyContent: 'center' }}>
+              <TableCell colSpan={8}>
+                <Box display="flex" justifyContent="center">
+                  <LXButton
+                    width="200px"
+                    variant="gradient"
+                    onClick={handleReleaseBtn}
+                    disabled={disable}
+                  >
+                    Release
+                  </LXButton>
+                </Box>
+              </TableCell>
+            </TableRow>
+          )}
+        </TableFooter>
+      </Table>
+    );
+  }
 
   return (
     <Box
@@ -520,188 +805,23 @@ function UnReleasedLXPTable({
             })}
           </Select>
         </Box>
-        <Table>
+        <Table aria-label="collapsible table">
           <TableHead>
             <TableRow>
-              <TableCell sx={{ color: '#666F85' }} align="center">
-                Name
-              </TableCell>
-              <TableCell sx={{ color: '#666F85' }} align="center">
-                Address
-              </TableCell>
-              <TableCell sx={{ color: '#666F85' }} align="center">
-                Reward
-              </TableCell>
-              <TableCell sx={{ color: '#666F85' }} align="center">
-                Source
-              </TableCell>
-              <TableCell sx={{ color: '#666F85' }} align="center">
-                Reason
-              </TableCell>
-              <TableCell sx={{ color: '#666F85' }} align="center">
-                Date
-              </TableCell>
-              <TableCell sx={{ color: '#666F85' }} align="center">
-                Status
-              </TableCell>
-              <TableCell sx={{ color: '#666F85' }} align="center">
-                Action
-              </TableCell>
+              <TableCell />
+              <TableCell align="center">Name</TableCell>
+              <TableCell align="center">Address</TableCell>
+              <TableCell align="center">Reward</TableCell>
+              <TableCell align="center">Labels</TableCell>
             </TableRow>
           </TableHead>
-          <TableBody sx={{ fontSize: '16px' }}>
-            {rows.length <= 0 ? (
-              <TableRow>
-                <TableCell
-                  colSpan="7"
-                  align="center"
-                  sx={{
-                    textAlign: 'center',
-                    width: '100%',
-                    height: '60px',
-                    lineHeight: '60px',
-                    color: '#666F85',
-                  }}
-                >
-                  No data
-                </TableCell>
-              </TableRow>
-            ) : (
-              ''
-            )}
-            {rows.map((row) => {
-              return (
-                <TableRow key={row.id}>
-                  <TableCell
-                    align="center"
-                    sx={{
-                      maxWidth: '100px',
-                      textOverflow: 'ellipsis',
-                      overflow: 'hidden',
-                    }}
-                  >
-                    <Tooltip title={row.name}>
-                      <Link href={`/buidlers/${row.address}`} target="_blank">
-                        <span>{row.name}</span>
-                      </Link>
-                    </Tooltip>
-                  </TableCell>
-                  <TableCell align="center" sx={{ maxWidth: '100px' }}>
-                    <Tooltip
-                      title={copied ? 'copied!' : row.address}
-                      onClick={() => {
-                        navigator.clipboard.writeText(row.address).then(
-                          function () {
-                            setCopied(true);
-                            setTimeout(() => {
-                              setCopied(false);
-                            }, 500);
-                          },
-                          function (e) {
-                            console.error(e);
-                          }
-                        );
-                      }}
-                    >
-                      <span>
-                        {row.address.slice(0, 4)}...
-                        {row.address.slice(-4)}
-                      </span>
-                    </Tooltip>
-                  </TableCell>
-                  <TableCell
-                    align="center"
-                    sx={{ maxWidth: '100px', fontSize: '16px' }}
-                  >
-                    {row.value}
-                  </TableCell>
-                  <TableCell
-                    align="left"
-                    sx={{ minWidth: '100px', fontSize: '16px' }}
-                  >
-                    {row.source}
-                  </TableCell>
-                  <TableCell
-                    align="left"
-                    sx={{
-                      maxWidth: '300px',
-                      fontSize: '16px',
-                    }}
-                  >
-                    <Typography
-                      sx={{
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        display: '-webkit-box',
-                        WebkitBoxOrient: 'vertical',
-                        WebkitLineClamp: '3',
-                      }}
-                    >
-                      {row.reason}
-                    </Typography>
-                  </TableCell>
-                  <TableCell
-                    align="center"
-                    sx={{ maxWidth: '100px', fontSize: '16px' }}
-                  >
-                    {new Date(row.createdAt)
-                      .toISOString()
-                      .split('T')[0]
-                      .replaceAll('-', '.')}
-                  </TableCell>
-                  <TableCell
-                    align="center"
-                    sx={{
-                      fontSize: '16px',
-                    }}
-                  >
-                    <StatusLabel status={row.status} record={row} />
-                  </TableCell>
-                  <TableCell align="center" sx={{ fontSize: '16px' }}>
-                    {row.status === 'NEEDTOREVIEW' && isAccountingTeam && (
-                      <>
-                        <LXButton
-                          width={'100px'}
-                          variant="outlined"
-                          onClick={() => {
-                            handleOperationBtn(row.id, 'REJECT');
-                          }}
-                        >
-                          Reject
-                        </LXButton>
-                        <LXButton
-                          marginTop={'10px'}
-                          width={'100px'}
-                          variant="outlined"
-                          onClick={() => {
-                            handleOperationBtn(row.id, 'REPUBLISH');
-                          }}
-                        >
-                          Republish
-                        </LXButton>
-                      </>
-                    )}
-                    {row.status == 'TOBERELEASED' && hasMemberFirstBadge && (
-                      <>
-                        <LXButton
-                          width={'100px'}
-                          variant="outlined"
-                          onClick={() => {
-                            setIsDispute(true);
-                            handleOperationBtn(row.id, 'DISPUTE');
-                          }}
-                        >
-                          Dispute
-                        </LXButton>
-                      </>
-                    )}
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-
+          <TableBody>
+            {rows.map((row) => (
+              <Row key={row.address} row={row} />
+            ))}
             {rows.length > 0 && (
               <TableRow>
+                <TableCell />
                 <TableCell
                   align="center"
                   sx={{
@@ -722,49 +842,6 @@ function UnReleasedLXPTable({
               </TableRow>
             )}
           </TableBody>
-
-          <TableFooter>
-            {/*{rows.length > 0 ? (*/}
-            {/*  <TableRow>*/}
-            {/*    <TablePagination*/}
-            {/*      rowsPerPageOptions={[*/}
-            {/*        5,*/}
-            {/*        10,*/}
-            {/*        25,*/}
-            {/*        { label: 'All', value: pagination.total },*/}
-            {/*      ]}*/}
-            {/*      count={pagination?.total}*/}
-            {/*      rowsPerPage={perPage}*/}
-            {/*      page={page}*/}
-            {/*      SelectProps={{*/}
-            {/*        inputProps: {*/}
-            {/*          'aria-label': 'rows per page',*/}
-            {/*        },*/}
-            {/*        native: true,*/}
-            {/*      }}*/}
-            {/*      onPageChange={handleChangePage}*/}
-            {/*      onRowsPerPageChange={handleChangePerPage}*/}
-            {/*      ActionsComponent={TablePaginationActions}*/}
-            {/*    />*/}
-            {/*  </TableRow>*/}
-            {/*) : null}*/}
-            {isAccountingTeam && (
-              <TableRow sx={{ justifyContent: 'center' }}>
-                <TableCell colSpan={8}>
-                  <Box display="flex" justifyContent="center">
-                    <LXButton
-                      width="200px"
-                      variant="gradient"
-                      onClick={handleReleaseBtn}
-                      disabled={disable}
-                    >
-                      Release
-                    </LXButton>
-                  </Box>
-                </TableCell>
-              </TableRow>
-            )}
-          </TableFooter>
         </Table>
       </TableContainer>
       <Dialog
@@ -824,14 +901,35 @@ function UnReleasedStablecoinTable({
   const [isDispute, setIsDispute] = useState(true);
   const [currentStableCoinId, setCurrentStableCoinId] = useState('');
 
-  const allLabels = ['All', 'Myself', ...RewardLabels];
-  const [labels, setLabels] = useState(['All']);
+  const allLabels = ['All labels', 'Myself', ...RewardLabels];
+  const [labels, setLabels] = useState(['All labels']);
+
+  const [members, setMembers] = useState([]);
+  const [currentMember, setCurrentMember] = useState('all');
+
+  useEffect(() => {
+    getStablecoinMembers();
+  }, []);
 
   useEffect(() => {
     (async () => {
       await getStablecoinApplications();
     })();
-  }, [page, perPage, labels]);
+  }, [page, perPage, labels, currentMember]);
+
+  const getStablecoinMembers = async () => {
+    try {
+      const res = await API.get(`/stablecoin/members`);
+      const members = res?.data?.data || [];
+      setMembers([{ name: 'All members', address: 'all' }, ...members]);
+    } catch (err) {
+      showMessage({
+        type: 'error',
+        title: err.error_code,
+        body: err.message,
+      });
+    }
+  };
 
   const hanldeOperationBtn = async (id, operation) => {
     if (operation === 'REJECT') {
@@ -926,6 +1024,16 @@ function UnReleasedStablecoinTable({
 
     let parse = typeof value === 'string' ? value.split(',') : value;
     setLabels(parse);
+    if (parse.includes('Myself')) {
+      setCurrentMember('all');
+    }
+  };
+
+  const handleSelectMembers = async (event) => {
+    let {
+      target: { value },
+    } = event;
+    setCurrentMember(value);
   };
 
   const handleReleaseBtn = async () => {
@@ -967,7 +1075,7 @@ function UnReleasedStablecoinTable({
     });
 
     labels.map((value) => {
-      if (value !== 'All') {
+      if (value !== 'All labels') {
         if (value === 'Myself') {
           params.push('address=' + address);
         } else {
@@ -978,6 +1086,9 @@ function UnReleasedStablecoinTable({
 
     params.push('page=' + (page + 1));
     params.push('per_page=' + perPage);
+    if (currentMember !== 'all') {
+      params.push('address=' + currentMember);
+    }
     query += params.join('&');
     try {
       const res = await API.get(query);
@@ -1069,7 +1180,7 @@ function UnReleasedStablecoinTable({
           gap={1}
           sx={{ width: '100%', marginBottom: '10px' }}
         >
-          <InputLabel id="reward-select-label">Labels filter:</InputLabel>
+          <InputLabel id="reward-select-label">Filter:</InputLabel>
           <Select
             labelId="reward-select-label"
             id="reward-select-label"
@@ -1081,6 +1192,21 @@ function UnReleasedStablecoinTable({
               return (
                 <MenuItem key={index} value={item}>
                   {item}
+                </MenuItem>
+              );
+            })}
+          </Select>
+          <Select
+            labelId="reward-select-label"
+            id="reward-select-label"
+            value={currentMember}
+            onChange={handleSelectMembers}
+            sx={{ height: '44px' }}
+          >
+            {members.map((item, index) => {
+              return (
+                <MenuItem key={index} value={item.address}>
+                  {item.name}
                 </MenuItem>
               );
             })}

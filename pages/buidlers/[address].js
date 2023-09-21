@@ -318,7 +318,7 @@ function StableCoinsTable({ points }) {
                   <Link
                     target="_blank"
                     sx={{ textDecoration: 'none' }}
-                    href={`https://${getPolygonScanDomain()}/tx/${point.hash}`}
+                    href={`https://${getEtherScanDomain()}/tx/${point.hash}`}
                   >
                     <Typography
                       sx={{
