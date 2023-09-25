@@ -349,11 +349,6 @@ function UnReleasedLXPTable({
     setUpdating(false);
   };
 
-  const mintAll = async (addresses, amounts) => {
-    await write({ args: [addresses, amounts] });
-    return data?.hash;
-  };
-
   const getAllTOBERELEASEDLXP = async () => {
     let query = `/lxpoints/list?`;
     let params = [];
@@ -385,6 +380,30 @@ function UnReleasedLXPTable({
     setLabels(parse);
   };
 
+  useEffect(() => {
+    if (data?.hash && isSuccess) {
+      releaseCallback(data.hash);
+    }
+    if (isError) {
+      showMessage({
+        type: 'error',
+        title: 'release error',
+        body: error?.message,
+      });
+    }
+  }, [data, error, isError, isSuccess]);
+
+  const releaseCallback = async (hash) => {
+    const res = await API.post(`/lxpoints/release`, { hash: hash });
+    const result = res.data;
+    if (result.status !== 'SUCCESS') {
+      alert(result.message);
+      // error todo Muxin add common alert, wang teng design
+      return;
+    }
+    router.reload(window.location.pathname);
+  };
+
   const handleReleaseBtn = async () => {
     // mint all and store the transaction hash
     setDisable(true);
@@ -400,19 +419,8 @@ function UnReleasedLXPTable({
       const formattedAmounts = amounts.map((value) =>
         ethers.parseUnits(value.toString(), 'ether')
       );
-      const hash = await mintAll(addresses, formattedAmounts);
-      if (isError || !hash) {
-        throw new Error(error || 'hash error');
-      }
+      await write({ args: [addresses, formattedAmounts] });
       // post to backend
-      const res = await API.post(`/lxpoints/release`, { hash: hash });
-      const result = res.data;
-      if (result.status !== 'SUCCESS') {
-        alert(result.message);
-        // error todo Muxin add common alert, wang teng design
-        return;
-      }
-      router.reload(window.location.pathname);
     } catch (err) {
       setDisable(false);
       showMessage({

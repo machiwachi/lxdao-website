@@ -531,39 +531,51 @@ function BuidlerDetails(props) {
     (badge) => badge.id === 'MemberFirstBadge'
   )?.amount;
 
+  useEffect(() => {
+    airdropCallback();
+  }, [
+    airdropIsLoading,
+    airdropIsSuccess,
+    airdrop,
+    airdropIsError,
+    airdropCallback,
+  ]);
+
+  const airdropCallback = async () => {
+    if (airdropIsSuccess && airdrop) {
+      const updatedBuidler = await API.post(
+        `/buidler/${record.address}/updateBadges`
+      );
+
+      if (updatedBuidler?.data?.status === 'SUCCESS') {
+        showMessage({
+          type: 'success',
+          title: 'Success!',
+        });
+        props.refresh();
+      } else {
+        showMessage({
+          type: 'error',
+          title: 'Error',
+          body: updatedBuidler?.data?.message,
+        });
+      }
+    }
+
+    if (airdropIsError) {
+      showMessage({
+        type: 'error',
+        title: 'Failed to airdrop membership badge',
+        body: <>{airdropError.toString()}</>,
+      });
+    }
+  };
+
   const airDropMembershipBadge = async () => {
     try {
       await airdropWrite({
         args: ['MemberFirstBadge', [record.address], [1]],
       });
-
-      airdropIsLoading &&
-        showMessage({
-          type: 'info',
-          title: 'Waiting...',
-        });
-
-      if (airdropIsSuccess && airdrop) {
-        const updatedBuidler = await API.post(
-          `/buidler/${record.address}/updateBadges`
-        );
-
-        if (updatedBuidler?.data?.status === 'SUCCESS') {
-          showMessage({
-            type: 'success',
-            title: 'Success!',
-          });
-          props.refresh();
-        }
-      }
-
-      if (airdropIsError) {
-        showMessage({
-          type: 'error',
-          title: 'Failed to airdrop membership badge',
-          body: <>{airdropError.toString()}</>,
-        });
-      }
     } catch (err) {
       showMessage({
         type: 'error',
@@ -1013,8 +1025,11 @@ function BuidlerDetails(props) {
                         <LXButton
                           onClick={airDropMembershipBadge}
                           variant="outlined"
+                          disabled={airdropIsLoading}
                         >
-                          AirDrop Badge
+                          {airdropIsLoading
+                            ? 'AirDropping Badge...'
+                            : 'AirDrop Badge'}
                         </LXButton>
                       )}
                   </Box>
