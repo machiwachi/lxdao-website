@@ -212,7 +212,7 @@ const projects = [
     links: [
       {
         name: 'website',
-        url: ' https://web3in2032.xyz/',
+        url: 'https://web3in2032.xyz/',
       },
       {
         name: 'twitter',
