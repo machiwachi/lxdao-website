@@ -51,6 +51,7 @@ import showMessage from '@/components/showMessage';
 import CloseIcon from '@mui/icons-material/Close';
 import { makeStyles } from '@mui/styles';
 import { RewardLabels } from '@/common/define';
+import Decimal from 'decimal.js';
 
 const useStyles = makeStyles({
   tooltip: {
@@ -473,7 +474,9 @@ function UnReleasedLXPTable({
       // calculate
       let total = 0;
       for (let i = 0; i < result.data.length; i++) {
-        total += result.data[i].value;
+        let x = new Decimal(result.data[i].value); // '255.9375'
+        let y = new Decimal(total); // '172'
+        total = x.plus(y).toFixed();
       }
       setTotalRemuneration(total);
       console.log('rows', result.data);
@@ -1112,7 +1115,9 @@ function UnReleasedStablecoinTable({
       // calculate
       let total = 0;
       for (let i = 0; i < result.data.length; i++) {
-        total += result.data[i].value;
+        let x = new Decimal(result.data[i].value); // '255.9375'
+        let y = new Decimal(total); // '172'
+        total = x.plus(y).toFixed();
       }
       setTotalRemuneration(total);
 
