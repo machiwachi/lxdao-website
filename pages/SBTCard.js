@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useAccount } from 'wagmi';
+import { useAccount, useBalance, usePublicClient } from 'wagmi';
 import {
   Box,
   Stack,
@@ -9,7 +9,7 @@ import {
   Link,
   Container,
 } from '@mui/material';
-import { Contract } from 'ethers';
+import { Contract, ethers } from 'ethers';
 
 import API from '@/common/API';
 import { useEthersSigner } from '@/hooks';
@@ -35,6 +35,10 @@ export default function FirstBadge() {
   const router = useRouter();
   const [currentAddress, setCurrentAddress] = useState('');
   const [workingGroupsData, setWorkingGroupsData] = useState([]);
+  const { data: balance } = useBalance({
+    address,
+  });
+  const publicClient = usePublicClient();
   const signer = useEthersSigner();
 
   useEffect(() => {
@@ -89,6 +93,25 @@ export default function FirstBadge() {
 
       const { address, abi } = contractInfo();
       const contract = new Contract(address, abi, signer);
+
+      const callData = contract.interface.encodeFunctionData('mint', [
+        bytes,
+        signature,
+      ]); // 替换为合约函数名和参数
+      const tx = {
+        account: currentAddress,
+        to: address,
+        data: callData,
+      };
+      const gasEstimate = await publicClient.estimateGas(tx);
+      if (balance.value < gasEstimate) {
+        throw new Error(
+          `Not enough gas, probably at least ${ethers.formatEther(
+            gasEstimate
+          )} gas.`
+        );
+      }
+
       const response = await contract.mint(bytes, signature);
       if (response && response.hash) {
         await API.post('/buidler/activate');
