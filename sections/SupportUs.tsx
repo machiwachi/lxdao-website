@@ -55,14 +55,14 @@ export default function SupportUs() {
               <Button
                 variant="outlined"
                 sx={{ padding: '11px 20px', boxSizing: 'border-box' }}
-                href="https://docsend.lxdao.io/view/clnnqmtz70001lf08gsjy484v"
+                href="https://docsend.com/view/7c5nu26eexpt4adj"
                 target="_blank"
               >
                 Deck link
               </Button>
             </Box>
             <a
-              href="https://docsend.lxdao.io/view/clnnqmtz70001lf08gsjy484v"
+              href="https://docsend.com/view/7c5nu26eexpt4adj"
               target="_blank"
               style={{ height: '128px', display: 'block' }}
             >
