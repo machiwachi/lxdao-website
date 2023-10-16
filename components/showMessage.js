@@ -13,6 +13,7 @@ import getTheme from '../common/theme';
 const IconWrapper = styled.div``;
 
 const DialogWrapper = styled.div`
+  font-size: 16px;
   padding: 20px;
   min-width: 200px;
   width: 100%;
