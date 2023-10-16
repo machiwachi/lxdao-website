@@ -503,7 +503,7 @@ function UnReleasedLXPTable({
           name,
           address,
           rows: info,
-          labels: Array.from(labels),
+          labels: Array.from(labels).filter((x) => x),
           totalValue,
         };
       });
