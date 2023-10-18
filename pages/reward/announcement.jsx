@@ -749,25 +749,6 @@ function UnReleasedLXPTable({
             );
           })}
         </TableBody>
-
-        <TableFooter>
-          {isAccountingTeam && (
-            <TableRow sx={{ justifyContent: 'center' }}>
-              <TableCell colSpan={8}>
-                <Box display="flex" justifyContent="center">
-                  <LXButton
-                    width="200px"
-                    variant="gradient"
-                    onClick={handleReleaseBtn}
-                    disabled={disable}
-                  >
-                    Release
-                  </LXButton>
-                </Box>
-              </TableCell>
-            </TableRow>
-          )}
-        </TableFooter>
       </Table>
     );
   }
@@ -853,6 +834,24 @@ function UnReleasedLXPTable({
               </TableRow>
             )}
           </TableBody>
+          <TableFooter>
+            {isAccountingTeam && (
+              <TableRow sx={{ justifyContent: 'center' }}>
+                <TableCell colSpan={8}>
+                  <Box display="flex" justifyContent="center">
+                    <LXButton
+                      width="200px"
+                      variant="gradient"
+                      onClick={handleReleaseBtn}
+                      disabled={disable}
+                    >
+                      Release
+                    </LXButton>
+                  </Box>
+                </TableCell>
+              </TableRow>
+            )}
+          </TableFooter>
         </Table>
       </TableContainer>
       <Dialog
