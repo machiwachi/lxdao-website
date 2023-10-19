@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, Tooltip } from '@mui/material';
+import { Box, Typography, Tooltip, Chip } from '@mui/material';
 
 import { removeEmpty } from '@/utils/utility';
 
@@ -41,10 +41,10 @@ function formatContacts(contacts) {
   return formattedContacts;
 }
 
-function BuidlerContacts({ contacts }) {
+function BuidlerContacts({ contacts, privateContacts }) {
   const formattedContacts = formatContacts(contacts || {});
   return (
-    <Box display="flex" gap={{ sm: 0, md: 1 }}>
+    <Box display="flex" flexWrap="wrap" width="100%" gap={{ sm: 0, md: 1 }}>
       {Object.keys(formattedContacts)
         .reverse()
         .map((key, index) => {
@@ -57,24 +57,56 @@ function BuidlerContacts({ contacts }) {
                 color="primary"
                 sx={{
                   borderRadius: '100px',
-                  height: '36px',
-                  width: '36px',
-                  padding: '8px',
-                  background: '#FAFAFA',
                 }}
               >
-                <Box
-                  width="20px"
-                  component={'img'}
-                  src={`/icons/${key}.svg`}
-                  sx={{
-                    display: 'block',
-                  }}
+                <Chip
+                  avatar={
+                    <Typography
+                      component="img"
+                      src={`/icons/${key}.svg`}
+                      sx={{
+                        display: 'block',
+                        width: '17px !important',
+                        height: '17px !important',
+                      }}
+                    />
+                  }
+                  label={key}
+                  variant="outlined"
                 />
               </Typography>
             </Tooltip>
           );
         })}
+      {privateContacts && privateContacts.email && (
+        <Tooltip title="private email" key="private email" placement="top">
+          <Typography
+            target="_blank"
+            component="a"
+            href={`mailto:${privateContacts.email}`}
+            color="primary"
+            sx={{
+              borderRadius: '100px',
+            }}
+          >
+            <Chip
+              avatar={
+                <Typography
+                  component="img"
+                  src={`/icons/email.svg`}
+                  sx={{
+                    display: 'block',
+                    width: '17px !important',
+                    height: '17px !important',
+                  }}
+                />
+              }
+              label="private email"
+              variant="outlined"
+            />
+          </Typography>
+        </Tooltip>
+      )}
     </Box>
   );
 }
