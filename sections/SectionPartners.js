@@ -54,6 +54,11 @@ const partnersData = [
     logo: '/images/partners/AAStar-logo.svg',
     link: 'https://www.aastar.xyz/',
   },
+  {
+    name: 'DAOStar',
+    logo: '/images/partners/DAOStar-logo.svg',
+    link: 'https://daostar.org/',
+  },
 ];
 
 const SectionPartners = () => (
