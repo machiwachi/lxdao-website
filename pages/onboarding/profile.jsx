@@ -29,6 +29,7 @@ export default function Profile() {
         metaData: userProfile,
       });
       const result = response?.data;
+      await API.get(`/email/sendEmailAfterApplyMember?address=${address}`);
       if (result.status !== 'SUCCESS') {
         throw new Error(result.message);
       }
