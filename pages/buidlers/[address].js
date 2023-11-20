@@ -34,7 +34,8 @@ import {
   useContractRead,
 } from 'wagmi';
 import { Img3 } from '@lxdao/img3';
-import { Contract } from 'ethers';
+import { Contract, JsonRpcProvider } from 'ethers';
+import myFirstLayer2Abi from '@/abi/myFirstLayer2.json';
 
 import API from '@/common/API';
 import {
@@ -389,6 +390,10 @@ function BuidlerDetails(props) {
     }
   }, [tokenId]);
 
+  useEffect(() => {
+    getMyFirstLayer2Badge();
+  }, [address]);
+
   const router = useRouter();
   const isFromOnboarding = router?.query?.isFromOnboarding;
 
@@ -411,6 +416,7 @@ function BuidlerDetails(props) {
   const [stableCoinAccordionOpen, setStableCoinAccordionOpen] = useState(false);
   const signer = useEthersSigner();
   const [onboarding, setOnboarding] = useState(false);
+  const [isHasOtherBadges, setIsHasOtherBadges] = useState({});
 
   const {
     data: airdrop,
@@ -425,6 +431,39 @@ function BuidlerDetails(props) {
     functionName: 'mintAndAirdrop',
     account: address,
   });
+
+  const findMyFirstLayer2BadgeFromNetWork = async (contractAddress, rpc) => {
+    const provider = new JsonRpcProvider(rpc);
+    const contract = new Contract(contractAddress, myFirstLayer2Abi, provider);
+    const result = await contract.queryFilter('Minted');
+    const info = result.find(
+      (i) => i.args[0].toLowerCase() === address.toLowerCase()
+    );
+    return info;
+  };
+
+  const getMyFirstLayer2Badge = async () => {
+    const optGoerliNetworkInfo = await findMyFirstLayer2BadgeFromNetWork(
+      '0x1188bd52703cc560a0349d5a80dad3d8c799e103',
+      'https://opt-goerli.g.alchemy.com/v2/0nH0WXQaohzjhfuOIsjzYWj6MnJpl_4E'
+    );
+    const arbGoerliNetworkInfo = await findMyFirstLayer2BadgeFromNetWork(
+      '0x1188bd52703cc560a0349d5a80dad3d8c799e103',
+      'https://arb-goerli.g.alchemy.com/v2/a-yu04ERGsxtgYyZ3BuioJ09VSZv4FQm'
+    );
+    const info = optGoerliNetworkInfo || arbGoerliNetworkInfo;
+
+    let imgUrl = '';
+    if (info) {
+      const imgCode = info.args[2]?.replace(
+        'data:application/json;base64,',
+        ''
+      );
+      console.log('imgCode', JSON.parse(atob(imgCode)));
+      imgUrl = JSON.parse(atob(imgCode)).image;
+    }
+    setIsHasOtherBadges({ ...isHasOtherBadges, myFirstLayer2: imgUrl });
+  };
 
   const enableMint = async () => {
     try {
@@ -629,10 +668,10 @@ function BuidlerDetails(props) {
                 Community call link: ({' '}
                 <Link
                   target="_blank"
-                  sx={{ wordBreak: 'break-all',color:"rgb(60, 122, 255)" }}
+                  sx={{ wordBreak: 'break-all', color: 'rgb(60, 122, 255)' }}
                   href={`https://forum.lxdao.io/c/governance/community-call/22`}
                 >
-                 join
+                  join
                 </Link>{' '}
                 )
               </Typography>
@@ -852,7 +891,13 @@ function BuidlerDetails(props) {
                   }}
                 />
                 {earnedBadgeAmount > 0 && (
-                  <Box display="flex" gap="10px" marginY={3}>
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    gap="10px"
+                    marginY={3}
+                    flexWrap="wrap"
+                  >
                     {record?.badges &&
                       record?.badges.map((badge) => {
                         return badge.amount > 0 ? (
@@ -861,9 +906,21 @@ function BuidlerDetails(props) {
                             component={'img'}
                             src={badge?.image}
                             width="60px"
+                            height="60px"
+                            flexShrink={0}
                           />
                         ) : null;
                       })}
+                    {isHasOtherBadges.myFirstLayer2 && (
+                      <Img3
+                        style={{
+                          width: '60px',
+                          maxHeight: '60px',
+                          flexShrink: 0,
+                        }}
+                        src={isHasOtherBadges.myFirstLayer2}
+                      />
+                    )}
                   </Box>
                 )}
                 {record.status === 'ACTIVE' ? (
