@@ -29,7 +29,11 @@ export default function Profile() {
         metaData: userProfile,
       });
       const result = response?.data;
-      await API.get(`/email/sendEmailAfterApplyMember?address=${address}`);
+      try {
+        API.get(`/email/sendEmailAfterApplyMember?address=${address}`);
+      } catch (err) {
+        console.log('邮件发送失败');
+      }
       if (result.status !== 'SUCCESS') {
         throw new Error(result.message);
       }
