@@ -467,7 +467,6 @@ function BuidlerDetails(props) {
         'data:application/json;base64,',
         ''
       );
-      console.log('imgCode', JSON.parse(atob(imgCode)));
       imgUrl = JSON.parse(atob(imgCode)).image;
     }
     setIsHasOtherBadges({ ...isHasOtherBadges, myFirstLayer2: imgUrl });
