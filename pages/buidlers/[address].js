@@ -445,7 +445,7 @@ function BuidlerDetails(props) {
     const contract = new Contract(contractAddress, myFirstLayer2Abi, provider);
     const result = await contract.queryFilter('Minted');
     const info = result.find(
-      (i) => i.args[0].toLowerCase() === address.toLowerCase()
+      (i) => i.args[0].toLowerCase() === address?.toLowerCase()
     );
     return info;
   };
@@ -1103,20 +1103,22 @@ function BuidlerDetails(props) {
                         Sync to IPFS
                       </LXButton>
                     )}
-                  {record?.status === 'PENDING' &&
-                    firstMemberBadgeAmount === 0 &&
+                  {
+                    // record?.status === 'PENDING' &&
+                    // firstMemberBadgeAmount === 0 &&
                     address &&
-                    buidlerRecord?.role?.includes('Onboarding Committee') && (
-                      <LXButton
-                        onClick={handleOpenMintBadgeDialog}
-                        variant="outlined"
-                        disabled={airdropIsLoading}
-                      >
-                        {airdropIsLoading
-                          ? 'AirDropping Badge...'
-                          : 'AirDrop Badge'}
-                      </LXButton>
-                    )}
+                      buidlerRecord?.role?.includes('Onboarding Committee') && (
+                        <LXButton
+                          onClick={handleOpenMintBadgeDialog}
+                          variant="outlined"
+                          disabled={airdropIsLoading}
+                        >
+                          {airdropIsLoading
+                            ? 'AirDropping Badge...'
+                            : 'AirDrop Badge'}
+                        </LXButton>
+                      )
+                  }
                 </Box>
               </Box>
             </Box>
@@ -1750,7 +1752,12 @@ function BuidlerDetails(props) {
                 label="Age"
                 onChange={handleChangeSelectMintBadgeValue}
               >
-                <MenuItem value="MemberFirstBadge">MemberFirstBadge</MenuItem>
+                <MenuItem
+                  value="MemberFirstBadge"
+                  disabled={firstMemberBadgeAmount !== 0}
+                >
+                  MemberFirstBadge
+                </MenuItem>
                 <MenuItem value="DHDBadge">DHDBadge</MenuItem>
               </Select>
             </FormControl>
