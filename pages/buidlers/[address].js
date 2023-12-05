@@ -20,6 +20,12 @@ import {
   AccordionSummary,
   Accordion,
   Tooltip,
+  DialogContentText,
+  DialogActions,
+  InputLabel,
+  MenuItem,
+  FormControl,
+  Select,
 } from '@mui/material';
 import Confetti from 'react-confetti';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -417,6 +423,8 @@ function BuidlerDetails(props) {
   const signer = useEthersSigner();
   const [onboarding, setOnboarding] = useState(false);
   const [isHasOtherBadges, setIsHasOtherBadges] = useState({});
+  const [mintBadgeDialog, setMintBadgeDialog] = useState(false);
+  const [selectMintBadgeValue, setSelectMintBadgeValue] = useState('');
 
   const {
     data: airdrop,
@@ -569,15 +577,15 @@ function BuidlerDetails(props) {
     }
   };
 
-  const airDropMembershipBadge = async () => {
+  const airDropMembershipBadge = async (badge) => {
     try {
       await airdropWrite({
-        args: ['MemberFirstBadge', [record.address], [1]],
+        args: [badge, [record.address], [1]],
       });
     } catch (err) {
       showMessage({
         type: 'error',
-        title: 'Failed to airdrop membership badge',
+        title: `Failed to airdrop ${badge}`,
         body: err.message,
       });
     }
@@ -625,6 +633,22 @@ function BuidlerDetails(props) {
       setOnboarding(false);
     };
   }, [record?.status, firstMemberBadgeAmount]);
+
+  const handleCloseBadgeDialog = () => {
+    setMintBadgeDialog(false);
+    setSelectMintBadgeValue('');
+  };
+  const handleOpenMintBadgeDialog = () => {
+    setMintBadgeDialog(true);
+  };
+
+  const handleChangeSelectMintBadgeValue = (event) => {
+    setSelectMintBadgeValue(event.target.value);
+  };
+
+  const handleMintBadge = async () => {
+    await airDropMembershipBadge(selectMintBadgeValue);
+  };
 
   return (
     <>
@@ -1084,7 +1108,7 @@ function BuidlerDetails(props) {
                     address &&
                     buidlerRecord?.role?.includes('Onboarding Committee') && (
                       <LXButton
-                        onClick={airDropMembershipBadge}
+                        onClick={handleOpenMintBadgeDialog}
                         variant="outlined"
                         disabled={airdropIsLoading}
                       >
@@ -1096,47 +1120,54 @@ function BuidlerDetails(props) {
                 </Box>
               </Box>
             </Box>
-            {/**
-            {record.buddies?.length > 0 && (
-              <Link
-                target="_blank"
-                href={`/buidlers/${record.buddies[0].address}`}
-                sx={{
-                  textDecoration: 'none',
-                }}
-              >
-                <Box
-                  marginTop={3}
-                  border="0.5px solid #D0D5DD"
-                  borderRadius="6px"
-                  display="flex"
-                  justifyContent="space-between"
-                  padding="20px 24px"
-                >
-                  <Box display="flex" alignItems="center">
-                    Buddy
-                  </Box>
-
-                  <Box
-                    width="80px"
-                    height="80px"
-                    border="0.5px solid #D0D5DD"
-                    borderRadius="6px"
-                    overflow="hidden"
-                  >
-                    <img
-                      style={{ display: 'block', width: 80, height: 80 }}
-                      src={record.buddies[0].avatar || '/images/placeholder.jpeg'}
-                      alt=""
-                    />
-                  </Box>
-                </Box>
-              </Link>
-            )}
-          */}
           </Box>
           {/* right senction */}
           <Box boxSizing="border-box" flex="1">
+            <Box
+              sx={{
+                border: '0.5px solid #D0D5DD',
+                borderRadius: '6px',
+                padding: '30px',
+                marginBottom: '24px',
+              }}
+            >
+              <Typography
+                sx={{
+                  fontSize: '16x',
+                  fontWeight: 800,
+                  color: '#101828',
+                  marginBottom: '15px',
+                }}
+              >
+                Badges
+              </Typography>
+              <Box display="flex" gap="15px" alignItems="center">
+                {record?.badges &&
+                  record?.badges.map((badge) => {
+                    return badge.amount > 0 ? (
+                      <Box
+                        key={badge?.image}
+                        component={'img'}
+                        src={badge?.image}
+                        maxWidth="60px"
+                        maxHeight="60px"
+                        flexShrink={0}
+                      />
+                    ) : null;
+                  })}
+                {isHasOtherBadges.myFirstLayer2 && (
+                  <Img3
+                    style={{
+                      maxWidth: '60px',
+                      maxHeight: '60px',
+                      flexShrink: 0,
+                    }}
+                    src={isHasOtherBadges.myFirstLayer2}
+                  />
+                )}
+              </Box>
+            </Box>
+
             {(badgesToBeEarnedNumber > 0 ||
               record?.status === 'PENDING' ||
               record?.status === 'READYTOMINT') && (
@@ -1702,6 +1733,32 @@ function BuidlerDetails(props) {
               saveProfileHandler={saveProfileHandler}
             />
           </DialogContent>
+        </Dialog>
+
+        <Dialog open={mintBadgeDialog} onClose={handleCloseBadgeDialog}>
+          <DialogTitle>Mind Badge</DialogTitle>
+          <DialogContent>
+            <DialogContentText marginBottom="10px">
+              Please select the badge you want to mint.
+            </DialogContentText>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">badge</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={selectMintBadgeValue}
+                label="Age"
+                onChange={handleChangeSelectMintBadgeValue}
+              >
+                <MenuItem value="MemberFirstBadge">MemberFirstBadge</MenuItem>
+                <MenuItem value="DHDBadge">DHDBadge</MenuItem>
+              </Select>
+            </FormControl>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseBadgeDialog}>Cancel</Button>
+            <Button onClick={handleMintBadge}>Confirm</Button>
+          </DialogActions>
         </Dialog>
       </Container>
     </>
