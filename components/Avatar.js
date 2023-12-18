@@ -3,6 +3,7 @@ import { Icon } from '@iconify/react';
 import { Uploader3 } from '@lxdao/uploader3';
 import { Img3 } from '@lxdao/img3';
 import { getLocalStorage } from '@/utils/utility';
+import showMessage from '@/components/showMessage';
 
 function Avatar(props) {
   const [file, setFile] = useState();
@@ -101,56 +102,62 @@ function Avatar(props) {
   };
 
   return (
-    <>
-      <Uploader3
-        api={`${
-          process.env.NEXT_PUBLIC_LXDAO_BACKEND_API
-        }/upload/ipfs/?imageDataUrl=${file ? file[0] : ''}`}
-        headers={{
-          Authorization: `Bearer ${accessToken}`,
-        }}
-        multiple={false}
-        crop={true}
-        responseFormat={(resData) => {
-          return { url: resData?.data?.url };
-        }}
-        onChange={(files) => {
-          setFile(files[0]);
-        }}
-        onUpload={(file) => {
-          setFile(file);
-        }}
-        onComplete={(file) => {
+    <Uploader3
+      api={`${
+        process.env.NEXT_PUBLIC_LXDAO_BACKEND_API
+      }/upload/ipfs/?imageDataUrl=${file ? file[0] : ''}`}
+      headers={{
+        Authorization: `Bearer ${accessToken}`,
+      }}
+      multiple={false}
+      crop={true}
+      responseFormat={(resData) => {
+        return { url: resData?.data?.url };
+      }}
+      onChange={(files) => {
+        setFile(files[0]);
+      }}
+      onUpload={(file) => {
+        setFile(file);
+      }}
+      onComplete={(file) => {
+        if (file.status === 'error') {
+          setFile(null);
+          showMessage({
+            type: 'error',
+            title: 'Failed to upload ipfs, please try again later',
+          });
+        } else {
           setFile(file);
           props.onChange(file?.url);
-        }}
-        onCropCancel={(file) => {
-          setFile(null);
-        }}
-        onCropEnd={(file) => {
-          setFile(file);
+        }
+      }}
+      onCropCancel={(file) => {
+        setFile(null);
+      }}
+      onCropEnd={(file) => {
+        setFile(file);
+      }}
+    >
+      <PreviewWrapper
+        style={{
+          height: 160,
+          width: 160,
+          borderRadius: '50%',
+          border: '2px solid rgb(204, 204, 204)',
+          overflow: 'hidden',
         }}
       >
-        <PreviewWrapper
-          style={{
-            height: 160,
-            width: 160,
-            borderRadius: '50%',
-            border: '2px solid rgb(204, 204, 204)',
-            overflow: 'hidden',
-          }}
-        >
-          {file ? (
-            <PreviewFile file={file} />
-          ) : (
-            <Img3
-              style={{ width: 160, height: 160 }}
-              src={props.avatarValue || '/images/placeholder.jpeg'}
-            />
-          )}
-        </PreviewWrapper>
-      </Uploader3>
-    </>
+        {file ? (
+          <PreviewFile file={file} />
+        ) : (
+          <Img3
+            style={{ width: 160, height: 160 }}
+            src={props.avatarValue || '/images/placeholder.jpeg'}
+          />
+        )}
+      </PreviewWrapper>
+    </Uploader3>
   );
 }
 
