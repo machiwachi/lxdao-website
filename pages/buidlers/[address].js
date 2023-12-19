@@ -542,6 +542,9 @@ function BuidlerDetails(props) {
     (badge) => badge.id === 'MemberFirstBadge'
   )?.amount;
 
+  const hasBadge = (type) =>
+    record?.badges?.find((badge) => badge.id === type)?.amount > 0;
+
   useEffect(() => {
     airdropCallback();
   }, [airdropIsLoading, airdropIsSuccess, airdrop, airdropIsError]);
@@ -913,39 +916,6 @@ function BuidlerDetails(props) {
                     borderColor: '#E5E5E5',
                   }}
                 />
-                {earnedBadgeAmount > 0 && (
-                  <Box
-                    display="flex"
-                    alignItems="center"
-                    gap="10px"
-                    marginY={3}
-                    flexWrap="wrap"
-                  >
-                    {record?.badges &&
-                      record?.badges.map((badge) => {
-                        return badge.amount > 0 ? (
-                          <Box
-                            key={badge?.image}
-                            component={'img'}
-                            src={badge?.image}
-                            width="60px"
-                            height="60px"
-                            flexShrink={0}
-                          />
-                        ) : null;
-                      })}
-                    {isHasOtherBadges.myFirstLayer2 && (
-                      <Img3
-                        style={{
-                          width: '60px',
-                          maxHeight: '60px',
-                          flexShrink: 0,
-                        }}
-                        src={isHasOtherBadges.myFirstLayer2}
-                      />
-                    )}
-                  </Box>
-                )}
                 {record.status === 'ACTIVE' ? (
                   <Link
                     target="_blank"
@@ -1736,28 +1706,32 @@ function BuidlerDetails(props) {
           </DialogContent>
         </Dialog>
 
-        <Dialog open={mintBadgeDialog} onClose={handleCloseBadgeDialog}>
+        <Dialog
+          open={mintBadgeDialog}
+          onClose={handleCloseBadgeDialog}
+          fullWidth="sm"
+        >
           <DialogTitle>Mind Badge</DialogTitle>
-          <DialogContent>
+          <DialogContent sx={{ paddingBottom: '80px' }}>
             <DialogContentText marginBottom="10px">
               Please select the badge you want to mint.
             </DialogContentText>
             <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">badge</InputLabel>
+              <InputLabel>badge</InputLabel>
               <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
                 value={selectMintBadgeValue}
-                label="Age"
+                label="badge"
                 onChange={handleChangeSelectMintBadgeValue}
               >
                 <MenuItem
                   value="MemberFirstBadge"
-                  disabled={firstMemberBadgeAmount !== 0}
+                  disabled={hasBadge('MemberFirstBadge')}
                 >
                   MemberFirstBadge
                 </MenuItem>
-                <MenuItem value="DHDBadge">DHDBadge</MenuItem>
+                <MenuItem value="DHDBadge" disabled={hasBadge('DHDBadge')}>
+                  DHDBadge
+                </MenuItem>
               </Select>
             </FormControl>
           </DialogContent>
