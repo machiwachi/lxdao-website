@@ -40,8 +40,10 @@ import {
   useContractRead,
 } from 'wagmi';
 import { Img3 } from '@lxdao/img3';
-import { Contract, JsonRpcProvider } from 'ethers';
+import { Contract, JsonRpcProvider, decodeBytes32String } from 'ethers';
+import * as ethers from 'ethers';
 import myFirstLayer2Abi from '@/abi/myFirstLayer2.json';
+import myFirstNFTAbi from '@/abi/myFirstLayer2.json';
 
 import API from '@/common/API';
 import {
@@ -398,6 +400,7 @@ function BuidlerDetails(props) {
 
   useEffect(() => {
     getMyFirstLayer2Badge();
+    getMyFirstNFTBadge();
   }, [address]);
 
   const router = useRouter();
@@ -422,7 +425,7 @@ function BuidlerDetails(props) {
   const [stableCoinAccordionOpen, setStableCoinAccordionOpen] = useState(false);
   const signer = useEthersSigner();
   const [onboarding, setOnboarding] = useState(false);
-  const [isHasOtherBadges, setIsHasOtherBadges] = useState({});
+  const [isHasOtherBadges, setIsHasOtherBadges] = useState([]);
   const [mintBadgeDialog, setMintBadgeDialog] = useState(false);
   const [selectMintBadgeValue, setSelectMintBadgeValue] = useState('');
 
@@ -440,27 +443,34 @@ function BuidlerDetails(props) {
     account: address,
   });
 
-  const findMyFirstLayer2BadgeFromNetWork = async (contractAddress, rpc) => {
+  const findMBadgeFromNetWork = async (contractAddress, rpc, abi, method) => {
     const provider = new JsonRpcProvider(rpc);
-    const contract = new Contract(contractAddress, myFirstLayer2Abi, provider);
-    const result = await contract.queryFilter('Minted');
-    const info = result.find(
-      (i) => i.args[0].toLowerCase() === address?.toLowerCase()
-    );
-    return info;
+    const contract = new Contract(contractAddress, abi, provider);
+    const result = await contract.queryFilter(method);
+    return result;
   };
 
   const getMyFirstLayer2Badge = async () => {
-    const optGoerliNetworkInfo = await findMyFirstLayer2BadgeFromNetWork(
+    const optGoerliNetworkResult = await findMBadgeFromNetWork(
       '0x1188bd52703cc560a0349d5a80dad3d8c799e103',
-      'https://opt-goerli.g.alchemy.com/v2/0nH0WXQaohzjhfuOIsjzYWj6MnJpl_4E'
+      'https://opt-goerli.g.alchemy.com/v2/0nH0WXQaohzjhfuOIsjzYWj6MnJpl_4E',
+      myFirstLayer2Abi,
+      'Minted'
     );
-    const arbGoerliNetworkInfo = await findMyFirstLayer2BadgeFromNetWork(
+    const optGoerliNetworkInfo = optGoerliNetworkResult.find(
+      (i) => i.args[0].toLowerCase() === record.address?.toLowerCase()
+    );
+    const arbGoerliNetworkResult = await findMBadgeFromNetWork(
       '0x1188bd52703cc560a0349d5a80dad3d8c799e103',
-      'https://arb-goerli.g.alchemy.com/v2/a-yu04ERGsxtgYyZ3BuioJ09VSZv4FQm'
+      'https://arb-goerli.g.alchemy.com/v2/a-yu04ERGsxtgYyZ3BuioJ09VSZv4FQm',
+      myFirstLayer2Abi,
+      'Minted'
+    );
+    const arbGoerliNetworkInfo = arbGoerliNetworkResult.find(
+      (i) => i.args[0].toLowerCase() === record.address?.toLowerCase()
     );
     const info = optGoerliNetworkInfo || arbGoerliNetworkInfo;
-
+    if (!info) return;
     let imgUrl = '';
     if (info) {
       const imgCode = info.args[2]?.replace(
@@ -469,7 +479,40 @@ function BuidlerDetails(props) {
       );
       imgUrl = JSON.parse(atob(imgCode)).image;
     }
-    setIsHasOtherBadges({ ...isHasOtherBadges, myFirstLayer2: imgUrl });
+    setIsHasOtherBadges([
+      ...isHasOtherBadges,
+      { image: imgUrl, name: 'myFirstLayer2' },
+    ]);
+  };
+
+  const getMyFirstNFTBadge = async () => {
+    const provider = new JsonRpcProvider(
+      'https://mainnet.infura.io/v3/999c7c128542435eac32a6cdd05a31c1'
+    );
+    const contract = new Contract(
+      '0xE1D831Ee54f88Ef03FD7F5a15dE943BAA4d19070',
+      myFirstNFTAbi,
+      provider
+    );
+
+    const result = await contract.queryFilter('Transfer');
+
+    const info = result.find(
+      (i) => i.args[1].toLowerCase() === record.address?.toLowerCase()
+    );
+    if (!info) return;
+    const tokenId = info.args[2];
+    const tokenURI = contract.getFunction('tokenURI');
+    const tokenInfo = await tokenURI(tokenId);
+    const tokenResult = JSON.parse(
+      atob(tokenInfo.replace('data:application/json;base64,', ''))
+    );
+    const imgUrl = tokenResult.image;
+
+    setIsHasOtherBadges([
+      ...isHasOtherBadges,
+      { image: imgUrl, name: 'myFirstNFT' },
+    ]);
   };
 
   const enableMint = async () => {
@@ -1120,22 +1163,29 @@ function BuidlerDetails(props) {
                         key={badge?.image}
                         component={'img'}
                         src={badge?.image}
+                        width="60px"
+                        height="60px"
                         maxWidth="60px"
                         maxHeight="60px"
+                        objectFit="contain"
                         flexShrink={0}
                       />
                     ) : null;
                   })}
-                {isHasOtherBadges.myFirstLayer2 && (
+                {isHasOtherBadges.map((badge) => (
                   <Img3
+                    key={badge?.image}
                     style={{
-                      maxWidth: '60px',
-                      maxHeight: '60px',
+                      width: '60px',
+                      height: '60px',
+                      objectFit: 'contain',
+                      minWidth: '60px',
                       flexShrink: 0,
                     }}
-                    src={isHasOtherBadges.myFirstLayer2}
+                    src={badge.image}
+                    alt={badge.name}
                   />
-                )}
+                ))}
               </Box>
             </Box>
 
