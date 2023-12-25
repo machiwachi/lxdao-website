@@ -135,7 +135,7 @@ const SectionMission = ({ projectAmount, buidlerAmount }) => {
             />
             <DataBox number={projectAmount} name="Projects" link="/projects" />
             <DataBox
-              number={`335k+ USDC`}
+              number={`247k+ USDC`}
               name="Treasury"
               link="https://gnosis-safe.io/app/eth:0xB45e9F74D0a35fE1aa0B78feA03877EF96ae8dd2/home"
             />
