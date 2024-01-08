@@ -438,7 +438,6 @@ const SectionProjectDetail = ({ projectId }) => {
               }}
             >
               <Img3
-                gateways={['https://lxdaoipfs.4everland.link/ipfs/']}
                 src={
                   getIpfsCid(project.logoLarge)
                     ? `ipfs://${getIpfsCid(project.logoLarge)}`

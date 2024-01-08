@@ -50,7 +50,6 @@ function uploadImage(props) {
     return (
       <>
         <Img3
-          gateways={['https://lxdaoipfs.4everland.link/ipfs/']}
           style={{ maxHeight: '100%', maxWidth: '100%' }}
           src={src || '/images/placeholder.jpeg'}
           alt={file.name}
@@ -146,7 +145,6 @@ function uploadImage(props) {
             <PreviewFile file={file} />
           ) : props.imageValue ? (
             <Img3
-              gateways={['https://lxdaoipfs.4everland.link/ipfs/']}
               style={{ width: uploaderWidth, height: uploaderHeight }}
               src={props.imageValue}
             />
