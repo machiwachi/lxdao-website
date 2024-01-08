@@ -20,11 +20,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <ThemeProvider theme={getTheme('light')}>
       <Img3Provider
-        defaultGateways={[
-          'https://nftstorage.link/ipfs/',
-          'https://ipfs-gateway.cloud/ipfs/',
-          'https://gateway.pinata.cloud/ipfs/',
-        ]}
+        defaultGateways={['https://lxdaoipfs.4everland.link/ipfs/']}
       >
         <AlertProvider>
           <WagmiConfig config={wagmiConfig}>
