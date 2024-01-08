@@ -927,6 +927,7 @@ function BuidlerDetails(props) {
                   margin="auto"
                 >
                   <Img3
+                    gateways={['https://lxdaoipfs.4everland.link/ipfs/']}
                     src={
                       getIpfsCid(record.avatar)
                         ? `ipfs://${getIpfsCid(record.avatar)}`
@@ -1174,6 +1175,7 @@ function BuidlerDetails(props) {
                   })}
                 {isHasOtherBadges.map((badge) => (
                   <Img3
+                    gateways={['https://lxdaoipfs.4everland.link/ipfs/']}
                     key={badge?.image}
                     style={{
                       width: '60px',

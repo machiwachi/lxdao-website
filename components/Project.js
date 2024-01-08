@@ -22,6 +22,7 @@ function Project({ data }) {
       >
         <Box flex="0 0 148px">
           <Img3
+            gateways={['https://lxdaoipfs.4everland.link/ipfs/']}
             src={
               getIpfsCid(data.project.logoLarge)
                 ? `ipfs://${getIpfsCid(data.project.logoLarge)}`

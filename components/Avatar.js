@@ -49,6 +49,7 @@ function Avatar(props) {
     return (
       <>
         <Img3
+          gateways={['https://lxdaoipfs.4everland.link/ipfs/']}
           style={{ maxHeight: '100%', maxWidth: '100%' }}
           src={src || '/images/placeholder.jpeg'}
           alt={file.name}
@@ -152,6 +153,7 @@ function Avatar(props) {
           <PreviewFile file={file} />
         ) : (
           <Img3
+            gateways={['https://lxdaoipfs.4everland.link/ipfs/']}
             style={{ width: 160, height: 160 }}
             src={props.avatarValue || '/images/placeholder.jpeg'}
           />
