@@ -21,6 +21,8 @@ import Container from '@/components/Container';
 import showMessage from '@/components/showMessage';
 import useBuidler from '@/components/useBuidler';
 import WorkingGroupForm from '@/components/WorkingGroupForm';
+import { Img3 } from '@lxdao/img3';
+import { getImg3DidStrFromUrl } from '@/utils/utility';
 
 function LinkItem({ title, link, description }) {
   return (
@@ -194,12 +196,14 @@ export default function WorkingGroupDetail() {
                     href={`/buidlers/${member?.member?.address}`}
                     key={index}
                   >
-                    <Box
-                      component="img"
-                      width="59px"
-                      height="59px"
-                      src={member?.member?.avatar}
+                    <Img3
+                      src={getImg3DidStrFromUrl(member?.member?.avatar)}
+                      style={{
+                        width: '59px',
+                        height: '59px',
+                      }}
                     />
+
                     <Typography
                       position="absolute"
                       sx={{
@@ -232,11 +236,12 @@ export default function WorkingGroupDetail() {
                     href={`/buidlers/${member?.member?.address}`}
                     key={index}
                   >
-                    <Box
-                      component="img"
-                      width="59px"
-                      height="59px"
-                      src={member?.member?.avatar}
+                    <Img3
+                      src={getImg3DidStrFromUrl(member?.member?.avatar)}
+                      style={{
+                        width: '59px',
+                        height: '59px',
+                      }}
                     />
                   </Link>
                 ))}

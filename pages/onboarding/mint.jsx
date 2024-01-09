@@ -14,6 +14,9 @@ import { Container } from '@mui/system';
 import { ipfsToBytes } from '@/utils/utility';
 import { useEthersSigner } from '@/hooks';
 
+import { Img3 } from '@lxdao/img3';
+import { getImg3DidStrFromUrl } from '@/utils/utility';
+
 export default function Mint() {
   const { address } = useAccount();
   const [, record, , refresh] = useBuidler(address);
@@ -80,17 +83,17 @@ export default function Mint() {
           <Fade in={animation} timeout={3000} easing={'ease-out'}>
             {
               <Container>
-                <Box
-                  component="img"
-                  width="68px"
-                  height="68px"
-                  position="absolute"
-                  bottom={37}
-                  left={37}
-                  borderRadius="50%"
-                  src={record?.avatar}
-                  sx
-                ></Box>
+                <Img3
+                  src={getImg3DidStrFromUrl(record?.avatar)}
+                  style={{
+                    width: '68px',
+                    height: '68px',
+                    position: 'absolute',
+                    bottom: '37px',
+                    left: '37px',
+                    borderRadius: '50%',
+                  }}
+                />
                 <Typography
                   color="white"
                   position="absolute"

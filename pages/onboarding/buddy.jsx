@@ -2,9 +2,10 @@ import React from 'react';
 import { useAccount } from 'wagmi';
 import { useRouter } from 'next/router';
 import { Box, Typography, Link } from '@mui/material';
-
 import OnBoardingLayout from '@/components/OnBoardingLayout';
 import useBuidler from '@/components/useBuidler';
+import { Img3 } from '@lxdao/img3';
+import { getImg3DidStrFromUrl } from '@/utils/utility';
 
 export default function Buddy() {
   const { address } = useAccount();
@@ -108,16 +109,15 @@ export default function Buddy() {
               >
                 {data.name}
               </Typography>
-              <Box
-                component="img"
-                src={data?.avatar}
-                sx={{
+              <Img3
+                src={getImg3DidStrFromUrl(data?.avatar)}
+                style={{
                   width: '80px',
                   height: '80px',
                   marginLeft: '20px',
                   border: '0.5px solid #E5E5E5',
                 }}
-              ></Box>
+              />
             </Box>
           </Box>
         </Box>
