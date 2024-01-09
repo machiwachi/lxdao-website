@@ -29,6 +29,7 @@ import {
   getMemberFirstBadgeAmount,
   totalLXPoints,
   totalStableCoins,
+  getImg3DidStrFromUrl,
 } from '@/utils/utility';
 
 import Layout from '@/components/Layout';
@@ -38,6 +39,7 @@ import Container from '@/components/Container';
 import Button from '@/components/Button';
 import CopyText from '@/components/CopyText';
 import Skills from '../components/Skills';
+import { Img3 } from '@lxdao/img3';
 
 const roleNames = [
   'All',
@@ -265,12 +267,14 @@ export default function Buidlers() {
           />
         </Tooltip>
         <Link href={`/buidlers/${address}`} target="_blank">
-          <Box
-            component="img"
-            src={avatar}
-            width="80px"
-            height="80px"
-            sx={{ border: '0.5px solid #E5E5E5', borderRadius: '6px' }}
+          <Img3
+            src={getImg3DidStrFromUrl(avatar)}
+            style={{
+              width: '80px',
+              height: '80px',
+              border: '0.5px solid #E5E5E5',
+              borderRadius: '6px',
+            }}
           />
         </Link>
         <Box display="flex" flexDirection="column" gap="8px">

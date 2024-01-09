@@ -10,6 +10,9 @@ import Container from '@/components/Container';
 import showMessage from '@/components/showMessage';
 import useBuidler from '@/components/useBuidler';
 
+import { Img3 } from '@lxdao/img3';
+import { getImg3DidStrFromUrl } from '@/utils/utility';
+
 export function WorkingGroupCard({ key, data, width }) {
   const normalMembers = data?.membersInWorkingGroup?.filter(
     (member) => !member?.role?.includes('Working Group Leader')
@@ -82,11 +85,12 @@ export function WorkingGroupCard({ key, data, width }) {
                 href={`/buidlers/${member?.member?.address}`}
                 key={index}
               >
-                <Box
-                  component="img"
-                  width="59px"
-                  height="59px"
-                  src={member?.member?.avatar}
+                <Img3
+                  src={getImg3DidStrFromUrl(member?.member?.avatar)}
+                  style={{
+                    width: '59px',
+                    height: '59px',
+                  }}
                 />
                 <Typography
                   position="absolute"
@@ -120,11 +124,12 @@ export function WorkingGroupCard({ key, data, width }) {
                 href={`/buidlers/${member?.member?.address}`}
                 key={index}
               >
-                <Box
-                  component="img"
-                  width="59px"
-                  height="59px"
-                  src={member?.member?.avatar}
+                <Img3
+                  src={getImg3DidStrFromUrl(member?.member?.avatar)}
+                  style={{
+                    width: '59px',
+                    height: '59px',
+                  }}
                 />
               </Link>
             ))}
