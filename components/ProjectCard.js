@@ -10,6 +10,8 @@ import {
   Skeleton,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import { Img3 } from '@lxdao/img3';
+import { getImg3DidStrFromUrl } from '@/utils/utility';
 
 const CornerIcon = (props) => {
   const useStyles = makeStyles({
@@ -74,8 +76,8 @@ const ProjectCard = ({ project, index }) => {
       <Box sx={{ display: 'flex' }} marginBottom={4}>
         <Box sx={{ marginRight: '26px' }}>
           <Box sx={{ position: 'relative' }}>
-            <img
-              src={project.logo}
+            <Img3
+              src={getImg3DidStrFromUrl(project.logo)}
               style={{
                 width: '60px',
                 height: '60px',
@@ -83,6 +85,7 @@ const ProjectCard = ({ project, index }) => {
                 borderRadius: '50%',
               }}
             />
+
             <Typography
               sx={{
                 background: '#36AFF9',
@@ -166,7 +169,13 @@ const ProjectCard = ({ project, index }) => {
           overflow: 'hidden',
         }}
       >
-        <img style={{ width: '100%', display: 'block' }} src={project.banner} />
+        <Img3
+          src={getImg3DidStrFromUrl(project.banner)}
+          style={{
+            width: '100%',
+            display: 'block',
+          }}
+        />
       </Box>
       {project.description ? (
         <Typography
@@ -232,14 +241,11 @@ const ProjectCard = ({ project, index }) => {
                         borderRadius: '2px',
                       }}
                     >
-                      <Avatar
+                      <Img3
                         key={index}
-                        alt={buidler?.buidler?.name}
-                        src={buidler?.buidler?.avatar}
-                        variant="square"
-                        sx={{
+                        src={getImg3DidStrFromUrl(buidler?.buidler?.avatar)}
+                        style={{
                           cursor: 'pointer',
-                          position: 'absolute',
                           zIndex: 2,
                           width: '100%',
                           height: '100%',

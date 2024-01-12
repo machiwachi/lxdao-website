@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Typography, Link } from '@mui/material';
-
+import { Img3 } from '@lxdao/img3';
+import { getImg3DidStrFromUrl } from '@/utils/utility';
 const SimpleProjectCard = ({ data, key }) => (
   <Box
     width={{ sm: '356px', xs: '300px' }}
@@ -23,7 +24,11 @@ const SimpleProjectCard = ({ data, key }) => (
     />
     <Box padding="10px 20px 20px 20px">
       <Box display="flex" alignItems="center" gap={2}>
-        <Box height="48px" width="48px" component={'img'} src={data.logo} />
+        <Img3
+          src={getImg3DidStrFromUrl(data.logo)}
+          style={{ height: '48px', width: '48px' }}
+          className="memberAvatar"
+        />
         <Link
           href={`/projects/${data.number}`}
           target="_blank"

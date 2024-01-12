@@ -23,6 +23,7 @@ import {
 import { makeStyles } from '@mui/styles';
 import { useAccount } from 'wagmi';
 import { Img3 } from '@lxdao/img3';
+import { getImg3DidStrFromUrl } from '@/utils/utility';
 
 import API from '@/common/API';
 import { getLocalStorage, getIpfsCid } from '@/utils/utility';
@@ -687,22 +688,26 @@ const SectionProjectDetail = ({ projectId }) => {
                                   PM
                                 </Typography>
                               )}
-                              <Avatar
-                                key={index}
-                                alt={buidler?.buidler?.name}
-                                src={buidler?.buidler?.avatar}
-                                variant="square"
-                                sx={{
-                                  cursor: 'pointer',
-                                  position: 'absolute',
-                                  zIndex: 2,
-                                  width: '100%',
-                                  height: '100%',
-                                }}
+                              <Box
                                 onMouseOver={() =>
                                   handleDisplayBuidlerTooltip(buidler, 'open')
                                 }
-                              />
+                              >
+                                <Img3
+                                  key={index}
+                                  src={getImg3DidStrFromUrl(
+                                    buidler?.buidler?.avatar
+                                  )}
+                                  style={{
+                                    cursor: 'pointer',
+                                    position: 'absolute',
+                                    zIndex: 2,
+                                    width: '100%',
+                                    height: '100%',
+                                  }}
+                                />
+                              </Box>
+
                               {buidler.status == 'PENDING' && (
                                 <Box
                                   position="absolute"

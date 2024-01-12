@@ -19,6 +19,8 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import OnBoardingAlertBtn from './OnBoardingAlertBtn';
 import { ConnectWalletButton } from '@/components/ConnectWallet';
 import useBuidler from '@/components/useBuidler';
+import { Img3 } from '@lxdao/img3';
+import { getImg3DidStrFromUrl } from '@/utils/utility';
 
 const Header = () => {
   const { address } = useAccount();
@@ -322,11 +324,12 @@ const Header = () => {
                 justifyContent: 'center',
               }}
             >
-              <Box
-                component={'img'}
-                src={record?.avatar}
-                width="30px"
-                height="30px"
+              <Img3
+                src={getImg3DidStrFromUrl(record?.avatar)}
+                style={{
+                  width: '30px',
+                  height: '30px',
+                }}
               />
             </Link>
           )}
