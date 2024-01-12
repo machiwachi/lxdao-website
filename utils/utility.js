@@ -214,6 +214,7 @@ export function ipfsToBytes(ipfsURI) {
 
 
 export function getImg3DidStrFromUrl(url) {
+  if (!url) return url;
   const pattern = new RegExp(`\\b[a-zA-Z0-9]{59}\\b`, 'g');
   const matches = url.match(pattern);
   return matches[0] ? `ipfs://${matches[0]}` : url;
