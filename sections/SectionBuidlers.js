@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import { Box, Typography, Link } from '@mui/material';
 
-import { getMemberFirstBadgeAmount } from '@/utils/utility';
+import {
+  getMemberFirstBadgeAmount,
+  getImg3DidStrFromUrl,
+} from '@/utils/utility';
 
 import Container from '@/components/Container';
 import Button from '@/components/Button';
 import StyledTooltip from '@/components/StyledToolTip';
 import Tag from '@/components/Tag';
+import { Img3 } from '@lxdao/img3';
 
 const BuidlerAvatarBox = ({ buidler, active, display }) => {
   return (
@@ -35,13 +39,24 @@ const BuidlerAvatarBox = ({ buidler, active, display }) => {
         backgroundColor={active ? 'transpent' : 'rgba(0,0,0,0.5)'}
         display={{ md: 'block', xs: 'none' }}
       />
-
-      <Box
-        component="img"
-        src={buidler?.avatar || '/images/placeholder.jpeg'}
-        width={{ lg: '152px', sm: '130px', xs: '100%' }}
-        sx={{ aspectRatio: '1 / 1' }}
-      />
+      <Box width={{ lg: '152px', sm: '130px', xs: '100%' }} height="100%">
+        {buidler?.avatar ? (
+          <Img3
+            src={getImg3DidStrFromUrl(buidler?.avatar)}
+            style={{
+              width: '100%',
+              height: '100%',
+            }}
+          />
+        ) : (
+          <Box
+            component="img"
+            width={{ xs: '100%' }}
+            src={'/images/placeholder.jpeg'}
+            sx={{ aspectRatio: '1 / 1' }}
+          />
+        )}
+      </Box>
     </Link>
   );
 };

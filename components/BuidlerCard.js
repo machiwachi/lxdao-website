@@ -3,6 +3,8 @@ import { Box, Typography, Avatar } from '@mui/material';
 
 import BuidlerContacts from './BuidlerContacts';
 import Tag from './Tag';
+import { Img3 } from '@lxdao/img3';
+import { getImg3DidStrFromUrl } from '@/utils/utility';
 
 const BuidlerCard = ({ buidlerInfo }) => {
   if (!buidlerInfo) return null;
@@ -21,9 +23,9 @@ const BuidlerCard = ({ buidlerInfo }) => {
       boxSizing={'border-box'}
     >
       <Box display="flex" alignItems="center" gap="20px">
-        <Avatar
-          src={avatar}
-          sx={{
+        <Img3
+          src={getImg3DidStrFromUrl(avatar)}
+          style={{
             width: '80px',
             height: '80px',
             border: '1px solid #dedede',
