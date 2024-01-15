@@ -700,7 +700,6 @@ const SectionProjectDetail = ({ projectId }) => {
                                   )}
                                   style={{
                                     cursor: 'pointer',
-                                    position: 'absolute',
                                     zIndex: 2,
                                     width: '100%',
                                     height: '100%',
