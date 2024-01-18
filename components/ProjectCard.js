@@ -241,16 +241,18 @@ const ProjectCard = ({ project, index }) => {
                         borderRadius: '2px',
                       }}
                     >
-                      <Img3
-                        key={index}
-                        src={getImg3DidStrFromUrl(buidler?.buidler?.avatar)}
-                        style={{
-                          cursor: 'pointer',
-                          zIndex: 2,
-                          width: '100%',
-                          height: '100%',
-                        }}
-                      />
+                      {buidler?.buidler?.avatar && (
+                        <Img3
+                          key={index}
+                          src={getImg3DidStrFromUrl(buidler?.buidler?.avatar)}
+                          style={{
+                            cursor: 'pointer',
+                            zIndex: 2,
+                            width: '100%',
+                            height: '100%',
+                          }}
+                        />
+                      )}
                       {buidler?.projectRole.includes('Project Manager') && (
                         <Typography
                           position="absolute"

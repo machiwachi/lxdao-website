@@ -324,13 +324,15 @@ const Header = () => {
                 justifyContent: 'center',
               }}
             >
-              <Img3
-                src={getImg3DidStrFromUrl(record?.avatar)}
-                style={{
-                  width: '30px',
-                  height: '30px',
-                }}
-              />
+              {record?.avatar && (
+                <Img3
+                  src={getImg3DidStrFromUrl(record?.avatar)}
+                  style={{
+                    width: '30px',
+                    height: '30px',
+                  }}
+                />
+              )}
             </Link>
           )}
           <OnBoardingAlertBtn />
