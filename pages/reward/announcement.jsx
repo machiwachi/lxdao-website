@@ -26,6 +26,8 @@ import {
   InputLabel,
   Select,
   Collapse,
+  Input,
+  Autocomplete,
 } from '@mui/material';
 
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -786,7 +788,7 @@ function UnReleasedLXPTable({
             id="reward-select-label"
             value={labels}
             onChange={handleSelectLabels}
-            sx={{ height: '44px' }}
+            sx={{ height: 40 }}
           >
             {allLabels.map((item, index) => {
               return (
@@ -931,7 +933,7 @@ function UnReleasedStablecoinTable({
     try {
       const res = await API.get(`/stablecoin/members`);
       const members = res?.data?.data || [];
-      setMembers([{ name: 'All members', address: 'all' }, ...members]);
+      setMembers(members);
     } catch (err) {
       showMessage({
         type: 'error',
@@ -1039,11 +1041,12 @@ function UnReleasedStablecoinTable({
     }
   };
 
-  const handleSelectMembers = async (event) => {
-    let {
-      target: { value },
-    } = event;
-    setCurrentMember(value);
+  const handleSelectMembers = async (event, option) => {
+    // let {
+    //   target: { value },
+    // } = event;
+    console.log(option);
+    setCurrentMember(option ? option.address : '');
   };
 
   const handleReleaseBtn = async () => {
@@ -1198,7 +1201,8 @@ function UnReleasedStablecoinTable({
             id="reward-select-label"
             value={labels}
             onChange={handleSelectLabels}
-            sx={{ height: '44px' }}
+            sx={{ height: 40 }}
+            size="small"
           >
             {allLabels.map((item, index) => {
               return (
@@ -1208,21 +1212,18 @@ function UnReleasedStablecoinTable({
               );
             })}
           </Select>
-          <Select
-            labelId="reward-select-label"
-            id="reward-select-label"
-            value={currentMember}
+
+          <Autocomplete
+            disablePortal
+            id="combo-box-demo"
+            options={members}
+            getOptionLabel={(option) => option.name}
+            getOptionValue={(option) => option.address}
             onChange={handleSelectMembers}
-            sx={{ height: '44px' }}
-          >
-            {members.map((item, index) => {
-              return (
-                <MenuItem key={index} value={item.address}>
-                  {item.name}
-                </MenuItem>
-              );
-            })}
-          </Select>
+            sx={{ width: 150 }}
+            size="small"
+            renderInput={(params) => <TextField {...params} label="members" />}
+          />
         </Box>
 
         <Table>
