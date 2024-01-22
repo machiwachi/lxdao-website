@@ -15,9 +15,11 @@ function formatContacts(contacts) {
   Object.keys(removeEmpty(contacts)).map((key) => {
     switch (key) {
       case 'twitter':
-        formattedContacts[
-          'twitter'
-        ] = `https://twitter.com/${contacts.twitter.replace('@', '')}`;
+        formattedContacts['twitter'] = contacts.twitter.includes(
+          'https://twitter.com/'
+        )
+          ? contacts.twitter
+          : `https://twitter.com/${contacts.twitter.replace('@', '')}`;
         break;
       case 'email':
         formattedContacts['email'] = `mailto:${contacts.email}`;
