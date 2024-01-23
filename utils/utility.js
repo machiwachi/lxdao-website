@@ -69,6 +69,12 @@ export const removeLocalStorage = (name) => {
   }
 };
 
+export const getOpEtherScanDomain = () => {
+  return process.env.NEXT_PUBLIC_LXDAO_BACKEND_API.includes('dev')
+    ? 'goerli.etherscan.io'
+    : 'optimistic.etherscan.io';
+};
+
 export function getEtherScanDomain() {
   return process.env.NEXT_PUBLIC_CHAIN_ID === '1'
     ? 'etherscan.io'

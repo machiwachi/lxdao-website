@@ -49,6 +49,7 @@ import API from '@/common/API';
 import {
   formatAddress,
   getEtherScanDomain,
+  getOpEtherScanDomain,
   getOpenSeaDomain,
   getPolygonScanDomain,
   getIpfsCid,
@@ -327,7 +328,11 @@ function StableCoinsTable({ points }) {
                   <Link
                     target="_blank"
                     sx={{ textDecoration: 'none' }}
-                    href={`https://${getEtherScanDomain()}/tx/${point.hash}`}
+                    href={`https://${
+                      pointStatus < '2023-11-01'
+                        ? getEtherScanDomain()
+                        : getOpEtherScanDomain()
+                    }/tx/${point.hash}`}
                   >
                     <Typography
                       sx={{
