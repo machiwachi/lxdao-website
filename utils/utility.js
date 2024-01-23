@@ -69,6 +69,12 @@ export const removeLocalStorage = (name) => {
   }
 };
 
+export const getOpEtherScanDomain = () => {
+  return process.env.NEXT_PUBLIC_LXDAO_BACKEND_API.includes('dev')
+    ? 'goerli.etherscan.io'
+    : 'optimistic.etherscan.io';
+};
+
 export function getEtherScanDomain() {
   return process.env.NEXT_PUBLIC_CHAIN_ID === '1'
     ? 'etherscan.io'
@@ -178,7 +184,7 @@ export function totalLXPoints(record) {
         }
         return total;
       }, 0);
-      return `${total} LXP`;
+      return `${total?.toFixed(2)} LXP`;
     })
     .join(' + ');
 }
@@ -202,7 +208,7 @@ export function totalStableCoins(record) {
         }
         return total;
       }, 0);
-      return `${total} U`;
+      return `${total.toFixed(2)} U`;
     })
     .join(' + ');
 }
