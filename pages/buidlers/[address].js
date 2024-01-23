@@ -153,7 +153,7 @@ function LXPointsTable({ points }) {
                   scope="row"
                 >
                   <Typography variant="body1" fontWeight="600">
-                    {`${point.value} LXP`}
+                    {`${point.value?.toFixed(2)} LXP`}
                   </Typography>
                 </TableCell>
                 <TableCell sx={{ color: '#101828' }} align="left">
@@ -290,7 +290,7 @@ function StableCoinsTable({ points }) {
                   scope="row"
                 >
                   <Typography variant="body1" fontWeight="600">
-                    {`${point.value} U`}
+                    {`${point.value?.toFixed(2)} U`}
                   </Typography>
                 </TableCell>
                 <TableCell sx={{ color: '#101828' }} align="left">

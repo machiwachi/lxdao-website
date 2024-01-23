@@ -178,7 +178,7 @@ export function totalLXPoints(record) {
         }
         return total;
       }, 0);
-      return `${total} LXP`;
+      return `${total?.toFixed(2)} LXP`;
     })
     .join(' + ');
 }
@@ -202,7 +202,7 @@ export function totalStableCoins(record) {
         }
         return total;
       }, 0);
-      return `${total} U`;
+      return `${total.toFixed(2)} U`;
     })
     .join(' + ');
 }
