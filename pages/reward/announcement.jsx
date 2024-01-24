@@ -28,6 +28,7 @@ import {
   Collapse,
   Input,
   Autocomplete,
+  FormControl,
 } from '@mui/material';
 
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -918,6 +919,7 @@ function UnReleasedStablecoinTable({
 
   const [members, setMembers] = useState([]);
   const [currentMember, setCurrentMember] = useState('all');
+  const [treasury, setTreasury] = useState('');
 
   useEffect(() => {
     getStablecoinMembers();
@@ -1049,11 +1051,14 @@ function UnReleasedStablecoinTable({
     setCurrentMember(option ? option.address : '');
   };
 
+  const handleChangeTreasury = (event) => {
+    setTreasury(event.target.value);
+  };
+
   const handleReleaseBtn = async () => {
     if (transaction.length !== 66 || !transaction.startsWith('0x')) {
       throw { message: 'transaction error.' };
     }
-
     // mint all and store the transaction hash
     setDisable(true);
     try {
@@ -1061,6 +1066,7 @@ function UnReleasedStablecoinTable({
       const res = await API.post(`/stablecoin/release`, {
         hash: transaction,
         ids: selected,
+        treasury: treasury,
       });
       const result = res.data;
       if (result.status !== 'SUCCESS') {
@@ -1507,9 +1513,7 @@ function UnReleasedStablecoinTable({
           <DialogTitle>Input safe transaction</DialogTitle>
           <DialogContent>
             <Box
-              display="flex"
               gap={{ md: '20px', xs: '10px' }}
-              justifyContent="flex-start"
               marginTop="10px"
               marginBottom="5px"
               enable
@@ -1525,8 +1529,24 @@ function UnReleasedStablecoinTable({
                   }}
                 />
               </Box>
+              <Box width="500px" marginY="20px">
+                <FormControl fullWidth>
+                  <InputLabel id="treasury-select-label">treasury</InputLabel>
+                  <Select
+                    labelId="treasury-select-label"
+                    label="treasury"
+                    onChange={handleChangeTreasury}
+                    value={treasury}
+                    style={{ width: '100%', height: '100%' }}
+                  >
+                    <MenuItem value="optimism">optimism</MenuItem>
+                    <MenuItem value="ethereum">ethereum</MenuItem>
+                  </Select>
+                </FormControl>
+              </Box>
 
               <LXButton
+                margin="0 auto"
                 width="150px"
                 variant="gradient"
                 onClick={async () => {
