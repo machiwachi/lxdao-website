@@ -5,6 +5,11 @@ import Container from '@/components/Container';
 
 const partnersData = [
   {
+    name: 'Optimism',
+    logo: '/images/partners/optimism-logo.svg',
+    link: 'https://www.optimism.io/',
+  },
+  {
     name: 'NextDAO',
     logo: '/images/partners/nextdao-logo.svg',
     link: 'https://twitter.com/theNextDAO',
