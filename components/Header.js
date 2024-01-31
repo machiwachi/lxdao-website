@@ -325,13 +325,22 @@ const Header = () => {
               }}
             >
               {record?.avatar && (
-                <Img3
-                  src={getImg3DidStrFromUrl(record?.avatar)}
+                <Box
+                  component="img"
+                  src={record?.avatar}
+                  alt="avatar"
                   style={{
                     width: '30px',
                     height: '30px',
                   }}
                 />
+                // <Img3
+                //   src={getImg3DidStrFromUrl(record?.avatar)}
+                //   style={{
+                //     width: '30px',
+                //     height: '30px',
+                //   }}
+                // />
               )}
             </Link>
           )}

@@ -267,8 +267,10 @@ export default function Buidlers() {
           />
         </Tooltip>
         <Link href={`/buidlers/${address}`} target="_blank">
-          <Img3
-            src={getImg3DidStrFromUrl(avatar)}
+          <Box
+            component="img"
+            src={avatar}
+            alt="avatar"
             style={{
               width: '80px',
               height: '80px',
@@ -276,6 +278,15 @@ export default function Buidlers() {
               borderRadius: '6px',
             }}
           />
+          {/* <Img3
+            src={getImg3DidStrFromUrl(avatar)}
+            style={{
+              width: '80px',
+              height: '80px',
+              border: '0.5px solid #E5E5E5',
+              borderRadius: '6px',
+            }}
+          /> */}
         </Link>
         <Box display="flex" flexDirection="column" gap="8px">
           <Link

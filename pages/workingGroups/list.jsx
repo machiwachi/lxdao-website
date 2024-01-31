@@ -85,13 +85,22 @@ export function WorkingGroupCard({ key, data, width }) {
                 href={`/buidlers/${member?.member?.address}`}
                 key={index}
               >
-                <Img3
-                  src={getImg3DidStrFromUrl(member?.member?.avatar)}
+                <Box
+                  component="img"
+                  src={member?.member?.avatar}
+                  alt="avatar"
                   style={{
                     width: '59px',
                     height: '59px',
                   }}
                 />
+                {/* <Img3
+                  src={getImg3DidStrFromUrl(member?.member?.avatar)}
+                  style={{
+                    width: '59px',
+                    height: '59px',
+                  }}
+                /> */}
                 <Typography
                   position="absolute"
                   sx={{
@@ -124,13 +133,22 @@ export function WorkingGroupCard({ key, data, width }) {
                 href={`/buidlers/${member?.member?.address}`}
                 key={index}
               >
-                <Img3
-                  src={getImg3DidStrFromUrl(member?.member?.avatar)}
+                <Box
+                  component="img"
+                  src={member?.member?.avatar}
+                  alt="avatar"
                   style={{
                     width: '59px',
                     height: '59px',
                   }}
                 />
+                {/* <Img3
+                  src={getImg3DidStrFromUrl(member?.member?.avatar)}
+                  style={{
+                    width: '59px',
+                    height: '59px',
+                  }}
+                /> */}
               </Link>
             ))}
         </Box>

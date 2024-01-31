@@ -24,8 +24,10 @@ const BuidlerCard = ({ buidlerInfo }) => {
     >
       <Box display="flex" alignItems="center" gap="20px">
         {avatar && (
-          <Img3
-            src={getImg3DidStrFromUrl(avatar)}
+          <Box
+            component="img"
+            src={avatar}
+            alt="avatar"
             style={{
               width: '80px',
               height: '80px',
@@ -33,6 +35,15 @@ const BuidlerCard = ({ buidlerInfo }) => {
               borderRadius: '50%',
             }}
           />
+          // <Img3
+          //   src={getImg3DidStrFromUrl(avatar)}
+          //   style={{
+          //     width: '80px',
+          //     height: '80px',
+          //     border: '1px solid #dedede',
+          //     borderRadius: '50%',
+          //   }}
+          // />
         )}
         <Box display="flex" flexDirection="column" gap="5px" color="#000000">
           <Typography fontSize="20px" fontWeight="800">

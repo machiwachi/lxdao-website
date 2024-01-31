@@ -79,13 +79,22 @@ const SimpleProjectCard = ({ data, key }) => (
                 borderRadius="2px"
                 border="0.5px solid #D0D5DD"
               >
-                <Img3
+                <Box
+                  component="img"
+                  src={buidler?.buidler?.avatar}
+                  alt="avatar"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                  }}
+                />
+                {/* <Img3
                   key={index}
                   src={getImg3DidStrFromUrl(buidler?.buidler?.avatar)}
                   style={{
                     width: '100%',
                     height: '100%',
-                  }}
+                  }} */}
                 />
               </Box>
             </Link>

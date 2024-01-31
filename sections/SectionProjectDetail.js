@@ -693,7 +693,16 @@ const SectionProjectDetail = ({ projectId }) => {
                                   handleDisplayBuidlerTooltip(buidler, 'open')
                                 }
                               >
-                                <Img3
+                                <Box
+                                  component="img"
+                                  src={buidler?.buidler?.avatar}
+                                  alt="avatar"
+                                  style={{
+                                    width: '59px',
+                                    height: '59px',
+                                  }}
+                                />
+                                {/* <Img3
                                   key={index}
                                   src={getImg3DidStrFromUrl(
                                     buidler?.buidler?.avatar
@@ -704,7 +713,7 @@ const SectionProjectDetail = ({ projectId }) => {
                                     width: '100%',
                                     height: '100%',
                                   }}
-                                />
+                                /> */}
                               </Box>
 
                               {buidler.status == 'PENDING' && (
