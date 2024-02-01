@@ -21,14 +21,10 @@ function Project({ data }) {
         flexDirection="row"
       >
         <Box flex="0 0 148px">
-          <Img3
-            src={
-              getIpfsCid(data.project.logoLarge)
-                ? `ipfs://${getIpfsCid(data.project.logoLarge)}`
-                : '/images/placeholder.jpeg'
-            }
+          <Box
+            component="img"
+            src={data.project.logoLarge || '/images/placeholder.jpeg'}
             style={{ display: 'block', width: '148px' }}
-            timeout={3000}
           />
         </Box>
 

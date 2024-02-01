@@ -438,18 +438,14 @@ const SectionProjectDetail = ({ projectId }) => {
                 maxHeight: '100%',
               }}
             >
-              <Img3
-                src={
-                  getIpfsCid(project.logoLarge)
-                    ? `ipfs://${getIpfsCid(project.logoLarge)}`
-                    : '/images/placeholder.jpeg'
-                }
+              <Box
+                component="img"
+                src={project.logoLarge || '/images/placeholder.jpeg'}
                 style={{
                   width: '100%',
                   border: '0.5px solid #D0D5DD',
                   borderRadius: '6px',
                 }}
-                timeout={3000}
               />
               <Typography
                 sx={{
@@ -702,18 +698,6 @@ const SectionProjectDetail = ({ projectId }) => {
                                     height: '59px',
                                   }}
                                 />
-                                {/* <Img3
-                                  key={index}
-                                  src={getImg3DidStrFromUrl(
-                                    buidler?.buidler?.avatar
-                                  )}
-                                  style={{
-                                    cursor: 'pointer',
-                                    zIndex: 2,
-                                    width: '100%',
-                                    height: '100%',
-                                  }}
-                                /> */}
                               </Box>
 
                               {buidler.status == 'PENDING' && (

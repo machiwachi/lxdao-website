@@ -941,15 +941,6 @@ function BuidlerDetails(props) {
                       height: 252,
                     }}
                   />
-                  {/* <Img3
-                    src={
-                      getIpfsCid(record.avatar)
-                        ? `ipfs://${getIpfsCid(record.avatar)}`
-                        : '/images/placeholder.jpeg'
-                    }
-                    style={{ display: 'block', width: 252, height: 252 }}
-                    timeout={3000}
-                  /> */}
                 </Box>
                 <Typography
                   variant="h5"

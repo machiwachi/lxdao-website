@@ -76,8 +76,9 @@ const ProjectCard = ({ project, index }) => {
       <Box sx={{ display: 'flex' }} marginBottom={4}>
         <Box sx={{ marginRight: '26px' }}>
           <Box sx={{ position: 'relative' }}>
-            <Img3
-              src={getImg3DidStrFromUrl(project.logo)}
+            <Box
+              component="img"
+              src={project.logo}
               style={{
                 width: '60px',
                 height: '60px',
@@ -85,7 +86,6 @@ const ProjectCard = ({ project, index }) => {
                 borderRadius: '50%',
               }}
             />
-
             <Typography
               sx={{
                 background: '#36AFF9',
@@ -169,8 +169,9 @@ const ProjectCard = ({ project, index }) => {
           overflow: 'hidden',
         }}
       >
-        <Img3
-          src={getImg3DidStrFromUrl(project.banner)}
+        <Box
+          component="img"
+          src={project.banner}
           style={{
             width: '100%',
             display: 'block',
@@ -253,16 +254,6 @@ const ProjectCard = ({ project, index }) => {
                             height: '100%',
                           }}
                         />
-                        // <Img3
-                        //   key={index}
-                        //   src={getImg3DidStrFromUrl(buidler?.buidler?.avatar)}
-                        //   style={{
-                        //     cursor: 'pointer',
-                        //     zIndex: 2,
-                        //     width: '100%',
-                        //     height: '100%',
-                        //   }}
-                        // />
                       )}
                       {buidler?.projectRole.includes('Project Manager') && (
                         <Typography

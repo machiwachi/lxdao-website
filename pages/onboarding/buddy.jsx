@@ -120,15 +120,6 @@ export default function Buddy() {
                   border: '0.5px solid #E5E5E5',
                 }}
               />
-              {/* <Img3
-                src={getImg3DidStrFromUrl(data?.avatar)}
-                style={{
-                  width: '80px',
-                  height: '80px',
-                  marginLeft: '20px',
-                  border: '0.5px solid #E5E5E5',
-                }}
-              /> */}
             </Box>
           </Box>
         </Box>

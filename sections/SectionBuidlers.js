@@ -40,13 +40,6 @@ const BuidlerAvatarBox = ({ buidler, active, display }) => {
         display={{ md: 'block', xs: 'none' }}
       />
       <Box width={{ lg: '152px', sm: '130px', xs: '100%' }} height="100%">
-        {/* // <Img3
-          //   src={getImg3DidStrFromUrl(buidler?.avatar)}
-          //   style={{
-          //     width: '100%',
-          //     height: '100%',
-          //   }}
-          // /> */}
         <Box
           component="img"
           width={{ xs: '100%' }}
