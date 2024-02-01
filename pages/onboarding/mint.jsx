@@ -83,8 +83,10 @@ export default function Mint() {
           <Fade in={animation} timeout={3000} easing={'ease-out'}>
             {
               <Container>
-                <Img3
-                  src={getImg3DidStrFromUrl(record?.avatar)}
+                <Box
+                  component="img"
+                  src={record?.avatar}
+                  alt="avatar"
                   style={{
                     width: '68px',
                     height: '68px',
@@ -94,6 +96,17 @@ export default function Mint() {
                     borderRadius: '50%',
                   }}
                 />
+                {/* <Img3
+                  src={getImg3DidStrFromUrl(record?.avatar)}
+                  style={{
+                    width: '68px',
+                    height: '68px',
+                    position: 'absolute',
+                    bottom: '37px',
+                    left: '37px',
+                    borderRadius: '50%',
+                  }}
+                /> */}
                 <Typography
                   color="white"
                   position="absolute"

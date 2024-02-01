@@ -11,6 +11,7 @@ import ContactsField from './ContactsField';
 import MultiSelect from './MultiSelect';
 import TextInput from './TextInput';
 import Avatar from './Avatar';
+import UploadImg from './UploadImg';
 
 const interestNames = [
   'UI/UX Design',
@@ -99,7 +100,8 @@ function ProfileForm(props) {
             name={'avatar'}
             control={control}
             render={({ field: { onChange, value } }) => {
-              return <Avatar avatarValue={value} onChange={onChange}></Avatar>;
+              return <UploadImg avatarValue={value} onChange={onChange} />;
+              // return <Avatar avatarValue={value} onChange={onChange}></Avatar>;
             }}
           />
         </Box>

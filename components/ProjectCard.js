@@ -242,9 +242,10 @@ const ProjectCard = ({ project, index }) => {
                       }}
                     >
                       {buidler?.buidler?.avatar && (
-                        <Img3
-                          key={index}
-                          src={getImg3DidStrFromUrl(buidler?.buidler?.avatar)}
+                        <Box
+                          component="img"
+                          src={buidler?.buidler?.avatar}
+                          alt="avatar"
                           style={{
                             cursor: 'pointer',
                             zIndex: 2,
@@ -252,6 +253,16 @@ const ProjectCard = ({ project, index }) => {
                             height: '100%',
                           }}
                         />
+                        // <Img3
+                        //   key={index}
+                        //   src={getImg3DidStrFromUrl(buidler?.buidler?.avatar)}
+                        //   style={{
+                        //     cursor: 'pointer',
+                        //     zIndex: 2,
+                        //     width: '100%',
+                        //     height: '100%',
+                        //   }}
+                        // />
                       )}
                       {buidler?.projectRole.includes('Project Manager') && (
                         <Typography
