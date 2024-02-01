@@ -334,13 +334,6 @@ const Header = () => {
                     height: '30px',
                   }}
                 />
-                // <Img3
-                //   src={getImg3DidStrFromUrl(record?.avatar)}
-                //   style={{
-                //     width: '30px',
-                //     height: '30px',
-                //   }}
-                // />
               )}
             </Link>
           )}

@@ -24,8 +24,9 @@ const SimpleProjectCard = ({ data, key }) => (
     />
     <Box padding="10px 20px 20px 20px">
       <Box display="flex" alignItems="center" gap={2}>
-        <Img3
-          src={getImg3DidStrFromUrl(data.logo)}
+        <Box
+          component="img"
+          src={data.logo}
           style={{ height: '48px', width: '48px' }}
           className="memberAvatar"
         />
@@ -87,14 +88,6 @@ const SimpleProjectCard = ({ data, key }) => (
                     width: '100%',
                     height: '100%',
                   }}
-                />
-                {/* <Img3
-                  key={index}
-                  src={getImg3DidStrFromUrl(buidler?.buidler?.avatar)}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                  }} */}
                 />
               </Box>
             </Link>

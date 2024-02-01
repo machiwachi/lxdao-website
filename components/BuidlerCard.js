@@ -35,15 +35,6 @@ const BuidlerCard = ({ buidlerInfo }) => {
               borderRadius: '50%',
             }}
           />
-          // <Img3
-          //   src={getImg3DidStrFromUrl(avatar)}
-          //   style={{
-          //     width: '80px',
-          //     height: '80px',
-          //     border: '1px solid #dedede',
-          //     borderRadius: '50%',
-          //   }}
-          // />
         )}
         <Box display="flex" flexDirection="column" gap="5px" color="#000000">
           <Typography fontSize="20px" fontWeight="800">

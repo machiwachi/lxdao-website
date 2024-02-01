@@ -51,8 +51,9 @@ const TeamMemberCard = ({ data }) => {
       className={styles.memberCardWrapper}
     >
       <Box marginBottom="12px">
-        <Img3
-          src={getImg3DidStrFromUrl(data?.avatarUrl)}
+        <Box
+          component="img"
+          src={data?.avatarUrl}
           style={{ borderRadius: '50%' }}
           className="memberAvatar"
         />

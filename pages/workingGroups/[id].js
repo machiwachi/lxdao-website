@@ -205,13 +205,6 @@ export default function WorkingGroupDetail() {
                         height: '59px',
                       }}
                     />
-                    {/* <Img3
-                      src={getImg3DidStrFromUrl(member?.member?.avatar)}
-                      style={{
-                        width: '59px',
-                        height: '59px',
-                      }}
-                    /> */}
 
                     <Typography
                       position="absolute"
@@ -254,13 +247,6 @@ export default function WorkingGroupDetail() {
                         height: '59px',
                       }}
                     />
-                    {/* <Img3
-                      src={getImg3DidStrFromUrl(member?.member?.avatar)}
-                      style={{
-                        width: '59px',
-                        height: '59px',
-                      }}
-                    /> */}
                   </Link>
                 ))}
             </Box>
