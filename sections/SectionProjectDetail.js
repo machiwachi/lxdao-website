@@ -520,7 +520,7 @@ const SectionProjectDetail = ({ projectId }) => {
                       key={index}
                     >
                       <Box
-                        width="20px"
+                        maxWidth="20px"
                         component={'img'}
                         src={`/icons/${key}.svg`}
                       />
