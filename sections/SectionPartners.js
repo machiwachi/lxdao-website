@@ -3,31 +3,94 @@ import { Box, Typography, Link } from '@mui/material';
 
 import Container from '@/components/Container';
 
-const partnersData = [
-  {
-    name: 'Optimism',
-    logo: '/images/partners/optimism-logo.svg',
-    link: 'https://www.optimism.io/',
-  },
+// const partnersData = [
+//   {
+//     name: 'Optimism',
+//     logo: '/images/partners/optimism-logo.svg',
+//     link: 'https://www.optimism.io/',
+//   },
+//   {
+//     name: 'NextDAO',
+//     logo: '/images/partners/nextdao-logo.svg',
+//     link: 'https://twitter.com/theNextDAO',
+//   },
+//   {
+//     name: 'ELEDUCK',
+//     logo: '/images/partners/eleduck-logo.svg',
+//     link: 'https://eleduck.com/',
+//   },
+//   {
+//     name: 'MobyMask',
+//     logo: '/images/partners/mobymask-logo.svg',
+//     link: 'https://mobymask.com/',
+//   },
+//   {
+//     name: 'MoleDAO',
+//     logo: '/images/partners/moledao-logo.svg',
+//     link: 'https://www.moledao.io/',
+//   },
+//   {
+//     name: 'MarsDAO',
+//     logo: '/images/partners/marsdao-logo.svg',
+//     link: 'https://linktr.ee/MarsDAO',
+//   },
+//   {
+//     name: 'EthSign',
+//     logo: '/images/partners/ethsign-logo.svg',
+//     link: 'https://www.ethsign.xyz/',
+//   },
+//   {
+//     name: 'Plancker',
+//     logo: '/images/partners/Plancker-logo.svg',
+//     link: 'https://plancker.org/',
+//   },
+//   {
+//     name: '8dao',
+//     logo: '/images/partners/8dao-logo.svg',
+//     link: 'https://8dao.io/',
+//   },
+//   {
+//     name: 'Uncommons',
+//     logo: '/images/partners/Uncommons-logo.svg',
+//     link: 'https://www.notion.so/Uncommons-04ea0224d3cd4fe9b5181b6dd22d02b4',
+//   },
+//   {
+//     name: 'AAStar',
+//     logo: '/images/partners/AAStar-logo.svg',
+//     link: 'https://www.aastar.xyz/',
+//   },
+//   {
+//     name: 'DAOStar',
+//     logo: '/images/partners/DAOStar-logo.svg',
+//     link: 'https://daostar.org/',
+//   },
+// ];
+
+const communitiesData = [
   {
     name: 'NextDAO',
     logo: '/images/partners/nextdao-logo.svg',
     link: 'https://twitter.com/theNextDAO',
   },
   {
-    name: 'ELEDUCK',
-    logo: '/images/partners/eleduck-logo.svg',
-    link: 'https://eleduck.com/',
+    name: 'GCC',
+    logo: '/images/partners/gcc-logo.svg',
+    link: 'https://www.gccofficial.org/',
   },
   {
-    name: 'MobyMask',
-    logo: '/images/partners/mobymask-logo.svg',
-    link: 'https://mobymask.com/',
+    name: 'PlanckerDAO',
+    logo: '/images/partners/Plancker-logo.svg',
+    link: 'https://plancker.org/',
+  },
+  {
+    name: 'DAOStar',
+    logo: '/images/partners/DAOStar-logo.svg',
+    link: 'https://daostar.org/',
   },
   {
     name: 'MoleDAO',
     logo: '/images/partners/moledao-logo.svg',
-    link: 'https://www.moledao.io/',
+    link: 'https://linktr.ee/moledao',
   },
   {
     name: 'MarsDAO',
@@ -37,12 +100,7 @@ const partnersData = [
   {
     name: 'EthSign',
     logo: '/images/partners/ethsign-logo.svg',
-    link: 'https://www.ethsign.xyz/',
-  },
-  {
-    name: 'Plancker',
-    logo: '/images/partners/Plancker-logo.svg',
-    link: 'https://plancker.org/',
+    link: 'https://linktr.ee/SignProtocol',
   },
   {
     name: '8dao',
@@ -59,10 +117,38 @@ const partnersData = [
     logo: '/images/partners/AAStar-logo.svg',
     link: 'https://www.aastar.xyz/',
   },
+];
+
+const sponsorshipsData = [
   {
-    name: 'DAOStar',
-    logo: '/images/partners/DAOStar-logo.svg',
-    link: 'https://daostar.org/',
+    name: 'Ethereum Foundation',
+    logo: '/images/partners/ethereumFoundation-logo.svg',
+    link: 'https://esp.ethereum.foundation/',
+  },
+  {
+    name: 'Optimism',
+    logo: '/images/partners/optimism-logo.svg',
+    link: 'https://www.optimism.io/',
+  },
+  {
+    name: 'Filecoin Foundation',
+    logo: '/images/partners/filecoinFoundation-logo.svg',
+    link: 'https://fil.org/',
+  },
+  {
+    name: 'MetaMask',
+    logo: '/images/partners/mobymask-logo.svg',
+    link: 'https://mobymask.com/',
+  },
+  {
+    name: 'Mask Network',
+    logo: '/images/partners/mask-logo.svg',
+    link: '	https://mask.io/',
+  },
+  {
+    name: 'Gitcoin',
+    logo: '/images/partners/gitcoin-logo.svg',
+    link: 'https://www.gitcoin.co/',
   },
 ];
 
@@ -78,7 +164,7 @@ const SectionPartners = () => (
         gap="64px"
       >
         <Typography variant="h2" lineHeight="58px" fontWeight={600}>
-          Our Partners
+          Sponsorships
         </Typography>
         <Box
           display="flex"
@@ -86,7 +172,24 @@ const SectionPartners = () => (
           flexWrap="wrap"
           justifyContent={{ md: 'center', sm: 'center', xs: 'center' }}
         >
-          {partnersData.map((partner, index) => {
+          {sponsorshipsData.map((partner, index) => {
+            return (
+              <Link href={partner.link} target="_blank" key={index}>
+                <Box component={'img'} src={partner.logo} />
+              </Link>
+            );
+          })}
+        </Box>
+        <Typography variant="h2" lineHeight="58px" fontWeight={600}>
+          Our Partners & Community
+        </Typography>
+        <Box
+          display="flex"
+          gap={2}
+          flexWrap="wrap"
+          justifyContent={{ md: 'center', sm: 'center', xs: 'center' }}
+        >
+          {communitiesData.map((partner, index) => {
             return (
               <Link href={partner.link} target="_blank" key={index}>
                 <Box component={'img'} src={partner.logo} />
