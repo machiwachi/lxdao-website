@@ -3,69 +3,6 @@ import { Box, Typography, Link } from '@mui/material';
 
 import Container from '@/components/Container';
 
-// const partnersData = [
-//   {
-//     name: 'Optimism',
-//     logo: '/images/partners/optimism-logo.svg',
-//     link: 'https://www.optimism.io/',
-//   },
-//   {
-//     name: 'NextDAO',
-//     logo: '/images/partners/nextdao-logo.svg',
-//     link: 'https://twitter.com/theNextDAO',
-//   },
-//   {
-//     name: 'ELEDUCK',
-//     logo: '/images/partners/eleduck-logo.svg',
-//     link: 'https://eleduck.com/',
-//   },
-//   {
-//     name: 'MobyMask',
-//     logo: '/images/partners/mobymask-logo.svg',
-//     link: 'https://mobymask.com/',
-//   },
-//   {
-//     name: 'MoleDAO',
-//     logo: '/images/partners/moledao-logo.svg',
-//     link: 'https://www.moledao.io/',
-//   },
-//   {
-//     name: 'MarsDAO',
-//     logo: '/images/partners/marsdao-logo.svg',
-//     link: 'https://linktr.ee/MarsDAO',
-//   },
-//   {
-//     name: 'EthSign',
-//     logo: '/images/partners/ethsign-logo.svg',
-//     link: 'https://www.ethsign.xyz/',
-//   },
-//   {
-//     name: 'Plancker',
-//     logo: '/images/partners/Plancker-logo.svg',
-//     link: 'https://plancker.org/',
-//   },
-//   {
-//     name: '8dao',
-//     logo: '/images/partners/8dao-logo.svg',
-//     link: 'https://8dao.io/',
-//   },
-//   {
-//     name: 'Uncommons',
-//     logo: '/images/partners/Uncommons-logo.svg',
-//     link: 'https://www.notion.so/Uncommons-04ea0224d3cd4fe9b5181b6dd22d02b4',
-//   },
-//   {
-//     name: 'AAStar',
-//     logo: '/images/partners/AAStar-logo.svg',
-//     link: 'https://www.aastar.xyz/',
-//   },
-//   {
-//     name: 'DAOStar',
-//     logo: '/images/partners/DAOStar-logo.svg',
-//     link: 'https://daostar.org/',
-//   },
-// ];
-
 const communitiesData = [
   {
     name: 'NextDAO',
