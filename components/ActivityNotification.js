@@ -7,7 +7,7 @@ const ActivityNotification = () => (
     sx={{
       textDecoration: 'none',
     }}
-    href="https://docs.lxdao.io/lxdao/gong-gong-ri-li"
+    href="https://calendar.google.com/calendar/embed?src=lxdao.official%40gmail.com&ctz=Asia%2FMacau"
     target={'_blank'}
     marginBottom={10}
   >
