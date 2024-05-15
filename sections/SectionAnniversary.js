@@ -120,20 +120,23 @@ const SectionAnniversary = () => {
           >
             <RemoveCircleOutlineIcon sx={{ transform: 'scale(0.9)' }} />
           </IconButton> */}
-          <InputBase
-            sx={{ width: amt.toString().length * 10 + 'px' }}
-            value={amt}
-            readOnly
-            onChange={(e) => {
-              if (
-                parseInt(e.target.value) > 500 - 100 - parseInt(totalSupply) ||
-                e.toString().length < 1
-              ) {
-                return;
-              }
-              setAmt(parseInt(e.target.value) || 1);
-            }}
-          />
+          <Box ml="30px">
+            <InputBase
+              sx={{ width: amt.toString().length * 10 + 'px' }}
+              value={amt}
+              readOnly
+              onChange={(e) => {
+                if (
+                  parseInt(e.target.value) >
+                    500 - 100 - parseInt(totalSupply) ||
+                  e.toString().length < 1
+                ) {
+                  return;
+                }
+                setAmt(parseInt(e.target.value) || 1);
+              }}
+            />
+          </Box>
           {/* <IconButton
             sx={{ width: '20px', height: '20px', marginLeft: '8px' }}
             // onClick={() => setAmt(amt + 1)}
