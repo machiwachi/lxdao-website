@@ -120,23 +120,20 @@ const SectionAnniversary = () => {
           >
             <RemoveCircleOutlineIcon sx={{ transform: 'scale(0.9)' }} />
           </IconButton> */}
-          <Box ml="30px">
-            <InputBase
-              sx={{ width: amt.toString().length * 10 + 'px' }}
-              value={amt}
-              readOnly
-              onChange={(e) => {
-                if (
-                  parseInt(e.target.value) >
-                    500 - 100 - parseInt(totalSupply) ||
-                  e.toString().length < 1
-                ) {
-                  return;
-                }
-                setAmt(parseInt(e.target.value) || 1);
-              }}
-            />
-          </Box>
+          <InputBase
+            sx={{ width: amt.toString().length * 10 + 'px' }}
+            value={amt}
+            readOnly
+            onChange={(e) => {
+              if (
+                parseInt(e.target.value) > 500 - 100 - parseInt(totalSupply) ||
+                e.toString().length < 1
+              ) {
+                return;
+              }
+              setAmt(parseInt(e.target.value) || 1);
+            }}
+          />
           {/* <IconButton
             sx={{ width: '20px', height: '20px', marginLeft: '8px' }}
             // onClick={() => setAmt(amt + 1)}
@@ -187,7 +184,8 @@ const SectionAnniversary = () => {
       <Box>
         <Box
           component="img"
-          width={[0, 0, 151, 151]}
+          // width={[0, 0, 151, 151]}
+          height={[0, 0, 121, 121]}
           src="/images/anniversaryNFT2024.png?v=1"
           alt="anniversary NFT"
         />
