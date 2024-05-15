@@ -47,7 +47,7 @@ const SectionAnniversary = () => {
   });
 
   useEffect(() => {
-    console.log('data', data);
+    console.log('data', data, ADDRESS, CHAIN_ID);
     if (isSuccess) {
       setTotalSupply(data.toString() || '0');
       setLoading(false);
@@ -60,7 +60,7 @@ const SectionAnniversary = () => {
       return;
     }
     try {
-      setLoading(true);
+      // setLoading(true);
       await write({
         args: [amt],
         value: parseEther((0 * amt).toString()),
