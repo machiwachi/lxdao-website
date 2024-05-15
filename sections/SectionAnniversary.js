@@ -29,7 +29,7 @@ const SectionAnniversary = () => {
     abi,
   };
 
-  const { isConnected } = useAccount();
+  const { isConnected, address: accountAddress } = useAccount();
   const { connect, connectors } = useConnect();
   const [totalSupply, setTotalSupply] = useState('----');
   const [amt, setAmt] = useState(1);
@@ -46,8 +46,23 @@ const SectionAnniversary = () => {
     functionName: 'totalSupply',
   });
 
+  const { data: balanceData, isSuccess: balanceIsSuccess } = useContractRead({
+    ...anniversaryContract,
+    functionName: 'balanceOf',
+    args: [accountAddress],
+  });
+
   useEffect(() => {
-    console.log('data', data, ADDRESS, CHAIN_ID);
+    console.log(
+      'data',
+      data,
+      ADDRESS,
+      CHAIN_ID,
+      balanceData,
+      balanceIsSuccess,
+      accountAddress,
+      isConnected
+    );
     if (isSuccess) {
       setTotalSupply(data.toString() || '0');
       setLoading(false);
@@ -60,7 +75,7 @@ const SectionAnniversary = () => {
       return;
     }
     try {
-      // setLoading(true);
+      setLoading(true);
       await write({
         args: [amt],
         value: parseEther((0 * amt).toString()),
@@ -162,10 +177,10 @@ const SectionAnniversary = () => {
           <Button
             variant="outlined"
             sx={{ padding: '11px 20px', boxSizing: 'border-box' }}
-            disabled={loading}
+            disabled={loading || balanceData > 0 || !accountAddress}
             onClick={handleMint}
           >
-            Mint
+            {balanceData > 0 ? 'MINTED' : 'Mint'}
           </Button>
 
           <Link
