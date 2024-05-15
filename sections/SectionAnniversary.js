@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
-  IconButton,
+  // IconButton,
   InputBase,
   Link,
   Button,
 } from '@mui/material';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
+// import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+// import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import showMessage from '@/components/showMessage';
 import {
   useAccount,
@@ -35,7 +35,7 @@ const SectionAnniversary = () => {
   const [amt, setAmt] = useState(1);
   const [loading, setLoading] = useState(true);
 
-  const { write } = useContractWrite({
+  const { write, error: contractWriteError } = useContractWrite({
     ...anniversaryContract,
     functionName: 'mint',
     chainId: CHAIN_ID,
@@ -47,6 +47,7 @@ const SectionAnniversary = () => {
   });
 
   useEffect(() => {
+    console.log('data', data);
     if (isSuccess) {
       setTotalSupply(data.toString() || '0');
       setLoading(false);
@@ -62,9 +63,9 @@ const SectionAnniversary = () => {
       setLoading(true);
       await write({
         args: [amt],
-        value: parseEther((0.02 * amt).toString()),
+        value: parseEther((0 * amt).toString()),
       });
-      setTotalSupply((parseInt(totalSupply) + amt).toString());
+      // setTotalSupply((parseInt(totalSupply) + amt).toString());
       setLoading(false);
     } catch (err) {
       if (err.toString().includes('ChainMismatchError')) {
@@ -87,11 +88,21 @@ const SectionAnniversary = () => {
     }
   };
 
+  useEffect(() => {
+    if (contractWriteError) {
+      showMessage({
+        type: 'error',
+        title: 'error',
+        body: contractWriteError.message,
+      });
+    }
+  }, [contractWriteError]);
+
   return (
     <Box display="flex">
       <Box flex={1}>
         <Typography variant="body1" color="#101828" fontWeight={600}>
-          Mint LXDAO One-year Anniversary NFT
+          Mint LXDAO Two-year Anniversary NFT
         </Typography>
 
         <Box
@@ -102,32 +113,36 @@ const SectionAnniversary = () => {
             alignItems: 'center',
           }}
         >
-          <IconButton
+          {/* <IconButton
             sx={{ width: '20px', height: '20px', marginRight: '8px' }}
             disabled={amt == 1}
             onClick={() => setAmt(amt - (amt == 1 ? 0 : 1))}
           >
             <RemoveCircleOutlineIcon sx={{ transform: 'scale(0.9)' }} />
-          </IconButton>
-          <InputBase
-            sx={{ width: amt.toString().length * 10 + 'px' }}
-            value={amt}
-            onChange={(e) => {
-              if (
-                parseInt(e.target.value) > 2000 - 100 - parseInt(totalSupply) ||
-                e.toString().length < 1
-              ) {
-                return;
-              }
-              setAmt(parseInt(e.target.value) || 1);
-            }}
-          />
-          <IconButton
+          </IconButton> */}
+          <Box ml="30px">
+            <InputBase
+              sx={{ width: amt.toString().length * 10 + 'px' }}
+              value={amt}
+              readOnly
+              onChange={(e) => {
+                if (
+                  parseInt(e.target.value) >
+                    500 - 100 - parseInt(totalSupply) ||
+                  e.toString().length < 1
+                ) {
+                  return;
+                }
+                setAmt(parseInt(e.target.value) || 1);
+              }}
+            />
+          </Box>
+          {/* <IconButton
             sx={{ width: '20px', height: '20px', marginLeft: '8px' }}
-            onClick={() => setAmt(amt + 1)}
+            // onClick={() => setAmt(amt + 1)}
           >
             <AddCircleOutlineIcon sx={{ transform: 'scale(0.9)' }} />
-          </IconButton>
+          </IconButton> */}
 
           <Typography
             variant="subtitle2"
@@ -135,10 +150,11 @@ const SectionAnniversary = () => {
             fontSize="16px"
             color="#666F85"
           >
-            {0.02 * amt} ETH
+            {/* {0 * amt} ETH  */}
+            Free
           </Typography>
           <Typography variant="subtitle2" color="#646F7C">
-            {totalSupply}/2000
+            {totalSupply}/500
           </Typography>
         </Box>
 
@@ -172,7 +188,7 @@ const SectionAnniversary = () => {
         <Box
           component="img"
           width={[0, 0, 151, 151]}
-          src="/images/anniversaryNFT.png?v=1"
+          src="/images/anniversaryNFT2024.png?v=1"
           alt="anniversary NFT"
         />
       </Box>
