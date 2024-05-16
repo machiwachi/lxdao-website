@@ -35,7 +35,12 @@ const SectionAnniversary = () => {
   const [amt, setAmt] = useState(1);
   const [loading, setLoading] = useState(true);
 
-  const { write, error: contractWriteError } = useContractWrite({
+  const {
+    write,
+    error: contractWriteError,
+    isLoading: isMinting,
+    isSuccess: isMingSuccess,
+  } = useContractWrite({
     ...anniversaryContract,
     functionName: 'mint',
     chainId: CHAIN_ID,
@@ -46,23 +51,14 @@ const SectionAnniversary = () => {
     functionName: 'totalSupply',
   });
 
-  const { data: balanceData, isSuccess: balanceIsSuccess } = useContractRead({
+  const { data: balanceData } = useContractRead({
     ...anniversaryContract,
     functionName: 'balanceOf',
     args: [accountAddress],
   });
 
+  console.log('data', isMinting, isMingSuccess);
   useEffect(() => {
-    console.log(
-      'data',
-      data,
-      ADDRESS,
-      CHAIN_ID,
-      balanceData,
-      balanceIsSuccess,
-      accountAddress,
-      isConnected
-    );
     if (isSuccess) {
       setTotalSupply(data.toString() || '0');
       setLoading(false);
@@ -177,7 +173,13 @@ const SectionAnniversary = () => {
           <Button
             variant="outlined"
             sx={{ padding: '11px 20px', boxSizing: 'border-box' }}
-            disabled={loading || balanceData > 0 || !accountAddress}
+            disabled={
+              isMinting ||
+              isMingSuccess ||
+              loading ||
+              balanceData > 0 ||
+              !accountAddress
+            }
             onClick={handleMint}
           >
             {balanceData > 0 ? 'MINTED' : 'Mint'}
