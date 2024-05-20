@@ -756,7 +756,7 @@ function BuidlerDetails(props) {
       <Container paddingY={isFromOnboarding ? {} : { md: 12, xs: 8 }}>
         {record.status === 'PENDING' &&
           address &&
-          firstMemberBadgeAmount === 1 &&
+          firstMemberBadgeAmount > 0 &&
           buidlerRecord?.role?.includes('Onboarding Committee') && (
             <Box marginTop={4}>
               <Box marginTop={2} marginBottom={2}>
