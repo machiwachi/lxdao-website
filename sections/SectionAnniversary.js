@@ -161,8 +161,8 @@ const SectionAnniversary = () => {
             fontSize="16px"
             color="#666F85"
           >
-            {/* {0 * amt} ETH  */}
-            Free
+            {0.01 * amt} ETH 
+            {/* Free */}
           </Typography>
           <Typography variant="subtitle2" color="#646F7C">
             {totalSupply}/500
