@@ -118,7 +118,7 @@ const SectionPartners = () => (
           })}
         </Box>
         <Typography variant="h2" lineHeight="58px" fontWeight={600}>
-          Our Partners & Community
+          Our Partners
         </Typography>
         <Box
           display="flex"
