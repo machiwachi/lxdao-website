@@ -1,17 +1,12 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { Box } from '@mui/material';
-import { useAccount } from 'wagmi';
-
-import showMessage from '@/components/showMessage';
 
 export default function OnBoardingBottom({
   back = '',
   next = '',
   disableNext = false,
-  step,
 }) {
-  const { address, isConnected } = useAccount();
   const router = useRouter();
   return (
     <Box
@@ -60,19 +55,7 @@ export default function OnBoardingBottom({
           justifyContent="center"
           visibility={next ? 'visible' : 'hidden'}
           onClick={() => {
-            if (step === 1) {
-              if (address && isConnected) {
-                router.push(next);
-              } else {
-                showMessage({
-                  type: 'info',
-                  title: 'Tips',
-                  body: 'Please Connect Your Wallet.',
-                });
-              }
-            } else {
-              router.push(next);
-            }
+            router.push(next);
           }}
           sx={{
             width: '223px',

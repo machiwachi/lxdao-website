@@ -1,12 +1,14 @@
-import React from 'react';
-import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
-import { Box, Typography, Link } from '@mui/material';
-
+import { Box, Dialog, Link, Typography } from '@mui/material';
 import Button from '@/components/Button';
 import Container from '@/components/Container';
 import CommunityLinkGroup from '@/components/CommunityLinkGroup';
 import ActivityNotification from '@/components/ActivityNotification';
+import { useAccount } from 'wagmi';
+import { useRouter } from 'next/router';
+import useBuidler from '../components/useBuidler';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 const textColorGradient = keyframes`
   0%{background-position:0% 50%}
@@ -34,7 +36,28 @@ const HightlightText = styled.span`
 `;
 
 const SectionHomepageHero = () => {
+  const { address, isConnected } = useAccount();
+  const [record, setRecord] = useState(null);
+  const [isMember, setIsMember] = useState(false);
+  const [finishInfo, setFinishInfo] = useState(false);
   const router = useRouter();
+
+  //
+  const [, buidler, ,] = useBuidler(address);
+
+  //
+  useEffect(() => {
+    if (buidler && !record) {
+      setRecord(buidler);
+      setIsMember(
+        buidler?.badges?.find((badge) => {
+          return badge?.id === 'MemberFirstBadge';
+        })?.amount > 0
+      );
+    }
+  }, [buidler, record]);
+
+  //
   const Title = () => {
     return (
       <Box marginTop="112px">
@@ -60,6 +83,56 @@ const SectionHomepageHero = () => {
       textAlign="center"
       gap={{ lg: '120px', xs: '40px' }}
     >
+      {finishInfo && (
+        <Dialog
+          maxWidth="383px"
+          onClose={() => {
+            setFinishInfo(false);
+          }}
+          open={finishInfo}
+        >
+          <Box
+            sx={{
+              borderRadius: '6px',
+              background: '#fff',
+              width: '383px',
+              padding: '32px',
+            }}
+          >
+            <Typography
+              component="h3"
+              textAlign="center"
+              fontWeight="700"
+              fontSize="18px"
+              marginBottom={2}
+            >
+              Onboarding process
+            </Typography>
+            <Typography variant="div" fontWeight="500" color="#000">
+              <Typography variant="p">
+                This member has not yet completed the onboarding，Please attend
+                a community call to introduce yourself
+              </Typography>
+              <br />
+              <Typography variant="p">
+                Community call time: Every Saturday at 10am (UTC+8)
+              </Typography>
+              <br />
+              <Typography variant="p">
+                Community call link: (
+                <Link
+                  target="_blank"
+                  sx={{ wordBreak: 'break-all', color: 'rgb(60, 122, 255)' }}
+                  href={`https://forum.lxdao.io/c/governance/community-call/22`}
+                >
+                  join
+                </Link>
+                )
+              </Typography>
+            </Typography>
+          </Box>
+        </Dialog>
+      )}
       <Box
         display="flex"
         flexDirection="column"
@@ -80,17 +153,40 @@ const SectionHomepageHero = () => {
             and <strong>Open Source</strong> sustainably.
           </Typography>
         </Box>
-        <Link
-          href={`/onboarding/intro`}
-          color="#ffffff"
-          sx={{
-            textDecoration: 'none',
-          }}
-        >
-          <Button variant="gradient" width="180px" marginBottom={2}>
+        {isMember ? null : address && isConnected ? (
+          <Button
+            variant="gradient"
+            width="180px"
+            marginBottom={2}
+            onClick={() => {
+              const hasCard = record?.badges?.find((badge) => {
+                return badge?.id === 'MemberFirstBadge';
+              });
+              if (!buidler?.name) {
+                router.push('/onboarding/intro');
+              } else if (buidler?.name && !hasCard) {
+                setFinishInfo(true);
+              }
+            }}
+          >
             JOIN US
           </Button>
-        </Link>
+        ) : (
+          <ConnectButton.Custom>
+            {({ openConnectModal }) => {
+              return (
+                <Button
+                  variant="gradient"
+                  width="180px"
+                  marginBottom={2}
+                  onClick={openConnectModal}
+                >
+                  JOIN US
+                </Button>
+              );
+            }}
+          </ConnectButton.Custom>
+        )}
 
         <CommunityLinkGroup marginBottom={0} />
         <ActivityNotification />

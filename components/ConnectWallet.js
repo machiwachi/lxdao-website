@@ -1,5 +1,4 @@
 import React, { useRef, useEffect } from 'react';
-// import { Link, Box } from '@mui/material';
 import { getDefaultWallets, ConnectButton } from '@rainbow-me/rainbowkit';
 import {
   configureChains,
@@ -11,7 +10,6 @@ import {
 import { mainnet, goerli, polygon, polygonMumbai } from 'wagmi/chains';
 import { publicProvider } from 'wagmi/providers/public';
 import { infuraProvider } from 'wagmi/providers/infura';
-
 import API, { refreshAPIToken } from '@/common/API';
 import {
   setLocalStorage,
@@ -19,7 +17,6 @@ import {
   removeLocalStorage,
 } from '@/utils/utility';
 import showMessage from '@/components/showMessage';
-
 import '@rainbow-me/rainbowkit/styles.css';
 
 const { chains, publicClient } = configureChains(
