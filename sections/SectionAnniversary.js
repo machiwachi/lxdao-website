@@ -161,8 +161,8 @@ const SectionAnniversary = () => {
             fontSize="16px"
             color="#666F85"
           >
-            {/* {0 * amt} ETH  */}
-            Free
+            {0.01 * amt} ETH 
+            {/* Free */}
           </Typography>
           <Typography variant="subtitle2" color="#646F7C">
             {totalSupply}/500
@@ -188,14 +188,14 @@ const SectionAnniversary = () => {
           <Link
             ml={3}
             target="_blank"
-            href="https://etherscan.io/address/0x854c0f99f67e37b8f4d5ad92ea7f69cd193b058a"
+            href="https://optimistic.etherscan.io/address/0x96682f486b4c641c1625ced12d9af54b4c6a1b52"
           >
             <Box component="img" src="/images/etherscan.svg" />
           </Link>
           <Link
             ml={1}
             target="_blank"
-            href="https://opensea.io/collection/lxdao1stanniversarynft"
+            href="https://opensea.io/collection/lxdao2ndanniversarynft"
           >
             <Box component="img" src="/images/opensea.svg" />
           </Link>

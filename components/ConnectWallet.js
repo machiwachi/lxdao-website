@@ -6,9 +6,8 @@ import {
   useAccount,
   useSignMessage,
   useDisconnect,
-  sepolia,
 } from 'wagmi';
-import { goerli, polygon, polygonMumbai } from 'wagmi/chains';
+import { mainnet, goerli, polygon, polygonMumbai } from 'wagmi/chains';
 import { publicProvider } from 'wagmi/providers/public';
 import { infuraProvider } from 'wagmi/providers/infura';
 import API, { refreshAPIToken } from '@/common/API';
@@ -21,7 +20,7 @@ import showMessage from '@/components/showMessage';
 import '@rainbow-me/rainbowkit/styles.css';
 
 const { chains, publicClient } = configureChains(
-  [sepolia, goerli, polygon, polygonMumbai],
+  [mainnet, goerli, polygon, polygonMumbai],
   [
     infuraProvider({ apiKey: process.env.NEXT_PUBLIC_INFURA_ID }),
     publicProvider(),
