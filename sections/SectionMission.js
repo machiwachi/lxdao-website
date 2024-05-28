@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Box, Typography, Link, Tooltip } from '@mui/material';
-import API from '@/common/API';
 import Container from '@/components/Container';
 
 const DataBox = ({ number, name, link, detail }) => (
@@ -100,8 +99,7 @@ const SectionMission = ({ projectAmount, buidlerAmount }) => {
             lineHeight={{ md: '70px', sm: '50px', xs: '50px' }}
             fontWeight={500}
           >
-            Gather the power of buidlers to buidl and support “LX” (valuable)
-            Web3 projects sustainably and welcome 1 billion users into Web3.
+            Supporting valuable Web3 Public Good and Open Source sustainably.
           </Typography>
           <Box
             display="flex"
@@ -135,7 +133,7 @@ const SectionMission = ({ projectAmount, buidlerAmount }) => {
             />
             <DataBox number={projectAmount} name="Projects" link="/projects" />
             <DataBox
-              number={`161k+ USDC`}
+              number={`156k+ USDC`}
               name="Treasury"
               link="https://app.safe.global/home?safe=eth:0xB45e9F74D0a35fE1aa0B78feA03877EF96ae8dd2"
             />
