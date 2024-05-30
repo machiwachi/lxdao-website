@@ -12,11 +12,13 @@ import {
 import showMessage from '@/components/showMessage';
 import {
   useAccount,
+  useChainId,
   useConnect,
   useContractRead,
   useContractWrite,
 } from 'wagmi';
 import { parseEther } from 'viem';
+import { useConnectModal, useChainModal } from '@rainbow-me/rainbowkit';
 
 import abi from '@/abi/anniversary.json';
 
@@ -30,8 +32,10 @@ const SectionAnniversary = () => {
     chainId: 10,
   };
 
-  const { isConnected, address: accountAddress } = useAccount();
-  const { connect, connectors } = useConnect();
+  const { address: accountAddress } = useAccount();
+  const { openConnectModal } = useConnectModal();
+  const { openChainModal } = useChainModal();
+
   const [totalSupply, setTotalSupply] = useState('----');
   const [amt, setAmt] = useState(1);
   const [loading, setLoading] = useState(true);
@@ -65,10 +69,6 @@ const SectionAnniversary = () => {
   }, [data, isSuccess]);
 
   const handleMint = async () => {
-    if (!isConnected) {
-      connect({ connector: connectors[2] });
-      return;
-    }
     try {
       setLoading(true);
       await write({
@@ -172,16 +172,14 @@ const SectionAnniversary = () => {
           <Button
             variant="outlined"
             sx={{ padding: '11px 20px', boxSizing: 'border-box' }}
-            disabled={
-              isMinting ||
-              isMingSuccess ||
-              loading ||
-              balanceData > 0 ||
-              !accountAddress
-            }
-            onClick={handleMint}
+            disabled={isMinting || isMingSuccess || loading || balanceData > 0}
+            onClick={accountAddress ? handleMint : openConnectModal}
           >
-            {balanceData > 0 ? 'MINTED' : 'Mint'}
+            {accountAddress
+              ? balanceData > 0
+                ? 'MINTED'
+                : 'Mint'
+              : 'Connect A Wallet'}
           </Button>
 
           <Link
