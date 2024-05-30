@@ -44,7 +44,6 @@ const SectionAnniversary = () => {
   } = useContractWrite({
     ...anniversaryContract,
     functionName: 'mint',
-    chainId: CHAIN_ID,
   });
 
   const { data, isSuccess } = useContractRead({
