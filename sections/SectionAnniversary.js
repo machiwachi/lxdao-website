@@ -27,6 +27,7 @@ const SectionAnniversary = () => {
   const anniversaryContract = {
     address: ADDRESS,
     abi,
+    chainId: 10,
   };
 
   const { isConnected, address: accountAddress } = useAccount();
@@ -57,7 +58,6 @@ const SectionAnniversary = () => {
     args: [accountAddress],
   });
 
-  console.log('data', isMinting, isMingSuccess);
   useEffect(() => {
     if (isSuccess) {
       setTotalSupply(data.toString() || '0');
@@ -74,7 +74,7 @@ const SectionAnniversary = () => {
       setLoading(true);
       await write({
         args: [amt],
-        value: parseEther((0 * amt).toString()),
+        value: parseEther((0.01 * amt).toString()),
       });
       // setTotalSupply((parseInt(totalSupply) + amt).toString());
       setLoading(false);
@@ -84,7 +84,7 @@ const SectionAnniversary = () => {
           type: 'error',
           title: 'Wrong Network',
           body: `Please Change to ${
-            CHAIN_ID == 1 ? 'ETH Mainnet' : 'ETH Goerli'
+            CHAIN_ID == 10 ? 'Optimism' : 'ETH Goerli'
           }`,
         });
       } else {
@@ -161,7 +161,7 @@ const SectionAnniversary = () => {
             fontSize="16px"
             color="#666F85"
           >
-            {0.01 * amt} ETH 
+            {0.01 * amt} ETH
             {/* Free */}
           </Typography>
           <Typography variant="subtitle2" color="#646F7C">
