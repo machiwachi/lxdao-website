@@ -179,7 +179,7 @@ const SectionAnniversary = () => {
               ? balanceData > 0
                 ? 'MINTED'
                 : 'Mint'
-              : 'Connect A Wallet'}
+              : 'connect wallet'}
           </Button>
 
           <Link
