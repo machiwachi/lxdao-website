@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-undef */
 import React, { useEffect, useState } from 'react';
 import {
@@ -29,7 +30,6 @@ import {
   getMemberFirstBadgeAmount,
   totalLXPoints,
   totalStableCoins,
-  getImg3DidStrFromUrl,
 } from '@/utils/utility';
 
 import Layout from '@/components/Layout';
@@ -39,7 +39,6 @@ import Container from '@/components/Container';
 import Button from '@/components/Button';
 import CopyText from '@/components/CopyText';
 import Skills from '../components/Skills';
-import { Img3 } from '@lxdao/img3';
 
 const roleNames = [
   'All',
