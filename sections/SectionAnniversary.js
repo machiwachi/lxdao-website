@@ -10,15 +10,9 @@ import {
 // import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 // import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import showMessage from '@/components/showMessage';
-import {
-  useAccount,
-  useChainId,
-  useConnect,
-  useContractRead,
-  useContractWrite,
-} from 'wagmi';
+import { useAccount, useContractRead, useContractWrite } from 'wagmi';
 import { parseEther } from 'viem';
-import { useConnectModal, useChainModal } from '@rainbow-me/rainbowkit';
+import { useConnectModal } from '@rainbow-me/rainbowkit';
 
 import abi from '@/abi/anniversary.json';
 
@@ -34,11 +28,10 @@ const SectionAnniversary = () => {
 
   const { address: accountAddress } = useAccount();
   const { openConnectModal } = useConnectModal();
-  const { openChainModal } = useChainModal();
 
   const [totalSupply, setTotalSupply] = useState('----');
   const [amt, setAmt] = useState(1);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const {
     write,
