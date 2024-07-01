@@ -14,6 +14,7 @@ import SectionPartners from '@/sections/SectionPartners';
 
 import { scrollToSection } from '@/utils/utility';
 import API from '@/common/API';
+import SectionProjectDetail from '../sections/SectionProjectDetail';
 
 export default function Home() {
   const [projects, setProjects] = useState([]);
@@ -89,7 +90,6 @@ export default function Home() {
       <SectionHomepageProjects projects={projects} />
       <SectionBuidlers buidlers={buidlers} />
       <SectionWorkingGroup />
-      {/* <SectionActivities /> */}
       <SectionPartners />
     </Layout>
   );
