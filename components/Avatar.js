@@ -132,7 +132,7 @@ function Avatar(props) {
           props.onChange(file?.url);
         }
       }}
-      onCropCancel={(file) => {
+      onCropCancel={() => {
         setFile(null);
       }}
       onCropEnd={(file) => {

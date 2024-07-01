@@ -1,10 +1,8 @@
 import React from 'react';
-import { Box, Typography, Avatar } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 import BuidlerContacts from './BuidlerContacts';
 import Tag from './Tag';
-import { Img3 } from '@lxdao/img3';
-import { getImg3DidStrFromUrl } from '@/utils/utility';
 
 const BuidlerCard = ({ buidlerInfo }) => {
   if (!buidlerInfo) return null;
@@ -47,8 +45,8 @@ const BuidlerCard = ({ buidlerInfo }) => {
               alignItems="flex-start"
               fontSize="14px"
             >
-              {projectRole.map((role) => (
-                <Tag text={role} />
+              {projectRole.map((role,index) => (
+                <Tag text={role} key={index}/>
               ))}
             </Box>
           )}

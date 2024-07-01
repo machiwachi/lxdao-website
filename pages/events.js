@@ -19,7 +19,7 @@ export default function Events() {
         style={{
           border: '0px #ffffff none',
         }}
-        frameborder="0"
+        frameBorder="0"
         width="100%"
         height="900px"
         scrolling="no"

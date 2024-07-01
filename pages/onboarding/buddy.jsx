@@ -4,8 +4,6 @@ import { useRouter } from 'next/router';
 import { Box, Typography, Link } from '@mui/material';
 import OnBoardingLayout from '@/components/OnBoardingLayout';
 import useBuidler from '@/components/useBuidler';
-import { Img3 } from '@lxdao/img3';
-import { getImg3DidStrFromUrl } from '@/utils/utility';
 
 export default function Buddy() {
   const { address } = useAccount();

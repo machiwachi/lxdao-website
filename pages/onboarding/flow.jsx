@@ -1,4 +1,4 @@
-import { Typography, Box, Card, CardContent, Link } from '@mui/material';
+import React,{ Typography, Box, Card, CardContent, Link } from '@mui/material';
 import OnBoardingLayout from '@/components/OnBoardingLayout';
 
 export default function Flow() {
@@ -59,7 +59,7 @@ export default function Flow() {
         }}
       >
         {data.map((value, index) => (
-          <Link
+          <Link key={index}
             href={value.url}
             target="_blank"
             sx={{ textDecoration: 'none' }}

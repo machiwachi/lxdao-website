@@ -1,16 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Box, Typography, Link } from '@mui/material';
 
 import {
   getMemberFirstBadgeAmount,
-  getImg3DidStrFromUrl,
 } from '@/utils/utility';
 
 import Container from '@/components/Container';
 import Button from '@/components/Button';
 import StyledTooltip from '@/components/StyledToolTip';
 import Tag from '@/components/Tag';
-import { Img3 } from '@lxdao/img3';
 
 const BuidlerAvatarBox = ({ buidler, active, display }) => {
   return (
@@ -53,7 +51,6 @@ const BuidlerAvatarBox = ({ buidler, active, display }) => {
 
 const BudilerTooltip = ({
   buidler,
-  active,
   handleBuidlerCardHover,
   handleBuidlerCardLeave,
   ...rest
@@ -98,7 +95,7 @@ const BudilerTooltip = ({
             fontWeight={500}
             textAlign="right"
           >
-            More ->
+            More -{`>`}
           </Typography>
         </Link>
       </Box>
@@ -134,15 +131,6 @@ const BudilerTooltip = ({
 };
 
 const SectionBuidlers = ({ buidlers }) => {
-  const [activeBuidlerIndex, setActiveBuidlerIndex] = useState(null);
-
-  const handleBuidlerHover = (index) => {
-    setActiveBuidlerIndex(index);
-  };
-
-  const handleBuidlerLeave = () => {
-    setActiveBuidlerIndex(null);
-  };
 
   return (
     <Box backgroundColor="#000000" boxSizing="border-box">
@@ -163,7 +151,7 @@ const SectionBuidlers = ({ buidlers }) => {
           color="#ffffff"
           marginBottom={{ md: '102px', xs: '72px' }}
         >
-          Welcome to Join Us, let's buidl more valuable Web3 products together!
+          Welcome to Join Us, let&apos;s buidl more valuable Web3 products together!
         </Typography>
         <Box display="flex" flexWrap="wrap" width={{ sm: '100%', xs: '100%' }}>
           {buidlers.map((buidler, index) => {

@@ -1,55 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useRouter } from 'next/router';
 import {
   Box,
   Typography,
-  Avatar,
   Card,
   Chip,
   Link,
   Skeleton,
 } from '@mui/material';
-import { makeStyles } from '@mui/styles';
-import { Img3 } from '@lxdao/img3';
-import { getImg3DidStrFromUrl } from '@/utils/utility';
 
-const CornerIcon = (props) => {
-  const useStyles = makeStyles({
-    rect: {
-      position: 'absolute',
-      left: '-6px',
-      top: '-6px',
-    },
-    desc: {
-      '&::before': {
-        display: 'inline-block',
-        content: `"No.${props.index}"`,
-        transform: 'rotateZ(-45deg)',
-        transformOrigin: 'bottom left',
-      },
-      position: 'absolute',
-      top: 30,
-      bottom: 0,
-      left: 15,
-      zIndex: 100,
-      color: '#fff',
-      fontSize: '14px',
-    },
-  });
-  const classes = useStyles();
-
-  return (
-    <>
-      <img
-        src="/images/projects/number-bg.png"
-        className={classes.rect}
-        width="75px"
-        height="75px"
-      />
-      <div className={classes.desc}></div>
-    </>
-  );
-};
 const ProjectCard = ({ project, index }) => {
   const router = useRouter();
   return (
