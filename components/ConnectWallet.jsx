@@ -1,15 +1,28 @@
 import React, { useRef, useEffect } from 'react';
-import { getDefaultWallets, ConnectButton } from '@rainbow-me/rainbowkit';
+// import { getDefaultWallets, ConnectButton } from '@rainbow-me/rainbowkit';
+// import {
+//   configureChains,
+//   createConfig,
+//   useAccount,
+//   useSignMessage,
+//   useDisconnect,
+// } from 'wagmi';
+import '@rainbow-me/rainbowkit/styles.css';
+
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 import {
-  configureChains,
-  createConfig,
-  useAccount,
-  useSignMessage,
-  useDisconnect,
-} from 'wagmi';
-import { mainnet, goerli, polygon, polygonMumbai } from 'wagmi/chains';
-import { publicProvider } from 'wagmi/providers/public';
-import { infuraProvider } from 'wagmi/providers/infura';
+  getDefaultConfig,
+  RainbowKitProvider,
+} from '@rainbow-me/rainbowkit';
+import { WagmiProvider,useAccount,useSignMessage,useDisconnect } from 'wagmi';
+import {
+  mainnet,
+  polygon,
+  optimism,
+  arbitrum,
+  base,
+} from 'wagmi/chains';
+
 import API, { refreshAPIToken } from '@/common/API';
 import {
   setLocalStorage,
@@ -17,66 +30,17 @@ import {
   removeLocalStorage,
 } from '@/utils/utility';
 import showMessage from '@/components/showMessage';
-import '@rainbow-me/rainbowkit/styles.css';
 
-const optimism = {
-  id: 10,
-  name: 'OP Mainnet',
-  network: 'optimism',
-  nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
-  rpcUrls: {
-    alchemy: {
-      http: ['https://opt-mainnet.g.alchemy.com/v2'],
-      webSocket: ['wss://opt-mainnet.g.alchemy.com/v2'],
-    },
-    infura: {
-      http: ['https://optimism-mainnet.infura.io/v3'],
-      webSocket: ['wss://optimism-mainnet.infura.io/ws/v3'],
-    },
-    default: {
-      http: ['https://mainnet.optimism.io'],
-    },
-    public: {
-      http: ['https://mainnet.optimism.io'],
-    },
-  },
-  blockExplorers: {
-    etherscan: {
-      name: 'Etherscan',
-      url: 'https://optimistic.etherscan.io',
-    },
-    default: {
-      name: 'Optimism Explorer',
-      url: 'https://explorer.optimism.io',
-    },
-  },
-  contracts: {
-    multicall3: {
-      address: '0xca11bde05977b3631167028862be2a173976ca11',
-      blockCreated: 4286263,
-    },
-  },
-};
 
-const { chains, publicClient } = configureChains(
-  [mainnet, goerli, polygon, polygonMumbai, optimism],
-  [
-    infuraProvider({ apiKey: process.env.NEXT_PUBLIC_INFURA_ID }),
-    publicProvider(),
-  ]
-);
 
-const { connectors } = getDefaultWallets({
+const wagmiConfig = getDefaultConfig({
   appName: 'LXDAO Official Website',
   projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID,
-  chains,
+  chains: [mainnet, polygon, optimism, arbitrum, base],
+  ssr: true, // If your dApp uses server side rendering (SSR)
 });
 
-const wagmiConfig = createConfig({
-  autoConnect: true,
-  connectors,
-  publicClient,
-});
+
 
 const ConnectWalletButton = () => {
   const { address, isConnected, isDisconnected } = useAccount();
@@ -176,4 +140,4 @@ const ConnectWalletButton = () => {
   );
 };
 
-export { wagmiConfig, chains, ConnectWalletButton };
+export { wagmiConfig, ConnectWalletButton };

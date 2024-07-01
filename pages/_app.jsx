@@ -1,13 +1,16 @@
 import React from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import { RainbowKitProvider, lightTheme } from '@rainbow-me/rainbowkit';
-import { WagmiConfig } from 'wagmi';
 import { Img3Provider } from '@lxdao/img3';
-
+import { WagmiProvider } from 'wagmi';
 import getTheme from '@/common/theme';
 import { AlertProvider } from '@/context/AlertContext';
-import { wagmiConfig, chains } from '@/components/ConnectWallet';
+import { wagmiConfig } from '@/components/ConnectWallet';
 import AlertPopup from '@/components/AlertPopup';
+import {
+  QueryClientProvider,
+  QueryClient,
+} from "@tanstack/react-query";
 
 // Import Swiper styles
 import 'swiper/css';
@@ -16,6 +19,9 @@ import 'swiper/css/effect-cards';
 import '@/common/style.css';
 
 // eslint-disable-next-line react/prop-types
+
+const queryClient = new QueryClient();
+
 function MyApp({ Component, pageProps }) {
   return (
     <ThemeProvider theme={getTheme('light')}>
@@ -23,18 +29,19 @@ function MyApp({ Component, pageProps }) {
         defaultGateways={['https://lxdaoipfs.4everland.link/ipfs/']}
       >
         <AlertProvider>
-          <WagmiConfig config={wagmiConfig}>
+        <WagmiProvider config={wagmiConfig}>
+          <QueryClientProvider client={queryClient}>  
             <RainbowKitProvider
               theme={lightTheme({
                 borderRadius: 'small',
                 accentColor: 'linear-gradient(90deg, #305FE8 0%, #3AD9E3 100%)',
               })}
-              chains={chains}
             >
               <Component {...pageProps} />
               <AlertPopup />
             </RainbowKitProvider>
-          </WagmiConfig>
+            </QueryClientProvider>
+          </WagmiProvider>
         </AlertProvider>
       </Img3Provider>
     </ThemeProvider>

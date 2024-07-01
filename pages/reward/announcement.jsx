@@ -40,7 +40,6 @@ import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useTheme } from '@mui/material/styles';
 import { useAccount, useContractWrite } from 'wagmi';
-import { ethers } from 'ethers';
 import { useRouter } from 'next/router';
 import ReasonForm from '@/components/ReasonForm';
 import API from '@/common/API';
@@ -54,6 +53,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { makeStyles } from '@mui/styles';
 import { RewardLabels } from '@/common/define';
 import Decimal from 'decimal.js';
+import { parseUnits } from 'viem';
 
 const useStyles = makeStyles({
   tooltip: {
@@ -420,7 +420,7 @@ function UnReleasedLXPTable({
         throw { message: 'No to be released lxp' };
       }
       const formattedAmounts = amounts.map((value) =>
-        ethers.parseUnits(value.toString(), 'ether')
+        parseUnits(value.toString(), 'ether')
       );
       await write({ args: [addresses, formattedAmounts] });
       // post to backend
