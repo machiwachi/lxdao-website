@@ -24,7 +24,7 @@
     "@mui/material": "^5.15.21",
     "@mui/styles": "^5.8.6",
     "@rainbow-me/rainbowkit": "^1.0.9",
-    "axios": "^0.27.2",
+    "axios": "^1.7.2",
     "bs58": "^5.0.0",
     "date-fns": "^2.29.2",
     "decimal.js": "^10.4.3",
