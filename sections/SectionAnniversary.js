@@ -77,9 +77,8 @@ const SectionAnniversary = () => {
         showMessage({
           type: 'error',
           title: 'Wrong Network',
-          body: `Please Change to ${
-            CHAIN_ID == 10 ? 'Optimism' : 'ETH Goerli'
-          }`,
+          body: `Please Change to ${CHAIN_ID == 10 ? 'Optimism' : 'ETH Goerli'
+            }`,
         });
       } else {
         showMessage({
@@ -103,17 +102,17 @@ const SectionAnniversary = () => {
     }
   }, [contractWriteError]);
 
-  useEffect(()=>{
-    if(accountAddress){
-      if(balanceData > 0){
-        setButtonText('MINTED')
-      }else{
-        setButtonText('Mint')
+  useEffect(() => {
+    if (accountAddress) {
+      if (balanceData > 0) {
+        setButtonText('MINTED');
+      } else {
+        setButtonText('Mint');
       }
-    }else{
-      setButtonText('Connect Wallet')
+    } else {
+      setButtonText('Connect Wallet');
     }
-  },[accountAddress,balanceData])
+  }, [accountAddress, balanceData]);
 
   return (
     <Box display="flex">
@@ -145,7 +144,7 @@ const SectionAnniversary = () => {
               onChange={(e) => {
                 if (
                   parseInt(e.target.value) >
-                    500 - 100 - parseInt(totalSupply) ||
+                  500 - 100 - parseInt(totalSupply) ||
                   e.toString().length < 1
                 ) {
                   return;
@@ -187,7 +186,7 @@ const SectionAnniversary = () => {
                 ? 'MINTED'
                 : 'Mint'
               : 'Connect Wallet'} */}
-              {buttonText}
+            {buttonText}
           </Button>
 
           <Link

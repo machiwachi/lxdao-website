@@ -40,8 +40,6 @@ import {
   useContractRead,
 } from 'wagmi';
 import { Img3 } from '@lxdao/img3';
-import myFirstLayer2Abi from '@/abi/myFirstLayer2.json';
-import myFirstNFTAbi from '@/abi/myFirstLayer2.json';
 
 import API from '@/common/API';
 import {
@@ -324,11 +322,10 @@ function StableCoinsTable({ points }) {
                   <Link
                     target="_blank"
                     sx={{ textDecoration: 'none' }}
-                    href={`https://${
-                      pointStatus < '2023-11-01'
-                        ? getEtherScanDomain()
-                        : getOpEtherScanDomain()
-                    }/tx/${point.hash}`}
+                    href={`https://${pointStatus < '2023-11-01'
+                      ? getEtherScanDomain()
+                      : getOpEtherScanDomain()
+                      }/tx/${point.hash}`}
                   >
                     <Typography
                       sx={{
@@ -365,7 +362,7 @@ function BuidlerDetails(props) {
     args: [address],
   });
 
-  const handleBalanceChange=async () => {
+  const handleBalanceChange = async () => {
     if (!balanceOf || balanceOf === 0) {
       return;
     }
@@ -382,11 +379,11 @@ function BuidlerDetails(props) {
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     handleBalanceChange()
   }, [balanceOf, address]);
 
-  const handleTokenIdChange=async () => {
+  const handleTokenIdChange = async () => {
     if (!tokenId) {
       return;
     }
@@ -403,7 +400,7 @@ function BuidlerDetails(props) {
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     handleTokenIdChange()
   }, [tokenId]);
 
@@ -433,7 +430,6 @@ function BuidlerDetails(props) {
   const [accordionOpen, setAccordionOpen] = useState(false);
   const [stableCoinAccordionOpen, setStableCoinAccordionOpen] = useState(false);
   const [onboarding, setOnboarding] = useState(false);
-  const [isHasOtherBadges, setIsHasOtherBadges] = useState([]);
   const [mintBadgeDialog, setMintBadgeDialog] = useState(false);
   const [selectMintBadgeValue, setSelectMintBadgeValue] = useState('');
 
@@ -453,7 +449,7 @@ function BuidlerDetails(props) {
 
 
   // const findMBadgeFromNetWork = async (contractAddress, rpc, abi, method) => {
-    
+
   //   // const contract = new Contract(contractAddress, abi, provider);
   //   // const result = await contract.queryFilter(method);
   //   const result = await readAsync({
@@ -892,9 +888,8 @@ function BuidlerDetails(props) {
                 <Link
                   target="_blank"
                   sx={{ wordBreak: 'break-all' }}
-                  href={`https://${getEtherScanDomain()}/tx/${
-                    txRes.transactionHash
-                  }`}
+                  href={`https://${getEtherScanDomain()}/tx/${txRes.transactionHash
+                    }`}
                 >
                   {txRes.transactionHash}
                 </Link>
@@ -1082,7 +1077,7 @@ function BuidlerDetails(props) {
                       </LXButton>
                     )}
                   {address === record.address &&
-                  record.role.includes('Onboarding Committee') ? (
+                    record.role.includes('Onboarding Committee') ? (
                     <LXButton
                       onClick={async () => {
                         const newAddress = window.prompt('New joiner address');
@@ -1132,17 +1127,17 @@ function BuidlerDetails(props) {
                     // record?.status === 'PENDING' &&
                     // firstMemberBadgeAmount === 0 &&
                     address &&
-                      buidlerRecord?.role?.includes('Onboarding Committee') && (
-                        <LXButton
-                          onClick={handleOpenMintBadgeDialog}
-                          variant="outlined"
-                          disabled={airdropIsLoading}
-                        >
-                          {airdropIsLoading
-                            ? 'AirDropping Badge...'
-                            : 'AirDrop Badge'}
-                        </LXButton>
-                      )
+                    buidlerRecord?.role?.includes('Onboarding Committee') && (
+                      <LXButton
+                        onClick={handleOpenMintBadgeDialog}
+                        variant="outlined"
+                        disabled={airdropIsLoading}
+                      >
+                        {airdropIsLoading
+                          ? 'AirDropping Badge...'
+                          : 'AirDrop Badge'}
+                      </LXButton>
+                    )
                   }
                 </Box>
               </Box>
@@ -1205,54 +1200,54 @@ function BuidlerDetails(props) {
             {(badgesToBeEarnedNumber > 0 ||
               record?.status === 'PENDING' ||
               record?.status === 'READYTOMINT') && (
-              <Box
-                sx={{
-                  border: '0.5px solid #D0D5DD',
-                  borderRadius: '6px',
-                  padding: '30px',
-                  marginBottom: '24px',
-                }}
-              >
-                <Typography
+                <Box
                   sx={{
-                    fontSize: '16x',
-                    fontWeight: 800,
-                    color: '#101828',
-                    marginBottom: '15px',
+                    border: '0.5px solid #D0D5DD',
+                    borderRadius: '6px',
+                    padding: '30px',
+                    marginBottom: '24px',
                   }}
                 >
-                  Badges to be earned
-                </Typography>
-                <Box display="flex" gap="15px" flexDirection="column">
-                  {record?.badges &&
-                    record?.badges.map((badge, index) => {
-                      if (badge?.id === 'MemberFirstBadge') {
-                        badge.linkText = 'Earn now';
-                        badge.linkUrl = '/firstBadge';
-                      }
-                      return badge.amount === 0 ? (
+                  <Typography
+                    sx={{
+                      fontSize: '16x',
+                      fontWeight: 800,
+                      color: '#101828',
+                      marginBottom: '15px',
+                    }}
+                  >
+                    Badges to be earned
+                  </Typography>
+                  <Box display="flex" gap="15px" flexDirection="column">
+                    {record?.badges &&
+                      record?.badges.map((badge, index) => {
+                        if (badge?.id === 'MemberFirstBadge') {
+                          badge.linkText = 'Earn now';
+                          badge.linkUrl = '/firstBadge';
+                        }
+                        return badge.amount === 0 ? (
+                          <BadgeCard
+                            key={index}
+                            {...badge}
+                            isOneself={record.address === address}
+                          />
+                        ) : null;
+                      })}
+                    {(record?.status === 'PENDING' ||
+                      record?.status === 'READYTOMINT') && (
                         <BadgeCard
-                          key={index}
-                          {...badge}
                           isOneself={record.address === address}
+                          image={`/images/card.png`}
+                          name="Buidler card (SBT)"
+                          description="Governance rights entitled"
+                          eligible="Eligibility: Contribute in projects or working groups to earn up to 500 LXU reward."
+                          linkText="Contribute to earn"
+                          linkUrl="/SBTCard"
                         />
-                      ) : null;
-                    })}
-                  {(record?.status === 'PENDING' ||
-                    record?.status === 'READYTOMINT') && (
-                    <BadgeCard
-                      isOneself={record.address === address}
-                      image={`/images/card.png`}
-                      name="Buidler card (SBT)"
-                      description="Governance rights entitled"
-                      eligible="Eligibility: Contribute in projects or working groups to earn up to 500 LXU reward."
-                      linkText="Contribute to earn"
-                      linkUrl="/SBTCard"
-                    />
-                  )}
+                      )}
+                  </Box>
                 </Box>
-              </Box>
-            )}
+              )}
 
             <Box display="flex" flexDirection="column">
               <Accordion
