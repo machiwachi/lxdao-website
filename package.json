@@ -52,12 +52,11 @@
     "wagmi": "^1.3.10"
   },
   "devDependencies": {
-    "@typescript-eslint/parser": "^6.1.0",
+    "@typescript-eslint/parser": "^7.14.1",
     "babel-plugin-styled-components": "^2.0.7",
-    "eslint": "^8.18.0",
-    "eslint-config-next": "12.0.10",
-    "eslint-plugin-react": "^7.30.1",
-    "prettier": "^2.7.1",
-    "typescript": "^5.0.4"
+    "eslint": "^9.6.0",
+    "eslint-config-next": "^14.2.4",
+    "prettier": "^3.3.2",
+    "typescript": "^5"
   }
 }
