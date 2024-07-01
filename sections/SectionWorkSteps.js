@@ -245,6 +245,18 @@ const SectionWorkSteps = ({ projects }) => {
   const [ideaData, setIdeasData] = useState([]);
   const [proposalData, setProposalData] = useState([]);
 
+  const handleInit=async () => {
+    const result = await request(SNAPSHOTURL, queryProposals);
+    const latest3Result = result.proposals.slice(0, 3);
+    const proposals = latest3Result?.map((item) => ({
+      id: item.id,
+      title: item.title,
+      choices: item.choices,
+      scores: item.scores,
+    }));
+    setProposalData(proposals);
+  }
+
   useEffect(() => {
     API.get(`/community/ideas.json`)
       .then((res) => {
@@ -257,16 +269,8 @@ const SectionWorkSteps = ({ projects }) => {
       });
   }, []);
 
-  useEffect(async () => {
-    const result = await request(SNAPSHOTURL, queryProposals);
-    const latest3Result = result.proposals.slice(0, 3);
-    const proposals = latest3Result?.map((item) => ({
-      id: item.id,
-      title: item.title,
-      choices: item.choices,
-      scores: item.scores,
-    }));
-    setProposalData(proposals);
+  useEffect(()=>{
+    handleInit()
   }, []);
 
   return (

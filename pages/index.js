@@ -14,7 +14,6 @@ import SectionPartners from '@/sections/SectionPartners';
 
 import { scrollToSection } from '@/utils/utility';
 import API from '@/common/API';
-import SectionProjectDetail from '../sections/SectionProjectDetail';
 
 export default function Home() {
   const [projects, setProjects] = useState([]);
@@ -45,7 +44,7 @@ export default function Home() {
       });
   }, []);
 
-  useEffect(async () => {
+  const handleInit=async () => {
     try {
       const res = await API.get(
         '/buidler?per_page=300&status=ACTIVE&status=READYTOMINT&status=PENDING'
@@ -70,6 +69,10 @@ export default function Home() {
     } catch (err) {
       console.error(err);
     }
+  }
+
+  useEffect(()=>{
+    handleInit
   }, []);
 
   useEffect(() => {

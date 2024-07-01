@@ -1,3 +1,4 @@
+'use client';
 import React, { useState, useEffect } from 'react';
 import {
   Box,
@@ -32,6 +33,7 @@ const SectionAnniversary = () => {
   const [totalSupply, setTotalSupply] = useState('----');
   const [amt, setAmt] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [buttonText, setButtonText] = useState('Mint');
 
   const {
     write,
@@ -101,6 +103,18 @@ const SectionAnniversary = () => {
     }
   }, [contractWriteError]);
 
+  useEffect(()=>{
+    if(accountAddress){
+      if(balanceData > 0){
+        setButtonText('MINTED')
+      }else{
+        setButtonText('Mint')
+      }
+    }else{
+      setButtonText('Connect Wallet')
+    }
+  },[accountAddress,balanceData])
+
   return (
     <Box display="flex">
       <Box flex={1}>
@@ -168,11 +182,12 @@ const SectionAnniversary = () => {
             disabled={isMinting || isMingSuccess || loading || balanceData > 0}
             onClick={accountAddress ? handleMint : openConnectModal}
           >
-            {accountAddress
+            {/* {accountAddress
               ? balanceData > 0
                 ? 'MINTED'
                 : 'Mint'
-              : 'connect wallet'}
+              : 'Connect Wallet'} */}
+              {buttonText}
           </Button>
 
           <Link

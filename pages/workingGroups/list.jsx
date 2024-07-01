@@ -10,9 +10,6 @@ import Container from '@/components/Container';
 import showMessage from '@/components/showMessage';
 import useBuidler from '@/components/useBuidler';
 
-import { Img3 } from '@lxdao/img3';
-import { getImg3DidStrFromUrl } from '@/utils/utility';
-
 export function WorkingGroupCard({ key, data, width }) {
   const normalMembers = data?.membersInWorkingGroup?.filter(
     (member) => !member?.role?.includes('Working Group Leader')
@@ -148,7 +145,7 @@ export default function WorkingGroupList() {
   const { address } = useAccount();
   const [, currentViewer, ,] = useBuidler(address);
 
-  useEffect(async () => {
+  const handleInit = async () => {
     try {
       const res = await API.get('/workinggroup/list');
       const result = res?.data;
@@ -164,6 +161,10 @@ export default function WorkingGroupList() {
         body: err.message,
       });
     }
+  }
+
+  useEffect(()=>{
+    handleInit();
   }, []);
 
   return (

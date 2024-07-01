@@ -40,8 +40,7 @@ import {
   useContractRead,
 } from 'wagmi';
 import { Img3 } from '@lxdao/img3';
-import { Contract, JsonRpcProvider, decodeBytes32String } from 'ethers';
-import * as ethers from 'ethers';
+import { Contract, JsonRpcProvider } from 'ethers';
 import myFirstLayer2Abi from '@/abi/myFirstLayer2.json';
 import myFirstNFTAbi from '@/abi/myFirstLayer2.json';
 
@@ -52,7 +51,6 @@ import {
   getOpEtherScanDomain,
   getOpenSeaDomain,
   getPolygonScanDomain,
-  getIpfsCid,
   totalLXPoints,
   totalStableCoins,
   ipfsToBytes,
@@ -369,7 +367,7 @@ function BuidlerDetails(props) {
     args: [address],
   });
 
-  useEffect(async () => {
+  const handleBalanceChange=async () => {
     if (!balanceOf || balanceOf === 0) {
       return;
     }
@@ -384,9 +382,13 @@ function BuidlerDetails(props) {
     } catch (e) {
       console.log(e);
     }
+  }
+
+  useEffect(()=>{
+    handleBalanceChange()
   }, [balanceOf, address]);
 
-  useEffect(async () => {
+  const handleTokenIdChange=async () => {
     if (!tokenId) {
       return;
     }
@@ -401,6 +403,10 @@ function BuidlerDetails(props) {
     } catch (e) {
       console.log(e);
     }
+  }
+
+  useEffect(()=>{
+    handleTokenIdChange()
   }, [tokenId]);
 
   useEffect(() => {
@@ -577,10 +583,6 @@ function BuidlerDetails(props) {
   const handleStableCoinAccordionOnChange = (e, value) => {
     setStableCoinAccordionOpen(value);
   };
-
-  const earnedBadgeAmount = record?.badges?.filter(
-    (badge) => badge.amount > 0
-  ).length;
 
   const badgesToBeEarnedNumber = record?.badges?.filter(
     (badge) => badge.amount === 0

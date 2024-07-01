@@ -47,7 +47,7 @@ export default function FirstBadge() {
     }
   }, [address]);
 
-  useEffect(async () => {
+  const handleInit=async () => {
     try {
       const res = await API.get('/workinggroup/list');
       const result = res?.data;
@@ -63,6 +63,10 @@ export default function FirstBadge() {
         body: err.message,
       });
     }
+  }
+  
+  useEffect(()=>{
+    handleInit()
   }, []);
 
   useEffect(() => {
