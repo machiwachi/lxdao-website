@@ -50,7 +50,7 @@ function DebounceInput(props) {
       {...props}
       InputProps={{
         endAdornment: (
-          <InputAdornment sx={{ padding: { xm: 0, sm: '15px' } }}>
+          <InputAdornment sx={{ padding: { xm: 0, sm: '15px' } }} position='end'>
             <SearchIcon />
           </InputAdornment>
         ),
