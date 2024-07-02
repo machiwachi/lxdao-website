@@ -5,6 +5,7 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { getDefaultConfig } from '@rainbow-me/rainbowkit';
 import { useAccount, useSignMessage, useDisconnect } from 'wagmi';
 import { mainnet, polygon, optimism, arbitrum, base } from 'wagmi/chains';
+import { useState } from 'react';
 
 import API, { refreshAPIToken } from '@/common/API';
 import {
@@ -25,6 +26,7 @@ const ConnectWalletButton = () => {
   const { address, isConnected, isDisconnected } = useAccount();
   const { disconnect } = useDisconnect();
   const { data: signature, signMessageAsync } = useSignMessage();
+  const [retries, setRetries] = useState(0);
   const addressInfo = useRef({ address });
 
   useEffect(() => {
@@ -49,9 +51,11 @@ const ConnectWalletButton = () => {
 
   useEffect(() => {
     const currentAccessToken = getLocalStorage('accessToken');
-    if (isDisconnected && currentAccessToken) {
+    if (isDisconnected && currentAccessToken && retries > 10) {
       removeLocalStorage('accessToken');
       refreshAPIToken();
+    } else {
+      setRetries(retries + 1);
     }
   }, [isDisconnected]);
 
