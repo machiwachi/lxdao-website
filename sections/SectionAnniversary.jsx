@@ -3,13 +3,11 @@ import React, { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
-  // IconButton,
+  IconButton,
   InputBase,
   Link,
   Button,
 } from '@mui/material';
-// import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-// import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import showMessage from '@/components/showMessage';
 import { useAccount, useContractRead, useContractWrite } from 'wagmi';
 import { parseEther } from 'viem';
@@ -77,8 +75,9 @@ const SectionAnniversary = () => {
         showMessage({
           type: 'error',
           title: 'Wrong Network',
-          body: `Please Change to ${CHAIN_ID == 10 ? 'Optimism' : 'ETH Goerli'
-            }`,
+          body: `Please Change to ${
+            CHAIN_ID == 10 ? 'Optimism' : 'ETH Goerli'
+          }`,
         });
       } else {
         showMessage({
@@ -129,13 +128,6 @@ const SectionAnniversary = () => {
             alignItems: 'center',
           }}
         >
-          {/* <IconButton
-            sx={{ width: '20px', height: '20px', marginRight: '8px' }}
-            disabled={amt == 1}
-            onClick={() => setAmt(amt - (amt == 1 ? 0 : 1))}
-          >
-            <RemoveCircleOutlineIcon sx={{ transform: 'scale(0.9)' }} />
-          </IconButton> */}
           <Box ml="30px">
             <InputBase
               sx={{ width: amt.toString().length * 10 + 'px' }}
@@ -144,7 +136,7 @@ const SectionAnniversary = () => {
               onChange={(e) => {
                 if (
                   parseInt(e.target.value) >
-                  500 - 100 - parseInt(totalSupply) ||
+                    500 - 100 - parseInt(totalSupply) ||
                   e.toString().length < 1
                 ) {
                   return;

@@ -1,27 +1,10 @@
 import React, { useRef, useEffect } from 'react';
-// import { getDefaultWallets, ConnectButton } from '@rainbow-me/rainbowkit';
-// import {
-//   configureChains,
-//   createConfig,
-//   useAccount,
-//   useSignMessage,
-//   useDisconnect,
-// } from 'wagmi';
 import '@rainbow-me/rainbowkit/styles.css';
 
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import {
-  getDefaultConfig,
-  RainbowKitProvider,
-} from '@rainbow-me/rainbowkit';
-import { WagmiProvider,useAccount,useSignMessage,useDisconnect } from 'wagmi';
-import {
-  mainnet,
-  polygon,
-  optimism,
-  arbitrum,
-  base,
-} from 'wagmi/chains';
+import { getDefaultConfig } from '@rainbow-me/rainbowkit';
+import { useAccount, useSignMessage, useDisconnect } from 'wagmi';
+import { mainnet, polygon, optimism, arbitrum, base } from 'wagmi/chains';
 
 import API, { refreshAPIToken } from '@/common/API';
 import {
@@ -31,16 +14,12 @@ import {
 } from '@/utils/utility';
 import showMessage from '@/components/showMessage';
 
-
-
 const wagmiConfig = getDefaultConfig({
   appName: 'LXDAO Official Website',
   projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID,
   chains: [mainnet, polygon, optimism, arbitrum, base],
   ssr: true, // If your dApp uses server side rendering (SSR)
 });
-
-
 
 const ConnectWalletButton = () => {
   const { address, isConnected, isDisconnected } = useAccount();
