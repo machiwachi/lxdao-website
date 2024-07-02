@@ -2,6 +2,23 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from 'react';
 import {
+  mainnet,
+  polygon,
+  optimism,
+  arbitrum,
+  base,
+  optimismGoerli,
+  arbitrumGoerli,
+} from 'wagmi/chains';
+import { useClient, useConfig } from 'wagmi';
+import {
+  createPublicClient,
+  parseAbiItem,
+  http,
+  fallback,
+  getAddress,
+} from 'viem';
+import {
   Box,
   Typography,
   Link,
@@ -29,6 +46,7 @@ import {
   FormControl,
   Select,
 } from '@mui/material';
+import { myFirstLayer2Badge, myFirstNFT } from '@/abi/index';
 import Confetti from 'react-confetti';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import useWindowSize from 'react-use/lib/useWindowSize';
@@ -37,9 +55,10 @@ import { useRouter } from 'next/router';
 import _ from 'lodash';
 import {
   useAccount,
-  useContractWrite,
   usePublicClient,
+  useReadContracts,
   useContractRead,
+  useContractWrite,
 } from 'wagmi';
 import { Img3 } from '@lxdao/img3';
 
@@ -355,7 +374,6 @@ function StableCoinsTable({ points }) {
 function BuidlerDetails(props) {
   const record = props.record;
   const { address } = useAccount();
-  const publicClient = usePublicClient();
   const [, currentViewer] = useBuidler(address);
   const contractInfoObj = contractInfo();
 
@@ -366,20 +384,20 @@ function BuidlerDetails(props) {
   });
 
   const handleBalanceChange = async () => {
-    if (!balanceOf || balanceOf === 0) {
-      return;
-    }
-    try {
-      const tokenId = await publicClient.readContract({
-        ...contractInfoObj,
-        functionName: 'tokenIdOfOwner',
-        args: [address],
-        watch: true,
-      });
-      setTokenId(Number(tokenId));
-    } catch (e) {
-      console.log(e);
-    }
+    //   if (!balanceOf || balanceOf === 0) {
+    //     return;
+    //   }
+    //   try {
+    //     const tokenId = await publicClient.readContract({
+    //       ...contractInfoObj,
+    //       functionName: 'tokenIdOfOwner',
+    //       args: [address],
+    //       watch: true,
+    //     });
+    //     setTokenId(Number(tokenId));
+    //   } catch (e) {
+    //     console.log(e);
+    //   }
   };
 
   useEffect(() => {
@@ -387,20 +405,20 @@ function BuidlerDetails(props) {
   }, [balanceOf, address]);
 
   const handleTokenIdChange = async () => {
-    if (!tokenId) {
-      return;
-    }
-    try {
-      const tokenURI = await publicClient.readContract({
-        ...contractInfoObj,
-        functionName: 'tokenURI',
-        args: [tokenId],
-        watch: true,
-      });
-      setIpfsURLOnChain(tokenURI);
-    } catch (e) {
-      console.log(e);
-    }
+    //   if (!tokenId) {
+    //     return;
+    //   }
+    //   try {
+    //     const tokenURI = await publicClient.readContract({
+    //       ...contractInfoObj,
+    //       functionName: 'tokenURI',
+    //       args: [tokenId],
+    //       watch: true,
+    //     });
+    //     setIpfsURLOnChain(tokenURI);
+    //   } catch (e) {
+    //     console.log(e);
+    //   }
   };
 
   useEffect(() => {
@@ -446,81 +464,6 @@ function BuidlerDetails(props) {
     functionName: 'mintAndAirdrop',
     account: address,
   });
-
-  // const findMBadgeFromNetWork = async (contractAddress, rpc, abi, method) => {
-
-  //   // const contract = new Contract(contractAddress, abi, provider);
-  //   // const result = await contract.queryFilter(method);
-  //   const result = await readAsync({
-  //     address: contractAddress,
-  //     rpc,
-  //     abi,
-  //     method,
-  //   });
-  //   return result;
-  // };
-
-  // const getMyFirstLayer2Badge = async () => {
-  //   const optGoerliNetworkResult = await findMBadgeFromNetWork(
-  //     '0x1188bd52703cc560a0349d5a80dad3d8c799e103',
-  //     'https://opt-goerli.g.alchemy.com/v2/0nH0WXQaohzjhfuOIsjzYWj6MnJpl_4E',
-  //     myFirstLayer2Abi,
-  //     'Minted'
-  //   );
-  //   const optGoerliNetworkInfo = optGoerliNetworkResult.find(
-  //     (i) => i.args[0].toLowerCase() === record.address?.toLowerCase()
-  //   );
-  //   const arbGoerliNetworkResult = await findMBadgeFromNetWork(
-  //     '0x1188bd52703cc560a0349d5a80dad3d8c799e103',
-  //     'https://arb-goerli.g.alchemy.com/v2/a-yu04ERGsxtgYyZ3BuioJ09VSZv4FQm',
-  //     myFirstLayer2Abi,
-  //     'Minted'
-  //   );
-  //   const arbGoerliNetworkInfo = arbGoerliNetworkResult.find(
-  //     (i) => i.args[0].toLowerCase() === record.address?.toLowerCase()
-  //   );
-  //   const info = optGoerliNetworkInfo || arbGoerliNetworkInfo;
-  //   if (!info) return;
-  //   let imgUrl = '';
-  //   if (info) {
-  //     const imgCode = info.args[2]?.replace(
-  //       'data:application/json;base64,',
-  //       ''
-  //     );
-  //     imgUrl = JSON.parse(atob(imgCode)).image;
-  //   }
-  //   setIsHasOtherBadges([
-  //     ...isHasOtherBadges,
-  //     { image: imgUrl, name: 'myFirstLayer2' },
-  //   ]);
-  // };
-
-  const getMyFirstNFTBadge = async () => {
-    // const provider = new JsonRpcProvider(
-    //   'https://mainnet.infura.io/v3/999c7c128542435eac32a6cdd05a31c1'
-    // );
-    // const contract = new Contract(
-    //   '0xE1D831Ee54f88Ef03FD7F5a15dE943BAA4d19070',
-    //   myFirstNFTAbi,
-    //   provider
-    // );
-    // const result = await contract.queryFilter('Transfer');
-    // const info = result.find(
-    //   (i) => i.args[1].toLowerCase() === record.address?.toLowerCase()
-    // );
-    // if (!info) return;
-    // const tokenId = info.args[2];
-    // const tokenURI = contract.getFunction('tokenURI');
-    // const tokenInfo = await tokenURI(tokenId);
-    // const tokenResult = JSON.parse(
-    //   atob(tokenInfo.replace('data:application/json;base64,', ''))
-    // );
-    // const imgUrl = tokenResult.image;
-    // setIsHasOtherBadges([
-    //   ...isHasOtherBadges,
-    //   { image: imgUrl, name: 'myFirstNFT' },
-    // ]);
-  };
 
   const enableMint = async () => {
     try {
@@ -1238,6 +1181,7 @@ export default function Buidler() {
   const router = useRouter();
   const currentAddress = router.query.address;
   const [open, setOpen] = useState(false);
+
   const { width, height } = useWindowSize();
   const [size, setSize] = useState({
     width: 0,
@@ -1318,6 +1262,46 @@ export default function Buidler() {
 }
 
 function BadgeBox({ record }) {
+  const [isHasOtherBadges, setIsHasOtherBadges] = useState([]);
+  const infura = http(
+    'https://mainnet.infura.io/v3/999c7c128542435eac32a6cdd05a31c1'
+  );
+
+  const publicClient = createPublicClient({
+    chain: mainnet,
+    transport: fallback([infura]),
+  });
+  useEffect(() => {
+    (async () => {
+      if (!record) return;
+
+      const MFNFTResult = await publicClient.getLogs({
+        address: getAddress(myFirstNFT.address),
+        event: parseAbiItem(
+          'event Transfer(address indexed from,address indexed to,uint256 indexed tokenId)'
+        ),
+        args: {
+          to: record.address,
+        },
+        fromBlock: 0n,
+        toBlock: 'latest',
+      });
+
+      const uri = await publicClient.readContract({
+        ...myFirstNFT,
+        functionName: 'tokenURI',
+        args: [BigInt(MFNFTResult[0].topics[3])],
+      });
+
+      const imgCode = uri.replace('data:application/json;base64,', '');
+      const imgUrl = JSON.parse(atob(imgCode)).image;
+      console.log(imgUrl);
+      setIsHasOtherBadges((prev) => [
+        ...prev,
+        { image: imgUrl, name: 'myFirstLayer2' },
+      ]);
+    })();
+  }, [record]);
   return (
     <Box
       sx={{
@@ -1354,20 +1338,20 @@ function BadgeBox({ record }) {
               />
             ) : null;
           })}
-        {/* {isHasOtherBadges.map((badge) => (
-                  <Img3
-                    key={badge?.image}
-                    style={{
-                      width: '60px',
-                      height: '60px',
-                      objectFit: 'contain',
-                      minWidth: '60px',
-                      flexShrink: 0,
-                    }}
-                    src={badge.image}
-                    alt={badge.name}
-                  />
-                ))} */}
+        {isHasOtherBadges.map((badge) => (
+          <Img3
+            key={badge?.image}
+            style={{
+              width: '60px',
+              height: '60px',
+              objectFit: 'contain',
+              minWidth: '60px',
+              flexShrink: 0,
+            }}
+            src={badge.image}
+            alt={badge.name}
+          />
+        ))}
       </Box>
     </Box>
   );

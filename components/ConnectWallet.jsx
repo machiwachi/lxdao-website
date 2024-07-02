@@ -4,7 +4,15 @@ import '@rainbow-me/rainbowkit/styles.css';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { getDefaultConfig } from '@rainbow-me/rainbowkit';
 import { useAccount, useSignMessage, useDisconnect } from 'wagmi';
-import { mainnet, polygon, optimism, arbitrum, base } from 'wagmi/chains';
+import {
+  mainnet,
+  polygon,
+  optimism,
+  arbitrum,
+  base,
+  optimismGoerli,
+  arbitrumGoerli,
+} from 'wagmi/chains';
 import { useState } from 'react';
 
 import API, { refreshAPIToken } from '@/common/API';
@@ -18,8 +26,17 @@ import showMessage from '@/components/showMessage';
 const wagmiConfig = getDefaultConfig({
   appName: 'LXDAO Official Website',
   projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID,
-  chains: [mainnet, polygon, optimism, arbitrum, base],
+  chains: [
+    mainnet,
+    polygon,
+    optimism,
+    arbitrum,
+    base,
+    optimismGoerli,
+    arbitrumGoerli,
+  ],
   ssr: true, // If your dApp uses server side rendering (SSR)
+  infuraAPIKey: '6959166847ff4ba499178f3d110c920f',
 });
 
 const ConnectWalletButton = () => {
