@@ -78,8 +78,11 @@ export default function Follow() {
       }}
     >
       Notion:{' '}
-      <Link href="https://lxdao.notion.site/" color="#36AFF9">
-        https://lxdao.notion.site/
+      <Link
+        href="https://www.notion.so/lxdao/b4d1a5bb1f944785b1f8942608066552?pvs=9"
+        color="#36AFF9"
+      >
+        https://www.notion.so/lxdao/b4d1a5bb1f944785b1f8942608066552?pvs=9
       </Link>
     </Typography>,
     <Typography
