@@ -1295,10 +1295,10 @@ function BadgeBox({ record }) {
 
       const imgCode = uri.replace('data:application/json;base64,', '');
       const imgUrl = JSON.parse(atob(imgCode)).image;
-      console.log(imgUrl);
-      setIsHasOtherBadges((prev) => [
-        ...prev,
-        { image: imgUrl, name: 'myFirstLayer2' },
+      console.log(imgUrl, imgUrl.split('ipfs://')[1]);
+      setIsHasOtherBadges([
+        ...isHasOtherBadges,
+        { image: imgUrl, name: 'myFirstNFT' },
       ]);
     })();
   }, [record]);
@@ -1338,18 +1338,29 @@ function BadgeBox({ record }) {
               />
             ) : null;
           })}
-        {isHasOtherBadges.map((badge) => (
-          <Img3
-            key={badge?.image}
-            style={{
-              width: '60px',
-              height: '60px',
-              objectFit: 'contain',
-              minWidth: '60px',
-              flexShrink: 0,
-            }}
-            src={badge.image}
-            alt={badge.name}
+        {isHasOtherBadges.map((badge,index) => (
+          // <Img3
+          //   key={badge?.image}
+          //   style={{
+          //     width: '60px',
+          //     height: '60px',
+          //     objectFit: 'contain',
+          //     minWidth: '60px',
+          //     flexShrink: 0,
+          //   }}
+          //   src={badge.image}
+          //   alt={badge.name}
+          // />
+          <Box
+            key={index}
+            component={'img'}
+            src={`https://nftstorage.link/ipfs/${badge?.image.split('ipfs://')[1]}`}
+            width="60px"
+            height="60px"
+            maxWidth="60px"
+            maxHeight="60px"
+            objectFit="contain"
+            flexShrink={0}
           />
         ))}
       </Box>
