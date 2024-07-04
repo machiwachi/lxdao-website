@@ -1,16 +1,7 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from 'react';
-import {
-  mainnet,
-  polygon,
-  optimism,
-  arbitrum,
-  base,
-  optimismGoerli,
-  arbitrumGoerli,
-} from 'wagmi/chains';
-import { useClient, useConfig, useWriteContract } from 'wagmi';
+import { mainnet } from 'wagmi/chains';
 import {
   createPublicClient,
   parseAbiItem,
@@ -25,64 +16,32 @@ import {
   Button,
   Grid,
   Dialog,
-  DialogTitle,
-  DialogContent,
   Divider,
-  TableContainer,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Paper,
   AccordionDetails,
   AccordionSummary,
   Accordion,
-  Tooltip,
-  DialogContentText,
-  DialogActions,
-  InputLabel,
-  MenuItem,
-  FormControl,
-  Select,
 } from '@mui/material';
-import { myFirstLayer2Badge, myFirstNFT } from '@/abi/index';
+import { myFirstNFT } from '@/abi/index';
 import Confetti from 'react-confetti';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import useWindowSize from 'react-use/lib/useWindowSize';
-import CloseIcon from '@mui/icons-material/Close';
 import { useRouter } from 'next/router';
 import AirdropDialog from '../../components/buidlers/AirdropDialog';
 import _ from 'lodash';
-import {
-  useAccount,
-  usePublicClient,
-  useReadContracts,
-  useContractRead,
-  useContractWrite,
-} from 'wagmi';
-import { Img3 } from '@lxdao/img3';
-
+import { useAccount } from 'wagmi';
 import API from '@/common/API';
 import {
   formatAddress,
-  getEtherScanDomain,
-  getOpEtherScanDomain,
-  getOpenSeaDomain,
-  getPolygonScanDomain,
   totalLXPoints,
   totalStableCoins,
-  ipfsToBytes,
 } from '@/utils/utility';
 
 import Layout from '@/components/Layout';
 import CopyText from '@/components/CopyText';
 import Container from '@/components/Container';
-import ProfileForm from '@/components/ProfileForm';
+
 import useBuidler from '@/components/useBuidler';
-// import useMate from '@/components/useMate';
 import Skills from '@/components/Skills';
-import { contractInfo } from '@/components/ContractsOperation';
 import BuidlerContacts from '@/components/BuidlerContacts';
 import Tag from '@/components/Tag';
 import showMessage from '@/components/showMessage';
@@ -91,362 +50,16 @@ import LXButton from '@/components/Button';
 import WorkingGroupSimpleCard from '@/components/WorkingGroupSimpleCard';
 import OnBoardingLayout from '@/components/OnBoardingLayout';
 import BadgeCard from '@/components/BadgeCard';
-import { add } from 'date-fns';
-
-function LXPointsTable({ points }) {
-  return (
-    <TableContainer
-      component={Paper}
-      sx={{
-        '&.MuiPaper-root': {
-          overflowX: 'unset',
-        },
-        boxShadow: 'none',
-      }}
-    >
-      <Table aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell sx={{ paddingLeft: 0 }} width="15%" align="left">
-              <Typography color="#666F85" variant="body2" fontWeight="400">
-                Compensation
-              </Typography>
-            </TableCell>
-            <TableCell width="20%" align="left">
-              <Typography color="#666F85" variant="body2" fontWeight="400">
-                Reason
-              </Typography>
-            </TableCell>
-            <TableCell width="15%" align="left">
-              <Typography color="#666F85" variant="body2" fontWeight="400">
-                Source
-              </Typography>
-            </TableCell>
-            <TableCell width="15%" align="left">
-              <Typography
-                sx={{
-                  width: '89px',
-                }}
-                color="#666F85"
-                variant="body2"
-                fontWeight="400"
-              >
-                Release Time
-              </Typography>
-            </TableCell>
-            <TableCell sx={{ paddingRight: 0 }} width="15%" align="right">
-              <Typography
-                sx={{
-                  width: '110px',
-                }}
-                color="#666F85"
-                variant="body2"
-                fontWeight="400"
-              >
-                Transaction Link
-              </Typography>
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {points.map((point) => {
-            let pointStatus = point.status;
-            if (point.status === 'RELEASED') {
-              pointStatus = point.updatedAt.split('T')[0];
-            } else if (point.status !== 'REJECTED') {
-              pointStatus = 'PENDING';
-            }
-            return (
-              <TableRow
-                key={point.id}
-                sx={{
-                  '&:last-child td, &:last-child th': { border: 0 },
-                  borderBottom: '0.5px solid #E5E5E5',
-                }}
-              >
-                <TableCell
-                  sx={{ color: '#101828', paddingLeft: 0 }}
-                  component="th"
-                  scope="row"
-                >
-                  <Typography variant="body1" fontWeight="600">
-                    {`${point.value?.toFixed(2)} LXP`}
-                  </Typography>
-                </TableCell>
-                <TableCell sx={{ color: '#101828' }} align="left">
-                  <Tooltip title={point.reason}>
-                    <Typography
-                      sx={{
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                        maxWidth: { xs: '150px', sm: '300px' },
-                      }}
-                      variant="body2"
-                      fontWeight="400"
-                    >
-                      {point.reason}
-                    </Typography>
-                  </Tooltip>
-                </TableCell>
-                <TableCell sx={{ color: '#101828' }} align="left">
-                  {point.source}
-                </TableCell>
-                <TableCell sx={{ color: '#101828' }} align="left">
-                  <Typography
-                    sx={{
-                      width: '89px',
-                    }}
-                    variant="body2"
-                    fontWeight="400"
-                  >
-                    {pointStatus}
-                  </Typography>
-                </TableCell>
-                <TableCell sx={{ paddingRight: 0 }} align="right">
-                  <Link
-                    target="_blank"
-                    sx={{ textDecoration: 'none' }}
-                    href={`https://${getPolygonScanDomain()}/tx/${point.hash}`}
-                  >
-                    <Typography
-                      sx={{
-                        width: '110px',
-                      }}
-                      color="#36AFF9"
-                      variant="body1"
-                      fontWeight="400"
-                    >
-                      {point.status === 'RELEASED' && 'View'}
-                    </Typography>
-                  </Link>
-                </TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  );
-}
-
-function StableCoinsTable({ points }) {
-  return (
-    <TableContainer
-      component={Paper}
-      sx={{
-        '&.MuiPaper-root': {
-          overflowX: 'unset',
-        },
-        boxShadow: 'none',
-      }}
-    >
-      <Table aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell sx={{ paddingLeft: 0 }} width="15%" align="left">
-              <Typography color="#666F85" variant="body2" fontWeight="400">
-                Remuneration
-              </Typography>
-            </TableCell>
-            <TableCell width="20%" align="left">
-              <Typography color="#666F85" variant="body2" fontWeight="400">
-                Reason
-              </Typography>
-            </TableCell>
-            <TableCell width="15%" align="left">
-              <Typography color="#666F85" variant="body2" fontWeight="400">
-                Source
-              </Typography>
-            </TableCell>
-            <TableCell width="15%" align="left">
-              <Typography
-                sx={{
-                  width: '89px',
-                }}
-                color="#666F85"
-                variant="body2"
-                fontWeight="400"
-              >
-                Release Time
-              </Typography>
-            </TableCell>
-            <TableCell sx={{ paddingRight: 0 }} width="15%" align="right">
-              <Typography
-                sx={{
-                  width: '110px',
-                }}
-                color="#666F85"
-                variant="body2"
-                fontWeight="400"
-              >
-                Transaction Link
-              </Typography>
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {points.map((point) => {
-            let pointStatus = point.status;
-            if (point.status === 'RELEASED') {
-              pointStatus = point.updatedAt.split('T')[0];
-            } else if (point.status !== 'REJECTED') {
-              pointStatus = 'PENDING';
-            }
-            return (
-              <TableRow
-                key={point.id}
-                sx={{
-                  '&:last-child td, &:last-child th': { border: 0 },
-                  borderBottom: '0.5px solid #E5E5E5',
-                }}
-              >
-                <TableCell
-                  sx={{ color: '#101828', paddingLeft: 0 }}
-                  component="th"
-                  scope="row"
-                >
-                  <Typography variant="body1" fontWeight="600">
-                    {`${point.value?.toFixed(2)} U`}
-                  </Typography>
-                </TableCell>
-                <TableCell sx={{ color: '#101828' }} align="left">
-                  <Tooltip title={point.reason}>
-                    <Typography
-                      sx={{
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                        maxWidth: { xs: '150px', sm: '300px' },
-                      }}
-                      variant="body2"
-                      fontWeight="400"
-                    >
-                      {point.reason}
-                    </Typography>
-                  </Tooltip>
-                </TableCell>
-                <TableCell sx={{ color: '#101828' }} align="left">
-                  {point.source}
-                </TableCell>
-                <TableCell sx={{ color: '#101828' }} align="left">
-                  <Typography
-                    sx={{
-                      width: '89px',
-                    }}
-                    variant="body2"
-                    fontWeight="400"
-                  >
-                    {pointStatus}
-                  </Typography>
-                </TableCell>
-                <TableCell sx={{ paddingRight: 0 }} align="right">
-                  <Link
-                    target="_blank"
-                    sx={{ textDecoration: 'none' }}
-                    href={`https://${
-                      pointStatus < '2023-11-01'
-                        ? getEtherScanDomain()
-                        : getOpEtherScanDomain()
-                    }/tx/${point.hash}`}
-                  >
-                    <Typography
-                      sx={{
-                        width: '110px',
-                      }}
-                      color="#36AFF9"
-                      variant="body1"
-                      fontWeight="400"
-                    >
-                      {point.status === 'RELEASED' && 'View'}
-                    </Typography>
-                  </Link>
-                </TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  );
-}
+import ProfileEditDialog from '../../components/buidlers/ProfileEditDialog';
+import LXPointsTable from '../../components/buidlers/LXPointsTable';
+import StableCoinsTable from '../../components/buidlers/StableCoinsTable';
 
 function BuidlerDetails(props) {
   const record = props.record;
   const { address } = useAccount();
   const [, currentViewer] = useBuidler(address);
-  const contractInfoObj = contractInfo();
-
-  const { data: balanceOf = 0 } = useContractRead({
-    ...contractInfoObj,
-    functionName: 'balanceOf',
-    args: [address],
-  });
-
-  const handleBalanceChange = async () => {
-    //   if (!balanceOf || balanceOf === 0) {
-    //     return;
-    //   }
-    //   try {
-    //     const tokenId = await publicClient.readContract({
-    //       ...contractInfoObj,
-    //       functionName: 'tokenIdOfOwner',
-    //       args: [address],
-    //       watch: true,
-    //     });
-    //     setTokenId(Number(tokenId));
-    //   } catch (e) {
-    //     console.log(e);
-    //   }
-  };
-
-  useEffect(() => {
-    handleBalanceChange();
-  }, [balanceOf, address]);
-
-  const handleTokenIdChange = async () => {
-    //   if (!tokenId) {
-    //     return;
-    //   }
-    //   try {
-    //     const tokenURI = await publicClient.readContract({
-    //       ...contractInfoObj,
-    //       functionName: 'tokenURI',
-    //       args: [tokenId],
-    //       watch: true,
-    //     });
-    //     setIpfsURLOnChain(tokenURI);
-    //   } catch (e) {
-    //     console.log(e);
-    //   }
-  };
-
-  useEffect(() => {
-    handleTokenIdChange();
-  }, [tokenId]);
-
-  useEffect(() => {
-    // getMyFirstLayer2Badge();
-    // getMyFirstNFTBadge();
-  }, [address]);
-
   const router = useRouter();
   const isFromOnboarding = router?.query?.isFromOnboarding;
-
-  const [visible, setVisible] = useState(false);
-  const [syncing, setSyncing] = useState(false);
-  const [txOpen, setTxOpen] = useState(false);
-  const [txResOpen, setTxResOpen] = useState(false);
-  const [
-    tx,
-    // setTx
-  ] = useState(null);
-  const [txRes, setTxRes] = useState(null);
-
-  // tokenId on chain
-  const [tokenId, setTokenId] = useState(null);
-  // ipfsURL on chain
-  const [ipfsURLOnChain, setIpfsURLOnChain] = useState(null);
   const [onboarding, setOnboarding] = useState(false);
 
   const enableMint = async () => {
@@ -474,40 +87,6 @@ function BuidlerDetails(props) {
   const firstMemberBadgeAmount = record?.badges?.find(
     (badge) => badge.id === 'MemberFirstBadge'
   )?.amount;
-
-  async function syncOnChain() {
-    setSyncing(true);
-    try {
-      const syncInfoRes = await API.post(`/buidler/${address}/syncInfo`);
-      if (syncInfoRes?.data?.status !== 'SUCCESS') {
-        throw new Error(syncInfoRes?.data.message);
-      }
-      const { signature, ipfsURI } = syncInfoRes?.data?.data || {};
-      const contract = new Contract(
-        contractInfoObj.address,
-        contractInfoObj.abi,
-        signer
-      );
-      const response = await contract.updateMetadata(
-        tokenId,
-        ipfsToBytes(ipfsURI),
-        signature
-      );
-      if (response && response.transactionHash) {
-        setTxRes(response);
-      } else {
-        throw new Error(response);
-      }
-      // todo add tx to the page
-    } catch (err) {
-      showMessage({
-        type: 'error',
-        title: 'Failed to update metadata',
-        body: err.message,
-      });
-    }
-    setSyncing(false);
-  }
 
   useEffect(() => {
     if (record?.status === 'PENDING' && firstMemberBadgeAmount === 0) {
@@ -589,141 +168,6 @@ function BuidlerDetails(props) {
               </Box>
             </Box>
           )}
-        {tx && (
-          <Dialog
-            maxWidth="383px"
-            onClose={() => {
-              setTxOpen(false);
-            }}
-            open={txOpen}
-          >
-            <Box
-              sx={{
-                borderRadius: '6px',
-                background: '#fff',
-                width: '383px',
-                height: '232px',
-                padding: '32px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'flex-start',
-              }}
-            >
-              <Box component={'img'} src={'/icons/setting.svg'} />
-              <Typography
-                variant="body1"
-                fontWeight="500"
-                textAlign="center"
-                color="#000"
-                marginTop={2}
-                marginBottom={2}
-              >
-                Minting...
-              </Typography>
-              <Box
-                sx={{
-                  display: 'inline-block',
-                  fontWeight: '400',
-                  color: '#666F85',
-                }}
-              >
-                tx:{' '}
-                <Link
-                  target="_blank"
-                  sx={{ wordBreak: 'break-all' }}
-                  href={`https://${getEtherScanDomain()}/tx/${tx.hash}`}
-                >
-                  {tx.hash}
-                </Link>
-              </Box>
-            </Box>
-          </Dialog>
-        )}
-        {txRes && (
-          <Dialog
-            maxWidth="383px"
-            onClose={() => {
-              setTxResOpen(false);
-            }}
-            open={txResOpen}
-          >
-            <Box
-              sx={{
-                borderRadius: '6px',
-                background: '#fff',
-                width: '383px',
-                height: '532.8px',
-                padding: '32px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'flex-start',
-              }}
-            >
-              <Box component={'img'} src={'/icons/check.svg'} />
-              <Typography
-                variant="body1"
-                fontWeight="500"
-                color="#000"
-                textAlign="left"
-                marginTop={2}
-              >
-                Congratulations, LXDAO Buidler card Mint succeeded！
-              </Typography>
-              <Box marginTop={3} marginBottom={3} margin="auto">
-                <img
-                  crossOrigin="anonymous"
-                  style={{ display: 'block', width: 271 }}
-                  src={`${process.env.NEXT_PUBLIC_LXDAO_BACKEND_API}/buidler/${record.address}/card`}
-                  alt=""
-                />
-              </Box>
-              <Box
-                sx={{ display: 'inline-block', color: '#666F85' }}
-                marginBottom={3}
-              >
-                Go To{' '}
-                <Link
-                  target="_blank"
-                  sx={{ wordBreak: 'break-all' }}
-                  href={`https://${getOpenSeaDomain()}/account`}
-                >
-                  OpenSea
-                </Link>{' '}
-                To View
-              </Box>
-              <Box
-                sx={{
-                  display: 'inline-block',
-                  fontWeight: '400',
-                  color: '#666F85',
-                }}
-                marginBottom={3}
-              >
-                tx:{' '}
-                <Link
-                  target="_blank"
-                  sx={{ wordBreak: 'break-all' }}
-                  href={`https://${getEtherScanDomain()}/tx/${
-                    txRes.transactionHash
-                  }`}
-                >
-                  {txRes.transactionHash}
-                </Link>
-              </Box>
-              <Box width="100%" display="flex" justifyContent="flex-end">
-                <LXButton
-                  width="94px"
-                  variant="gradient"
-                  onClick={() => {
-                    setTxResOpen(false);
-                  }}
-                >
-                  OK
-                </LXButton>
-              </Box>
-            </Box>
-          </Dialog>
-        )}
         <Box
           display="flex"
           flexDirection={{
@@ -870,28 +314,7 @@ function BuidlerDetails(props) {
                   flexWrap="wrap"
                   gap={1}
                 >
-                  {address === record.address ? (
-                    <LXButton
-                      onClick={() => {
-                        setVisible(true);
-                      }}
-                      variant="outlined"
-                    >
-                      Edit
-                    </LXButton>
-                  ) : null}
-                  {address === record.address &&
-                    !!ipfsURLOnChain &&
-                    ipfsURLOnChain !== record.ipfsURI && (
-                      <LXButton
-                        onClick={syncOnChain}
-                        color="#36AFF9"
-                        variant="outlined"
-                        disabled={syncing}
-                      >
-                        {syncing ? 'Syncing...' : 'Sync on Chain'}
-                      </LXButton>
-                    )}
+                  <ProfileEditDialog record={record} />
                   {address === record.address &&
                   record.role.includes('Onboarding Committee') ? (
                     <LXButton
@@ -910,7 +333,6 @@ function BuidlerDetails(props) {
                       Onboarding
                     </LXButton>
                   ) : null}
-
                   {/* todo only show this button to Onboarding Committee */}
                   {address !== record.address && (
                     <Divider
@@ -961,86 +383,8 @@ function BuidlerDetails(props) {
             <WorkingGroupsBox record={record} />
           </Box>
         </Box>
-        <ProfileEditDialog
-          {...{ visible, setVisible, record, refresh: props.refresh }}
-        />
       </Container>
     </>
-  );
-}
-
-function ProfileEditDialog({ visible, setVisible, record, refresh }) {
-  const [updating, setUpdating] = useState(false);
-  const saveProfileHandler = async (newMetaData) => {
-    setUpdating(true);
-    const userProfile = {
-      ...newMetaData,
-      role: record.role.length === 0 ? ['Buidler'] : record.role,
-      // set the NFT image
-      image: `${process.env.NEXT_PUBLIC_LXDAO_BACKEND_API}/buidler/${record.address}/card`,
-    };
-    try {
-      const response = await API.put(`/buidler/${record.address}`, {
-        metaData: userProfile,
-      });
-      const result = response?.data;
-      if (result.status !== 'SUCCESS') {
-        throw new Error(result.message);
-      }
-      setVisible(false);
-      refresh();
-    } catch (err) {
-      showMessage({
-        type: 'error',
-        title: 'Failed to update profile',
-        body: err.message,
-      });
-    }
-    setUpdating(false);
-  };
-
-  return (
-    <Dialog
-      fullWidth={true}
-      maxWidth={'sm'}
-      onClose={(event, reason) => {
-        if (reason && reason == 'backdropClick') return;
-        setVisible(false);
-      }}
-      open={visible}
-    >
-      <Box
-        onClick={() => {
-          setVisible(false);
-        }}
-        sx={{
-          cursor: 'pointer',
-        }}
-        position="absolute"
-        top="16px"
-        right="16px"
-      >
-        <CloseIcon></CloseIcon>
-      </Box>
-      <DialogTitle>Profile Details</DialogTitle>
-      <DialogContent>
-        <ProfileForm
-          updating={updating}
-          values={_.cloneDeep(
-            _.pick(record, [
-              'avatar',
-              'name',
-              'description',
-              'skills',
-              'interests',
-              'contacts',
-              'privateContacts',
-            ])
-          )}
-          saveProfileHandler={saveProfileHandler}
-        />
-      </DialogContent>
-    </Dialog>
   );
 }
 
