@@ -1,6 +1,7 @@
-import { abi as anniversaryAbi } from '@/abi/anniversary';
-import { abi as myFirstLayer2BadgeAbi } from '@/abi/myFirstLayer2';
-import { abi as myFirstNFTAbi } from '@/abi/myFirstNFT';
+import { abi as anniversaryAbi } from './anniversary';
+import { abi as myFirstLayer2BadgeAbi } from './myFirstLayer2';
+import { abi as myFirstNFTAbi } from './myFirstNFT';
+import { abi as badgeAbi } from './badge.js'
 
 export const anniversaryContract = {
     address: "0x96682f486b4C641C1625cEd12D9AF54B4c6a1B52",
@@ -16,4 +17,10 @@ export const myFirstLayer2Badge = {
 export const myFirstNFT = {
     address: "0xE1D831Ee54f88Ef03FD7F5a15dE943BAA4d19070",
     abi: myFirstNFTAbi,
+}
+
+export const badgeContract = {
+    address: "0xd1192fEF62da46E246cb77A7B66E24ACaA879D90",
+    abi: badgeAbi,
+    chainId: 137
 }

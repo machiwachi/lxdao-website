@@ -10,7 +10,7 @@ import {
   optimismGoerli,
   arbitrumGoerli,
 } from 'wagmi/chains';
-import { useClient, useConfig } from 'wagmi';
+import { useClient, useConfig, useWriteContract } from 'wagmi';
 import {
   createPublicClient,
   parseAbiItem,
@@ -52,6 +52,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import useWindowSize from 'react-use/lib/useWindowSize';
 import CloseIcon from '@mui/icons-material/Close';
 import { useRouter } from 'next/router';
+import AirdropDialog from '../../components/buidlers/AirdropDialog';
 import _ from 'lodash';
 import {
   useAccount,
@@ -73,7 +74,6 @@ import {
   totalStableCoins,
   ipfsToBytes,
 } from '@/utils/utility';
-import badge_abi from '@/abi/badge_abi.json';
 
 import Layout from '@/components/Layout';
 import CopyText from '@/components/CopyText';
@@ -448,22 +448,6 @@ function BuidlerDetails(props) {
   // ipfsURL on chain
   const [ipfsURLOnChain, setIpfsURLOnChain] = useState(null);
   const [onboarding, setOnboarding] = useState(false);
-  const [mintBadgeDialog, setMintBadgeDialog] = useState(false);
-  const [selectMintBadgeValue, setSelectMintBadgeValue] = useState('');
-
-  const {
-    data: airdrop,
-    isSuccess: airdropIsSuccess,
-    isLoading: airdropIsLoading,
-    isError: airdropIsError,
-    error: airdropError,
-    write: airdropWrite,
-  } = useContractWrite({
-    address: process.env.NEXT_PUBLIC_BADGE_CONTRACT_ADDRESS,
-    abi: badge_abi,
-    functionName: 'mintAndAirdrop',
-    account: address,
-  });
 
   const enableMint = async () => {
     try {
@@ -490,57 +474,6 @@ function BuidlerDetails(props) {
   const firstMemberBadgeAmount = record?.badges?.find(
     (badge) => badge.id === 'MemberFirstBadge'
   )?.amount;
-
-  const hasBadge = (type) =>
-    record?.badges?.find((badge) => badge.id === type)?.amount > 0;
-
-  useEffect(() => {
-    airdropCallback();
-  }, [airdropIsLoading, airdropIsSuccess, airdrop, airdropIsError]);
-
-  const airdropCallback = async () => {
-    if (airdropIsSuccess && airdrop) {
-      const updatedBuidler = await API.post(
-        `/buidler/${record.address}/updateBadges`
-      );
-
-      if (updatedBuidler?.data?.status === 'SUCCESS') {
-        showMessage({
-          type: 'success',
-          title: 'Success!',
-        });
-        props.refresh();
-      } else {
-        showMessage({
-          type: 'error',
-          title: 'Error',
-          body: updatedBuidler?.data?.message,
-        });
-      }
-    }
-
-    if (airdropIsError) {
-      showMessage({
-        type: 'error',
-        title: 'Failed to airdrop membership badge',
-        body: <>{airdropError.toString()}</>,
-      });
-    }
-  };
-
-  const airDropMembershipBadge = async (badge) => {
-    try {
-      await airdropWrite({
-        args: [badge, [record.address], [1]],
-      });
-    } catch (err) {
-      showMessage({
-        type: 'error',
-        title: `Failed to airdrop ${badge}`,
-        body: err.message,
-      });
-    }
-  };
 
   async function syncOnChain() {
     setSyncing(true);
@@ -584,22 +517,6 @@ function BuidlerDetails(props) {
       setOnboarding(false);
     };
   }, [record?.status, firstMemberBadgeAmount]);
-
-  const handleCloseBadgeDialog = () => {
-    setMintBadgeDialog(false);
-    setSelectMintBadgeValue('');
-  };
-  const handleOpenMintBadgeDialog = () => {
-    setMintBadgeDialog(true);
-  };
-
-  const handleChangeSelectMintBadgeValue = (event) => {
-    setSelectMintBadgeValue(event.target.value);
-  };
-
-  const handleMintBadge = async () => {
-    await airDropMembershipBadge(selectMintBadgeValue);
-  };
 
   return (
     <>
@@ -1022,22 +939,7 @@ function BuidlerDetails(props) {
                         Sync to IPFS
                       </LXButton>
                     )}
-                  {
-                    // record?.status === 'PENDING' &&
-                    // firstMemberBadgeAmount === 0 &&
-                    address &&
-                      record?.role?.includes('Onboarding Committee') && (
-                        <LXButton
-                          onClick={handleOpenMintBadgeDialog}
-                          variant="outlined"
-                          disabled={airdropIsLoading}
-                        >
-                          {airdropIsLoading
-                            ? 'AirDropping Badge...'
-                            : 'AirDrop Badge'}
-                        </LXButton>
-                      )
-                  }
+                  <AirdropDialog record={record} />
                 </Box>
               </Box>
             </Box>
@@ -1062,40 +964,6 @@ function BuidlerDetails(props) {
         <ProfileEditDialog
           {...{ visible, setVisible, record, refresh: props.refresh }}
         />
-        <Dialog
-          open={mintBadgeDialog}
-          onClose={handleCloseBadgeDialog}
-          fullWidth="sm"
-        >
-          <DialogTitle>Mind Badge</DialogTitle>
-          <DialogContent sx={{ paddingBottom: '80px' }}>
-            <DialogContentText marginBottom="10px">
-              Please select the badge you want to mint.
-            </DialogContentText>
-            <FormControl fullWidth>
-              <InputLabel>badge</InputLabel>
-              <Select
-                value={selectMintBadgeValue}
-                label="badge"
-                onChange={handleChangeSelectMintBadgeValue}
-              >
-                <MenuItem
-                  value="MemberFirstBadge"
-                  disabled={hasBadge('MemberFirstBadge')}
-                >
-                  MemberFirstBadge
-                </MenuItem>
-                <MenuItem value="DHDBadge" disabled={hasBadge('DHDBadge')}>
-                  DHDBadge
-                </MenuItem>
-              </Select>
-            </FormControl>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseBadgeDialog}>Cancel</Button>
-            <Button onClick={handleMintBadge}>Confirm</Button>
-          </DialogActions>
-        </Dialog>
       </Container>
     </>
   );
@@ -1287,10 +1155,15 @@ function BadgeBox({ record }) {
         toBlock: 'latest',
       });
 
+      // console.log({ MFNFTResult });
+      if (MFNFTResult.length <= 0) {
+        return;
+      }
+
       const uri = await publicClient.readContract({
         ...myFirstNFT,
         functionName: 'tokenURI',
-        args: [BigInt(MFNFTResult[0].topics[3])],
+        args: [BigInt(MFNFTResult[0]?.topics[3])],
       });
 
       const imgCode = uri.replace('data:application/json;base64,', '');
@@ -1338,7 +1211,7 @@ function BadgeBox({ record }) {
               />
             ) : null;
           })}
-        {isHasOtherBadges.map((badge,index) => (
+        {isHasOtherBadges.map((badge, index) => (
           // <Img3
           //   key={badge?.image}
           //   style={{
