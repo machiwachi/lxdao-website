@@ -1,0 +1,71 @@
+import { Box, Typography, Link, Grid } from '@mui/material';
+import WorkingGroupSimpleCard from '@/components/WorkingGroupSimpleCard';
+import LXButton from '@/components/Button';
+
+export default function WorkingGroupsBox({ record }) {
+  return (
+    <Box marginTop={3} marginBottom={3}>
+      <Box>
+        <Typography
+          color="#101828"
+          fontWeight="600"
+          variant="body1"
+          marginBottom={2}
+        >
+          Working Group
+        </Typography>
+      </Box>
+      <Box display="flex" marginTop={2}>
+        {record?.workingGroups?.length ? (
+          <Box width="100%">
+            <Grid container spacing={3}>
+              {record?.workingGroups?.length > 0 &&
+                record?.workingGroups?.map((group, index) => {
+                  return (
+                    <WorkingGroupSimpleCard
+                      key={index}
+                      id={group?.workingGroup?.id}
+                      role={group.role}
+                      name={group?.workingGroup?.name}
+                    />
+                  );
+                })}
+            </Grid>
+          </Box>
+        ) : (
+          <Box
+            display="flex"
+            flexDirection="column"
+            width="100%"
+            height="148px"
+            alignItems="center"
+            border="0.5px solid #D0D5DD"
+            borderRadius="6px"
+            padding={2}
+          >
+            <Typography
+              marginTop={{ xs: 0, sm: 2 }}
+              marginBottom={{ xs: '16px', sm: '21px' }}
+              color="#D0D5DD"
+              variant="body1"
+              fontWeight="400"
+            >
+              You haven&apos;t joined the workgroup, go and choose one to join
+            </Typography>
+            <LXButton size="small" variant="outlined">
+              <Link
+                href={`https://lxdao.notion.site/95fde886aef24c9ca63b8bae95fa8456`}
+                target="_blank"
+                sx={{
+                  textDecoration: 'none',
+                }}
+              >
+                View Working Group
+              </Link>
+            </LXButton>
+          </Box>
+        )}
+      </Box>
+    </Box>
+  );
+}
