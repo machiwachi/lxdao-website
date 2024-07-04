@@ -1,23 +1,27 @@
-import { useState, useEffect } from 'react';
-import LXButton from '@/components/Button';
+import { useEffect, useState } from 'react';
+
 import {
   Button,
   Dialog,
-  DialogTitle,
+  DialogActions,
   DialogContent,
   DialogContentText,
-  DialogActions,
+  DialogTitle,
+  FormControl,
   InputLabel,
   MenuItem,
-  FormControl,
   Select,
 } from '@mui/material';
 
-import { useWriteContract, useSwitchChain, useAccount } from 'wagmi';
-import API from '@/common/API';
+import LXButton from '@/components/Button';
 import showMessage from '@/components/showMessage';
-import { badgeContract } from '@/abi/index';
+
 import { polygon } from 'viem/chains';
+
+import { useAccount, useSwitchChain, useWriteContract } from 'wagmi';
+
+import { badgeContract } from '@/abi/index';
+import API from '@/common/API';
 
 export default function AirdropDialog({ record }) {
   const {

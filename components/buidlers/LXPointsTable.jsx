@@ -1,16 +1,18 @@
-import { getPolygonScanDomain } from '@/utils/utility';
 import {
-  Typography,
   Link,
-  TableContainer,
+  Paper,
   Table,
   TableBody,
   TableCell,
+  TableContainer,
   TableHead,
   TableRow,
-  Paper,
   Tooltip,
+  Typography,
 } from '@mui/material';
+
+import { getPolygonScanDomain } from '@/utils/utility';
+
 export default function LXPointsTable({ points }) {
   return (
     <TableContainer

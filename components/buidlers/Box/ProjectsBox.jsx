@@ -1,6 +1,7 @@
-import { Box, Typography, Link, Grid } from '@mui/material';
-import Project from '@/components/Project';
+import { Box, Grid, Link, Typography } from '@mui/material';
+
 import LXButton from '@/components/Button';
+import Project from '@/components/Project';
 
 export default function ProjectsBox({ record }) {
   const projects = record.projects.filter((project) => {

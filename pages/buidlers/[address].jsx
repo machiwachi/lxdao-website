@@ -1,42 +1,47 @@
 /* eslint-disable jsx-a11y/alt-text */
+
 /* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from 'react';
+import Confetti from 'react-confetti';
+import useWindowSize from 'react-use/lib/useWindowSize';
+
+import { useRouter } from 'next/router';
+
 import {
   Box,
-  Typography,
-  Link,
   Button,
-  Grid,
   Dialog,
   Divider,
+  Grid,
+  Link,
+  Typography,
 } from '@mui/material';
-import Confetti from 'react-confetti';
 
-import useWindowSize from 'react-use/lib/useWindowSize';
-import { useRouter } from 'next/router';
-import AirdropDialog from '@/components/buidlers/AirdropDialog';
-import _ from 'lodash';
-import { useAccount } from 'wagmi';
-import API from '@/common/API';
-import { formatAddress } from '@/utils/utility';
-
-import Tag from '@/components/Tag';
-import Layout from '@/components/Layout';
-import CopyText from '@/components/CopyText';
-import Container from '@/components/Container';
-import useBuidler from '@/components/useBuidler';
 import BuidlerContacts from '@/components/BuidlerContacts';
-import showMessage from '@/components/showMessage';
 import LXButton from '@/components/Button';
+import Container from '@/components/Container';
+import CopyText from '@/components/CopyText';
+import Layout from '@/components/Layout';
 import OnBoardingLayout from '@/components/OnBoardingLayout';
-import ProfileEditDialog from '@/components/buidlers/ProfileEditDialog';
+import Tag from '@/components/Tag';
+import AirdropDialog from '@/components/buidlers/AirdropDialog';
 import BadgeBox from '@/components/buidlers/Box/BadgeBox';
 import BadgesToBeEarnedBox from '@/components/buidlers/Box/BadgesToBeEarnedBox';
 import LxpRewardBox from '@/components/buidlers/Box/LxpRewardBox';
-import StableCoinsRewardBox from '@/components/buidlers/Box/StableCoinsRewardBox';
-import SkillsBox from '@/components/buidlers/Box/SkillsBox';
 import ProjectsBox from '@/components/buidlers/Box/ProjectsBox';
+import SkillsBox from '@/components/buidlers/Box/SkillsBox';
+import StableCoinsRewardBox from '@/components/buidlers/Box/StableCoinsRewardBox';
 import WorkingGroupsBox from '@/components/buidlers/Box/WorkingGroupsBox';
+import ProfileEditDialog from '@/components/buidlers/ProfileEditDialog';
+import showMessage from '@/components/showMessage';
+import useBuidler from '@/components/useBuidler';
+
+import { useAccount } from 'wagmi';
+
+import API from '@/common/API';
+import { formatAddress } from '@/utils/utility';
+
+import _ from 'lodash';
 
 function BuidlerDetails(props) {
   const record = props.record;

@@ -1,16 +1,18 @@
-import { getEtherScanDomain, getOpEtherScanDomain } from '@/utils/utility';
 import {
-  Typography,
   Link,
-  TableContainer,
+  Paper,
   Table,
   TableBody,
   TableCell,
+  TableContainer,
   TableHead,
   TableRow,
-  Paper,
   Tooltip,
+  Typography,
 } from '@mui/material';
+
+import { getEtherScanDomain, getOpEtherScanDomain } from '@/utils/utility';
+
 export default function StableCoinsTable({ points }) {
   return (
     <TableContainer

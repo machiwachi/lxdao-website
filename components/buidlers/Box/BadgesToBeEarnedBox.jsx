@@ -1,4 +1,5 @@
 import { Box, Typography } from '@mui/material';
+
 import BadgeCard from '@/components/BadgeCard';
 
 export default function BadgesToBeEarnedBox({ record, address }) {

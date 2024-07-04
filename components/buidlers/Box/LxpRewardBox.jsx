@@ -1,15 +1,18 @@
+import { useState } from 'react';
+
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {
-  Box,
-  Typography,
-  Link,
+  Accordion,
   AccordionDetails,
   AccordionSummary,
-  Accordion,
+  Box,
+  Link,
+  Typography,
 } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import LXPointsTable from '../LXPointsTable';
-import { useState } from 'react';
+
 import { totalLXPoints } from '@/utils/utility';
+
+import LXPointsTable from '../LXPointsTable';
 
 export default function LxpRewardBox({ record }) {
   const [accordionOpen, setAccordionOpen] = useState(false);

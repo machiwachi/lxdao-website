@@ -1,14 +1,17 @@
+import { useState } from 'react';
+
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {
-  Box,
-  Typography,
-  Link,
+  Accordion,
   AccordionDetails,
   AccordionSummary,
-  Accordion,
+  Box,
+  Link,
+  Typography,
 } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
 import StableCoinsTable from '@/components/buidlers/StableCoinsTable';
-import { useState } from 'react';
+
 import { totalStableCoins } from '@/utils/utility';
 
 export default function StableCoinsRewardBox({ record }) {

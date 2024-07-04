@@ -1,6 +1,7 @@
-import { Box, Typography, Link, Grid } from '@mui/material';
-import WorkingGroupSimpleCard from '@/components/WorkingGroupSimpleCard';
+import { Box, Grid, Link, Typography } from '@mui/material';
+
 import LXButton from '@/components/Button';
+import WorkingGroupSimpleCard from '@/components/WorkingGroupSimpleCard';
 
 export default function WorkingGroupsBox({ record }) {
   return (

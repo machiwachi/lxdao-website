@@ -1,11 +1,15 @@
 import { useState } from 'react';
-import LXButton from '@/components/Button';
-import { Dialog, DialogTitle, DialogContent, Box } from '@mui/material';
-import { useAccount } from 'wagmi';
+
 import CloseIcon from '@mui/icons-material/Close';
-import API from '@/common/API';
-import showMessage from '@/components/showMessage';
+import { Box, Dialog, DialogContent, DialogTitle } from '@mui/material';
+
+import LXButton from '@/components/Button';
 import ProfileForm from '@/components/ProfileForm';
+import showMessage from '@/components/showMessage';
+
+import { useAccount } from 'wagmi';
+
+import API from '@/common/API';
 
 export default function ProfileEditDialog({ record }) {
   const [open, setOpen] = useState(false);

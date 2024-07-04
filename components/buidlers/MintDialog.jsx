@@ -1,7 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import { useState } from 'react';
+
+import { Box, Dialog, Link, Typography } from '@mui/material';
+
 import LXButton from '@/components/Button';
-import { Dialog, Box, Link, Typography } from '@mui/material';
+
 import { getEtherScanDomain, getOpenSeaDomain } from '@/utils/utility';
 
 export default function ProfileEditDialog({ record }) {

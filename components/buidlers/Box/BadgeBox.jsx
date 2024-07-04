@@ -1,14 +1,18 @@
-import { Box, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
+
+import { Box, Typography } from '@mui/material';
+
 import {
   createPublicClient,
-  parseAbiItem,
-  http,
   fallback,
   getAddress,
+  http,
+  parseAbiItem,
 } from 'viem';
 import { mainnet } from 'viem/chains';
+
 import { myFirstNFT } from '@/abi/index';
+
 export default function BadgeBox({ record }) {
   const [isHasOtherBadges, setIsHasOtherBadges] = useState([]);
   const infura = http(
