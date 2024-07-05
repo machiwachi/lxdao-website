@@ -33,7 +33,7 @@ export default function AirdropDialog({ record }) {
     writeContractAsync: airdropWrite,
   } = useWriteContract();
   const { address, chainId } = useAccount();
-  const { chains, switchChainAsync } = useSwitchChain();
+  const { switchChainAsync } = useSwitchChain();
   const [open, setOpen] = useState(false);
   const [selectMintBadgeValue, setSelectMintBadgeValue] = useState('');
   const handleChangeSelectMintBadgeValue = (event) => {
@@ -45,7 +45,6 @@ export default function AirdropDialog({ record }) {
   };
   const hasBadge = (type) => {
     const res = record?.badges?.find((badge) => badge.id === type)?.amount > 0;
-    console.log(type, res);
     return res;
   };
 
@@ -106,23 +105,23 @@ export default function AirdropDialog({ record }) {
     })();
   }, [airdropIsSuccess, airdrop]);
 
+  const firstMemberBadgeAmount = record?.badges?.find(
+    (badge) => badge.id === 'MemberFirstBadge'
+  )?.amount;
+
   return (
     <>
-      {
-        // record?.status === 'PENDING' &&
-        // firstMemberBadgeAmount === 0 &&
-        address && record?.role?.includes('Onboarding Committee') && (
-          <LXButton
-            onClick={() => {
-              setOpen(true);
-            }}
-            variant="outlined"
-            disabled={airdropIsLoading}
-          >
-            {airdropIsLoading ? 'AirDropping Badge...' : 'AirDrop Badge'}
-          </LXButton>
-        )
-      }
+      {address && record?.role?.includes('Onboarding Committee') && (
+        <LXButton
+          onClick={() => {
+            setOpen(true);
+          }}
+          variant="outlined"
+          disabled={airdropIsLoading}
+        >
+          {airdropIsLoading ? 'AirDropping Badge...' : 'AirDrop Badge'}
+        </LXButton>
+      )}
       <Dialog open={open} onClose={handleClose} fullWidth="sm">
         <DialogTitle>Mind Badge</DialogTitle>
         <DialogContent sx={{ paddingBottom: '80px' }}>

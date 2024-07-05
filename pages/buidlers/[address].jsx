@@ -43,10 +43,10 @@ import { formatAddress } from '@/utils/utility';
 
 import _ from 'lodash';
 
-function BuidlerDetails(props) {
-  const record = props.record;
+function BuidlerDetails({ record, refresh }) {
   const { address } = useAccount();
-  const [, currentViewer] = useBuidler(address);
+  const [viewerLoading, viewer, viewerError, viewerRefresh] =
+    useBuidler(address);
   const router = useRouter();
   const isFromOnboarding = router?.query?.isFromOnboarding;
   const [onboarding, setOnboarding] = useState(false);
@@ -140,23 +140,6 @@ function BuidlerDetails(props) {
         </Dialog>
       )}
       <Container paddingY={isFromOnboarding ? {} : { md: 12, xs: 8 }}>
-        {record.status === 'PENDING' &&
-          address &&
-          firstMemberBadgeAmount > 0 &&
-          record?.role?.includes('Onboarding Committee') && (
-            <Box marginTop={4}>
-              <Box marginTop={2} marginBottom={2}>
-                <Button
-                  onClick={() => {
-                    enableMint();
-                  }}
-                  variant="outlined"
-                >
-                  Enable SBT Card Mint Access
-                </Button>
-              </Box>
-            </Box>
-          )}
         <Box
           display="flex"
           flexDirection={{
@@ -333,24 +316,61 @@ function BuidlerDetails(props) {
                       }}
                     />
                   )}
-                  {currentViewer &&
-                    currentViewer.role.includes('Onboarding Committee') && (
-                      <LXButton
-                        onClick={async () => {
-                          const data = await API.post(
-                            `/buidler/${record.address}/uploadIPFS`
-                          );
-                          const result = data?.data;
-                          if (result.status === 'SUCCESS') {
-                            alert('Synced!');
+                  {viewer && viewer?.role.includes('Onboarding Committee') && (
+                    <LXButton
+                      onClick={async () => {
+                        const data = await API.post(
+                          `/buidler/${record.address}/uploadIPFS`
+                        );
+                        const result = data?.data;
+                        if (result.status === 'SUCCESS') {
+                          alert('Synced!');
+                        }
+                      }}
+                      variant="outlined"
+                    >
+                      Sync to IPFS
+                    </LXButton>
+                  )}
+                  {viewer?.role?.includes('Onboarding Committee') && (
+                    <LXButton
+                      onClick={async () => {
+                        if (record.status === 'PENDING') {
+                          try {
+                            await enableMint();
+                            showMessage({
+                              type: 'success',
+                              title: 'Success!',
+                              body: 'Mint access has been enabled',
+                            });
+                            refresh();
+                          } catch (error) {
+                            showMessage({
+                              type: 'info',
+                              title: 'Failed to enable mint access',
+                              body: error,
+                            });
                           }
-                        }}
-                        variant="outlined"
-                      >
-                        Sync to IPFS
-                      </LXButton>
-                    )}
-                  <AirdropDialog record={record} />
+                        } else if (record.status === 'READYTOMINT') {
+                          showMessage({
+                            type: 'info',
+                            title: 'Failed to enable mint access',
+                            body: 'This member has already enabled mint access',
+                          });
+                        } else {
+                          showMessage({
+                            type: 'error',
+                            title: 'Failed to enable mint access',
+                            body: 'This member is not in the pending status',
+                          });
+                        }
+                      }}
+                      variant="outlined"
+                    >
+                      Enable Mint Access
+                    </LXButton>
+                  )}
+                  <AirdropDialog record={viewer?.record} />
                 </Box>
               </Box>
             </Box>
