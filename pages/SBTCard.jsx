@@ -83,7 +83,6 @@ export default function FirstBadge() {
         console.error(err);
       });
   }, []);
-  // console.log(isError, error);
 
   const mint = async () => {
     if (minting) return;

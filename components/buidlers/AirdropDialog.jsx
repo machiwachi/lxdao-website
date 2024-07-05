@@ -58,7 +58,6 @@ export default function AirdropDialog({ record }) {
           chainId: badgeContract.chainId,
         });
       }
-      console.log(badge);
       await airdropWrite({
         ...badgeContract,
         chainId: polygon.chainId,

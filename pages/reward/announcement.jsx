@@ -393,7 +393,6 @@ function UnReleasedLXPTable({ isAccountingTeam, hasMemberFirstBadge, name }) {
       }
       // read all record
       const [addresses, amounts] = await getAllTOBERELEASEDLXP();
-      console.log(addresses, amounts);
       if (addresses?.length === 0) {
         throw { message: 'No to be released lxp' };
       }
@@ -405,7 +404,6 @@ function UnReleasedLXPTable({ isAccountingTeam, hasMemberFirstBadge, name }) {
       const formattedAmounts = amounts.map((value) =>
         parseUnits(value.toString(), 'ether')
       );
-      console.log(lxpContract);
       const hash = await writeContractAsync({
         ...lxpContract,
         functionName: 'batchMint',
@@ -478,7 +476,6 @@ function UnReleasedLXPTable({ isAccountingTeam, hasMemberFirstBadge, name }) {
         total = x.plus(y).toFixed();
       }
       setTotalRemuneration(total);
-      console.log('rows', result.data);
 
       const rowsObj = {};
       result.data?.forEach((item) => {
@@ -492,7 +489,6 @@ function UnReleasedLXPTable({ isAccountingTeam, hasMemberFirstBadge, name }) {
       const newData = Object.entries(rowsObj).map(([address, info]) => {
         const labels = new Set([]);
         let name;
-        console.log(address, info);
         const totalValue = info.reduce((acc, cur) => {
           labels.add(...cur.labels);
           name = cur.name;
@@ -506,7 +502,6 @@ function UnReleasedLXPTable({ isAccountingTeam, hasMemberFirstBadge, name }) {
           totalValue,
         };
       });
-      console.log('newData', newData);
 
       setRows(newData);
       // setPagination(result.pagination);

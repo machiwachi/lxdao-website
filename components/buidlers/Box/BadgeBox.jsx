@@ -39,7 +39,6 @@ export default function BadgeBox({ record }) {
         toBlock: 'latest',
       });
 
-      // console.log({ MFNFTResult });
       if (MFNFTResult.length <= 0) {
         return;
       }
@@ -52,7 +51,6 @@ export default function BadgeBox({ record }) {
 
       const imgCode = uri.replace('data:application/json;base64,', '');
       const imgUrl = JSON.parse(atob(imgCode)).image;
-      console.log(imgUrl, imgUrl.split('ipfs://')[1]);
       setIsHasOtherBadges([
         ...isHasOtherBadges,
         { image: imgUrl, name: 'myFirstNFT' },
