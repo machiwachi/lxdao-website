@@ -102,7 +102,6 @@ export default function FirstBadge() {
       const hash = await writeContractAsync({
         ...buidlerContract,
         functionName: 'mint',
-        chainId: 1,
         args: [toHex(bytes), signature],
       });
       if (hash) {

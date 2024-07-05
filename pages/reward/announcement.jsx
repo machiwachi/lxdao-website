@@ -1,59 +1,66 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  Container,
-  Typography,
-  TableContainer,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  TableFooter,
-  TablePagination,
-  Link,
-  Tooltip,
-  IconButton,
-  Tabs,
-  Tab,
-  Checkbox,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  TextField,
-  Button,
-  MenuItem,
-  InputLabel,
-  Select,
-  Collapse,
-  Autocomplete,
-  FormControl,
-} from '@mui/material';
 
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { useRouter } from 'next/router';
+
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import CloseIcon from '@mui/icons-material/Close';
 import FirstPageIcon from '@mui/icons-material/FirstPage';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import LastPageIcon from '@mui/icons-material/LastPage';
-import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import {
+  Autocomplete,
+  Box,
+  Button,
+  Checkbox,
+  Collapse,
+  Container,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  FormControl,
+  IconButton,
+  InputLabel,
+  Link,
+  MenuItem,
+  Select,
+  Tab,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableFooter,
+  TableHead,
+  TablePagination,
+  TableRow,
+  Tabs,
+  TextField,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { useAccount, useContractWrite } from 'wagmi';
-import { useRouter } from 'next/router';
-import ReasonForm from '@/components/ReasonForm';
-import API from '@/common/API';
-import { getEtherScanDomain, getPolygonScanDomain } from '@/utils/utility';
-import abi_lxp from '../../abi-lxp.json';
+import { makeStyles } from '@mui/styles';
+
 import LXButton from '@/components/Button';
 import Layout from '@/components/Layout';
-import useBuidler from '@/components/useBuidler';
+import ReasonForm from '@/components/ReasonForm';
 import showMessage from '@/components/showMessage';
-import CloseIcon from '@mui/icons-material/Close';
-import { makeStyles } from '@mui/styles';
-import { RewardLabels } from '@/common/define';
-import Decimal from 'decimal.js';
+import useBuidler from '@/components/useBuidler';
+
+import { toBytes, toHex } from 'viem';
 import { parseUnits } from 'viem';
+
+import { useAccount, useSwitchChain, useWriteContract } from 'wagmi';
+
+import { lxpContract } from '@/abi/index';
+import API from '@/common/API';
+import { RewardLabels } from '@/common/define';
+import { getEtherScanDomain, getPolygonScanDomain } from '@/utils/utility';
+
+import Decimal from 'decimal.js';
 
 const useStyles = makeStyles({
   tooltip: {
@@ -232,12 +239,7 @@ function StatusLabel({ status, record }) {
   }
 }
 
-function UnReleasedLXPTable({
-  isAccountingTeam,
-  hasMemberFirstBadge,
-  address,
-  name,
-}) {
+function UnReleasedLXPTable({ isAccountingTeam, hasMemberFirstBadge, name }) {
   const router = useRouter();
   const [rows, setRows] = useState([]);
   const [copied, setCopied] = useState(false);
@@ -250,16 +252,15 @@ function UnReleasedLXPTable({
   const [isDispute, setIsDispute] = useState(true);
   const [currentLxpointId, setCurrentLxpointId] = useState('');
   const [totalRemuneration, setTotalRemuneration] = useState(0);
+  const { address, chainId } = useAccount();
 
   const allLabels = ['All labels', 'Myself', ...RewardLabels];
   const [labels, setLabels] = useState(['All labels']);
   const [, buidlerRecord, ,] = useBuidler(address);
-  const { data, write, error, isError, isSuccess } = useContractWrite({
-    address: process.env.NEXT_PUBLIC_LXP_CONTRACT_ADDRESS,
-    abi: abi_lxp,
-    functionName: 'batchMint',
-    account: address,
-  });
+  const { switchChainAsync } = useSwitchChain();
+
+  const { data, writeContractAsync, error, isError, isSuccess } =
+    useWriteContract();
 
   useEffect(() => {
     (async () => {
@@ -383,30 +384,6 @@ function UnReleasedLXPTable({
     setLabels(parse);
   };
 
-  useEffect(() => {
-    if (data?.hash && isSuccess) {
-      releaseCallback(data.hash);
-    }
-    if (isError) {
-      showMessage({
-        type: 'error',
-        title: 'release error',
-        body: error?.message,
-      });
-    }
-  }, [data, error, isError, isSuccess]);
-
-  const releaseCallback = async (hash) => {
-    const res = await API.post(`/lxpoints/release`, { hash: hash });
-    const result = res.data;
-    if (result.status !== 'SUCCESS') {
-      alert(result.message);
-      // error todo Muxin add common alert, wang teng design
-      return;
-    }
-    router.reload(window.location.pathname);
-  };
-
   const handleReleaseBtn = async () => {
     // mint all and store the transaction hash
     setDisable(true);
@@ -416,21 +393,41 @@ function UnReleasedLXPTable({
       }
       // read all record
       const [addresses, amounts] = await getAllTOBERELEASEDLXP();
-      if (addresses.length === 0) {
+      console.log(addresses, amounts);
+      if (addresses?.length === 0) {
         throw { message: 'No to be released lxp' };
+      }
+      if (chainId != lxpContract.chainId) {
+        await switchChainAsync({
+          chainId: lxpContract.chainId,
+        });
       }
       const formattedAmounts = amounts.map((value) =>
         parseUnits(value.toString(), 'ether')
       );
-      await write({ args: [addresses, formattedAmounts] });
+      console.log(lxpContract);
+      const hash = await writeContractAsync({
+        ...lxpContract,
+        functionName: 'batchMint',
+        args: [addresses, formattedAmounts],
+      });
+      const res = await API.post(`/lxpoints/release`, { hash: hash });
+      const result = res.data;
+      if (result.status !== 'SUCCESS') {
+        alert(result.message);
+        // error todo Muxin add common alert, wang teng design
+        return;
+      }
+      router.reload(window.location.pathname);
       // post to backend
     } catch (err) {
-      setDisable(false);
       showMessage({
         type: 'error',
-        title: err.error_code,
-        body: err.message,
+        title: err.error_code || 'Failed to release',
+        body: err?.cause?.shortMessage || err.message,
       });
+    } finally {
+      setDisable(false);
     }
   };
 
@@ -2334,9 +2331,7 @@ export default function Announcement({ isStart, days }) {
             </Box>
             <UnReleasedLXPTable
               isAccountingTeam={isAccountingTeam}
-              isConnected={isConnected}
               hasMemberFirstBadge={hasMemberFirstBadge}
-              address={currentViewer?.address}
               name={currentViewer?.name}
             />
             <ReleasedLXPTable isAccountingTeam={isAccountingTeam} />

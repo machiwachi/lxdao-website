@@ -3,6 +3,7 @@ import { abi as myFirstLayer2BadgeAbi } from './myFirstLayer2';
 import { abi as myFirstNFTAbi } from './myFirstNFT';
 import { abi as badgeAbi } from './badge.js'
 import { abi as buidlerCardAbi } from './buidlerCard.js'
+import { abi as lxpAbi } from './lxp.js'
 
 
 export const anniversaryContract = {
@@ -31,4 +32,10 @@ export const buidlerContract = {
     address: "0xbd7ABBee471f7a0ffe5FCC4cE176D92Ca3F4dFfe",
     abi: buidlerCardAbi,
     chainId: 1
+}
+
+export const lxpContract = {
+    address: "0x1F0f012de0e0a20C856eF48867247C594Fb01dbC",
+    abi: lxpAbi,
+    chainId: 137
 }
