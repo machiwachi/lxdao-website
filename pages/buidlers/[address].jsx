@@ -47,6 +47,9 @@ function BuidlerDetails({ record, refresh }) {
   const { address } = useAccount();
   const [viewerLoading, viewer, viewerError, viewerRefresh] =
     useBuidler(address);
+  const isOnboardingCommittee = !!viewer?.role?.includes(
+    'Onboarding Committee'
+  );
   const router = useRouter();
   const isFromOnboarding = router?.query?.isFromOnboarding;
   const [onboarding, setOnboarding] = useState(false);
@@ -287,25 +290,6 @@ function BuidlerDetails({ record, refresh }) {
                   gap={1}
                 >
                   <ProfileEditDialog record={record} />
-                  {address === record.address &&
-                  record.role.includes('Onboarding Committee') ? (
-                    <LXButton
-                      onClick={async () => {
-                        const newAddress = window.prompt('New joiner address');
-                        const data = await API.post(`/buidler`, {
-                          address: newAddress,
-                        });
-                        const result = data?.data;
-                        if (result.status === 'SUCCESS') {
-                          alert('created!');
-                        }
-                      }}
-                      variant="outlined"
-                    >
-                      Onboarding
-                    </LXButton>
-                  ) : null}
-                  {/* todo only show this button to Onboarding Committee */}
                   {address !== record.address && (
                     <Divider
                       sx={{
@@ -316,61 +300,81 @@ function BuidlerDetails({ record, refresh }) {
                       }}
                     />
                   )}
-                  {viewer && viewer?.role.includes('Onboarding Committee') && (
-                    <LXButton
-                      onClick={async () => {
-                        const data = await API.post(
-                          `/buidler/${record.address}/uploadIPFS`
-                        );
-                        const result = data?.data;
-                        if (result.status === 'SUCCESS') {
-                          alert('Synced!');
-                        }
-                      }}
-                      variant="outlined"
-                    >
-                      Sync to IPFS
-                    </LXButton>
-                  )}
-                  {viewer?.role?.includes('Onboarding Committee') && (
-                    <LXButton
-                      onClick={async () => {
-                        if (record.status === 'PENDING') {
-                          try {
-                            await enableMint();
+                  {isOnboardingCommittee && (
+                    <>
+                      <LXButton
+                        onClick={async () => {
+                          if (
+                            record.status == 'ACTIVE' ||
+                            record.status == 'ARCHIVED' ||
+                            record.status == 'SUSPENDED'
+                          ) {
+                            try {
+                              const data = await API.post(
+                                `/buidler/${record.address}/uploadIPFS`
+                              );
+                              const result = data?.data;
+                              if (result.status === 'SUCCESS') {
+                                alert('Synced!');
+                              }
+                            } catch (error) {
+                              showMessage({
+                                type: 'error',
+                                title: 'Failed to sync to IPFS',
+                                body: error,
+                              });
+                            }
+                          } else {
                             showMessage({
-                              type: 'success',
-                              title: 'Success!',
-                              body: 'Mint access has been enabled',
+                              type: 'error',
+                              title: 'Failed to sync to IPFS',
+                              body: 'This member do not have builder card',
                             });
-                            refresh();
-                          } catch (error) {
+                          }
+                        }}
+                        variant="outlined"
+                      >
+                        Sync to IPFS
+                      </LXButton>
+                      <LXButton
+                        onClick={async () => {
+                          if (record.status === 'PENDING') {
+                            try {
+                              await enableMint();
+                              showMessage({
+                                type: 'success',
+                                title: 'Success!',
+                                body: 'Mint access has been enabled',
+                              });
+                              refresh();
+                            } catch (error) {
+                              showMessage({
+                                type: 'info',
+                                title: 'Failed to enable mint access',
+                                body: error,
+                              });
+                            }
+                          } else if (record.status === 'READYTOMINT') {
                             showMessage({
                               type: 'info',
                               title: 'Failed to enable mint access',
-                              body: error,
+                              body: 'This member has already enabled mint access',
+                            });
+                          } else {
+                            showMessage({
+                              type: 'error',
+                              title: 'Failed to enable mint access',
+                              body: 'This member is not in the pending status',
                             });
                           }
-                        } else if (record.status === 'READYTOMINT') {
-                          showMessage({
-                            type: 'info',
-                            title: 'Failed to enable mint access',
-                            body: 'This member has already enabled mint access',
-                          });
-                        } else {
-                          showMessage({
-                            type: 'error',
-                            title: 'Failed to enable mint access',
-                            body: 'This member is not in the pending status',
-                          });
-                        }
-                      }}
-                      variant="outlined"
-                    >
-                      Enable Mint Access
-                    </LXButton>
+                        }}
+                        variant="outlined"
+                      >
+                        Enable Mint Access
+                      </LXButton>
+                      <AirdropDialog record={record} />
+                    </>
                   )}
-                  <AirdropDialog record={viewer?.record} />
                 </Box>
               </Box>
             </Box>

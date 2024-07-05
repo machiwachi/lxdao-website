@@ -32,7 +32,7 @@ export default function AirdropDialog({ record }) {
     error: airdropError,
     writeContractAsync: airdropWrite,
   } = useWriteContract();
-  const { address, chainId } = useAccount();
+  const { chainId } = useAccount();
   const { switchChainAsync } = useSwitchChain();
   const [open, setOpen] = useState(false);
   const [selectMintBadgeValue, setSelectMintBadgeValue] = useState('');
@@ -111,17 +111,16 @@ export default function AirdropDialog({ record }) {
 
   return (
     <>
-      {address && record?.role?.includes('Onboarding Committee') && (
-        <LXButton
-          onClick={() => {
-            setOpen(true);
-          }}
-          variant="outlined"
-          disabled={airdropIsLoading}
-        >
-          {airdropIsLoading ? 'AirDropping Badge...' : 'AirDrop Badge'}
-        </LXButton>
-      )}
+      <LXButton
+        onClick={() => {
+          setOpen(true);
+        }}
+        variant="outlined"
+        disabled={airdropIsLoading}
+      >
+        {airdropIsLoading ? 'AirDropping Badge...' : 'AirDrop Badge'}
+      </LXButton>
+
       <Dialog open={open} onClose={handleClose} fullWidth="sm">
         <DialogTitle>Mind Badge</DialogTitle>
         <DialogContent sx={{ paddingBottom: '80px' }}>
