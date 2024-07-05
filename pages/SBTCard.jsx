@@ -14,7 +14,6 @@ import {
 
 import CustomButton from '@/components/Button';
 import LXButton from '@/components/Button';
-import { contractInfo } from '@/components/ContractsOperation';
 import Layout from '@/components/Layout';
 import ProjectCard from '@/components/ProjectCard';
 
