@@ -67,7 +67,7 @@ const communitiesData = [
   {
     name: 'DMC',
     logo: '/images/partners/DMC-logo.svg',
-    link: '',
+    link: 'https://www.dmctech.io/en',
   },
   {
     name: 'ETHPanda',
