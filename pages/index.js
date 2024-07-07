@@ -44,7 +44,7 @@ export default function Home() {
       });
   }, []);
 
-  const handleInit=async () => {
+  const handleInit = async () => {
     try {
       const res = await API.get(
         '/buidler?per_page=300&status=ACTIVE&status=READYTOMINT&status=PENDING'
@@ -71,8 +71,8 @@ export default function Home() {
     }
   }
 
-  useEffect(()=>{
-    handleInit
+  useEffect(() => {
+    handleInit()
   }, []);
 
   useEffect(() => {
