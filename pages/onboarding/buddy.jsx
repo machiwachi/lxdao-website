@@ -2,7 +2,7 @@ import React from 'react';
 import { useAccount } from 'wagmi';
 import { useRouter } from 'next/router';
 import { Box, Typography, Link } from '@mui/material';
-import OnBoardingLayout from '@/components/OnBoardingLayout';
+import OnBoardingLayout from '@/components/onboarding/OnBoardingLayout';
 import useBuidler from '@/components/useBuidler';
 
 export default function Buddy() {

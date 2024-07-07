@@ -2,7 +2,7 @@ import React from 'react';
 import { Typography } from '@mui/material';
 import Container from '@/components/Container';
 import Layout from '@/components/Layout';
-import { Steps, Step } from '@/components/Steps';
+import { Steps, Step } from '@/components/onboarding/Steps';
 import OnBoardingBottom from '@/components/OnBoardingBottom';
 
 export default function OnBoardingLayout({
@@ -25,11 +25,12 @@ export default function OnBoardingLayout({
     <Layout title={layoutTitle}>
       <Container paddingY={4} maxWidth={1216}>
         <Steps>
-          {stepsData.map((step) => {
+          {stepsData.map((step, index) => {
             return (
               <Step
                 key={step.step}
                 label={step.label}
+                index={index}
                 active={currentStep === step.step}
               />
             );
