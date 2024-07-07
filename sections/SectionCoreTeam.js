@@ -4,8 +4,6 @@ import { makeStyles } from '@mui/styles';
 
 import Container from '@/components/Container';
 import coreTeamData from '@/common/content/coreTeam';
-import { getImg3DidStrFromUrl } from '@/utils/utility';
-import { Img3 } from '@lxdao/img3';
 
 const useStyles = makeStyles(() => ({
   memberCardWrapper: {

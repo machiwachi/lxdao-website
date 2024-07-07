@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 import { Box, Button, Container, Typography } from '@mui/material';
 import SectionAnniversary from '@/sections/SectionAnniversary';
 
@@ -47,7 +48,7 @@ export default function SupportUs() {
               </Typography>
               <Typography mt={1} mb={3} variant="body1" color="#646F7C">
                 Interested? Contact{' '}
-                <a href="https://telegram.me/brucexu_eth" target="_blank">
+                <a href="https://telegram.me/brucexu_eth" target="_blank" rel="noreferrer">
                   Bruce
                 </a>
                 .
@@ -64,7 +65,7 @@ export default function SupportUs() {
             <a
               href="https://docsend.com/view/7c5nu26eexpt4adj"
               target="_blank"
-              style={{ height: '128px', display: 'block' }}
+              style={{ height: '128px', display: 'block' }} rel="noreferrer"
             >
               <Box
                 component="img"

@@ -1,9 +1,7 @@
-import { Box, Typography, Link } from '@mui/material';
-import FormLabel from '@mui/material/FormLabel';
+import React,{ Box, Typography, Link } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import FormHelperText from '@mui/material/FormHelperText';
 import Checkbox from '@mui/material/Checkbox';
 import OnBoardingLayout from '@/components/OnBoardingLayout';
 import { useEffect, useState } from 'react';
@@ -19,6 +17,7 @@ export default function Follow() {
   }, [state]);
   const data = [
     <Typography
+      key={0}
       variant="body1"
       color="#666F85"
       sx={{
@@ -31,6 +30,7 @@ export default function Follow() {
       </Link>
     </Typography>,
     <Typography
+      key={1}
       variant="body1"
       color="#666F85"
       sx={{
@@ -46,6 +46,7 @@ export default function Follow() {
       </Link>
     </Typography>,
     <Typography
+      key={2}
       variant="body1"
       color="#666F85"
       sx={{
@@ -59,6 +60,7 @@ export default function Follow() {
       (main community)
     </Typography>,
     <Typography
+      key={2}
       variant="body1"
       color="#666F85"
       sx={{
@@ -71,6 +73,7 @@ export default function Follow() {
       </Link>{' '}
     </Typography>,
     <Typography
+      key={3}
       variant="body1"
       color="#666F85"
       sx={{
@@ -86,6 +89,7 @@ export default function Follow() {
       </Link>
     </Typography>,
     <Typography
+      key={4}
       variant="body1"
       color="#666F85"
       sx={{
@@ -99,6 +103,7 @@ export default function Follow() {
       (for developers)
     </Typography>,
     <Typography
+      key={5}
       variant="body1"
       color="#666F85"
       sx={{
@@ -146,6 +151,7 @@ export default function Follow() {
               {data.map((value, index) => {
                 return (
                   <FormControlLabel
+                    key={index}
                     control={
                       <Checkbox
                         sx={{

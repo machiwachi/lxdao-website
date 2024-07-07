@@ -1,7 +1,6 @@
 import React from 'react';
-import { Img3 } from '@lxdao/img3';
 import { Box, Typography, Grid, Link } from '@mui/material';
-import { removeItem, getIpfsCid } from '@/utils/utility';
+import { removeItem } from '@/utils/utility';
 function Project({ data }) {
   return (
     <Link

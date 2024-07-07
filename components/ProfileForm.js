@@ -10,7 +10,6 @@ import SkillsField from './SkillsField';
 import ContactsField from './ContactsField';
 import MultiSelect from './MultiSelect';
 import TextInput from './TextInput';
-import Avatar from './Avatar';
 import UploadImg from './UploadImg';
 
 const interestNames = [
@@ -376,7 +375,6 @@ function ProfileForm(props) {
               fontSize: '16px',
               lineHeight: '24px',
               fontWeight: '600',
-              mb: { xs: '8px' },
               background: '#F4F6F8',
               mb: { xs: '10px', md: 0 },
               '&:hover': {

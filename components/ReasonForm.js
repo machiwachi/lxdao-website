@@ -81,9 +81,9 @@ function ReasonForm(props) {
 
         {JSON.stringify(errors) !== '{}' && (
           <Box marginTop={2}>
-            <Alert severity="error">
+            {/* <Alert severity="error"> */}
               Please fill in the required fields above.
-            </Alert>
+            {/* </Alert> */}
           </Box>
         )}
         {!props.isOnboardingProcess && (

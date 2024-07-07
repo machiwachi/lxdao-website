@@ -76,9 +76,10 @@ export function SimpleModal(props) {
 function showMessage(options) {
   const { title, body, type } = options;
   const container = document.createDocumentFragment();
+  const root = ReactDOM.createRoot(container);
 
   function render({ visible }) {
-    ReactDOM.render(
+    root.render(
       <ThemeProvider theme={getTheme('light')}>
         <SimpleModal
           title={title}

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Box, Typography, Link } from '@mui/material';
-import { Img3 } from '@lxdao/img3';
-import { getImg3DidStrFromUrl } from '@/utils/utility';
+
 const SimpleProjectCard = ({ data, key }) => (
   <Box
     width={{ sm: '356px', xs: '300px' }}

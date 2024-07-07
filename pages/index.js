@@ -44,7 +44,7 @@ export default function Home() {
       });
   }, []);
 
-  useEffect(async () => {
+  const handleInit=async () => {
     try {
       const res = await API.get(
         '/buidler?per_page=300&status=ACTIVE&status=READYTOMINT&status=PENDING'
@@ -69,6 +69,10 @@ export default function Home() {
     } catch (err) {
       console.error(err);
     }
+  }
+
+  useEffect(()=>{
+    handleInit
   }, []);
 
   useEffect(() => {
@@ -89,7 +93,6 @@ export default function Home() {
       <SectionHomepageProjects projects={projects} />
       <SectionBuidlers buidlers={buidlers} />
       <SectionWorkingGroup />
-      {/* <SectionActivities /> */}
       <SectionPartners />
     </Layout>
   );
