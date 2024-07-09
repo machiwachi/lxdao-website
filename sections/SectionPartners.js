@@ -54,6 +54,31 @@ const communitiesData = [
     logo: '/images/partners/AAStar-logo.svg',
     link: 'https://www.aastar.xyz/',
   },
+  {
+    name: 'Eleduck',
+    logo: '/images/partners/eleduck-logo.svg',
+    link: 'https://eleduck.com/',
+  },
+  {
+    name: 'Artele',
+    logo: '/images/partners/Artela-logo.svg',
+    link: 'https://artela.network/',
+  },
+  {
+    name: 'DMC',
+    logo: '/images/partners/DMC-logo.svg',
+    link: 'https://www.dmctech.io/en',
+  },
+  {
+    name: 'ETHPanda',
+    logo: '/images/partners/ETHPanda-logo.svg',
+    link: 'https://ethpanda.org/',
+  },
+  {
+    name: 'BlockBooster',
+    logo: '/images/partners/BlockBooster-logo.svg',
+    link: 'https://www.gitcoin.co/',
+  },
 ];
 
 const sponsorshipsData = [
