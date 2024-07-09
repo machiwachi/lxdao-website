@@ -242,7 +242,7 @@ function ProfileForm(props) {
             >
               (
               <span style={{ color: 'red' }}>
-                At least one contact is required.
+                At least Telegram or WeChat is required.
               </span>
               )
             </span>
