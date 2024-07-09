@@ -1,9 +1,7 @@
 /* eslint-disable no-undef */
 import React from 'react';
-import _ from 'lodash';
 import { Container, Box, Typography } from '@mui/material';
 import { useAccount } from 'wagmi';
-import { useRouter } from 'next/router';
 
 import API from '@/common/API';
 
@@ -15,7 +13,6 @@ import useBuidler from '@/components/useBuidler';
 function CreateWorkingGroup() {
   const { address } = useAccount();
   const [, currentViewer, ,] = useBuidler(address);
-  const router = useRouter();
 
   const saveWorkingGroupHandler = async (values) => {
     try {
@@ -80,7 +77,7 @@ function CreateWorkingGroup() {
               />
             ) : (
               <Box color="red">
-                You don't have access to create a working group.
+                You don&apos;t have access to create a working group.
               </Box>
             )
           ) : (

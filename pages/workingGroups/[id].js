@@ -21,8 +21,6 @@ import Container from '@/components/Container';
 import showMessage from '@/components/showMessage';
 import useBuidler from '@/components/useBuidler';
 import WorkingGroupForm from '@/components/WorkingGroupForm';
-import { Img3 } from '@lxdao/img3';
-import { getImg3DidStrFromUrl } from '@/utils/utility';
 
 function LinkItem({ title, link, description }) {
   return (
@@ -106,8 +104,7 @@ export default function WorkingGroupDetail() {
       });
     }
   };
-
-  useEffect(async () => {
+  const handleWorkingGroupIdChange=async () => {
     try {
       if (!workingGroupId) return;
       const res = await API.get(`/workinggroup/${workingGroupId}`);
@@ -124,6 +121,9 @@ export default function WorkingGroupDetail() {
         body: err.message,
       });
     }
+  }
+  useEffect(()=>{
+    handleWorkingGroupIdChange()
   }, [workingGroupId]);
 
   if (!workingGroupId) return null;

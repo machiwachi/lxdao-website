@@ -1,7 +1,7 @@
 import React from 'react';
 import { Typography, Box, Link, Grid } from '@mui/material';
 
-const WorkingGroupSimpleCard = ({ key, name, id, role }) => {
+const WorkingGroupSimpleCard = ({  name, id, role }) => {
   return (
     <Grid item xs={12} sm={6}>
       <Link

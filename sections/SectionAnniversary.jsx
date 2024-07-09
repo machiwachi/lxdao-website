@@ -1,58 +1,72 @@
+'use client';
 import React, { useState, useEffect } from 'react';
-import {
-  Box,
-  Typography,
-  // IconButton,
-  InputBase,
-  Link,
-  Button,
-} from '@mui/material';
-// import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-// import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
+import { Box, Typography, InputBase, Link, Button } from '@mui/material';
 import showMessage from '@/components/showMessage';
-import { useAccount, useContractRead, useContractWrite } from 'wagmi';
+import {
+  useAccount,
+  useReadContract,
+  useSwitchChain,
+  useWriteContract,
+} from 'wagmi';
 import { parseEther } from 'viem';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
-
-import abi from '@/abi/anniversary.json';
-
-const ADDRESS = process.env.NEXT_PUBLIC_ANNIVERSARY_CONTRACT_ADDRESS;
-const CHAIN_ID = parseInt(process.env.NEXT_PUBLIC_CHAIN_ID);
+import { anniversaryContract } from '@/abi/index';
 
 const SectionAnniversary = () => {
-  const anniversaryContract = {
-    address: ADDRESS,
-    abi,
-    chainId: 10,
-  };
-
-  const { address: accountAddress } = useAccount();
-  const { openConnectModal } = useConnectModal();
-
   const [totalSupply, setTotalSupply] = useState('----');
   const [amt, setAmt] = useState(1);
   const [loading, setLoading] = useState(false);
 
-  const {
-    write,
-    error: contractWriteError,
-    isLoading: isMinting,
-    isSuccess: isMingSuccess,
-  } = useContractWrite({
-    ...anniversaryContract,
-    functionName: 'mint',
-  });
+  const { address: accountAddress, chainId } = useAccount();
+  const { openConnectModal } = useConnectModal();
+  const [buttonText, setButtonText] = useState('Mint');
+  const { chains, switchChainAsync } = useSwitchChain();
 
-  const { data, isSuccess } = useContractRead({
+  const {
+    writeContractAsync,
+    isPending: isMintPending,
+    isSuccess: isMingSuccess,
+  } = useWriteContract();
+
+  const { data, isSuccess } = useReadContract({
     ...anniversaryContract,
     functionName: 'totalSupply',
   });
-
-  const { data: balanceData } = useContractRead({
+  const { data: balanceData } = useReadContract({
     ...anniversaryContract,
     functionName: 'balanceOf',
     args: [accountAddress],
   });
+
+  const handleMint = async () => {
+    try {
+      setLoading(true);
+      if (chainId != anniversaryContract.chainId) {
+        console.log('change');
+        await switchChainAsync({
+          chainId: anniversaryContract.chainId,
+        });
+      }
+      await writeContractAsync({
+        ...anniversaryContract,
+        functionName: 'mint',
+        args: [amt],
+        value: parseEther((0.01 * amt).toString()),
+      });
+      // setTotalSupply((parseInt(totalSupply) + amt).toString());
+      setLoading(false);
+    } catch (err) {
+      showMessage({
+        type: 'error',
+        title: 'Mint Failed',
+        body:
+          err?.cause?.shortMessage ||
+          'Something went wrong. Please try again later.',
+      });
+
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (isSuccess) {
@@ -61,45 +75,17 @@ const SectionAnniversary = () => {
     }
   }, [data, isSuccess]);
 
-  const handleMint = async () => {
-    try {
-      setLoading(true);
-      await write({
-        args: [amt],
-        value: parseEther((0.01 * amt).toString()),
-      });
-      // setTotalSupply((parseInt(totalSupply) + amt).toString());
-      setLoading(false);
-    } catch (err) {
-      if (err.toString().includes('ChainMismatchError')) {
-        showMessage({
-          type: 'error',
-          title: 'Wrong Network',
-          body: `Please Change to ${
-            CHAIN_ID == 10 ? 'Optimism' : 'ETH Goerli'
-          }`,
-        });
-      } else {
-        showMessage({
-          type: 'error',
-          title: 'Estimate Fail',
-          body: 'You may have already minted or other reason.',
-        });
-      }
-
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    if (contractWriteError) {
-      showMessage({
-        type: 'error',
-        title: 'error',
-        body: contractWriteError.message,
-      });
+    if (accountAddress) {
+      if (balanceData > 0) {
+        setButtonText('MINTED');
+      } else {
+        setButtonText('Mint');
+      }
+    } else {
+      setButtonText('Connect Wallet');
     }
-  }, [contractWriteError]);
+  }, [accountAddress, balanceData]);
 
   return (
     <Box display="flex">
@@ -116,13 +102,6 @@ const SectionAnniversary = () => {
             alignItems: 'center',
           }}
         >
-          {/* <IconButton
-            sx={{ width: '20px', height: '20px', marginRight: '8px' }}
-            disabled={amt == 1}
-            onClick={() => setAmt(amt - (amt == 1 ? 0 : 1))}
-          >
-            <RemoveCircleOutlineIcon sx={{ transform: 'scale(0.9)' }} />
-          </IconButton> */}
           <Box ml="30px">
             <InputBase
               sx={{ width: amt.toString().length * 10 + 'px' }}
@@ -140,13 +119,6 @@ const SectionAnniversary = () => {
               }}
             />
           </Box>
-          {/* <IconButton
-            sx={{ width: '20px', height: '20px', marginLeft: '8px' }}
-            // onClick={() => setAmt(amt + 1)}
-          >
-            <AddCircleOutlineIcon sx={{ transform: 'scale(0.9)' }} />
-          </IconButton> */}
-
           <Typography
             variant="subtitle2"
             mx={3}
@@ -154,7 +126,6 @@ const SectionAnniversary = () => {
             color="#666F85"
           >
             {0.01 * amt} ETH
-            {/* Free */}
           </Typography>
           <Typography variant="subtitle2" color="#646F7C">
             {totalSupply}/500
@@ -165,14 +136,12 @@ const SectionAnniversary = () => {
           <Button
             variant="outlined"
             sx={{ padding: '11px 20px', boxSizing: 'border-box' }}
-            disabled={isMinting || isMingSuccess || loading || balanceData > 0}
+            disabled={
+              isMingSuccess || isMintPending || loading || balanceData > 0
+            }
             onClick={accountAddress ? handleMint : openConnectModal}
           >
-            {accountAddress
-              ? balanceData > 0
-                ? 'MINTED'
-                : 'Mint'
-              : 'connect wallet'}
+            {buttonText}
           </Button>
 
           <Link
@@ -194,7 +163,6 @@ const SectionAnniversary = () => {
       <Box>
         <Box
           component="img"
-          // width={[0, 0, 151, 151]}
           height={[0, 0, 121, 121]}
           src="/images/anniversaryNFT2024.png?v=1"
           alt="anniversary NFT"

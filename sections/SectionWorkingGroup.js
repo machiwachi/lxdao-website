@@ -9,8 +9,7 @@ import { WorkingGroupCard } from '../pages/workingGroups/list';
 
 const SectionWorkingGroup = () => {
   const [workingGroupsData, setWorkingGroupsData] = useState([]);
-
-  useEffect(async () => {
+  const handleInit=async () => {
     try {
       const res = await API.get('/workinggroup/list');
       const result = res?.data;
@@ -26,6 +25,10 @@ const SectionWorkingGroup = () => {
         body: err.message,
       });
     }
+  }
+
+  useEffect(()=>{
+    handleInit
   }, []);
   return (
     <Box width="100%" backgroundColor="#36AFF9">

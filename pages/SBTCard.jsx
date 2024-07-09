@@ -1,68 +1,72 @@
-import React, { useState, useEffect } from 'react';
+import React, { use, useEffect, useState } from 'react';
+
 import { useRouter } from 'next/router';
-import { useAccount, useBalance, usePublicClient } from 'wagmi';
+
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import {
   Box,
+  Breadcrumbs,
+  Container,
+  Link,
   Stack,
   Typography,
-  Breadcrumbs,
-  Link,
-  Container,
 } from '@mui/material';
-import { Contract, ethers } from 'ethers';
-
-import API from '@/common/API';
-import { useEthersSigner } from '@/hooks';
-import { ipfsToBytes } from '@/utils/utility';
 
 import CustomButton from '@/components/Button';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext'; /* eslint-disable no-undef */
-import showMessage from '@/components/showMessage';
-import { contractInfo } from '@/components/ContractsOperation';
-import ProjectCard from '@/components/ProjectCard';
-import useBuidler from '@/components/useBuidler';
 import LXButton from '@/components/Button';
-
-import { WorkingGroupCard } from '../pages/workingGroups/list';
-
 import Layout from '@/components/Layout';
+import ProjectCard from '@/components/ProjectCard';
+
+/* eslint-disable no-undef */
+import showMessage from '@/components/showMessage';
+import useBuidler from '@/components/useBuidler';
+
+import { toBytes, toHex } from 'viem';
+
+import {
+  useAccount,
+  useBalance,
+  useSwitchChain,
+  useWriteContract,
+} from 'wagmi';
+
+import { buidlerContract } from '@/abi/index';
+import API from '@/common/API';
+import { ipfsToBytes } from '@/utils/utility';
+
+import { WorkingGroupCard } from './workingGroups/list';
 
 export default function FirstBadge() {
-  const { address } = useAccount();
+  const { address, chainId } = useAccount();
   const [minting, setMinting] = React.useState(false);
   const [projects, setProjects] = React.useState([]);
   const [, record, , refresh] = useBuidler(address);
   const router = useRouter();
-  const [currentAddress, setCurrentAddress] = useState('');
   const [workingGroupsData, setWorkingGroupsData] = useState([]);
   const { data: balance } = useBalance({
     address,
   });
-  const publicClient = usePublicClient();
-  const signer = useEthersSigner();
+  const { switchChainAsync } = useSwitchChain();
+  const { writeContractAsync, isError, error } = useWriteContract();
 
   useEffect(() => {
-    if (address) {
-      setCurrentAddress(address);
-    }
-  }, [address]);
-
-  useEffect(async () => {
-    try {
-      const res = await API.get('/workinggroup/list');
-      const result = res?.data;
-      if (result?.status === 'SUCCESS') {
-        setWorkingGroupsData(result?.data);
-      } else {
-        throw new Error(result.message);
+    (async () => {
+      try {
+        const res = await API.get('/workinggroup/list');
+        const result = res?.data;
+        if (result?.status === 'SUCCESS') {
+          setWorkingGroupsData(result?.data);
+        } else {
+          throw new Error(result.message);
+        }
+      } catch (err) {
+        showMessage({
+          type: 'error',
+          title: 'Failed to get the working group list',
+          body: err.message,
+        });
       }
-    } catch (err) {
-      showMessage({
-        type: 'error',
-        title: 'Failed to get the working group list',
-        body: err.message,
-      });
-    }
+    })();
   }, []);
 
   useEffect(() => {
@@ -84,45 +88,30 @@ export default function FirstBadge() {
     setMinting(true);
     try {
       // get signature
-      const signatureRes = await API.post(
-        `/buidler/${currentAddress}/signature`
-      );
+      if (chainId != buidlerContract.chainId) {
+        await switchChainAsync({
+          chainId: buidlerContract.chainId,
+        });
+      }
+      const signatureRes = await API.post(`/buidler/${address}/signature`);
       const signature = signatureRes.data.data.signature;
       const ipfsURI = record.ipfsURI;
       const bytes = ipfsToBytes(ipfsURI);
-
-      const { address, abi } = contractInfo();
-      const contract = new Contract(address, abi, signer);
-
-      const callData = contract.interface.encodeFunctionData('mint', [
-        bytes,
-        signature,
-      ]); // 替换为合约函数名和参数
-      const tx = {
-        account: currentAddress,
-        to: address,
-        data: callData,
-      };
-      const gasEstimate = await publicClient.estimateGas(tx);
-      if (balance.value < gasEstimate) {
-        throw new Error(
-          `Not enough gas, probably at least ${ethers.formatEther(
-            gasEstimate
-          )} gas.`
-        );
-      }
-
-      const response = await contract.mint(bytes, signature);
-      if (response && response.hash) {
+      const hash = await writeContractAsync({
+        ...buidlerContract,
+        functionName: 'mint',
+        args: [toHex(bytes), signature],
+      });
+      if (hash) {
         await API.post('/buidler/activate');
         refresh();
-        router.push(`/buidlers/${currentAddress}`);
+        router.push(`/buidlers/${address}`);
       }
     } catch (err) {
       showMessage({
         type: 'error',
         title: 'Failed to mint',
-        body: err.message,
+        body: err?.cause?.shortMessage || err,
       });
     }
     setMinting(false);
@@ -145,7 +134,7 @@ export default function FirstBadge() {
             <Link
               underline="hover"
               color="inherit"
-              href={`/buidlers/${currentAddress}?isFromOnboarding=true`}
+              href={`/buidlers/${address}?isFromOnboarding=true`}
             >
               <Typography variant="body1">Member profile</Typography>
             </Link>

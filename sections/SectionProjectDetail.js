@@ -8,7 +8,6 @@ import {
   Stack,
   Tooltip,
   Link,
-  Avatar,
   Autocomplete,
   TextField,
   MenuItem,
@@ -22,11 +21,9 @@ import {
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useAccount } from 'wagmi';
-import { Img3 } from '@lxdao/img3';
-import { getImg3DidStrFromUrl } from '@/utils/utility';
 
 import API from '@/common/API';
-import { getLocalStorage, getIpfsCid } from '@/utils/utility';
+import { getLocalStorage } from '@/utils/utility';
 import { AlertContext } from '@/context/AlertContext';
 
 import Button from '@/components/Button';
@@ -125,7 +122,7 @@ const SectionProjectDetail = ({ projectId }) => {
       subject,
       body,
     })
-      .then((res) => {})
+      .then(() => {})
       .catch((err) => {
         // setAlert('something went wrong', 'error');
         showMessage({

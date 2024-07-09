@@ -1,15 +1,20 @@
 import React, { useRef, useEffect } from 'react';
-import { getDefaultWallets, ConnectButton } from '@rainbow-me/rainbowkit';
+import '@rainbow-me/rainbowkit/styles.css';
+
+import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { getDefaultConfig } from '@rainbow-me/rainbowkit';
+import { useAccount, useSignMessage, useDisconnect } from 'wagmi';
 import {
-  configureChains,
-  createConfig,
-  useAccount,
-  useSignMessage,
-  useDisconnect,
-} from 'wagmi';
-import { mainnet, goerli, polygon, polygonMumbai } from 'wagmi/chains';
-import { publicProvider } from 'wagmi/providers/public';
-import { infuraProvider } from 'wagmi/providers/infura';
+  mainnet,
+  polygon,
+  optimism,
+  arbitrum,
+  base,
+  optimismGoerli,
+  arbitrumGoerli,
+} from 'wagmi/chains';
+import { useState } from 'react';
+
 import API, { refreshAPIToken } from '@/common/API';
 import {
   setLocalStorage,
@@ -17,71 +22,28 @@ import {
   removeLocalStorage,
 } from '@/utils/utility';
 import showMessage from '@/components/showMessage';
-import '@rainbow-me/rainbowkit/styles.css';
 
-const optimism = {
-  id: 10,
-  name: 'OP Mainnet',
-  network: 'optimism',
-  nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
-  rpcUrls: {
-    alchemy: {
-      http: ['https://opt-mainnet.g.alchemy.com/v2'],
-      webSocket: ['wss://opt-mainnet.g.alchemy.com/v2'],
-    },
-    infura: {
-      http: ['https://optimism-mainnet.infura.io/v3'],
-      webSocket: ['wss://optimism-mainnet.infura.io/ws/v3'],
-    },
-    default: {
-      http: ['https://mainnet.optimism.io'],
-    },
-    public: {
-      http: ['https://mainnet.optimism.io'],
-    },
-  },
-  blockExplorers: {
-    etherscan: {
-      name: 'Etherscan',
-      url: 'https://optimistic.etherscan.io',
-    },
-    default: {
-      name: 'Optimism Explorer',
-      url: 'https://explorer.optimism.io',
-    },
-  },
-  contracts: {
-    multicall3: {
-      address: '0xca11bde05977b3631167028862be2a173976ca11',
-      blockCreated: 4286263,
-    },
-  },
-};
-
-const { chains, publicClient } = configureChains(
-  [mainnet, goerli, polygon, polygonMumbai, optimism],
-  [
-    infuraProvider({ apiKey: process.env.NEXT_PUBLIC_INFURA_ID }),
-    publicProvider(),
-  ]
-);
-
-const { connectors } = getDefaultWallets({
+const wagmiConfig = getDefaultConfig({
   appName: 'LXDAO Official Website',
   projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID,
-  chains,
-});
-
-const wagmiConfig = createConfig({
-  autoConnect: true,
-  connectors,
-  publicClient,
+  chains: [
+    mainnet,
+    polygon,
+    optimism,
+    arbitrum,
+    base,
+    optimismGoerli,
+    arbitrumGoerli,
+  ],
+  ssr: true, // If your dApp uses server side rendering (SSR)
+  infuraAPIKey: '6959166847ff4ba499178f3d110c920f',
 });
 
 const ConnectWalletButton = () => {
   const { address, isConnected, isDisconnected } = useAccount();
   const { disconnect } = useDisconnect();
   const { data: signature, signMessageAsync } = useSignMessage();
+  const [retries, setRetries] = useState(0);
   const addressInfo = useRef({ address });
 
   useEffect(() => {
@@ -106,9 +68,11 @@ const ConnectWalletButton = () => {
 
   useEffect(() => {
     const currentAccessToken = getLocalStorage('accessToken');
-    if (isDisconnected && currentAccessToken) {
+    if (isDisconnected && currentAccessToken && retries > 10) {
       removeLocalStorage('accessToken');
       refreshAPIToken();
+    } else {
+      setRetries(retries + 1);
     }
   }, [isDisconnected]);
 
@@ -176,4 +140,4 @@ const ConnectWalletButton = () => {
   );
 };
 
-export { wagmiConfig, chains, ConnectWalletButton };
+export { wagmiConfig, ConnectWalletButton };

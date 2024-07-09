@@ -8,8 +8,7 @@ function useDebounce(value, delay) {
   // State and setters for debounced value
   const [debouncedValue, setDebouncedValue] = useState(value);
 
-  useEffect(
-    () => {
+  useEffect(() => {
       // Update debounced value after delay
       const handler = setTimeout(() => {
         setDebouncedValue(value);
@@ -51,7 +50,7 @@ function DebounceInput(props) {
       {...props}
       InputProps={{
         endAdornment: (
-          <InputAdornment sx={{ padding: { xm: 0, sm: '15px' } }}>
+          <InputAdornment sx={{ padding: { xm: 0, sm: '15px' } }} position='end'>
             <SearchIcon />
           </InputAdornment>
         ),
