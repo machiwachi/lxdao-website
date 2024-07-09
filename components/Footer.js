@@ -134,7 +134,7 @@ const Footer = () => {
                   { name: 'Forum', link: 'https://forum.lxdao.io/' },
                   {
                     name: 'Notion',
-                    link: 'https://lxdao.notion.site/',
+                    link: 'https://lxdao.notion.site/LXDAO-Notion-Space-e6c82cfdae8b4ded98507538a9703dbc',
                   },
                   {
                     name: 'Snapshot',
