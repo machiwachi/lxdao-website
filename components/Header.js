@@ -310,7 +310,7 @@ const Header = () => {
           </Link>
         </Box>
         <Box display="flex" alignItems="center" gap="20px">
-          {record && (
+          {record?.avatar && (
             <Link
               href={`/buidlers/${record?.address}`}
               sx={{
