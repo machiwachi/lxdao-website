@@ -1,14 +1,19 @@
 /* eslint-disable no-undef */
 import React from 'react';
+import { Controller, useForm } from 'react-hook-form';
+
 import { useRouter } from 'next/router';
-import { useForm, Controller } from 'react-hook-form';
-import { Box, Typography, Button, Alert, TextField } from '@mui/material';
+
+import { Alert, Box, Button, TextField, Typography } from '@mui/material';
+
 import showMessage from '@/components/showMessage';
 
 import { removeEmpty } from '@/utils/utility';
-import SkillsField from './SkillsField';
+
+import LXButton from './Button';
 import ContactsField from './ContactsField';
 import MultiSelect from './MultiSelect';
+import SkillsField from './SkillsField';
 import TextInput from './TextInput';
 import UploadImg from './UploadImg';
 
@@ -69,9 +74,9 @@ function ProfileForm(props) {
   function SubmitButton() {
     if (JSON.stringify(errors) !== '{}') {
       return (
-        <Button variant="contained" size="large" disabled={true}>
+        <LXButton variant="gradient" width="200px" disabled={true}>
           Update Profile
-        </Button>
+        </LXButton>
       );
     }
 
@@ -85,9 +90,13 @@ function ProfileForm(props) {
     }
 
     return (
-      <Button variant="contained" size="large" onClick={handleSubmit(onSubmit)}>
+      <LXButton
+        variant="gradient"
+        width="200px"
+        onClick={handleSubmit(onSubmit)}
+      >
         Update Profile
-      </Button>
+      </LXButton>
     );
   }
 
