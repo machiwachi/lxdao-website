@@ -1,22 +1,24 @@
 /* eslint-disable no-undef */
-import React, { useState, useEffect } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import React, { useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+
 import {
-  Box,
-  Typography,
   Alert,
-  TextField,
   Autocomplete,
+  Box,
   CircularProgress,
+  Switch,
+  TextField,
+  Typography,
 } from '@mui/material';
 
-import API from '@/common/API';
-
-import showMessage from '@/components/showMessage';
-import MemberTypeField from '@/components/MemberTypeField';
+import Button from '@/components/Button';
 import TextInput from '@/components/TextInput';
 import UploadImage from '@/components/UploadImage';
-import Button from '@/components/Button';
+import showMessage from '@/components/showMessage';
+import MemberTypeField from '@/components/workingGroups/MemberTypeField';
+
+import API from '@/common/API';
 
 function WorkingGroupForm(props) {
   const { values, saveWorkingGroupHandler, isUpdate } = props;
@@ -37,9 +39,16 @@ function WorkingGroupForm(props) {
       leaderId: values?.membersInWorkingGroup?.find((member) =>
         member.role.includes('Working Group Leader')
       )?.member,
-      members: values?.membersInWorkingGroup?.filter(
-        (member) => !member.role.includes('Working Group Leader')
-      ),
+      members: values?.membersInWorkingGroup
+        ?.filter((member) => !member.role.includes('Working Group Leader'))
+        ?.map((item) => {
+          return {
+            id: item?.member.id,
+            name: item?.member.name,
+            address: item?.member.address,
+            type: item.type,
+          };
+        }),
       weeklyMeetingLink: '',
       weeklyMeetingTime: '',
       weeklyUpdateLink: '',
@@ -47,6 +56,7 @@ function WorkingGroupForm(props) {
       roadmapLink: '',
       bannerURI: '',
       badgeName: '',
+      show: true,
       ...values,
     },
   });
@@ -351,6 +361,7 @@ function WorkingGroupForm(props) {
             rules={{ required: false }}
             render={({ field: { onChange, value } }) => {
               const valueArray = [];
+
               if (value && value.length) {
                 value.forEach((item) => {
                   const newMember = item?.member
@@ -479,6 +490,25 @@ function WorkingGroupForm(props) {
         width="80%"
       >
         <Box marginRight="10px">
+          <Label value={'Show the group: '} />
+        </Box>
+        <Box flex={1} display="flex" alignItems="center">
+          <Controller
+            name={'show'}
+            control={control}
+            render={({ field: { onChange, value } }) => {
+              return <Switch checked={value} onChange={onChange} />;
+            }}
+          />
+        </Box>
+      </Box>
+      <Box
+        display="flex"
+        flexDirection={{ xs: 'column', sm: 'row' }}
+        marginBottom={{ xs: '0', sm: '15px' }}
+        width="80%"
+      >
+        <Box marginRight="10px">
           <Label required={true} value={'Banner uploader: '} />
         </Box>
         <Box flex={1} display="flex">
@@ -494,6 +524,7 @@ function WorkingGroupForm(props) {
                   uploaderWidth={214}
                   uploaderHeight={88}
                 ></UploadImage>
+                // <TextInput fullWidth onChange={onChange} value={value} />
               );
             }}
           />
@@ -502,33 +533,6 @@ function WorkingGroupForm(props) {
           </Typography>
         </Box>
       </Box>
-      {/*<Box
-        display="flex"
-        flexDirection={{ xs: 'column', sm: 'row' }}
-        marginBottom={{ xs: '0', sm: '15px' }}
-        width="80%"
-      >
-        <Box marginRight="10px">
-          <Label value={'Badge Name: '} />
-        </Box>
-        <Box flex={1}>
-          <Controller
-            name={'badgeName'}
-            control={control}
-            render={({ field: { onChange, value } }) => {
-              return (
-                <TextInput
-                  required
-                  fullWidth
-                  onChange={onChange}
-                  value={value}
-                  disabled={isUpdate}
-                />
-              );
-            }}
-          />
-        </Box>
-          </Box>*/}
       {JSON.stringify(errors) !== '{}' && (
         <Box marginTop={2}>
           <Alert severity="error">

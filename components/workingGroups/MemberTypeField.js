@@ -1,18 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Box,
-  Grid,
-  Autocomplete,
-  TextField,
-  CircularProgress,
-} from '@mui/material';
+import React, { useEffect, useState } from 'react';
+
 import CloseIcon from '@mui/icons-material/Close';
+import {
+  Autocomplete,
+  Box,
+  CircularProgress,
+  Grid,
+  TextField,
+} from '@mui/material';
 
 import API from '@/common/API';
 
-import showMessage from './showMessage';
-import Select from './Select';
-import LXButton from './Button';
+import LXButton from '../Button';
+import Select from '../Select';
+import showMessage from '../showMessage';
 
 const memberType = [
   { label: 'Fixed Member', value: 'STABLE' },
@@ -97,6 +98,7 @@ function MemberTypeField(props) {
     newMember['type'] = '';
     newValues.push(newMember);
     setValue(newValues);
+    console.log(newValues);
     props.onChange && props.onChange(newValues);
   }
 
