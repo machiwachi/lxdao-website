@@ -1,6 +1,12 @@
-import React from 'react';
-import { Box, Typography, Link, Tooltip } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+
+import { Box, Link, Tooltip, Typography } from '@mui/material';
+
 import Container from '@/components/Container';
+
+import { erc20Abi } from 'viem';
+
+import { useReadContracts } from 'wagmi';
 
 const DataBox = ({ number, name, link, detail }) => (
   <Link
@@ -57,26 +63,54 @@ const DataBox = ({ number, name, link, detail }) => (
 );
 
 const SectionMission = ({ projectAmount, buidlerAmount }) => {
-  // const [treasuryAmount, setTreasuryAmount] = useState(330);
-  // useEffect(() => {
-  //   getTreasuryAmount();
-  // }, []);
-  // async function getTreasuryAmount() {
-  //   try {
-  //     const response = await API.get(
-  //       'https://safe-transaction-mainnet.safe.global/api/v1/safes/0xB45e9F74D0a35fE1aa0B78feA03877EF96ae8dd2/balances/usd/?trusted=true&exclude_spam=false'
-  //     );
-  //     if (response && response.data) {
-  //       const amount = response.data.reduce(
-  //         (l, n) => l + Number(n.fiatBalance),
-  //         0
-  //       );
-  //       setTreasuryAmount((amount / 1000).toFixed(0));
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
+  const usdtAmount = useReadContracts({
+    allowFailure: false,
+    contracts: [
+      {
+        address: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+        abi: erc20Abi,
+        functionName: 'balanceOf',
+        args: ['0xB45e9F74D0a35fE1aa0B78feA03877EF96ae8dd2'],
+      },
+    ],
+  });
+
+  const usdcAmount = useReadContracts({
+    allowFailure: false,
+    contracts: [
+      {
+        address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+        abi: erc20Abi,
+        functionName: 'balanceOf',
+        args: ['0xB45e9F74D0a35fE1aa0B78feA03877EF96ae8dd2'],
+      },
+    ],
+  });
+
+  const daiAmount = useReadContracts({
+    allowFailure: false,
+    contracts: [
+      {
+        address: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
+        abi: erc20Abi,
+        functionName: 'balanceOf',
+        args: ['0xB45e9F74D0a35fE1aa0B78feA03877EF96ae8dd2'],
+      },
+    ],
+  });
+
+  const [totalTreasury, setTotalTreasury] = useState(0);
+
+  useEffect(() => {
+    if (usdtAmount.data && usdcAmount.data && daiAmount.data) {
+      const sum =
+        parseFloat(usdtAmount.data[0]) / 1e6 +
+        parseFloat(usdcAmount.data[0]) / 1e6 +
+        parseFloat(daiAmount.data[0]) / 1e18;
+      setTotalTreasury(sum);
+    }
+  }, [usdtAmount.data, usdcAmount.data, daiAmount.data]);
+
   return (
     <Box
       sx={{ background: 'linear-gradient(90deg, #2A76DF 0%, #0FDBC2 100%)' }}
@@ -133,7 +167,7 @@ const SectionMission = ({ projectAmount, buidlerAmount }) => {
             />
             <DataBox number={projectAmount} name="Projects" link="/projects" />
             <DataBox
-              number={`156k+ USDC`}
+              number={`$${(totalTreasury / 1e3).toFixed(0)}k+`}
               name="Treasury"
               link="https://app.safe.global/home?safe=eth:0xB45e9F74D0a35fE1aa0B78feA03877EF96ae8dd2"
             />
