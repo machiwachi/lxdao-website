@@ -98,7 +98,6 @@ function MemberTypeField(props) {
     newMember['type'] = '';
     newValues.push(newMember);
     setValue(newValues);
-    console.log(newValues);
     props.onChange && props.onChange(newValues);
   }
 
