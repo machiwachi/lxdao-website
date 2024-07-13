@@ -14,8 +14,6 @@ import { Container } from '@mui/system';
 import { ipfsToBytes } from '@/utils/utility';
 import { useEthersSigner } from '@/hooks';
 
-import { Img3 } from '@lxdao/img3';
-import { getImg3DidStrFromUrl } from '@/utils/utility';
 
 export default function Mint() {
   const { address } = useAccount();
