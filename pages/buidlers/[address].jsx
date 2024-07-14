@@ -22,7 +22,6 @@ import LXButton from '@/components/Button';
 import Container from '@/components/Container';
 import CopyText from '@/components/CopyText';
 import Layout from '@/components/Layout';
-import OnBoardingLayout from '@/components/OnBoardingLayout';
 import Tag from '@/components/Tag';
 import AirdropDialog from '@/components/buidlers/AirdropDialog';
 import BadgeBox from '@/components/buidlers/Box/BadgeBox';
@@ -33,6 +32,7 @@ import SkillsBox from '@/components/buidlers/Box/SkillsBox';
 import StableCoinsRewardBox from '@/components/buidlers/Box/StableCoinsRewardBox';
 import WorkingGroupsBox from '@/components/buidlers/Box/WorkingGroupsBox';
 import ProfileEditDialog from '@/components/buidlers/ProfileEditDialog';
+import OnBoardingLayout from '@/components/onboarding/OnBoardingLayout';
 import showMessage from '@/components/showMessage';
 import useBuidler from '@/components/useBuidler';
 
