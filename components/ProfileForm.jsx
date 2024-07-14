@@ -1,14 +1,19 @@
 /* eslint-disable no-undef */
 import React from 'react';
+import { Controller, useForm } from 'react-hook-form';
+
 import { useRouter } from 'next/router';
-import { useForm, Controller } from 'react-hook-form';
-import { Box, Typography, Button, Alert, TextField } from '@mui/material';
+
+import { Alert, Box, Button, TextField, Typography } from '@mui/material';
+
 import showMessage from '@/components/showMessage';
 
 import { removeEmpty } from '@/utils/utility';
-import SkillsField from './SkillsField';
+
+import LXButton from './Button';
 import ContactsField from './ContactsField';
 import MultiSelect from './MultiSelect';
+import SkillsField from './SkillsField';
 import TextInput from './TextInput';
 import UploadImg from './UploadImg';
 
@@ -69,9 +74,9 @@ function ProfileForm(props) {
   function SubmitButton() {
     if (JSON.stringify(errors) !== '{}') {
       return (
-        <Button variant="contained" size="large" disabled={true}>
+        <LXButton variant="gradient" width="200px" disabled={true}>
           Update Profile
-        </Button>
+        </LXButton>
       );
     }
 
@@ -85,9 +90,13 @@ function ProfileForm(props) {
     }
 
     return (
-      <Button variant="contained" size="large" onClick={handleSubmit(onSubmit)}>
+      <LXButton
+        variant="gradient"
+        width="200px"
+        onClick={handleSubmit(onSubmit)}
+      >
         Update Profile
-      </Button>
+      </LXButton>
     );
   }
 
@@ -242,7 +251,7 @@ function ProfileForm(props) {
             >
               (
               <span style={{ color: 'red' }}>
-                At least one contact is required.
+                At least Telegram or WeChat is required.
               </span>
               )
             </span>
@@ -252,34 +261,34 @@ function ProfileForm(props) {
             control={control}
             rules={{
               validate: (value) => {
-                const isValid =
-                  value?.email &&
-                  value?.email?.length > 0 &&
-                  isValidEmail(value.email);
+                const hasTelegram =
+                  value?.telegram && value.telegram.trim().length > 0;
+                const hasWeChat =
+                  value?.wechat && value.wechat.trim().length > 0;
 
-                const isEmpty = JSON.stringify(removeEmpty(value)) === '{}';
-
-                if (isEmpty) {
-                  return false;
-                } else {
-                  return isValid;
-                }
+                return (
+                  hasTelegram ||
+                  hasWeChat ||
+                  'At least Telegram or WeChat is required.'
+                );
               },
             }}
-            render={({ field: { onChange, value } }) => {
-              return <ContactsField value={value || {}} onChange={onChange} />;
-            }}
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
+              <>
+                <ContactsField value={value || {}} onChange={onChange} />
+                {error && (
+                  <Typography
+                    fontSize="0.75rem"
+                    color="#d32f2f"
+                    marginTop={1}
+                    marginLeft={2}
+                  >
+                    {error.message}
+                  </Typography>
+                )}
+              </>
+            )}
           />
-          {errors.contacts && (
-            <Typography
-              fontSize="0.75rem"
-              color="#d32f2f"
-              marginTop={1}
-              marginLeft={2}
-            >
-              At least one contacts are required.
-            </Typography>
-          )}
         </Box>
         <Box>
           <Typography
@@ -330,7 +339,7 @@ function ProfileForm(props) {
               marginTop={1}
               marginLeft={2}
             >
-              private email are required, Please input a valid email
+              A private email is required. Please input a valid email address.
             </Typography>
           )}
         </Box>
