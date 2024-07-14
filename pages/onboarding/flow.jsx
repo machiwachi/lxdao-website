@@ -1,5 +1,5 @@
-import React,{ Typography, Box, Card, CardContent, Link } from '@mui/material';
-import OnBoardingLayout from '@/components/OnBoardingLayout';
+import { Typography, Box, Card, CardContent, Link } from '@mui/material';
+import OnBoardingLayout from '@/components/onboarding/OnBoardingLayout';
 
 export default function Flow() {
   const data = [

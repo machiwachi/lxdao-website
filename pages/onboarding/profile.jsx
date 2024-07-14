@@ -6,7 +6,7 @@ import { useAccount } from 'wagmi';
 import ProfileForm from '@/components/ProfileForm';
 import useBuidler from '@/components/useBuidler';
 import showMessage from '@/components/showMessage';
-import OnBoardingLayout from '@/components/OnBoardingLayout';
+import OnBoardingLayout from '@/components/onboarding/OnBoardingLayout';
 
 import API from '@/common/API';
 

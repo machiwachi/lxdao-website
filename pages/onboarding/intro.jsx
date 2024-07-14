@@ -9,13 +9,14 @@ import {
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-import OnBoardingLayout from '@/components/OnBoardingLayout';
+import OnBoardingLayout from '@/components/onboarding/OnBoardingLayout';
 
 export default function Intro() {
   const data = [
     {
       svg: '/icons/mission.svg',
       title: 'Mission',
+
       content: `LXDAO is an R&D-focused DAO in Web3. Our mission is gathering the power of buidlers to buidl and support “LX” (valuable) Web3 projects sustainably and welcome 1 billion users into Web3.`,
     },
     {
