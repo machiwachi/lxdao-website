@@ -1,26 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
-import { useAccount } from 'wagmi';
-import _ from 'lodash';
+import React, { useEffect, useState } from 'react';
 
+import { useRouter } from 'next/router';
+
+import CloseIcon from '@mui/icons-material/Close';
 import {
   Box,
-  Typography,
-  Link,
   Dialog,
-  DialogTitle,
   DialogContent,
+  DialogTitle,
+  Link,
+  Typography,
 } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
+
+import Button from '@/components/Button';
+import Container from '@/components/Container';
+import Layout from '@/components/Layout';
+import showMessage from '@/components/showMessage';
+import useBuidler from '@/components/useBuidler';
+import WorkingGroupForm from '@/components/workingGroups/WorkingGroupForm';
+
+import { useAccount } from 'wagmi';
 
 import API from '@/common/API';
 
-import Layout from '@/components/Layout';
-import Button from '@/components/Button';
-import Container from '@/components/Container';
-import showMessage from '@/components/showMessage';
-import useBuidler from '@/components/useBuidler';
-import WorkingGroupForm from '@/components/WorkingGroupForm';
+import _ from 'lodash';
 
 function LinkItem({ title, link, description }) {
   return (
@@ -86,6 +89,7 @@ export default function WorkingGroupDetail() {
     const formattedValues = values?.leaderId?.id
       ? { ...values, leaderId: values?.leaderId?.id }
       : values;
+    console.log(formattedValues);
     try {
       const response = await API.put(`/workinggroup/${workingGroupId}`, {
         ...formattedValues,
@@ -99,12 +103,12 @@ export default function WorkingGroupDetail() {
     } catch (err) {
       showMessage({
         type: 'error',
-        title: 'Failed to create a working group',
+        title: 'Failed to update a working group',
         body: err.message,
       });
     }
   };
-  const handleWorkingGroupIdChange=async () => {
+  const handleWorkingGroupIdChange = async () => {
     try {
       if (!workingGroupId) return;
       const res = await API.get(`/workinggroup/${workingGroupId}`);
@@ -121,9 +125,9 @@ export default function WorkingGroupDetail() {
         body: err.message,
       });
     }
-  }
-  useEffect(()=>{
-    handleWorkingGroupIdChange()
+  };
+  useEffect(() => {
+    handleWorkingGroupIdChange();
   }, [workingGroupId]);
 
   if (!workingGroupId) return null;
@@ -333,6 +337,7 @@ export default function WorkingGroupDetail() {
                   'roadmapLink',
                   'bannerURI',
                   'badgeName',
+                  'show',
                   'membersInWorkingGroup',
                 ])
               )}
