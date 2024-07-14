@@ -524,7 +524,6 @@ function WorkingGroupForm(props) {
                   uploaderWidth={214}
                   uploaderHeight={88}
                 ></UploadImage>
-                // <TextInput fullWidth onChange={onChange} value={value} />
               );
             }}
           />
