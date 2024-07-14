@@ -339,7 +339,7 @@ function ProfileForm(props) {
               marginTop={1}
               marginLeft={2}
             >
-              private email are required, Please input a valid email
+              A private email is required. Please input a valid email address.
             </Typography>
           )}
         </Box>
