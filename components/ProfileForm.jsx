@@ -261,34 +261,34 @@ function ProfileForm(props) {
             control={control}
             rules={{
               validate: (value) => {
-                const isValid =
-                  value?.email &&
-                  value?.email?.length > 0 &&
-                  isValidEmail(value.email);
+                const hasTelegram =
+                  value?.telegram && value.telegram.trim().length > 0;
+                const hasWeChat =
+                  value?.wechat && value.wechat.trim().length > 0;
 
-                const isEmpty = JSON.stringify(removeEmpty(value)) === '{}';
-
-                if (isEmpty) {
-                  return false;
-                } else {
-                  return isValid;
-                }
+                return (
+                  hasTelegram ||
+                  hasWeChat ||
+                  'At least Telegram or WeChat is required.'
+                );
               },
             }}
-            render={({ field: { onChange, value } }) => {
-              return <ContactsField value={value || {}} onChange={onChange} />;
-            }}
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
+              <>
+                <ContactsField value={value || {}} onChange={onChange} />
+                {error && (
+                  <Typography
+                    fontSize="0.75rem"
+                    color="#d32f2f"
+                    marginTop={1}
+                    marginLeft={2}
+                  >
+                    {error.message}
+                  </Typography>
+                )}
+              </>
+            )}
           />
-          {errors.contacts && (
-            <Typography
-              fontSize="0.75rem"
-              color="#d32f2f"
-              marginTop={1}
-              marginLeft={2}
-            >
-              At least one contacts are required.
-            </Typography>
-          )}
         </Box>
         <Box>
           <Typography
