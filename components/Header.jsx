@@ -1,24 +1,27 @@
 import React, { useState } from 'react';
-import { useRouter } from 'next/router';
-import { useAccount } from 'wagmi';
 
+import { useRouter } from 'next/router';
+
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import MenuIcon from '@mui/icons-material/Menu';
 import {
   Box,
-  Typography,
   Link,
-  Menu,
-  MenuItem,
-  SwipeableDrawer,
   List,
   ListItem,
   ListItemButton,
+  Menu,
+  MenuItem,
+  SwipeableDrawer,
+  Typography,
 } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
-import OnBoardingAlertBtn from './OnBoardingAlertBtn';
 import { ConnectWalletButton } from '@/components/ConnectWallet';
 import useBuidler from '@/components/useBuidler';
+
+import { useAccount } from 'wagmi';
+
+import OnBoardingAlertBtn from './OnBoardingAlertBtn';
 
 const Header = () => {
   const { address } = useAccount();
@@ -307,7 +310,7 @@ const Header = () => {
           </Link>
         </Box>
         <Box display="flex" alignItems="center" gap="20px">
-          {record && (
+          {record?.avatar && (
             <Link
               href={`/buidlers/${record?.address}`}
               sx={{
@@ -320,6 +323,7 @@ const Header = () => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                padding: '0',
               }}
             >
               {record?.avatar && (
@@ -328,8 +332,9 @@ const Header = () => {
                   src={record?.avatar}
                   alt="avatar"
                   style={{
-                    width: '30px',
-                    height: '30px',
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
                   }}
                 />
               )}

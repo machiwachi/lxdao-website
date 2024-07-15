@@ -118,8 +118,8 @@ function BuidlerDetails({ record, refresh }) {
             </Typography>
             <Typography variant="div" fontWeight="500" color="#000">
               <Typography variant="p">
-                This member has not yet completed the onboarding，Please attend
-                a community call to introduce yourself
+                This member has not yet completed the onboarding process. Please attend
+                a community call to introduce yourself and receive your member badge.
               </Typography>
               <br />
               <Typography variant="p">
