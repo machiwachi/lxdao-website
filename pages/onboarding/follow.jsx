@@ -3,7 +3,7 @@ import FormControl from '@mui/material/FormControl';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import OnBoardingLayout from '@/components/OnBoardingLayout';
+import OnBoardingLayout from '@/components/onboarding/OnBoardingLayout';
 import { useEffect, useState } from 'react';
 
 export default function Follow() {
