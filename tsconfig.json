@@ -25,5 +25,5 @@
     "moduleResolution": "node"
   },
   "exclude": ["node_modules", ".next"],
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/onboarding/OnBoardingLayout.jsx"]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/onboarding/OnBoardingLayout.jsx", "components/workingGroups/WorkingGroupCard.jsx"]
 }
