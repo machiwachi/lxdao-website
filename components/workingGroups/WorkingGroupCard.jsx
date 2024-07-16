@@ -1,6 +1,6 @@
 import { Box, Link, Typography } from '@mui/material';
 
-export default function WorkingGroupCard({ key, data, width }) {
+export default function WorkingGroupCard({ data, width }) {
   const normalMembers = data?.membersInWorkingGroup?.filter(
     (member) => !member?.role?.includes('Working Group Leader')
   );
@@ -19,7 +19,6 @@ export default function WorkingGroupCard({ key, data, width }) {
         width: width || '384px',
         backgroundColor: '#ffffff',
       }}
-      key={key}
     >
       <Box
         sx={{

@@ -4,10 +4,9 @@ import { Box, Typography } from '@mui/material';
 
 import Container from '@/components/Container';
 import showMessage from '@/components/showMessage';
+import WorkingGroupCard from '@/components/workingGroups/WorkingGroupCard';
 
 import API from '@/common/API';
-
-import { WorkingGroupCard } from '../pages/workingGroups/list';
 
 const SectionWorkingGroup = () => {
   const [workingGroupsData, setWorkingGroupsData] = useState([]);
