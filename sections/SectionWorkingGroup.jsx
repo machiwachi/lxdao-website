@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography } from '@mui/material';
 
-import API from '@/common/API';
+import { Box, Typography } from '@mui/material';
 
 import Container from '@/components/Container';
 import showMessage from '@/components/showMessage';
-import { WorkingGroupCard } from '../pages/workingGroups/list';
+import WorkingGroupCard from '@/components/workingGroups/WorkingGroupCard';
+
+import API from '@/common/API';
 
 const SectionWorkingGroup = () => {
   const [workingGroupsData, setWorkingGroupsData] = useState([]);
-  const handleInit=async () => {
+  const handleInit = async () => {
     try {
       const res = await API.get('/workinggroup/list');
       const result = res?.data;
@@ -25,10 +26,10 @@ const SectionWorkingGroup = () => {
         body: err.message,
       });
     }
-  }
+  };
 
-  useEffect(()=>{
-    handleInit
+  useEffect(() => {
+    handleInit();
   }, []);
   return (
     <Box width="100%" backgroundColor="#36AFF9">

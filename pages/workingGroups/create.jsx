@@ -1,14 +1,16 @@
 /* eslint-disable no-undef */
 import React from 'react';
-import { Container, Box, Typography } from '@mui/material';
-import { useAccount } from 'wagmi';
 
-import API from '@/common/API';
+import { Box, Container, Typography } from '@mui/material';
 
 import Layout from '@/components/Layout';
 import showMessage from '@/components/showMessage';
-import WorkingGroupForm from '@/components/WorkingGroupForm';
 import useBuidler from '@/components/useBuidler';
+import WorkingGroupForm from '@/components/workingGroups/WorkingGroupForm';
+
+import { useAccount } from 'wagmi';
+
+import API from '@/common/API';
 
 function CreateWorkingGroup() {
   const { address } = useAccount();

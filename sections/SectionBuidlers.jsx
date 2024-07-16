@@ -1,14 +1,13 @@
 import React from 'react';
-import { Box, Typography, Link } from '@mui/material';
 
-import {
-  getMemberFirstBadgeAmount,
-} from '@/utils/utility';
+import { Box, Link, Typography } from '@mui/material';
 
-import Container from '@/components/Container';
 import Button from '@/components/Button';
+import Container from '@/components/Container';
 import StyledTooltip from '@/components/StyledToolTip';
 import Tag from '@/components/Tag';
+
+import { getMemberFirstBadgeAmount } from '@/utils/utility';
 
 const BuidlerAvatarBox = ({ buidler, active, display }) => {
   return (
@@ -131,7 +130,6 @@ const BudilerTooltip = ({
 };
 
 const SectionBuidlers = ({ buidlers }) => {
-
   return (
     <Box backgroundColor="#000000" boxSizing="border-box">
       <Container paddingY={{ md: '112px', xs: 8 }}>
@@ -151,32 +149,28 @@ const SectionBuidlers = ({ buidlers }) => {
           color="#ffffff"
           marginBottom={{ md: '102px', xs: '72px' }}
         >
-          Welcome to Join Us, let&apos;s buidl more valuable Web3 products together!
+          Welcome to Join Us, let&apos;s buidl more valuable Web3 products
+          together!
         </Typography>
         <Box display="flex" flexWrap="wrap" width={{ sm: '100%', xs: '100%' }}>
           {buidlers.map((buidler, index) => {
             const firstMemberBadgeAmount = getMemberFirstBadgeAmount(
               buidler?.badges
             );
-
+            const active =
+              buidler?.status === 'ACTIVE' ||
+              (buidler?.status === 'PENDING' && firstMemberBadgeAmount > 0);
+            if (!active) return;
             return (
               <Box key={index}>
                 <BudilerTooltip
                   buidler={buidler}
-                  active={
-                    buidler?.status === 'ACTIVE' ||
-                    (buidler?.status === 'PENDING' &&
-                      firstMemberBadgeAmount > 0)
-                  }
+                  active={active}
                   display={{ md: 'block', xs: 'none' }}
                 />
                 <BuidlerAvatarBox
                   buidler={buidler}
-                  active={
-                    buidler?.status === 'ACTIVE' ||
-                    (buidler?.status === 'PENDING' &&
-                      firstMemberBadgeAmount > 0)
-                  }
+                  active={active}
                   display={{ md: 'none', xs: 'block' }}
                 />
               </Box>

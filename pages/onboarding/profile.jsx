@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
-import _ from 'lodash';
+
 import { useRouter } from 'next/router';
-import { useAccount } from 'wagmi';
 
 import ProfileForm from '@/components/ProfileForm';
-import useBuidler from '@/components/useBuidler';
+import OnBoardingLayout from '@/components/onboarding/OnBoardingLayout';
 import showMessage from '@/components/showMessage';
-import OnBoardingLayout from '@/components/OnBoardingLayout';
+import useBuidler from '@/components/useBuidler';
+
+import { useAccount } from 'wagmi';
 
 import API from '@/common/API';
+
+import _ from 'lodash';
 
 export default function Profile() {
   const { address } = useAccount();
@@ -20,9 +23,9 @@ export default function Profile() {
     setUpdating(true);
     const userProfile = {
       ...newMetaData,
-      role: record?.role.length === 0 ? ['Buidler'] : record.role,
+      role: record?.role.length === 0 ? ['Buidler'] : record?.role,
       // set the NFT image
-      image: `${process.env.NEXT_PUBLIC_LXDAO_BACKEND_API}/buidler/${record.address}/card`,
+      image: `${process.env.NEXT_PUBLIC_LXDAO_BACKEND_API}/buidler/${record?.address}/card`,
     };
     try {
       const response = await API.put(`/buidler/${address}`, {
