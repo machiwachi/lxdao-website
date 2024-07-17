@@ -115,7 +115,7 @@ const Header = () => {
             </ListItemButton>
           </Link>
         </ListItem>
-        <ListItem disablePadding>
+        {/* <ListItem disablePadding>
           <Link
             href={`https://forum.lxdao.io/c/governance/10`}
             target="_blank"
@@ -128,8 +128,8 @@ const Header = () => {
               <Typography sx={{ cursor: 'pointer' }}>Weekly Update</Typography>
             </ListItemButton>
           </Link>
-        </ListItem>
-        <ListItem disablePadding>
+        </ListItem> */}
+        {/* <ListItem disablePadding>
           <Link
             href={`https://forum.lxdao.io/c/governance/monthly-ama/12`}
             target="_blank"
@@ -142,7 +142,7 @@ const Header = () => {
               <Typography sx={{ cursor: 'pointer' }}>Monthly AMA</Typography>
             </ListItemButton>
           </Link>
-        </ListItem>
+        </ListItem> */}
         <ListItem disablePadding>
           <Link
             href={`https://www.notion.so/lxdao/1341eee9bd9343a7a60b211de7822af3?v=101f42763e12488999211f15a7b75b81`}

@@ -1,11 +1,13 @@
 import React from 'react';
 import Mailchimp from 'react-mailchimp-form';
-import styled from 'styled-components';
-import { Box, Typography, Link, Grid } from '@mui/material';
+
+import { Box, Grid, Link, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
-import Container from './Container';
 import CommunityLinkGroup from './CommunityLinkGroup';
+import Container from './Container';
+
+import styled from 'styled-components';
 
 const SignupFormWrapper = styled.div`
   & input,
@@ -92,14 +94,14 @@ const Footer = () => {
                     name: 'Developer Guide',
                     link: 'https://github.com/lxdao-official/LXDAO-Developer-Guide',
                   },
-                  {
-                    name: 'Weekly Update',
-                    link: 'https://forum.lxdao.io/c/governance/weekly/11',
-                  },
-                  {
-                    name: 'Monthly AMA',
-                    link: 'https://forum.lxdao.io/c/governance/monthly-ama/12',
-                  },
+                  // {
+                  //   name: 'Weekly Update',
+                  //   link: 'https://forum.lxdao.io/c/governance/weekly/11',
+                  // },
+                  // {
+                  //   name: 'Monthly AMA',
+                  //   link: 'https://forum.lxdao.io/c/governance/monthly-ama/12',
+                  // },
                   {
                     name: 'Reward Announcement',
                     link: '/reward/announcement',
