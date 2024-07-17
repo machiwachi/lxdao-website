@@ -23,19 +23,19 @@ export const myFirstNFT = {
 }
 
 export const badgeContract = {
-    address: "0xd1192fEF62da46E246cb77A7B66E24ACaA879D90",
+    address: "0x8f4c2c84bB47670D15c17c7C60f29c97dCF00b0b",
     abi: badgeAbi,
-    chainId: 137
+    chainId: 10
 }
 
 export const buidlerContract = {
-    address: "0xbd7ABBee471f7a0ffe5FCC4cE176D92Ca3F4dFfe",
+    address: "0xd7F2995db07e87C870238E80bb45CD0957dd8D02",
     abi: buidlerCardAbi,
-    chainId: 1
+    chainId: 10
 }
 
 export const lxpContract = {
-    address: "0x1F0f012de0e0a20C856eF48867247C594Fb01dbC",
+    address: "0xA798cbF127fCBeeBE3359254271Fc1074362a9A4",
     abi: lxpAbi,
-    chainId: 137
+    chainId: 10
 }
