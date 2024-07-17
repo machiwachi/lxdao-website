@@ -42,7 +42,7 @@ export default function BadgesToBeEarnedBox({ record, address }) {
             image={`/images/card.png`}
             name="Buidler card (SBT)"
             description="Governance rights entitled"
-            eligible="Eligibility: Contribute in projects or working groups to earn up to 500 LXU reward."
+            eligible="Eligibility: Contribute in projects or working groups to earn up to 500 LXPU reward."
             linkText="Contribute to earn"
             linkUrl="/SBTCard"
           />
