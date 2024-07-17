@@ -60,7 +60,6 @@ export default function AirdropDialog({ record }) {
       }
       await airdropWrite({
         ...badgeContract,
-        chainId: polygon.chainId,
         args: [badge, [record.address], [1]],
         functionName: 'mintAndAirdrop',
       });

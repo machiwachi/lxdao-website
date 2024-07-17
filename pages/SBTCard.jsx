@@ -220,8 +220,8 @@ export default function FirstBadge() {
             >
               here
             </Link>{' '}
-            to earn up to 500 LXU reward. Then request a current member with SBT
-            held to initialize a proposal.
+            to earn up to 500 LXPU reward. Then request a current member with
+            SBT held to initialize a proposal.
           </Typography>
         </Stack>
         <Stack gap={3} mb={3}>

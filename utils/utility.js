@@ -88,9 +88,13 @@ export function getOpenSeaDomain() {
 }
 
 export function getPolygonScanDomain() {
-  return process.env.NEXT_PUBLIC_LXP_CHAIN_ID === '137'
-    ? 'polygonscan.com'
-    : 'mumbai.polygonscan.com';
+  return 'polygonscan.com'
+}
+
+export function getOPScanDomain() {
+  return process.env.NEXT_PUBLIC_LXP_CHAIN_ID === '10'
+    ? 'optimistic.etherscan.io'
+    : 'sepolia-optimism.etherscan.io';
 }
 
 export function convertIpfsGateway(ipfsUrl) {

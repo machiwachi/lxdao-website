@@ -118,8 +118,9 @@ function BuidlerDetails({ record, refresh }) {
             </Typography>
             <Typography variant="div" fontWeight="500" color="#000">
               <Typography variant="p">
-                This member has not yet completed the onboarding process. Please attend
-                a community call to introduce yourself and receive your member badge.
+                This member has not yet completed the onboarding process. Please
+                attend a community call to introduce yourself and receive your
+                member badge.
               </Typography>
               <br />
               <Typography variant="p">
@@ -205,7 +206,7 @@ function BuidlerDetails({ record, refresh }) {
                 {record.status === 'ACTIVE' ? (
                   <Link
                     target="_blank"
-                    href={`https://opensea.io/collection/lxdaobuidler`}
+                    href={`https://opensea.io/collection/lxdaobuidler-1`}
                     sx={{
                       textDecoration: 'none',
                     }}

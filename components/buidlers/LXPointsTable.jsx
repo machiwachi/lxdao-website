@@ -11,7 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { getPolygonScanDomain } from '@/utils/utility';
+import { getOPScanDomain, getPolygonScanDomain } from '@/utils/utility';
 
 export default function LXPointsTable({ points }) {
   return (
@@ -127,7 +127,12 @@ export default function LXPointsTable({ points }) {
                   <Link
                     target="_blank"
                     sx={{ textDecoration: 'none' }}
-                    href={`https://${getPolygonScanDomain()}/tx/${point.hash}`}
+                    href={
+                      Date.parse(point.createdAt) >
+                      Date.parse('2024-07-18T00:00:00.000Z')
+                        ? `https://${getOPScanDomain()}/tx/${point.hash}`
+                        : `https://${getPolygonScanDomain()}/tx/${point.hash}`
+                    }
                   >
                     <Typography
                       sx={{

@@ -58,7 +58,11 @@ import { useAccount, useSwitchChain, useWriteContract } from 'wagmi';
 import { lxpContract } from '@/abi/index';
 import API from '@/common/API';
 import { RewardLabels } from '@/common/define';
-import { getEtherScanDomain, getPolygonScanDomain } from '@/utils/utility';
+import {
+  getEtherScanDomain,
+  getOPScanDomain,
+  getPolygonScanDomain,
+} from '@/utils/utility';
 
 import Decimal from 'decimal.js';
 
@@ -2139,7 +2143,12 @@ function ReleasedLXPTable() {
                   >
                     <Link
                       target="_blank"
-                      href={`https://${getPolygonScanDomain()}/tx/${row.hash}`}
+                      href={
+                        Date.parse(row.createdAt) >
+                        Date.parse('2024-07-18T00:00:00.000Z')
+                          ? `https://${getOPScanDomain()}/tx/${row.hash}`
+                          : `https://${getPolygonScanDomain()}/tx/${row.hash}`
+                      }
                     >
                       {row.status == 'RELEASED' && 'View'}
                     </Link>
