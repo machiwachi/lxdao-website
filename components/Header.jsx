@@ -264,7 +264,7 @@ const Header = () => {
                 </Link>
               </MenuItem>
 
-              <MenuItem
+              {/* <MenuItem
                 onClick={() => {
                   handleGovernanceMenuClose();
                 }}
@@ -295,7 +295,7 @@ const Header = () => {
                 >
                   Monthly AMA
                 </Link>
-              </MenuItem>
+              </MenuItem> */}
             </Menu>
           </Box>
           <Link
