@@ -116,6 +116,7 @@ function MemberTypeField(props) {
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <Autocomplete
+                  disableClearable
                   open={index === openMemberDropdownIndex}
                   onOpen={() => {
                     setOpenMemberDropdownIndex(index);
