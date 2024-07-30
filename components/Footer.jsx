@@ -94,14 +94,6 @@ const Footer = () => {
                     name: 'Developer Guide',
                     link: 'https://github.com/lxdao-official/LXDAO-Developer-Guide',
                   },
-                  // {
-                  //   name: 'Weekly Update',
-                  //   link: 'https://forum.lxdao.io/c/governance/weekly/11',
-                  // },
-                  // {
-                  //   name: 'Monthly AMA',
-                  //   link: 'https://forum.lxdao.io/c/governance/monthly-ama/12',
-                  // },
                   {
                     name: 'Reward Announcement',
                     link: '/reward/announcement',
