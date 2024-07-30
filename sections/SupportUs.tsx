@@ -65,11 +65,11 @@ export default function SupportUs() {
             <a
               href="https://docsend.com/view/7c5nu26eexpt4adj"
               target="_blank"
-              style={{ height: '128px', display: 'block' }} rel="noreferrer"
+              style={{ height: '121px', display: 'flex', alignItems: "center" }} rel="noreferrer"
             >
               <Box
                 component="img"
-                width={[0, 0, 200, 200]}
+                height={106}
                 src="/images/deck.png"
               />
             </a>
