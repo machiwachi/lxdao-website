@@ -6,7 +6,6 @@ import {
   Alert,
   Autocomplete,
   Box,
-  CircularProgress,
   Switch,
   TextField,
   Typography,
@@ -318,12 +317,7 @@ function WorkingGroupForm(props) {
                           InputProps={{
                             ...newParams.InputProps,
                             endAdornment: (
-                              <>
-                                {leaderLoading ? (
-                                  <CircularProgress color="inherit" size={20} />
-                                ) : null}
-                                {newParams.InputProps.endAdornment}
-                              </>
+                              <>{newParams.InputProps.endAdornment}</>
                             ),
                           }}
                         />
