@@ -161,12 +161,7 @@ function MemberTypeField(props) {
                         InputProps={{
                           ...newParams.InputProps,
                           endAdornment: (
-                            <>
-                              {memberLoading ? (
-                                <CircularProgress color="inherit" size={20} />
-                              ) : null}
-                              {newParams.InputProps.endAdornment}
-                            </>
+                            <>{newParams.InputProps.endAdornment}</>
                           ),
                         }}
                       />
