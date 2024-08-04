@@ -15,12 +15,17 @@ import Button from '@/components/Button';
 import TextInput from '@/components/TextInput';
 import UploadImage from '@/components/UploadImage';
 import showMessage from '@/components/showMessage';
+import useBuidler from '@/components/useBuidler';
 import MemberTypeField from '@/components/workingGroups/MemberTypeField';
+
+import { useAccount } from 'wagmi';
 
 import API from '@/common/API';
 
 function WorkingGroupForm(props) {
   const { values, saveWorkingGroupHandler, isUpdate } = props;
+  const { address } = useAccount();
+  const [, currentViewer, ,] = useBuidler(address);
 
   const [openLeaderDropdown, setOpenLeaderDropdown] = useState(false);
   const [leaderOptions, setLeaderOptions] = useState([]);
@@ -269,10 +274,13 @@ function WorkingGroupForm(props) {
             control={control}
             rules={{ required: true }}
             render={({ field: { onChange, value, onBlur } }) => {
+              const isAdmin =
+                currentViewer && currentViewer?.role?.includes('Administrator');
+
               return (
                 <>
                   <Autocomplete
-                    open={openLeaderDropdown}
+                    open={isAdmin ? openLeaderDropdown : false}
                     onOpen={() => {
                       setOpenLeaderDropdown(true);
                     }}
