@@ -22,12 +22,8 @@ import { useAccount } from 'wagmi';
 
 import API from '@/common/API';
 
-import useBuidler from '../useBuidler';
-
 function WorkingGroupForm(props) {
   const { values, saveWorkingGroupHandler, isUpdate } = props;
-  const { address } = useAccount();
-  const [, currentViewer, ,] = useBuidler(address);
 
   const [openLeaderDropdown, setOpenLeaderDropdown] = useState(false);
   const [leaderOptions, setLeaderOptions] = useState([]);
