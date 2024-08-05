@@ -19,7 +19,6 @@ export default function MemberListWithBadge(props) {
   const [MemberList, setMemberList] = useState([]);
 
   const getMemberList = async (badge) => {
-    console.log(badge);
     let query = `/buidler?`;
     let params = [];
     params.push('per_page=1000');
@@ -38,8 +37,7 @@ export default function MemberListWithBadge(props) {
 
       records.forEach((record) => {
         let { name, address, badges } = record;
-
-        if (badges[badge] === 0) {
+        if (!badges?.[badge] && name) {
           tempList.push({ name, address });
         }
       });
@@ -99,6 +97,7 @@ export default function MemberListWithBadge(props) {
       {value.map((member, index) => {
         return (
           <Box
+            key={index}
             sx={{
               width: '100%',
               display: 'flex',
