@@ -120,7 +120,7 @@ export default function AirdropDialog({ record }) {
       </LXButton>
 
       <Dialog open={open} onClose={handleClose} fullWidth="sm">
-        <DialogTitle>Mind Badge</DialogTitle>
+        <DialogTitle>Mint Badge</DialogTitle>
         <DialogContent sx={{ paddingBottom: '80px' }}>
           <DialogContentText marginBottom="10px">
             Please select the badge you want to mint.
