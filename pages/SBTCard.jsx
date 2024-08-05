@@ -15,7 +15,7 @@ import {
 import CustomButton from '@/components/Button';
 import LXButton from '@/components/Button';
 import Layout from '@/components/Layout';
-import ProjectCard from '@/components/ProjectCard';
+import ProjectCard from '@/components/projects/ProjectCard';
 
 /* eslint-disable no-undef */
 import showMessage from '@/components/showMessage';
