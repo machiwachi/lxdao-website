@@ -24,12 +24,13 @@ import API from '@/common/API';
 
 function WorkingGroupForm(props) {
   const { values, saveWorkingGroupHandler, isUpdate } = props;
-  const { address } = useAccount();
-  const [, currentViewer, ,] = useBuidler(address);
 
   const [openLeaderDropdown, setOpenLeaderDropdown] = useState(false);
   const [leaderOptions, setLeaderOptions] = useState([]);
   const leaderLoading = openLeaderDropdown && leaderOptions.length === 0;
+
+  const { address } = useAccount();
+  const [, currentViewer, ,] = useBuidler(address);
 
   const {
     handleSubmit,
@@ -296,6 +297,10 @@ function WorkingGroupForm(props) {
                     onChange={(e, value) => {
                       onChange(value?.id);
                     }}
+                    disabled={
+                      !currentViewer &&
+                      currentViewer?.role?.includes('Administrator')
+                    }
                     onBlur={onBlur}
                     options={leaderOptions}
                     loading={leaderLoading}

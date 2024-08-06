@@ -58,11 +58,7 @@ import { useAccount, useSwitchChain, useWriteContract } from 'wagmi';
 import { lxpContract } from '@/abi/index';
 import API from '@/common/API';
 import { RewardLabels } from '@/common/define';
-import {
-  getEtherScanDomain,
-  getOPScanDomain,
-  getPolygonScanDomain,
-} from '@/utils/utility';
+import { getOPScanDomain, getPolygonScanDomain } from '@/utils/utility';
 
 import Decimal from 'decimal.js';
 
@@ -1851,7 +1847,7 @@ function ReleasedStablecoinTable({ isAccountingTeam }) {
                   >
                     <Link
                       target="_blank"
-                      href={`https://${getEtherScanDomain()}/tx/${row.hash}`}
+                      href={`https://${getOPScanDomain()}/tx/${row.hash}`}
                     >
                       {row.status == 'RELEASED' && 'View'}
                     </Link>

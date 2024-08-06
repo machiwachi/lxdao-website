@@ -11,7 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import { getEtherScanDomain, getOpEtherScanDomain } from '@/utils/utility';
+import { getOpEtherScanDomain } from '@/utils/utility';
 
 export default function StableCoinsTable({ points }) {
   return (
@@ -127,11 +127,7 @@ export default function StableCoinsTable({ points }) {
                   <Link
                     target="_blank"
                     sx={{ textDecoration: 'none' }}
-                    href={`https://${
-                      pointStatus < '2023-11-01'
-                        ? getEtherScanDomain()
-                        : getOpEtherScanDomain()
-                    }/tx/${point.hash}`}
+                    href={`https://${getOpEtherScanDomain()}/tx/${point.hash}`}
                   >
                     <Typography
                       sx={{

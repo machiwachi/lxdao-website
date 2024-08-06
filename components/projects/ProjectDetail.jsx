@@ -45,7 +45,7 @@ const useStyles = makeStyles({
   },
 });
 
-const SectionProjectDetail = ({ projectId }) => {
+export const ProjectDetail = ({ projectId }) => {
   const [project, setProject] = useState(null);
   const [activeBuidlerList, setActiveBuidlerList] = useState([]);
   const [selectedBuidler, setSelectedBuidler] = useState('');
@@ -141,6 +141,7 @@ const SectionProjectDetail = ({ projectId }) => {
       .then((res) => {
         if (res?.data?.data) {
           setProject(res?.data?.data);
+          console.log(res?.data?.data);
           getBuidlersData(res?.data?.data);
         }
       })
@@ -923,5 +924,3 @@ const SectionProjectDetail = ({ projectId }) => {
     </Container>
   );
 };
-
-export default SectionProjectDetail;
