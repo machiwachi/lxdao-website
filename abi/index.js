@@ -5,7 +5,7 @@ import { abi as badgeAbi } from './badge.js'
 import { abi as buidlerCardAbi } from './buidlerCard.js'
 import { abi as lxpAbi } from './lxp.js'
 
-const CHAIN_ID = process.env.NEXT_PUBLIC_CHAIN_ID || 10
+const CHAIN_ID = parseInt(process.env.NEXT_PUBLIC_CHAIN_ID) || 10
 
 const addressConfig = {
     10: {
@@ -28,7 +28,7 @@ export const anniversaryContract = {
 };
 
 export const badgeContract = {
-    address: addresses.badge,
+    address: "0x8f4c2c84bB47670D15c17c7C60f29c97dCF00b0b",
     abi: badgeAbi,
     chainId: CHAIN_ID
 }

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import { Box, MenuItem, Select, Typography } from '@mui/material';
@@ -6,16 +6,19 @@ import { Box, MenuItem, Select, Typography } from '@mui/material';
 import Button from '@/components/Button';
 import showMessage from '@/components/showMessage';
 
+import { isAddress } from 'viem';
 import { polygon } from 'viem/chains';
 
 import { useAccount, useSwitchChain, useWriteContract } from 'wagmi';
 
 import { badgeContract } from '@/abi';
+import API from '@/common/API';
 
 import MemberListWithBadge from './MemberListWithBadge';
 
 export default function AirdropCard() {
   const { chainId } = useAccount();
+  const [addresses, setAddresses] = useState([]);
   const { switchChainAsync } = useSwitchChain();
 
   const {
@@ -64,18 +67,50 @@ export default function AirdropCard() {
   };
 
   const onSubmit = async (data) => {
+    console.log(data);
     const addresses = data.members
       .filter((item) => {
-        return item.address !== '';
+        return isAddress(item.address);
       })
       .map((item) => {
         return item.address;
       });
+    setAddresses(addresses);
 
     const amounts = new Array(addresses.length).fill(1);
     await airdropBadge(selectMintBadgeValue, addresses, amounts);
   };
 
+  useEffect(() => {
+    (async () => {
+      if (airdropIsSuccess && airdrop) {
+        const updatedBuidler = await API.post(`/buidler/updateAllBadges`, {
+          addresses: addresses,
+        });
+
+        if (updatedBuidler?.data?.status === 'SUCCESS') {
+          showMessage({
+            type: 'success',
+            title: 'Success!',
+          });
+        } else {
+          showMessage({
+            type: 'error',
+            title: 'Error',
+            body: updatedBuidler?.data?.message,
+          });
+        }
+      }
+
+      if (airdropIsError) {
+        showMessage({
+          type: 'error',
+          title: 'Failed to airdrop membership badge',
+          body: <>{airdropError}</>,
+        });
+      }
+    })();
+  }, [airdropIsSuccess, airdrop]);
   return (
     <Box
       position="relative"
