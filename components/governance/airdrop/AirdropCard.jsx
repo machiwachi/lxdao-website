@@ -32,7 +32,7 @@ export default function AirdropCard() {
 
   const [selectMintBadgeValue, setSelectMintBadgeValue] = useState('');
 
-  const badgeList = ['MemberFirstBadge', 'DHDBadge'];
+  const badgeList = ['MemberFirstBadge', 'DHDBadge', 'ICL_English_S01'];
 
   const handleChangeSelectMintBadgeValue = (event) => {
     setSelectMintBadgeValue(event.target.value);
@@ -53,7 +53,6 @@ export default function AirdropCard() {
       }
       await airdropWrite({
         ...badgeContract,
-        chainId: polygon.chainId,
         args: [badge, addresses, amounts],
         functionName: 'mintAndAirdrop',
       });
@@ -67,7 +66,6 @@ export default function AirdropCard() {
   };
 
   const onSubmit = async (data) => {
-    console.log(data);
     const addresses = data.members
       .filter((item) => {
         return isAddress(item.address);
@@ -205,7 +203,7 @@ export default function AirdropCard() {
           size="large"
           width={200}
         >
-          {'Confirm'}
+          Confirm
         </Button>
       </Box>
     </Box>
