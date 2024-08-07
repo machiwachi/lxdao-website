@@ -28,7 +28,7 @@ export const anniversaryContract = {
 };
 
 export const badgeContract = {
-    address: "0x8f4c2c84bB47670D15c17c7C60f29c97dCF00b0b",
+    address: addresses.badge,
     abi: badgeAbi,
     chainId: CHAIN_ID
 }
