@@ -11,8 +11,6 @@ import {
 } from 'viem';
 import { mainnet } from 'viem/chains';
 
-import { myFirstNFT } from '@/abi/index';
-
 export default function BadgeBox({ record }) {
   const [isHasOtherBadges, setIsHasOtherBadges] = useState([]);
   const infura = http(
@@ -23,40 +21,7 @@ export default function BadgeBox({ record }) {
     chain: mainnet,
     transport: fallback([infura]),
   });
-  useEffect(() => {
-    (async () => {
-      if (!record) return;
 
-      const MFNFTResult = await publicClient.getLogs({
-        address: getAddress(myFirstNFT.address),
-        event: parseAbiItem(
-          'event Transfer(address indexed from,address indexed to,uint256 indexed tokenId)'
-        ),
-        args: {
-          to: record.address,
-        },
-        fromBlock: 0n,
-        toBlock: 'latest',
-      });
-
-      if (MFNFTResult.length <= 0) {
-        return;
-      }
-
-      const uri = await publicClient.readContract({
-        ...myFirstNFT,
-        functionName: 'tokenURI',
-        args: [BigInt(MFNFTResult[0]?.topics[3])],
-      });
-
-      const imgCode = uri.replace('data:application/json;base64,', '');
-      const imgUrl = JSON.parse(atob(imgCode)).image;
-      setIsHasOtherBadges([
-        ...isHasOtherBadges,
-        { image: imgUrl, name: 'myFirstNFT' },
-      ]);
-    })();
-  }, [record]);
   return (
     <Box
       sx={{

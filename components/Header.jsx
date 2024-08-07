@@ -263,39 +263,6 @@ const Header = () => {
                   Reward Announcement
                 </Link>
               </MenuItem>
-
-              {/* <MenuItem
-                onClick={() => {
-                  handleGovernanceMenuClose();
-                }}
-              >
-                <Link
-                  href={`https://forum.lxdao.io/c/governance/weekly/11`}
-                  target="_blank"
-                  color={'inherit'}
-                  sx={{
-                    textDecoration: 'none',
-                  }}
-                >
-                  Weekly Update
-                </Link>
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  handleGovernanceMenuClose();
-                }}
-              >
-                <Link
-                  href={`https://forum.lxdao.io/c/governance/monthly-ama/12`}
-                  target="_blank"
-                  color={'inherit'}
-                  sx={{
-                    textDecoration: 'none',
-                  }}
-                >
-                  Monthly AMA
-                </Link>
-              </MenuItem> */}
             </Menu>
           </Box>
           <Link

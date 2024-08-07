@@ -1,13 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import CloseIcon from '@mui/icons-material/Close';
-import {
-  Autocomplete,
-  Box,
-  CircularProgress,
-  Grid,
-  TextField,
-} from '@mui/material';
+import { Autocomplete, Box, Grid, TextField } from '@mui/material';
 
 import API from '@/common/API';
 
@@ -116,6 +110,7 @@ function MemberTypeField(props) {
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <Autocomplete
+                  disableClearable
                   open={index === openMemberDropdownIndex}
                   onOpen={() => {
                     setOpenMemberDropdownIndex(index);
@@ -160,12 +155,7 @@ function MemberTypeField(props) {
                         InputProps={{
                           ...newParams.InputProps,
                           endAdornment: (
-                            <>
-                              {memberLoading ? (
-                                <CircularProgress color="inherit" size={20} />
-                              ) : null}
-                              {newParams.InputProps.endAdornment}
-                            </>
+                            <>{newParams.InputProps.endAdornment}</>
                           ),
                         }}
                       />

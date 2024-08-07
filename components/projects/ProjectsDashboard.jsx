@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+
 import { useRouter } from 'next/router';
-import { Box, Typography, Grid, CircularProgress, Link } from '@mui/material';
+
+import { Box, CircularProgress, Grid, Link, Typography } from '@mui/material';
+
+import Button from '@/components/Button';
+import Container from '@/components/Container';
+import DebouncedInput from '@/components/DebouncedInput';
+import ProjectCard from '@/components/projects/ProjectCard';
 
 import API from '@/common/API';
 import { getRandom } from '@/utils/utility';
 
-import Container from '@/components/Container';
-import Button from '@/components/Button';
-import DebouncedInput from '@/components/DebouncedInput';
-import ProjectCard from '@/components/ProjectCard';
-
-const SectionProjects = () => {
+export const ProjectsDashboard = () => {
   const [projects, setProjects] = useState([]);
   const [current, setCurrent] = useState(1);
   const [search, setSearch] = useState('');
@@ -191,5 +193,3 @@ const SectionProjects = () => {
     </Container>
   );
 };
-
-export default SectionProjects;

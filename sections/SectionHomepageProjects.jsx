@@ -1,8 +1,9 @@
 import React from 'react';
-import { Box, Typography, Link } from '@mui/material';
+
+import { Box, Link, Typography } from '@mui/material';
 
 import CustomButton from '@/components/Button';
-import ProjectCard from '@/components/ProjectCard';
+import ProjectCard from '@/components/projects/ProjectCard';
 
 const SectionHomePageProjects = ({ projects }) => {
   return (

@@ -6,7 +6,6 @@ import {
   Alert,
   Autocomplete,
   Box,
-  CircularProgress,
   Switch,
   TextField,
   Typography,
@@ -16,7 +15,10 @@ import Button from '@/components/Button';
 import TextInput from '@/components/TextInput';
 import UploadImage from '@/components/UploadImage';
 import showMessage from '@/components/showMessage';
+import useBuidler from '@/components/useBuidler';
 import MemberTypeField from '@/components/workingGroups/MemberTypeField';
+
+import { useAccount } from 'wagmi';
 
 import API from '@/common/API';
 
@@ -26,6 +28,9 @@ function WorkingGroupForm(props) {
   const [openLeaderDropdown, setOpenLeaderDropdown] = useState(false);
   const [leaderOptions, setLeaderOptions] = useState([]);
   const leaderLoading = openLeaderDropdown && leaderOptions.length === 0;
+
+  const { address } = useAccount();
+  const [, currentViewer, ,] = useBuidler(address);
 
   const {
     handleSubmit,
@@ -270,10 +275,13 @@ function WorkingGroupForm(props) {
             control={control}
             rules={{ required: true }}
             render={({ field: { onChange, value, onBlur } }) => {
+              const isAdmin =
+                currentViewer && currentViewer?.role?.includes('Administrator');
+
               return (
                 <>
                   <Autocomplete
-                    open={openLeaderDropdown}
+                    open={isAdmin ? openLeaderDropdown : false}
                     onOpen={() => {
                       setOpenLeaderDropdown(true);
                     }}
@@ -289,6 +297,10 @@ function WorkingGroupForm(props) {
                     onChange={(e, value) => {
                       onChange(value?.id);
                     }}
+                    disabled={
+                      !currentViewer &&
+                      currentViewer?.role?.includes('Administrator')
+                    }
                     onBlur={onBlur}
                     options={leaderOptions}
                     loading={leaderLoading}
@@ -318,12 +330,7 @@ function WorkingGroupForm(props) {
                           InputProps={{
                             ...newParams.InputProps,
                             endAdornment: (
-                              <>
-                                {leaderLoading ? (
-                                  <CircularProgress color="inherit" size={20} />
-                                ) : null}
-                                {newParams.InputProps.endAdornment}
-                              </>
+                              <>{newParams.InputProps.endAdornment}</>
                             ),
                           }}
                         />
