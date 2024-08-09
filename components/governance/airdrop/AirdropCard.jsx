@@ -32,7 +32,12 @@ export default function AirdropCard() {
 
   const [selectMintBadgeValue, setSelectMintBadgeValue] = useState('');
 
-  const badgeList = ['MemberFirstBadge', 'DHDBadge', 'ICL_English_S01'];
+  const badgeList = [
+    'MemberFirstBadge',
+    'DHDBadge',
+    'ICL_English_S01',
+    'ICL_URL_S01',
+  ];
 
   const handleChangeSelectMintBadgeValue = (event) => {
     setSelectMintBadgeValue(event.target.value);
