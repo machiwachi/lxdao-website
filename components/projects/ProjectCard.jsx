@@ -1,13 +1,8 @@
 import React from 'react';
+
 import { useRouter } from 'next/router';
-import {
-  Box,
-  Typography,
-  Card,
-  Chip,
-  Link,
-  Skeleton,
-} from '@mui/material';
+
+import { Box, Card, Chip, Link, Skeleton, Typography } from '@mui/material';
 
 const ProjectCard = ({ project, index }) => {
   const router = useRouter();
@@ -27,7 +22,7 @@ const ProjectCard = ({ project, index }) => {
       }}
       onClick={() => {
         router.push({
-          pathname: `/projects/${project.number}`,
+          pathname: `/projects/${project.id}`,
         });
       }}
       key={index}
@@ -59,7 +54,7 @@ const ProjectCard = ({ project, index }) => {
                 textAlign: 'center',
               }}
             >
-              {'#' + project.number}
+              {'#' + project.id}
             </Typography>
           </Box>
         </Box>
