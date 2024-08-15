@@ -50,7 +50,7 @@ import ReasonForm from '@/components/ReasonForm';
 import showMessage from '@/components/showMessage';
 import useBuidler from '@/components/useBuidler';
 
-import { toBytes, toHex } from 'viem';
+import { parseEther, toBytes, toHex } from 'viem';
 import { parseUnits } from 'viem';
 
 import { useAccount, useSwitchChain, useWriteContract } from 'wagmi';
@@ -402,7 +402,7 @@ function UnReleasedLXPTable({ isAccountingTeam, hasMemberFirstBadge, name }) {
         });
       }
       const formattedAmounts = amounts.map((value) =>
-        parseUnits(value.toString(), 'ether')
+        parseEther(value.toString())
       );
       const hash = await writeContractAsync({
         ...lxpContract,
