@@ -87,7 +87,7 @@ export function getPolygonScanDomain() {
 }
 
 export function getOPScanDomain() {
-  return process.env.NEXT_PUBLIC_LXP_CHAIN_ID === '10'
+  return process.env.NEXT_PUBLIC_CHAIN_ID === '10'
     ? 'optimistic.etherscan.io'
     : 'sepolia-optimism.etherscan.io';
 }
