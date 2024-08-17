@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 
+import CloseIcon from '@mui/icons-material/Close';
 import {
   Autocomplete,
   Box,
@@ -24,8 +25,11 @@ import { makeStyles } from '@mui/styles';
 import BuidlerCard from '@/components/BuidlerCard';
 import Button from '@/components/Button';
 import Container from '@/components/Container';
-import Dialog from '@/components/Dialog';
+// import { Dialog, DialogContent, DialogTitle } from '@/components/Dialog';
+import CustomDialog from '@/components/Dialog';
+import ProjectForm from '@/components/projects/ProjectForm';
 import showMessage from '@/components/showMessage';
+import useBuidler from '@/components/useBuidler';
 
 import { useAccount } from 'wagmi';
 
@@ -35,6 +39,8 @@ import { WorkDetailItem } from '@/sections/SectionWorkSteps';
 import { getLocalStorage } from '@/utils/utility';
 
 import { format } from 'date-fns';
+
+// console.log(Dialog, DialogContent, DialogTitle);
 
 const useStyles = makeStyles({
   tooltip: {
@@ -96,6 +102,8 @@ export const ProjectDetail = ({ projectId }) => {
   const useAlert = () => useContext(AlertContext);
   const { setAlert } = useAlert();
   const { address } = useAccount();
+  const [, currentViewer, ,] = useBuidler(address);
+  const [updateDialogVisible, setUpdateDialogVisible] = useState(false);
   const classes = useStyles();
 
   const PROJECT_STATUS = {
@@ -110,6 +118,34 @@ export const ProjectDetail = ({ projectId }) => {
   );
   projectManagerName = projectManagerBudilder?.buidler?.name;
   projectManagerAddress = projectManagerBudilder?.buidler?.address;
+
+  // const updateProjectHandler = async (projectId, values) => {
+  //   const formattedValues = values?.leaderId?.id
+  //     ? { ...values, leaderId: values?.leaderId?.id }
+  //     : values;
+
+  //   console.log(formattedValues);
+
+  //   try {
+  //     const response = await API.put(`/project/${projectId}`, {
+  //       ...formattedValues,
+  //     });
+
+  //     const result = response?.data;
+
+  //     if (result.status !== 'SUCCESS') {
+  //       throw new Error(result.message);
+  //     } else {
+  //       router.reload();
+  //     }
+  //   } catch (err) {
+  //     showMessage({
+  //       type: 'error',
+  //       title: 'Failed to update the project',
+  //       body: err.message,
+  //     });
+  //   }
+  // };
 
   const sentEmailToProjectManager = (targetEmailAddress) => {
     const subject = `Builder asks to join ${project?.name} project`;
@@ -595,6 +631,25 @@ export const ProjectDetail = ({ projectId }) => {
                 </Box>
               </Tooltip>
             )}
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              margin="20px 0"
+            >
+              {currentViewer &&
+                currentViewer?.role?.includes('Administrator') && (
+                  <Button
+                    variant="gradient"
+                    width="145px"
+                    onClick={() => {
+                      setUpdateDialogVisible(true);
+                    }}
+                  >
+                    Edit
+                  </Button>
+                )}
+            </Box>
           </Box>
         </Grid>
         <Grid item md={8} lg={8} justify="flex-start">
@@ -900,26 +955,45 @@ export const ProjectDetail = ({ projectId }) => {
           </Stack>
         </Grid>
       </Grid>
-      <Dialog
+
+      <CustomDialog
         open={openJoinDialog}
         title="Want to join this project?"
         content={
           <Box>
-            Email has been sent to PM, PM will contact you by email later
+            Email has been sent to PM, PM will contact you by email later.
             <Link href={`/buidlers/${projectManagerAddress}`} target="_blank">
               {projectManagerName}
             </Link>
             .
           </Box>
         }
+        handleClose={() => setOpenJoinDialog(false)}
+        handleConfirm={() => setOpenJoinDialog(false)}
         confirmText="Confirm"
         variant="gradient"
-        handleClose={() => {
-          setOpenJoinDialog(false);
-        }}
-        handleConfirm={() => {
-          setOpenJoinDialog(false);
-        }}
+      />
+      <CustomDialog
+        open={updateDialogVisible}
+        title="Working Group Details"
+        // content={
+        //   <ProjectForm
+        //     isUpdate={true}
+        //     values={_.cloneDeep(
+        //       _.pick(data, [
+        //         'name',
+        //         'description',
+        //         'bannerURI',
+        //         'badgeName',
+        //         'show',
+        //         'membersInWorkingGroup',
+        //       ])
+        //     )}
+        //     saveWorkingGroupHandler={updateWorkingGroupHandler}
+        //   />
+        // }
+        handleClose={() => setUpdateDialogVisible(false)}
+        confirmText="Save"
       />
     </Container>
   );
