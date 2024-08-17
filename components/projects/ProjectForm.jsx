@@ -1,0 +1,467 @@
+import React, { useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+
+import {
+  Alert,
+  Autocomplete,
+  Box,
+  Switch,
+  TextField,
+  Typography,
+} from '@mui/material';
+
+import Button from '@/components/Button';
+import TextInput from '@/components/TextInput';
+import UploadImage from '@/components/UploadImage';
+import MemberTypeField from '@/components/projects/MemberTypeField';
+import showMessage from '@/components/showMessage';
+import useBuidler from '@/components/useBuidler';
+
+import { useAccount } from 'wagmi';
+
+import API from '@/common/API';
+
+function ProjectForm(props) {
+  console.log(values);
+  const { values, saveProjectHandler, isUpdate } = props;
+
+  const [openManagerDropdown, setOpenManagerDropdown] = useState(false);
+  const [managerOptions, setManagerOptions] = useState([]);
+  const managerLoading = openManagerDropdown && managerOptions.length === 0;
+
+  const { address } = useAccount();
+  const [, currentViewer, ,] = useBuidler(address);
+
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      name: '',
+      description: '',
+      launchDate: '',
+      status: 'WIP',
+      // managerId: values?.teamMembers?.find((member) =>
+      //   member.role.includes('Project Manager')
+      // )?.member,
+      members: values?.teamMembers
+        ?.filter((member) => !member.role.includes('Project Manager'))
+        ?.map((item) => {
+          return {
+            id: item?.member.id,
+            name: item?.member.name,
+            address: item?.member.address,
+            type: item.type,
+          };
+        }),
+      banner: '',
+      logo: '',
+      isAbleToJoin: true,
+      index_name: '',
+      ...values,
+    },
+  });
+
+  const onSubmit = (data) => {
+    if (saveProjectHandler) {
+      saveProjectHandler(data);
+    }
+  };
+
+  const BuilderList = async (status, type) => {
+    let query = `/buidler?`;
+    let params = [];
+    params.push(`status=${status}`);
+    params.push('per_page=1000');
+    query += params.join('&');
+
+    try {
+      const res = await API.get(query);
+      const result = res.data;
+      if (result.status !== 'SUCCESS') {
+        return;
+      }
+      const records = result.data;
+
+      let tempList = [];
+      records.forEach((record) => {
+        let { id, name, address } = record;
+        tempList.push({ id, name, address });
+      });
+      if (type === 'manager') {
+        setManagerOptions(tempList);
+      }
+    } catch (err) {
+      showMessage({
+        type: 'error',
+        title: 'Failed to fetch the member list! ',
+        body: err.message,
+      });
+    }
+  };
+
+  useEffect(() => {
+    (async () => {
+      if (!managerLoading) {
+        return;
+      }
+      await BuilderList('ACTIVE', 'manager');
+    })();
+  }, [managerLoading]);
+
+  function Label({ required, value }) {
+    return (
+      <Box
+        textAlign={{ xs: 'left', sm: 'right' }}
+        sx={{
+          fontWeight: 'bold',
+          color: '#101828',
+          lineHeight: '56px',
+          width: '190px',
+        }}
+      >
+        {required && <span style={{ color: '#DC0202' }}>* </span>}
+        {value}
+      </Box>
+    );
+  }
+
+  return (
+    <Box display="flex" flexDirection="column" alignItems="center" width="100%">
+      <Box
+        display="flex"
+        flexDirection={{ xs: 'column', sm: 'row' }}
+        marginBottom={{ xs: '0', sm: '15px' }}
+        width="80%"
+      >
+        <Box marginRight="10px">
+          <Label required={true} value={'Project Name: '} />
+        </Box>
+        <Box flex={1}>
+          <Controller
+            name={'name'}
+            control={control}
+            rules={{ required: true }}
+            render={({ field: { onChange, value } }) => {
+              return (
+                <TextInput
+                  required
+                  fullWidth
+                  onChange={onChange}
+                  value={value}
+                  error={!!errors.name}
+                  helperText={errors.name ? 'Project Name is required' : ''}
+                />
+              );
+            }}
+          />
+        </Box>
+      </Box>
+
+      <Box
+        display="flex"
+        flexDirection={{ xs: 'column', sm: 'row' }}
+        marginBottom={{ xs: '0', sm: '15px' }}
+        width="80%"
+      >
+        <Box marginRight="10px">
+          <Label required={true} value={'Description: '} />
+        </Box>
+        <Box flex={1}>
+          <Controller
+            name={'description'}
+            control={control}
+            rules={{ required: true }}
+            render={({ field: { onChange, value } }) => {
+              return (
+                <TextInput
+                  required
+                  multiline
+                  rows={4}
+                  placeholder="Project description"
+                  fullWidth
+                  onChange={onChange}
+                  value={value}
+                  error={!!errors.description}
+                  helperText={
+                    errors.description ? 'Description is required' : ''
+                  }
+                />
+              );
+            }}
+          />
+        </Box>
+      </Box>
+
+      <Box
+        display="flex"
+        flexDirection={{ xs: 'column', sm: 'row' }}
+        marginBottom={{ xs: '0', sm: '15px' }}
+        width="80%"
+      >
+        <Box marginRight="10px">
+          <Label required={true} value={'Launch Date: '} />
+        </Box>
+        <Box flex={1}>
+          <Controller
+            name={'launchDate'}
+            control={control}
+            rules={{ required: true }}
+            render={({ field: { onChange, value } }) => {
+              return (
+                <TextInput
+                  required
+                  type="date"
+                  fullWidth
+                  onChange={onChange}
+                  value={value}
+                  error={!!errors.launchDate}
+                  helperText={
+                    errors.launchDate ? 'Launch Date is required' : ''
+                  }
+                />
+              );
+            }}
+          />
+        </Box>
+      </Box>
+
+      <Box
+        display="flex"
+        flexDirection={{ xs: 'column', sm: 'row' }}
+        marginBottom={{ xs: '0', sm: '15px' }}
+        width="80%"
+      >
+        {/* <Box marginRight="10px">
+          <Label required={true} value={'Project Status: '} />
+        </Box>
+        <Box flex={1} display="flex" alignItems="center">
+          <Controller
+            name={'status'}
+            control={control}
+            render={({ field: { onChange, value } }) => {
+              return (
+                <Switch
+                  checked={value === 'WORK IN PROGRESS'}
+                  onChange={(e) =>
+                    onChange(
+                      e.target.checked ? 'WORK IN PROGRESS' : 'COMPLETED'
+                    )
+                  }
+                />
+              );
+            }}
+          />
+        </Box> */}
+      </Box>
+
+      <Box
+        display="flex"
+        flexDirection={{ xs: 'column', sm: 'row' }}
+        marginBottom={{ xs: '0', sm: '15px' }}
+        width="80%"
+      >
+        <Box marginRight="10px">
+          <Label required={true} value={'Project Manager: '} />
+        </Box>
+        <Box flex={1}>
+          <Controller
+            name={'managerId'}
+            control={control}
+            rules={{ required: true }}
+            render={({ field: { onChange, value, onBlur } }) => {
+              const isAdmin =
+                currentViewer && currentViewer?.role?.includes('Administrator');
+
+              return (
+                <>
+                  <Autocomplete
+                    open={isAdmin ? openManagerDropdown : false}
+                    onOpen={() => {
+                      setOpenManagerDropdown(true);
+                    }}
+                    onClose={() => {
+                      setOpenManagerDropdown(false);
+                    }}
+                    isOptionEqualToValue={(option, kvalue) => {
+                      return option.id === kvalue.id;
+                    }}
+                    getOptionLabel={(option) => {
+                      return option.name;
+                    }}
+                    onChange={(e, value) => {
+                      onChange(value?.id);
+                    }}
+                    disabled={
+                      !currentViewer &&
+                      currentViewer?.role?.includes('Administrator')
+                    }
+                    onBlur={onBlur}
+                    options={managerOptions}
+                    loading={managerLoading}
+                    renderInput={(params) => {
+                      let newInputProps = {
+                        ...params.inputProps,
+                      };
+                      let newParams = {
+                        ...params,
+                      };
+                      if (value?.name) {
+                        newInputProps = {
+                          ...params.inputProps,
+                          value: value?.name,
+                        };
+                        newParams = {
+                          ...params,
+                          inputProps: newInputProps,
+                        };
+                      }
+
+                      return (
+                        <TextField
+                          {...newParams}
+                          value={value?.id || value}
+                          placeholder="Choose a member as manager"
+                          InputProps={{
+                            ...newParams.InputProps,
+                            endAdornment: (
+                              <>{newParams.InputProps.endAdornment}</>
+                            ),
+                          }}
+                        />
+                      );
+                    }}
+                  />
+                  <Typography
+                    marginTop={1}
+                    fontSize="0.85rem"
+                    color="#d32f2f"
+                    marginLeft={2}
+                  >
+                    {errors?.managerId ? 'Project Manager is required' : ''}
+                  </Typography>
+                </>
+              );
+            }}
+          />
+        </Box>
+      </Box>
+
+      <Box
+        display="flex"
+        flexDirection={{ xs: 'column', sm: 'row' }}
+        marginBottom={{ xs: '0', sm: '15px' }}
+        width="80%"
+      >
+        <Box marginRight="10px">
+          <Label value={'Team Members: '} />
+        </Box>
+        <Box flex={1}>
+          <Controller
+            name={'members'}
+            control={control}
+            rules={{ required: false }}
+            render={({ field: { onChange, value } }) => {
+              const valueArray = [];
+
+              if (value && value.length) {
+                value.forEach((item) => {
+                  const newMember = item?.member
+                    ? { ...item?.member, type: item?.type }
+                    : { ...item };
+                  valueArray.push(newMember);
+                });
+              }
+              return <MemberTypeField value={valueArray} onChange={onChange} />;
+            }}
+          />
+        </Box>
+      </Box>
+
+      <Box
+        display="flex"
+        flexDirection={{ xs: 'column', sm: 'row' }}
+        marginBottom={{ xs: '0', sm: '15px' }}
+        width="80%"
+      >
+        <Box marginRight="10px">
+          <Label required={true} value={'Banner uploader: '} />
+        </Box>
+        <Box flex={1} display="flex">
+          <Controller
+            name={'banner'}
+            control={control}
+            rules={{ required: true }}
+            render={({ field: { onChange, value } }) => {
+              return (
+                <UploadImage
+                  imageValue={value}
+                  onChange={onChange}
+                  uploaderWidth={214}
+                  uploaderHeight={88}
+                ></UploadImage>
+              );
+            }}
+          />
+          <Typography variant="body2" color="#666F85">
+            Recommended size 778x320px
+          </Typography>
+        </Box>
+      </Box>
+
+      <Box
+        display="flex"
+        flexDirection={{ xs: 'column', sm: 'row' }}
+        marginBottom={{ xs: '0', sm: '15px' }}
+        width="80%"
+      >
+        <Box marginRight="10px">
+          <Label required={true} value={'Logo uploader: '} />
+        </Box>
+        <Box flex={1} display="flex">
+          <Controller
+            name={'logo'}
+            control={control}
+            rules={{ required: true }}
+            render={({ field: { onChange, value } }) => {
+              return (
+                <UploadImage
+                  imageValue={value}
+                  onChange={onChange}
+                  uploaderWidth={88}
+                  uploaderHeight={88}
+                ></UploadImage>
+              );
+            }}
+          />
+          <Typography variant="body2" color="#666F85">
+            Recommended size 320x320px
+          </Typography>
+        </Box>
+      </Box>
+
+      {JSON.stringify(errors) !== '{}' && (
+        <Box marginTop={2}>
+          <Alert severity="error">
+            Please fill in the required fields above.
+          </Alert>
+        </Box>
+      )}
+      {!props.isOnboardingProcess && (
+        <Box marginTop={2} marginBottom={6}>
+          <Button
+            variant="gradient"
+            size="large"
+            width={200}
+            onClick={handleSubmit(onSubmit)}
+          >
+            {isUpdate ? 'Save' : 'Create'}
+          </Button>
+        </Box>
+      )}
+    </Box>
+  );
+}
+
+export default ProjectForm;
