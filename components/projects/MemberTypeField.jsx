@@ -66,7 +66,7 @@ function MemberTypeField(props) {
       const newValue = [...props.value];
       props.value.forEach((member, index) => {
         newValue[index]['id'] = member?.id;
-        newValue[index]['type'] = member?.type;
+        newValue[index]['role'] = member?.role;
       });
       setValue(newValue);
     }
@@ -75,10 +75,10 @@ function MemberTypeField(props) {
   function updateMember(index, field, newValue) {
     let newValues = [...value];
     if (field === 'id') {
-      const type = newValues[index]['type'];
+      const type = newValues[index]['role'];
       newValues[index] = newValue;
-      newValues[index]['type'] = type;
-    } else if (field === 'type') {
+      newValues[index]['role'] = type;
+    } else if (field === 'role') {
       newValues[index][field] = newValue;
     }
     setValue(newValues);
@@ -89,7 +89,7 @@ function MemberTypeField(props) {
     let newMember = {};
     const newValues = [...value];
     newMember['id'] = '';
-    newMember['type'] = '';
+    newMember['role'] = '';
     newValues.push(newMember);
     setValue(newValues);
     props.onChange && props.onChange(newValues);
@@ -165,11 +165,11 @@ function MemberTypeField(props) {
               </Grid>
               <Grid item xs={5}>
                 <Select
-                  label="Type"
+                  label="Role"
                   dropdown={memberType}
-                  value={member.type || ''}
+                  value={member.role || ''}
                   onChange={(value) => {
-                    updateMember(index, 'type', value);
+                    updateMember(index, 'role', value);
                   }}
                 ></Select>
               </Grid>

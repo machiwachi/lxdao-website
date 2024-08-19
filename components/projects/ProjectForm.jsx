@@ -5,6 +5,8 @@ import {
   Alert,
   Autocomplete,
   Box,
+  Chip,
+  Stack,
   Switch,
   TextField,
   Typography,
@@ -21,16 +23,18 @@ import { useAccount } from 'wagmi';
 
 import API from '@/common/API';
 
-function ProjectForm(props) {
-  console.log(values);
-  const { values, saveProjectHandler, isUpdate } = props;
+import { format } from 'date-fns';
 
+function ProjectForm(props) {
+  const { values, saveProjectHandler, isUpdate } = props;
   const [openManagerDropdown, setOpenManagerDropdown] = useState(false);
   const [managerOptions, setManagerOptions] = useState([]);
   const managerLoading = openManagerDropdown && managerOptions.length === 0;
 
   const { address } = useAccount();
   const [, currentViewer, ,] = useBuidler(address);
+
+  const nowDate = format(new Date(), 'yyyy-MM-dd');
 
   const {
     handleSubmit,
@@ -40,21 +44,23 @@ function ProjectForm(props) {
     defaultValues: {
       name: '',
       description: '',
-      launchDate: '',
+      launchDate: nowDate,
       status: 'WIP',
-      // managerId: values?.teamMembers?.find((member) =>
-      //   member.role.includes('Project Manager')
-      // )?.member,
-      members: values?.teamMembers
-        ?.filter((member) => !member.role.includes('Project Manager'))
-        ?.map((item) => {
-          return {
-            id: item?.member.id,
-            name: item?.member.name,
-            address: item?.member.address,
-            type: item.type,
-          };
-        }),
+      tags: [],
+      managerId: values?.teamMembers?.find((member) =>
+        member.role.includes('Project Manager')
+      )?.member,
+      members:
+        values?.teamMembers
+          ?.filter((member) => !member.role.includes('Project Manager'))
+          ?.map((item) => {
+            return {
+              id: item?.member.id,
+              name: item?.member.name,
+              address: item?.member.address,
+              type: item.type,
+            };
+          }) || [],
       banner: '',
       logo: '',
       isAbleToJoin: true,
@@ -64,9 +70,34 @@ function ProjectForm(props) {
   });
 
   const onSubmit = (data) => {
-    if (saveProjectHandler) {
-      saveProjectHandler(data);
+    data.logo = '';
+    data.banner = '';
+    console.log(data.members);
+    if (data.members) {
+      const members = data.members.map((member) => {
+        return {
+          id: member.id,
+          role: [member.role],
+        };
+      });
+      members.push({
+        id: data.managerId,
+        role: ['Project Manager'],
+      });
+      data.members = members;
+    } else {
+      data.members = [
+        {
+          id: data.managerId,
+          role: ['Project Manager'],
+        },
+      ];
     }
+    console.log(data);
+
+    // if (saveProjectHandler) {
+    //   saveProjectHandler(data);
+    // }
   };
 
   const BuilderList = async (status, type) => {
@@ -158,6 +189,35 @@ function ProjectForm(props) {
           />
         </Box>
       </Box>
+      <Box
+        display="flex"
+        flexDirection={{ xs: 'column', sm: 'row' }}
+        marginBottom={{ xs: '0', sm: '15px' }}
+        width="80%"
+      >
+        <Box marginRight="10px">
+          <Label required={true} value={'Index Name: '} />
+        </Box>
+        <Box flex={1}>
+          <Controller
+            name={'index_name'}
+            control={control}
+            rules={{ required: true }}
+            render={({ field: { onChange, value } }) => {
+              return (
+                <TextInput
+                  required
+                  fullWidth
+                  onChange={onChange}
+                  value={value}
+                  error={!!errors.name}
+                  helperText={errors.name ? 'Index Name is required' : ''}
+                />
+              );
+            }}
+          />
+        </Box>
+      </Box>
 
       <Box
         display="flex"
@@ -233,7 +293,7 @@ function ProjectForm(props) {
         marginBottom={{ xs: '0', sm: '15px' }}
         width="80%"
       >
-        {/* <Box marginRight="10px">
+        <Box marginRight="10px">
           <Label required={true} value={'Project Status: '} />
         </Box>
         <Box flex={1} display="flex" alignItems="center">
@@ -242,18 +302,75 @@ function ProjectForm(props) {
             control={control}
             render={({ field: { onChange, value } }) => {
               return (
-                <Switch
-                  checked={value === 'WORK IN PROGRESS'}
-                  onChange={(e) =>
-                    onChange(
-                      e.target.checked ? 'WORK IN PROGRESS' : 'COMPLETED'
-                    )
-                  }
-                />
+                <Stack direction="row" spacing={1} alignItems="center">
+                  <Typography>WIP</Typography>
+                  <Switch
+                    checked={value === 'LAUNCHED'}
+                    onChange={(e) =>
+                      onChange(
+                        e.target.checked ? 'LAUNCHED' : 'WORK IN PROGRESS'
+                      )
+                    }
+                  />
+                  <Typography>Launched</Typography>
+                </Stack>
               );
             }}
           />
-        </Box> */}
+        </Box>
+      </Box>
+
+      <Box
+        display="flex"
+        flexDirection={{ xs: 'column', sm: 'row' }}
+        marginBottom={{ xs: '0', sm: '15px' }}
+        width="80%"
+      >
+        <Box marginRight="10px">
+          <Label required={true} value={'Tags: '} />
+        </Box>
+        <Box flex={1} display="flex" alignItems="center">
+          <Controller
+            name={'tags'}
+            control={control}
+            render={({ field: { onChange, value } }) => {
+              const tags = ['123', '233'];
+              return (
+                <Stack gap={2}>
+                  <TextField
+                    onKeyDown={(event) => {
+                      if (event.key === 'Enter') {
+                        value.push(event.target.value);
+                        onChange(value);
+                        event.target.value = '';
+                      }
+                    }}
+                  ></TextField>
+
+                  <Stack direction={'row'} gap={1}>
+                    {value.map((tag, index) => {
+                      return (
+                        <Chip
+                          key={index}
+                          size="small"
+                          label={tag}
+                          variant="outlined"
+                          sx={{
+                            borderRadius: '2px',
+                            fontSize: '14px',
+                            border: 'none',
+                            color: '#36AFF9',
+                            background: 'rgba(54, 175, 249, 0.1)',
+                          }}
+                        />
+                      );
+                    })}
+                  </Stack>
+                </Stack>
+              );
+            }}
+          />
+        </Box>
       </Box>
 
       <Box
@@ -368,25 +485,33 @@ function ProjectForm(props) {
               if (value && value.length) {
                 value.forEach((item) => {
                   const newMember = item?.member
-                    ? { ...item?.member, type: item?.type }
+                    ? { ...item?.member, role: item?.type }
                     : { ...item };
                   valueArray.push(newMember);
                 });
               }
-              return <MemberTypeField value={valueArray} onChange={onChange} />;
+              return (
+                <MemberTypeField
+                  value={valueArray}
+                  onChange={(data) => {
+                    console.log(data);
+                    onChange(data);
+                  }}
+                />
+              );
             }}
           />
         </Box>
       </Box>
 
-      <Box
+      {/* <Box
         display="flex"
         flexDirection={{ xs: 'column', sm: 'row' }}
         marginBottom={{ xs: '0', sm: '15px' }}
         width="80%"
       >
         <Box marginRight="10px">
-          <Label required={true} value={'Banner uploader: '} />
+          <Label required={false} value={'Banner uploader: '} />
         </Box>
         <Box flex={1} display="flex">
           <Controller
@@ -417,7 +542,7 @@ function ProjectForm(props) {
         width="80%"
       >
         <Box marginRight="10px">
-          <Label required={true} value={'Logo uploader: '} />
+          <Label required={false} value={'Logo uploader: '} />
         </Box>
         <Box flex={1} display="flex">
           <Controller
@@ -439,7 +564,7 @@ function ProjectForm(props) {
             Recommended size 320x320px
           </Typography>
         </Box>
-      </Box>
+      </Box> */}
 
       {JSON.stringify(errors) !== '{}' && (
         <Box marginTop={2}>

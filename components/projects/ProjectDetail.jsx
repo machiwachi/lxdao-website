@@ -27,7 +27,6 @@ import Button from '@/components/Button';
 import Container from '@/components/Container';
 // import { Dialog, DialogContent, DialogTitle } from '@/components/Dialog';
 import CustomDialog from '@/components/Dialog';
-import ProjectForm from '@/components/projects/ProjectForm';
 import showMessage from '@/components/showMessage';
 import useBuidler from '@/components/useBuidler';
 
@@ -976,22 +975,6 @@ export const ProjectDetail = ({ projectId }) => {
       <CustomDialog
         open={updateDialogVisible}
         title="Working Group Details"
-        // content={
-        //   <ProjectForm
-        //     isUpdate={true}
-        //     values={_.cloneDeep(
-        //       _.pick(data, [
-        //         'name',
-        //         'description',
-        //         'bannerURI',
-        //         'badgeName',
-        //         'show',
-        //         'membersInWorkingGroup',
-        //       ])
-        //     )}
-        //     saveWorkingGroupHandler={updateWorkingGroupHandler}
-        //   />
-        // }
         handleClose={() => setUpdateDialogVisible(false)}
         confirmText="Save"
       />
