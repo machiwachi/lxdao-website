@@ -1,9 +1,19 @@
 import React, { useRef, useState } from 'react';
-import { Box, Avatar, CircularProgress } from '@mui/material';
-import API from '@/common/API';
+
+import { Avatar, Box, CircularProgress } from '@mui/material';
+
 import showMessage from '@/components/showMessage';
+
+import API from '@/common/API';
+
 function UploadImg(props) {
-  const { avatarValue, onChange } = props;
+  const {
+    avatarValue,
+    onChange,
+    width = '200px',
+    height = '200px',
+    borderRadius = 'full',
+  } = props;
   const [loading, setLoading] = useState(false);
   const inputFile = useRef(null);
   const clickImg = () => {
@@ -39,9 +49,10 @@ function UploadImg(props) {
         onClick={clickImg}
         style={{
           cursor: 'pointer',
-          width: '200px',
-          height: '200px',
-          border: '2px solid #ccc',
+          width,
+          height,
+          border: '1px solid #ccc',
+          borderRadius: borderRadius,
         }}
       >
         {loading && <CircularProgress color="inherit" />}

@@ -15,6 +15,7 @@ import {
 import Button from '@/components/Button';
 import TextInput from '@/components/TextInput';
 import UploadImage from '@/components/UploadImage';
+import UploadImg from '@/components/UploadImg';
 import MemberTypeField from '@/components/projects/MemberTypeField';
 import showMessage from '@/components/showMessage';
 import useBuidler from '@/components/useBuidler';
@@ -70,9 +71,6 @@ function ProjectForm(props) {
   });
 
   const onSubmit = (data) => {
-    data.logo = '';
-    data.banner = '';
-    console.log(data.members);
     if (data.members) {
       const members = data.members.map((member) => {
         return {
@@ -93,11 +91,10 @@ function ProjectForm(props) {
         },
       ];
     }
-    console.log(data);
 
-    // if (saveProjectHandler) {
-    //   saveProjectHandler(data);
-    // }
+    if (saveProjectHandler) {
+      saveProjectHandler(data);
+    }
   };
 
   const BuilderList = async (status, type) => {
@@ -334,7 +331,6 @@ function ProjectForm(props) {
             name={'tags'}
             control={control}
             render={({ field: { onChange, value } }) => {
-              const tags = ['123', '233'];
               return (
                 <Stack gap={2}>
                   <TextField
@@ -490,21 +486,13 @@ function ProjectForm(props) {
                   valueArray.push(newMember);
                 });
               }
-              return (
-                <MemberTypeField
-                  value={valueArray}
-                  onChange={(data) => {
-                    console.log(data);
-                    onChange(data);
-                  }}
-                />
-              );
+              return <MemberTypeField value={valueArray} onChange={onChange} />;
             }}
           />
         </Box>
       </Box>
 
-      {/* <Box
+      <Box
         display="flex"
         flexDirection={{ xs: 'column', sm: 'row' }}
         marginBottom={{ xs: '0', sm: '15px' }}
@@ -513,19 +501,20 @@ function ProjectForm(props) {
         <Box marginRight="10px">
           <Label required={false} value={'Banner uploader: '} />
         </Box>
-        <Box flex={1} display="flex">
+        <Box flex={1} display="flex" gap={1}>
           <Controller
             name={'banner'}
             control={control}
             rules={{ required: true }}
             render={({ field: { onChange, value } }) => {
               return (
-                <UploadImage
-                  imageValue={value}
+                <UploadImg
+                  avatarValue={value}
                   onChange={onChange}
-                  uploaderWidth={214}
-                  uploaderHeight={88}
-                ></UploadImage>
+                  width={214}
+                  height={88}
+                  borderRadius="6px"
+                ></UploadImg>
               );
             }}
           />
@@ -544,19 +533,20 @@ function ProjectForm(props) {
         <Box marginRight="10px">
           <Label required={false} value={'Logo uploader: '} />
         </Box>
-        <Box flex={1} display="flex">
+        <Box flex={1} display="flex" gap={1}>
           <Controller
             name={'logo'}
             control={control}
             rules={{ required: true }}
             render={({ field: { onChange, value } }) => {
               return (
-                <UploadImage
-                  imageValue={value}
+                <UploadImg
+                  avatarValue={value}
                   onChange={onChange}
                   uploaderWidth={88}
                   uploaderHeight={88}
-                ></UploadImage>
+                  borderRadius="6px"
+                ></UploadImg>
               );
             }}
           />
@@ -564,7 +554,7 @@ function ProjectForm(props) {
             Recommended size 320x320px
           </Typography>
         </Box>
-      </Box> */}
+      </Box>
 
       {JSON.stringify(errors) !== '{}' && (
         <Box marginTop={2}>
