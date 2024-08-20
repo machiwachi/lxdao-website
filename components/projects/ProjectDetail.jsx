@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 
+import { useRouter } from 'next/router';
+
 import CloseIcon from '@mui/icons-material/Close';
 import {
   Autocomplete,
@@ -27,6 +29,7 @@ import Button from '@/components/Button';
 import Container from '@/components/Container';
 // import { Dialog, DialogContent, DialogTitle } from '@/components/Dialog';
 import CustomDialog from '@/components/Dialog';
+import ProjectForm from '@/components/projects/ProjectForm';
 import showMessage from '@/components/showMessage';
 import useBuidler from '@/components/useBuidler';
 
@@ -51,6 +54,7 @@ const useStyles = makeStyles({
 });
 
 export const ProjectDetail = ({ projectId }) => {
+  const router = useRouter();
   const [project, setProject] = useState(null);
   const [activeBuidlerList, setActiveBuidlerList] = useState([]);
   const [selectedBuidler, setSelectedBuidler] = useState('');
@@ -118,33 +122,33 @@ export const ProjectDetail = ({ projectId }) => {
   projectManagerName = projectManagerBudilder?.buidler?.name;
   projectManagerAddress = projectManagerBudilder?.buidler?.address;
 
-  // const updateProjectHandler = async (projectId, values) => {
-  //   const formattedValues = values?.leaderId?.id
-  //     ? { ...values, leaderId: values?.leaderId?.id }
-  //     : values;
+  const updateProjectHandler = async (values) => {
+    const formattedValues = values;
 
-  //   console.log(formattedValues);
+    const projectId = project.id;
+    console.log({ values, projectId });
+    // return false;
 
-  //   try {
-  //     const response = await API.put(`/project/${projectId}`, {
-  //       ...formattedValues,
-  //     });
+    try {
+      const response = await API.put(`/project/${projectId}`, {
+        ...formattedValues,
+      });
 
-  //     const result = response?.data;
+      const result = response?.data;
 
-  //     if (result.status !== 'SUCCESS') {
-  //       throw new Error(result.message);
-  //     } else {
-  //       router.reload();
-  //     }
-  //   } catch (err) {
-  //     showMessage({
-  //       type: 'error',
-  //       title: 'Failed to update the project',
-  //       body: err.message,
-  //     });
-  //   }
-  // };
+      if (result.status !== 'SUCCESS') {
+        throw new Error(result.message);
+      } else {
+        router.reload();
+      }
+    } catch (err) {
+      showMessage({
+        type: 'error',
+        title: 'Failed to update the project',
+        body: err.message,
+      });
+    }
+  };
 
   const sentEmailToProjectManager = (targetEmailAddress) => {
     const subject = `Builder asks to join ${project?.name} project`;
@@ -176,7 +180,6 @@ export const ProjectDetail = ({ projectId }) => {
       .then((res) => {
         if (res?.data?.data) {
           setProject(res?.data?.data);
-          console.log(res?.data?.data);
           getBuidlersData(res?.data?.data);
         }
       })
@@ -976,7 +979,15 @@ export const ProjectDetail = ({ projectId }) => {
         open={updateDialogVisible}
         title="Working Group Details"
         handleClose={() => setUpdateDialogVisible(false)}
-        confirmText="Save"
+        content={
+          <Box>
+            <ProjectForm
+              values={project}
+              isUpdate={true}
+              saveProjectHandler={updateProjectHandler}
+            />
+          </Box>
+        }
       />
     </Container>
   );

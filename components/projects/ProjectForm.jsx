@@ -48,18 +48,16 @@ function ProjectForm(props) {
       launchDate: nowDate,
       status: 'WIP',
       tags: [],
-      managerId: values?.teamMembers?.find((member) =>
-        member.role.includes('Project Manager')
-      )?.member,
+      managerId: values?.buidlersOnProject?.find((member) =>
+        member.projectRole.includes('Project Manager')
+      )?.buidler,
       members:
-        values?.teamMembers
-          ?.filter((member) => !member.role.includes('Project Manager'))
+        values?.buidlersOnProject
+          ?.filter((member) => !member.projectRole.includes('Project Manager'))
           ?.map((item) => {
             return {
               id: item?.member.id,
-              name: item?.member.name,
-              address: item?.member.address,
-              type: item.type,
+              role: member.role,
             };
           }) || [],
       banner: '',
