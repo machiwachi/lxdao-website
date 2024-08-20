@@ -8,6 +8,9 @@ import {
   Box,
   Checkbox,
   Chip,
+  Dialog,
+  DialogContent,
+  DialogTitle,
   FormControl,
   FormHelperText,
   Grid,
@@ -951,20 +954,37 @@ export const ProjectDetail = ({ projectId }) => {
         confirmText="Confirm"
         variant="gradient"
       />
-      <CustomDialog
+      <Dialog
+        fullWidth={true}
+        maxWidth={'md'}
+        onClose={(event, reason) => {
+          if (reason && reason == 'backdropClick') return;
+          setUpdateDialogVisible(false);
+        }}
         open={updateDialogVisible}
-        title="Working Group Details"
-        handleClose={() => setUpdateDialogVisible(false)}
-        content={
-          <Box>
-            <ProjectForm
-              values={project}
-              isUpdate={true}
-              saveProjectHandler={updateProjectHandler}
-            />
-          </Box>
-        }
-      />
+      >
+        <Box
+          onClick={() => {
+            setUpdateDialogVisible(false);
+          }}
+          sx={{
+            cursor: 'pointer',
+          }}
+          position="absolute"
+          top="16px"
+          right="16px"
+        >
+          <CloseIcon></CloseIcon>
+        </Box>
+        <DialogTitle sx={{ marginBottom: '40px' }}>Project Details</DialogTitle>
+        <DialogContent>
+          <ProjectForm
+            values={project}
+            isUpdate={true}
+            saveProjectHandler={updateProjectHandler}
+          />
+        </DialogContent>
+      </Dialog>
     </Container>
   );
 };
