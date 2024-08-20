@@ -10,8 +10,12 @@ import Select from '../Select';
 import showMessage from '../showMessage';
 
 const memberType = [
-  { label: 'Fixed Member', value: 'STABLE' },
-  { label: 'Flexible Member', value: 'UNSTABLE' },
+  // { label: 'Project Manager', value: 'Project Manager' },
+  { label: 'Developer', value: 'Developer' },
+  { label: 'Artist', value: 'Artist' },
+  { label: 'UI/UX Desinger', value: 'UI/UX Desinger' },
+  { label: 'Operation', value: 'Operation' },
+  { label: 'Product Manager', value: 'Product Manager' },
 ];
 
 function MemberTypeField(props) {
