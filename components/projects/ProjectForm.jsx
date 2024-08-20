@@ -56,8 +56,9 @@ function ProjectForm(props) {
           ?.filter((member) => !member.projectRole.includes('Project Manager'))
           ?.map((item) => {
             return {
-              id: item?.member.id,
-              role: member.role,
+              id: item?.buidler.id,
+              name: item?.buidler.name,
+              role: item.projectRole[0],
             };
           }) || [],
       banner: '',
