@@ -344,6 +344,9 @@ function ProjectForm(props) {
 
                   <Stack direction={'row'} gap={1}>
                     {value.map((tag, index) => {
+                      const handleDelete = () => {
+                        onChange(value.filter((item, i) => i !== index));
+                      };
                       return (
                         <Chip
                           key={index}
@@ -357,6 +360,7 @@ function ProjectForm(props) {
                             color: '#36AFF9',
                             background: 'rgba(54, 175, 249, 0.1)',
                           }}
+                          onDelete={handleDelete}
                         />
                       );
                     })}
