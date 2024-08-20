@@ -523,7 +523,7 @@ export const ProjectDetail = ({ projectId }) => {
             <Typography align="left" variant="body1" color="#666F85">
               {project.description}
             </Typography>
-            <Box display="flex" gap={4} flexWrap="wrap">
+            <Box display="flex" gap={4} mt={4} flexWrap="wrap">
               {project.links &&
                 Object.keys(project.links).map((key, index) => {
                   return (

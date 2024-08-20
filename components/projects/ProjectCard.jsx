@@ -22,7 +22,7 @@ const ProjectCard = ({ project, index }) => {
       }}
       onClick={() => {
         router.push({
-          pathname: `/projects/${project.id}`,
+          pathname: `/projects/${project.index_name}`,
         });
       }}
       key={index}
