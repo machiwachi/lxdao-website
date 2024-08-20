@@ -479,7 +479,7 @@ export const ProjectDetail = ({ projectId }) => {
             >
               <Box
                 component="img"
-                src={project.logoLarge || '/images/placeholder.jpeg'}
+                src={project.logo || '/images/placeholder.jpeg'}
                 style={{
                   width: '100%',
                   border: '0.5px solid #D0D5DD',
@@ -500,7 +500,7 @@ export const ProjectDetail = ({ projectId }) => {
                 width={38}
                 height={16}
               >
-                {'#' + project.number}
+                {'#' + project.index_name}
               </Typography>
             </Link>
             <Typography
@@ -523,30 +523,6 @@ export const ProjectDetail = ({ projectId }) => {
             <Typography align="left" variant="body1" color="#666F85">
               {project.description}
             </Typography>
-            <Box
-              align="left"
-              display="flex"
-              gap="5px"
-              flexWrap="wrap"
-              minHeight={'26px'}
-            >
-              {project.type &&
-                project.type.map((type, index) => {
-                  return (
-                    <Chip
-                      key={index}
-                      size="small"
-                      label={type}
-                      variant="outlined"
-                      sx={{
-                        borderRadius: '4px',
-                        borderColor: '#000000',
-                        fontSize: '12px',
-                      }}
-                    />
-                  );
-                })}
-            </Box>
             <Box display="flex" gap={4} flexWrap="wrap">
               {project.links &&
                 Object.keys(project.links).map((key, index) => {
