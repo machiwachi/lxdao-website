@@ -1,13 +1,20 @@
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
-import { Box, MenuItem, Select, Typography } from '@mui/material';
+import {
+  Box,
+  Chip,
+  MenuItem,
+  Select,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 
 import Button from '@/components/Button';
 import showMessage from '@/components/showMessage';
 
 import { isAddress } from 'viem';
-import { polygon } from 'viem/chains';
 
 import { useAccount, useSwitchChain, useWriteContract } from 'wagmi';
 
@@ -49,6 +56,7 @@ export default function AirdropCard() {
   const { handleSubmit, control } = useForm({
     defaultValues: {
       members: [],
+      address: [],
     },
   });
 
@@ -74,7 +82,7 @@ export default function AirdropCard() {
   };
 
   const onSubmit = async (data) => {
-    const addresses = data.members
+    let addresses = data.members
       .filter((item) => {
         return isAddress(item.address);
       })
@@ -82,6 +90,9 @@ export default function AirdropCard() {
         return item.address;
       });
     setAddresses(addresses);
+    addresses = addresses.concat(
+      data.address.filter((item) => isAddress(item))
+    );
 
     const amounts = new Array(addresses.length).fill(1);
     await airdropBadge(selectMintBadgeValue, addresses, amounts);
@@ -147,7 +158,7 @@ export default function AirdropCard() {
             lineHeight: '56px',
           }}
         >
-          {'Members: '}
+          {'Badges: '}
         </Box>
         <Select
           width="100%"
@@ -167,7 +178,7 @@ export default function AirdropCard() {
         </Select>
       </Box>
 
-      <Box display="flex" marginBottom="60px" width="100%">
+      <Box display="flex" width="100%">
         <Box
           marginRight="10px"
           textAlign="left"
@@ -197,6 +208,65 @@ export default function AirdropCard() {
         </Box>
       </Box>
 
+      <Box display="flex" marginBottom="60px" width="100%">
+        <Box
+          marginRight="10px"
+          textAlign="left"
+          sx={{
+            fontWeight: 'bold',
+            color: '#101828',
+            lineHeight: '56px',
+          }}
+        >
+          {'Address: '}
+        </Box>
+        <Box flex={1}>
+          <Controller
+            name={'address'}
+            control={control}
+            rules={{ required: true }}
+            render={({ field: { onChange, value } }) => {
+              return (
+                <Stack gap={2} width={'full'}>
+                  <TextField
+                    onKeyDown={(event) => {
+                      if (event.key === 'Enter') {
+                        value.push(event.target.value);
+                        onChange(value);
+                        event.target.value = '';
+                      }
+                    }}
+                  ></TextField>
+
+                  <Stack flexWrap={true} gap={1}>
+                    {value.map((tag, index) => {
+                      const handleDelete = () => {
+                        onChange(value.filter((item, i) => i !== index));
+                      };
+                      return (
+                        <Chip
+                          key={index}
+                          size="small"
+                          label={tag}
+                          variant="outlined"
+                          sx={{
+                            borderRadius: '2px',
+                            fontSize: '14px',
+                            border: 'none',
+                            color: '#36AFF9',
+                            background: 'rgba(54, 175, 249, 0.1)',
+                          }}
+                          onDelete={handleDelete}
+                        />
+                      );
+                    })}
+                  </Stack>
+                </Stack>
+              );
+            }}
+          />
+        </Box>
+      </Box>
       <Box
         display="flex"
         alignItems="center"
