@@ -14,6 +14,7 @@ import {
 import Button from '@/components/Button';
 import TextInput from '@/components/TextInput';
 import UploadImage from '@/components/UploadImage';
+import UploadImg from '@/components/UploadImg';
 import showMessage from '@/components/showMessage';
 import useBuidler from '@/components/useBuidler';
 import MemberTypeField from '@/components/workingGroups/MemberTypeField';
@@ -518,19 +519,20 @@ function WorkingGroupForm(props) {
         <Box marginRight="10px">
           <Label required={true} value={'Banner uploader: '} />
         </Box>
-        <Box flex={1} display="flex">
+        <Box flex={1} display="flex" gap={1}>
           <Controller
             name={'bannerURI'}
             control={control}
             rules={{ required: true }}
             render={({ field: { onChange, value } }) => {
               return (
-                <UploadImage
-                  imageValue={value}
+                <UploadImg
+                  avatarValue={value}
                   onChange={onChange}
-                  uploaderWidth={214}
-                  uploaderHeight={88}
-                ></UploadImage>
+                  width={214}
+                  height={88}
+                  borderRadius="6px"
+                ></UploadImg>
               );
             }}
           />
