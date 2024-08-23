@@ -37,6 +37,7 @@ export default function AirdropCard() {
     'DHDBadge',
     'ICL_English_S01',
     'ICL_URL_S01',
+    'ICL_ZK_S01',
   ];
 
   const handleChangeSelectMintBadgeValue = (event) => {
