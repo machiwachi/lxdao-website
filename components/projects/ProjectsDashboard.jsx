@@ -111,29 +111,39 @@ export const ProjectsDashboard = () => {
         We buidl good, valuable, and useful things.If you have a perfect idea
         want to become true, please write a proposal first.
       </Typography>
-      <Button variant="gradient" width="200px" margin="0 auto" marginTop={6}>
-        <Link
-          href="https://www.notion.so/lxdao/How-do-we-work-93038c708217465384cc7d9f377547c5"
-          target="_blank"
-          sx={{ textDecoration: 'none', color: '#ffffff' }}
-        >
-          Buidl Your Own
-        </Link>
-      </Button>
-      {currentViewer && currentViewer?.role?.includes('Administrator') && (
-        <Box
-          display="flex"
-          justifyContent="center"
-          marginTop={6}
-          // marginBottom="16px"
-        >
-          <Link sx={{ textDecoration: 'none' }} href={`/projects/create`}>
-            <Button variant="gradient" width="250px">
-              Create a project
-            </Button>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: { md: 'row', xs: 'column' },
+          gap: '16px',
+          marginTop: '16px',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Button variant="gradient" width="200px">
+          <Link
+            href="https://www.notion.so/lxdao/How-do-we-work-93038c708217465384cc7d9f377547c5"
+            target="_blank"
+            sx={{ textDecoration: 'none', color: '#ffffff' }}
+          >
+            Buidl Your Own
           </Link>
-        </Box>
-      )}
+        </Button>
+        {currentViewer && currentViewer?.role?.includes('Administrator') && (
+          <Box
+            display="flex"
+            justifyContent="center"
+            // marginBottom="16px"
+          >
+            <Link sx={{ textDecoration: 'none' }} href={`/projects/create`}>
+              <Button variant="gradient" width="250px">
+                Create a project
+              </Button>
+            </Link>
+          </Box>
+        )}
+      </Box>
       <Box marginTop={10}>
         <DebouncedInput
           value={search}

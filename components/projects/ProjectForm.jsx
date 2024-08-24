@@ -37,6 +37,11 @@ function ProjectForm(props) {
 
   const nowDate = format(new Date(), 'yyyy-MM-dd');
 
+  if (Object.keys(values).length != 0) {
+    let launchDate = format(Date.parse(values.launchDate), 'yyyy-MM-dd');
+    values.launchDate = launchDate;
+  }
+
   const {
     handleSubmit,
     control,
@@ -78,14 +83,14 @@ function ProjectForm(props) {
         };
       });
       members.push({
-        id: data.managerId,
+        id: data.managerId.id || data.managerId,
         role: ['Project Manager'],
       });
       data.members = members;
     } else {
       data.members = [
         {
-          id: data.managerId,
+          id: data.managerId.id || data.managerId,
           role: ['Project Manager'],
         },
       ];
@@ -303,9 +308,7 @@ function ProjectForm(props) {
                   <Switch
                     checked={value === 'LAUNCHED'}
                     onChange={(e) =>
-                      onChange(
-                        e.target.checked ? 'LAUNCHED' : 'WORK IN PROGRESS'
-                      )
+                      onChange(e.target.checked ? 'LAUNCHED' : 'WIP')
                     }
                   />
                   <Typography>Launched</Typography>
