@@ -129,7 +129,6 @@ export const ProjectDetail = ({ projectId }) => {
     const formattedValues = values;
 
     const projectId = project.id;
-    console.log({ values, projectId });
     // return false;
 
     try {

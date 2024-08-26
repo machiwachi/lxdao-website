@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
+import CloseIcon from '@mui/icons-material/Close';
 import {
   Alert,
   Autocomplete,
   Box,
   Chip,
+  Grid,
+  MenuItem,
   Stack,
   Switch,
   TextField,
@@ -14,7 +17,6 @@ import {
 
 import Button from '@/components/Button';
 import TextInput from '@/components/TextInput';
-import UploadImage from '@/components/UploadImage';
 import UploadImg from '@/components/UploadImg';
 import MemberTypeField from '@/components/projects/MemberTypeField';
 import showMessage from '@/components/showMessage';
@@ -24,10 +26,14 @@ import { useAccount } from 'wagmi';
 
 import API from '@/common/API';
 
+import LXButton from '../Button';
+import Select from '../Select';
+
 import { format } from 'date-fns';
 
 function ProjectForm(props) {
   const { values, saveProjectHandler, isUpdate } = props;
+
   const [openManagerDropdown, setOpenManagerDropdown] = useState(false);
   const [managerOptions, setManagerOptions] = useState([]);
   const managerLoading = openManagerDropdown && managerOptions.length === 0;
@@ -37,8 +43,24 @@ function ProjectForm(props) {
 
   const nowDate = format(new Date(), 'yyyy-MM-dd');
 
+  const linkListAll = [
+    'discord',
+    'email',
+    'fairsharing',
+    'forum',
+    'github',
+    'notion',
+    'telegram',
+    'twitter',
+    'website',
+    'wechat',
+  ];
+
   if (Object.keys(values).length != 0) {
-    let launchDate = format(Date.parse(values.launchDate), 'yyyy-MM-dd');
+    let launchDate = format(
+      Date.parse(values.launchDate || nowDate),
+      'yyyy-MM-dd'
+    );
     values.launchDate = launchDate;
   }
 
@@ -70,6 +92,7 @@ function ProjectForm(props) {
       logo: '',
       isAbleToJoin: true,
       index_name: '',
+      links: {},
       ...values,
     },
   });
@@ -94,6 +117,17 @@ function ProjectForm(props) {
           role: ['Project Manager'],
         },
       ];
+    }
+
+    if (data.links) {
+      const links = data.links;
+      Object.keys(links).forEach((key) => {
+        if (links[key] === '') {
+          delete links[key];
+        }
+      });
+
+      data.links = links;
     }
 
     if (saveProjectHandler) {
@@ -497,7 +531,104 @@ function ProjectForm(props) {
           />
         </Box>
       </Box>
+      <Box
+        display="flex"
+        flexDirection={{ xs: 'column', sm: 'row' }}
+        marginBottom={{ xs: '0', sm: '15px' }}
+        width="80%"
+      >
+        <Box marginRight="10px">
+          <Label value={'Links: '} />
+        </Box>
+        <Box flex={1}>
+          <Controller
+            name={'links'}
+            control={control}
+            render={({ field: { onChange, value } }) => {
+              const handleSelectChange = (selectedName, index) => {
+                const keys = Object.keys(value);
+                const updatedValue = { ...value };
+                const oldName = keys[index];
+                const url = updatedValue[oldName];
+                delete updatedValue[oldName];
+                updatedValue[selectedName] = url;
 
+                onChange(updatedValue);
+              };
+
+              const handleTextFieldChange = (newUrl, name) => {
+                onChange({
+                  ...value,
+                  [name]: newUrl,
+                });
+              };
+
+              const handleAddLink = () => {
+                const newName = `newLink${Object.keys(value || {}).length + 1}`;
+                onChange({
+                  ...value,
+                  [newName]: '',
+                });
+              };
+
+              const handleDeleteLink = (item) => {
+                const updatedValue = { ...value };
+
+                delete updatedValue[item];
+
+                onChange(updatedValue);
+              };
+
+              return (
+                <>
+                  {Object.keys(value || {}).map((name, index) => (
+                    <Grid container spacing={2} key={index}>
+                      <Grid item xs={4}>
+                        <Select
+                          value={name}
+                          dropdown={linkListAll}
+                          selected={Object.keys(value)}
+                          onChange={(selectedName) =>
+                            handleSelectChange(selectedName, index)
+                          }
+                        />
+                      </Grid>
+                      <Grid item xs={7}>
+                        <TextField
+                          value={value[name]}
+                          onChange={(e) =>
+                            handleTextFieldChange(e.target.value, name)
+                          }
+                          fullWidth
+                        />
+                      </Grid>
+                      <Grid item xs={1}>
+                        <Box
+                          height="56px"
+                          display="flex"
+                          alignItems="center"
+                          sx={{
+                            cursor: 'pointer',
+                          }}
+                          onClick={() => {
+                            handleDeleteLink(name);
+                          }}
+                        >
+                          <CloseIcon></CloseIcon>
+                        </Box>
+                      </Grid>
+                    </Grid>
+                  ))}
+
+                  <Box display="flex" marginTop={2.5}>
+                    <LXButton onClick={handleAddLink}>Add a link</LXButton>
+                  </Box>
+                </>
+              );
+            }}
+          />
+        </Box>
+      </Box>
       <Box
         display="flex"
         flexDirection={{ xs: 'column', sm: 'row' }}

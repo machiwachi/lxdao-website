@@ -21,7 +21,6 @@ function CreateProject() {
       const response = await API.post(`/project`, {
         ...values,
       });
-      console.log(values);
       const result = response?.data;
       if (result.status !== 'SUCCESS') {
         throw new Error(result.message);
@@ -31,7 +30,8 @@ function CreateProject() {
             type: 'success',
             title: 'Project created',
           });
-          window.location.href = `${window.location.origin}/project/${result?.data?.id}`;
+  
+          window.location.href = `${window.location.origin}/projects/${result?.data?.index_name}`;
         }
       }
     } catch (err) {
