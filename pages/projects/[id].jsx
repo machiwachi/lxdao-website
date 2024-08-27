@@ -8,6 +8,7 @@ import { ProjectDetail } from '@/components/projects/ProjectDetail';
 
 export default function Home() {
   const router = useRouter();
+
   const projectId = router.query.id;
 
   if (!projectId) return null;

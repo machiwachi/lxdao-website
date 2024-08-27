@@ -1,10 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react';
 
+import { useRouter } from 'next/router';
+
+import CloseIcon from '@mui/icons-material/Close';
 import {
   Autocomplete,
   Box,
   Checkbox,
   Chip,
+  Dialog,
+  DialogContent,
+  DialogTitle,
   FormControl,
   FormHelperText,
   Grid,
@@ -24,8 +30,11 @@ import { makeStyles } from '@mui/styles';
 import BuidlerCard from '@/components/BuidlerCard';
 import Button from '@/components/Button';
 import Container from '@/components/Container';
-import Dialog from '@/components/Dialog';
+// import { Dialog, DialogContent, DialogTitle } from '@/components/Dialog';
+import CustomDialog from '@/components/Dialog';
+import ProjectForm from '@/components/projects/ProjectForm';
 import showMessage from '@/components/showMessage';
+import useBuidler from '@/components/useBuidler';
 
 import { useAccount } from 'wagmi';
 
@@ -35,6 +44,8 @@ import { WorkDetailItem } from '@/sections/SectionWorkSteps';
 import { getLocalStorage } from '@/utils/utility';
 
 import { format } from 'date-fns';
+
+// console.log(Dialog, DialogContent, DialogTitle);
 
 const useStyles = makeStyles({
   tooltip: {
@@ -46,6 +57,7 @@ const useStyles = makeStyles({
 });
 
 export const ProjectDetail = ({ projectId }) => {
+  const router = useRouter();
   const [project, setProject] = useState(null);
   const [activeBuidlerList, setActiveBuidlerList] = useState([]);
   const [selectedBuidler, setSelectedBuidler] = useState('');
@@ -96,6 +108,8 @@ export const ProjectDetail = ({ projectId }) => {
   const useAlert = () => useContext(AlertContext);
   const { setAlert } = useAlert();
   const { address } = useAccount();
+  const [, currentViewer, ,] = useBuidler(address);
+  const [updateDialogVisible, setUpdateDialogVisible] = useState(false);
   const classes = useStyles();
 
   const PROJECT_STATUS = {
@@ -110,6 +124,33 @@ export const ProjectDetail = ({ projectId }) => {
   );
   projectManagerName = projectManagerBudilder?.buidler?.name;
   projectManagerAddress = projectManagerBudilder?.buidler?.address;
+
+  const updateProjectHandler = async (values) => {
+    const formattedValues = values;
+
+    const projectId = project.id;
+    // return false;
+
+    try {
+      const response = await API.put(`/project/${projectId}`, {
+        ...formattedValues,
+      });
+
+      const result = response?.data;
+
+      if (result.status !== 'SUCCESS') {
+        throw new Error(result.message);
+      } else {
+        router.reload();
+      }
+    } catch (err) {
+      showMessage({
+        type: 'error',
+        title: 'Failed to update the project',
+        body: err.message,
+      });
+    }
+  };
 
   const sentEmailToProjectManager = (targetEmailAddress) => {
     const subject = `Builder asks to join ${project?.name} project`;
@@ -141,7 +182,6 @@ export const ProjectDetail = ({ projectId }) => {
       .then((res) => {
         if (res?.data?.data) {
           setProject(res?.data?.data);
-          console.log(res?.data?.data);
           getBuidlersData(res?.data?.data);
         }
       })
@@ -441,7 +481,7 @@ export const ProjectDetail = ({ projectId }) => {
             >
               <Box
                 component="img"
-                src={project.logoLarge || '/images/placeholder.jpeg'}
+                src={project.logo || '/images/placeholder.jpeg'}
                 style={{
                   width: '100%',
                   border: '0.5px solid #D0D5DD',
@@ -462,7 +502,7 @@ export const ProjectDetail = ({ projectId }) => {
                 width={38}
                 height={16}
               >
-                {'#' + project.number}
+                {'#' + project.index_name}
               </Typography>
             </Link>
             <Typography
@@ -485,31 +525,7 @@ export const ProjectDetail = ({ projectId }) => {
             <Typography align="left" variant="body1" color="#666F85">
               {project.description}
             </Typography>
-            <Box
-              align="left"
-              display="flex"
-              gap="5px"
-              flexWrap="wrap"
-              minHeight={'26px'}
-            >
-              {project.type &&
-                project.type.map((type, index) => {
-                  return (
-                    <Chip
-                      key={index}
-                      size="small"
-                      label={type}
-                      variant="outlined"
-                      sx={{
-                        borderRadius: '4px',
-                        borderColor: '#000000',
-                        fontSize: '12px',
-                      }}
-                    />
-                  );
-                })}
-            </Box>
-            <Box display="flex" gap={4} flexWrap="wrap">
+            <Box display="flex" gap={4} mt={4} flexWrap="wrap">
               {project.links &&
                 Object.keys(project.links).map((key, index) => {
                   return (
@@ -595,6 +611,25 @@ export const ProjectDetail = ({ projectId }) => {
                 </Box>
               </Tooltip>
             )}
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              margin="20px 0"
+            >
+              {currentViewer &&
+                currentViewer?.role?.includes('Administrator') && (
+                  <Button
+                    variant="gradient"
+                    width="145px"
+                    onClick={() => {
+                      setUpdateDialogVisible(true);
+                    }}
+                  >
+                    Edit
+                  </Button>
+                )}
+            </Box>
           </Box>
         </Grid>
         <Grid item md={8} lg={8} justify="flex-start">
@@ -900,27 +935,55 @@ export const ProjectDetail = ({ projectId }) => {
           </Stack>
         </Grid>
       </Grid>
-      <Dialog
+
+      <CustomDialog
         open={openJoinDialog}
         title="Want to join this project?"
         content={
           <Box>
-            Email has been sent to PM, PM will contact you by email later
+            Email has been sent to PM, PM will contact you by email later.
             <Link href={`/buidlers/${projectManagerAddress}`} target="_blank">
               {projectManagerName}
             </Link>
             .
           </Box>
         }
+        handleClose={() => setOpenJoinDialog(false)}
+        handleConfirm={() => setOpenJoinDialog(false)}
         confirmText="Confirm"
         variant="gradient"
-        handleClose={() => {
-          setOpenJoinDialog(false);
-        }}
-        handleConfirm={() => {
-          setOpenJoinDialog(false);
-        }}
       />
+      <Dialog
+        fullWidth={true}
+        maxWidth={'md'}
+        onClose={(event, reason) => {
+          if (reason && reason == 'backdropClick') return;
+          setUpdateDialogVisible(false);
+        }}
+        open={updateDialogVisible}
+      >
+        <Box
+          onClick={() => {
+            setUpdateDialogVisible(false);
+          }}
+          sx={{
+            cursor: 'pointer',
+          }}
+          position="absolute"
+          top="16px"
+          right="16px"
+        >
+          <CloseIcon></CloseIcon>
+        </Box>
+        <DialogTitle sx={{ marginBottom: '40px' }}>Project Details</DialogTitle>
+        <DialogContent>
+          <ProjectForm
+            values={project}
+            isUpdate={true}
+            saveProjectHandler={updateProjectHandler}
+          />
+        </DialogContent>
+      </Dialog>
     </Container>
   );
 };
