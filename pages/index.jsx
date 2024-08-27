@@ -1,19 +1,21 @@
 /* eslint-disable no-undef */
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+
 import { useRouter } from 'next/router';
+
 import Layout from '@/components/Layout';
-import SectionHero from '@/sections/SectionHomepageHero';
-import SectionMission from '@/sections/SectionMission';
-import SectionWorkSteps from '@/sections/SectionWorkSteps';
-import SectionHomepageProjects from '@/sections/SectionHomepageProjects';
+
+import API from '@/common/API';
 import SectionBuidlers from '@/sections/SectionBuidlers';
-import SectionWorkingGroup from '@/sections/SectionWorkingGroup';
-import SupportUs from '@/sections/SupportUs';
+import SectionHero from '@/sections/SectionHomepageHero';
+import SectionHomepageProjects from '@/sections/SectionHomepageProjects';
+import SectionMission from '@/sections/SectionMission';
 // import SectionActivities from '@/sections/SectionActivities';
 import SectionPartners from '@/sections/SectionPartners';
-
+import SectionWorkSteps from '@/sections/SectionWorkSteps';
+import SectionWorkingGroup from '@/sections/SectionWorkingGroup';
+import SupportUs from '@/sections/SupportUs';
 import { scrollToSection } from '@/utils/utility';
-import API from '@/common/API';
 
 export default function Home() {
   const [projects, setProjects] = useState([]);
@@ -46,33 +48,50 @@ export default function Home() {
 
   const handleInit = async () => {
     try {
-      const res = await API.get(
-        '/buidler?per_page=300&status=ACTIVE&status=READYTOMINT&status=PENDING'
-      );
-      const result = res?.data;
-      if (result.status !== 'SUCCESS') {
-        // error todo Muxin add common alert, wang teng design
-        return;
-      }
-      if (result?.data) {
-        const members = [];
-        const ActiveMembers = [];
-        result?.data?.forEach((member) => {
-          members.push(member);
-          if (member?.badges && member?.badges['MemberFirstBadge'] >= 1) {
-            ActiveMembers.push(member);
+      const members = [];
+      const ActiveMembers = [];
+      let page = 1;
+      let hasMoreData = true;
+
+      while (hasMoreData) {
+        const res = await API.get(
+          `/buidler?per_page=200&page=${page}&status=ACTIVE&status=READYTOMINT&status=PENDING`
+        );
+
+        const result = res?.data;
+        console.log(result);
+        if (result.status !== 'SUCCESS') {
+          // error todo Muxin add common alert, wang teng design
+          return;
+        }
+
+        if (result?.data && result.data.length > 0) {
+          result.data.forEach((member) => {
+            members.push(member);
+            if (member?.badges && member?.badges['MemberFirstBadge'] >= 1) {
+              ActiveMembers.push(member);
+            }
+          });
+
+          if (result.data.length < 200) {
+            hasMoreData = false;
+          } else {
+            page += 1;
           }
-        });
-        setBuidlers(members);
-        setActiveBuidlerAmount(ActiveMembers.length);
+        } else {
+          hasMoreData = false;
+        }
       }
+
+      setBuidlers(members);
+      setActiveBuidlerAmount(ActiveMembers.length);
     } catch (err) {
       console.error(err);
     }
-  }
+  };
 
   useEffect(() => {
-    handleInit()
+    handleInit();
   }, []);
 
   useEffect(() => {
