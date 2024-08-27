@@ -23,19 +23,23 @@ export default function BadgesToBeEarnedBox({ record, address }) {
         Badges to be earned
       </Typography>
       <Box display="flex" gap="15px" flexDirection="column">
-        {record?.badges?.map((badge, index) => {
-          if (badge?.id === 'MemberFirstBadge') {
-            badge.linkText = 'Earn now';
-            badge.linkUrl = '/firstBadge';
-          }
-          return badge.amount === 0 ? (
-            <BadgeCard
-              key={index}
-              {...badge}
-              isOneself={record.address === address}
-            />
-          ) : null;
-        })}
+        {record?.badges
+          ?.filter((item) => {
+            return item.name == 'Membership badge (NFT)';
+          })
+          .map((badge, index) => {
+            if (badge?.id === 'MemberFirstBadge') {
+              badge.linkText = 'Earn now';
+              badge.linkUrl = '/firstBadge';
+            }
+            return badge.amount === 0 ? (
+              <BadgeCard
+                key={index}
+                {...badge}
+                isOneself={record.address === address}
+              />
+            ) : null;
+          })}
         {(record?.status === 'PENDING' || record?.status === 'READYTOMINT') && (
           <BadgeCard
             isOneself={record.address === address}

@@ -1,28 +1,37 @@
 /* eslint-disable react/no-unescaped-entities */
+
 /* eslint-disable no-undef */
 import React, { useEffect, useState } from 'react';
-import {
-  Typography,
-  Box,
-  Link,
-  CircularProgress,
-  TableContainer,
-  Table,
-  TableBody,
-  TableHead,
-  TableFooter,
-  TableRow,
-  TableCell,
-  TablePagination,
-  Paper,
-  Tooltip,
-  IconButton,
-} from '@mui/material';
+
 import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
+import {
+  Box,
+  CircularProgress,
+  IconButton,
+  Link,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableFooter,
+  TableHead,
+  TablePagination,
+  TableRow,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+
+import Button from '@/components/Button';
+import Container from '@/components/Container';
+import CopyText from '@/components/CopyText';
+import DebouncedInput from '@/components/DebouncedInput';
+import Layout from '@/components/Layout';
+import SingleSelect from '@/components/Select';
 
 import API from '@/common/API';
 import {
@@ -32,12 +41,6 @@ import {
   totalStableCoins,
 } from '@/utils/utility';
 
-import Layout from '@/components/Layout';
-import SingleSelect from '@/components/Select';
-import DebouncedInput from '@/components/DebouncedInput';
-import Container from '@/components/Container';
-import Button from '@/components/Button';
-import CopyText from '@/components/CopyText';
 import Skills from '../components/Skills';
 
 const roleNames = [
@@ -268,7 +271,7 @@ export default function Buidlers() {
         <Link href={`/buidlers/${address}`} target="_blank">
           <Box
             component="img"
-            src={avatar}
+            src={avatar || '/images/placeholder.jpeg'}
             alt="avatar"
             style={{
               width: '80px',
