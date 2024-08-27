@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 import React from 'react';
-import { InputLabel, MenuItem, FormControl } from '@mui/material';
+
+import { FormControl, InputLabel, MenuItem } from '@mui/material';
 import Select from '@mui/material/Select';
 
 function SingleSelect(props) {
@@ -17,8 +18,13 @@ function SingleSelect(props) {
       >
         {props.dropdown.map((item, index) => {
           const isObject = typeof item === 'object';
+          const value = isObject ? item?.value : item;
+          const isSelected = Array.isArray(props.selected)
+            ? props.selected.includes(value)
+            : props.selected === value;
+
           return (
-            <MenuItem value={isObject ? item?.value : item} key={index}>
+            <MenuItem value={value} key={index} disabled={isSelected}>
               {isObject ? item?.label : item}
             </MenuItem>
           );

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { Icon } from '@iconify/react';
-import { Uploader3 } from '@lxdao/uploader3';
-import { Img3 } from '@lxdao/img3';
+
 import { getLocalStorage } from '@/utils/utility';
+
+import { Icon } from '@iconify/react';
+import { Img3 } from '@lxdao/img3';
+import { Uploader3 } from '@lxdao/uploader3';
 
 function uploadImage(props) {
   const [file, setFile] = useState();
@@ -107,7 +109,8 @@ function uploadImage(props) {
       <Uploader3
         api={`${
           process.env.NEXT_PUBLIC_LXDAO_BACKEND_API
-        }/upload/ipfs/?imageDataUrl=${file ? file[0] : ''}`}
+          // }/upload/ipfs/?imageDataUrl=${file ? file[0] : ''}`}
+        }/upload-img`}
         headers={{
           Authorization: `Bearer ${accessToken}`,
         }}

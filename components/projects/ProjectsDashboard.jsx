@@ -8,6 +8,9 @@ import Button from '@/components/Button';
 import Container from '@/components/Container';
 import DebouncedInput from '@/components/DebouncedInput';
 import ProjectCard from '@/components/projects/ProjectCard';
+import useBuidler from '@/components/useBuidler';
+
+import { useAccount } from 'wagmi';
 
 import API from '@/common/API';
 import { getRandom } from '@/utils/utility';
@@ -22,6 +25,9 @@ export const ProjectsDashboard = () => {
   const router = useRouter();
   const route = router.route;
   const isHomepage = route === '/';
+
+  const { address } = useAccount();
+  const [, currentViewer, ,] = useBuidler(address);
 
   useEffect(() => {
     searchList();
@@ -79,7 +85,7 @@ export const ProjectsDashboard = () => {
 
   return (
     <Container
-      paddingY={{ md: 12, xs: 8 }}
+      paddingY={{ md: 8, xs: 8 }}
       textAlign="center"
       id="Projects-Section"
       maxWidth="1200px"
@@ -90,29 +96,55 @@ export const ProjectsDashboard = () => {
         fontWeight="600"
         lineHeight="70px"
         color="#101828"
+        marginBottom="60px"
       >
         LXDAO Projects
       </Typography>
+
       <Typography
         variant="subtitle1"
         lineHeight="30px"
         fontWeight={400}
         color="#666F85"
-        marginTop={4}
+        marginTop={6}
       >
         We buidl good, valuable, and useful things.If you have a perfect idea
         want to become true, please write a proposal first.
       </Typography>
-      <Button variant="gradient" width="200px" margin="0 auto" marginTop={6}>
-        <Link
-          href="https://www.notion.so/lxdao/How-do-we-work-93038c708217465384cc7d9f377547c5"
-          target="_blank"
-          sx={{ textDecoration: 'none', color: '#ffffff' }}
-        >
-          Buidl Your Own
-        </Link>
-      </Button>
-      <Box marginTop={12}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: { md: 'row', xs: 'column' },
+          gap: '16px',
+          marginTop: '16px',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Button variant="gradient" width="200px">
+          <Link
+            href="https://www.notion.so/lxdao/How-do-we-work-93038c708217465384cc7d9f377547c5"
+            target="_blank"
+            sx={{ textDecoration: 'none', color: '#ffffff' }}
+          >
+            Buidl Your Own
+          </Link>
+        </Button>
+        {currentViewer && currentViewer?.role?.includes('Administrator') && (
+          <Box
+            display="flex"
+            justifyContent="center"
+            // marginBottom="16px"
+          >
+            <Link sx={{ textDecoration: 'none' }} href={`/projects/create`}>
+              <Button variant="gradient" width="250px">
+                Create a project
+              </Button>
+            </Link>
+          </Box>
+        )}
+      </Box>
+      <Box marginTop={10}>
         <DebouncedInput
           value={search}
           onChange={(value) => {
