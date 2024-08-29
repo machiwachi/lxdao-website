@@ -158,7 +158,7 @@ export default function AirdropCard() {
             lineHeight: '56px',
           }}
         >
-          {'Badges: '}
+          {'*Badges: '}
         </Box>
         <Select
           width="100%"
@@ -194,7 +194,7 @@ export default function AirdropCard() {
           <Controller
             name={'members'}
             control={control}
-            rules={{ required: true }}
+            rules={{ required: false }}
             render={({ field: { onChange, value } }) => {
               return (
                 <MemberListWithBadge
@@ -224,11 +224,12 @@ export default function AirdropCard() {
           <Controller
             name={'address'}
             control={control}
-            rules={{ required: true }}
+            rules={{ required: false }}
             render={({ field: { onChange, value } }) => {
               return (
                 <Stack gap={2} width={'full'}>
                   <TextField
+                    placeholder="Press Enter to add address"
                     onKeyDown={(event) => {
                       if (event.key === 'Enter') {
                         value.push(event.target.value);
