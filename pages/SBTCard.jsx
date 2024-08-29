@@ -20,6 +20,7 @@ import ProjectCard from '@/components/projects/ProjectCard';
 /* eslint-disable no-undef */
 import showMessage from '@/components/showMessage';
 import useBuidler from '@/components/useBuidler';
+import WorkingGroupCard from '@/components/workingGroups/WorkingGroupCard';
 
 import { toBytes, toHex } from 'viem';
 
@@ -34,9 +35,7 @@ import { buidlerContract } from '@/abi/index';
 import API from '@/common/API';
 import { ipfsToBytes } from '@/utils/utility';
 
-import { WorkingGroupCard } from './workingGroups/list';
-
-export default function FirstBadge() {
+export default function MintCard() {
   const { address, chainId } = useAccount();
   const [minting, setMinting] = React.useState(false);
   const [projects, setProjects] = React.useState([]);
