@@ -1,28 +1,37 @@
 /* eslint-disable react/no-unescaped-entities */
+
 /* eslint-disable no-undef */
 import React, { useEffect, useState } from 'react';
-import {
-  Typography,
-  Box,
-  Link,
-  CircularProgress,
-  TableContainer,
-  Table,
-  TableBody,
-  TableHead,
-  TableFooter,
-  TableRow,
-  TableCell,
-  TablePagination,
-  Paper,
-  Tooltip,
-  IconButton,
-} from '@mui/material';
+
 import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
+import {
+  Box,
+  CircularProgress,
+  IconButton,
+  Link,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableFooter,
+  TableHead,
+  TablePagination,
+  TableRow,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+
+import Button from '@/components/Button';
+import Container from '@/components/Container';
+import CopyText from '@/components/CopyText';
+import DebouncedInput from '@/components/DebouncedInput';
+import Layout from '@/components/Layout';
+import SingleSelect from '@/components/Select';
 
 import API from '@/common/API';
 import {
@@ -32,22 +41,9 @@ import {
   totalStableCoins,
 } from '@/utils/utility';
 
-import Layout from '@/components/Layout';
-import SingleSelect from '@/components/Select';
-import DebouncedInput from '@/components/DebouncedInput';
-import Container from '@/components/Container';
-import Button from '@/components/Button';
-import CopyText from '@/components/CopyText';
 import Skills from '../components/Skills';
 
-const roleNames = [
-  'All',
-  'Buidler',
-  'Core',
-  'Project Manager',
-  'Investor',
-  'Onboarding Committee',
-];
+const roleNames = ['All', 'Buidler', 'Core', 'Project Manager', 'Investor'];
 
 const skillNames = [
   'All',

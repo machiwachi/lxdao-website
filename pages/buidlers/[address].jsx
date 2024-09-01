@@ -7,23 +7,14 @@ import useWindowSize from 'react-use/lib/useWindowSize';
 
 import { useRouter } from 'next/router';
 
-import {
-  Box,
-  Button,
-  Dialog,
-  Divider,
-  Grid,
-  Link,
-  Typography,
-} from '@mui/material';
+import { Box, Dialog, Divider, Grid, Link, Typography } from '@mui/material';
 
 import BuidlerContacts from '@/components/BuidlerContacts';
-import LXButton from '@/components/Button';
+import Button from '@/components/Button';
 import Container from '@/components/Container';
 import CopyText from '@/components/CopyText';
 import Layout from '@/components/Layout';
 import Tag from '@/components/Tag';
-import AirdropDialog from '@/components/buidlers/AirdropDialog';
 import BadgeBox from '@/components/buidlers/Box/BadgeBox';
 import BadgesToBeEarnedBox from '@/components/buidlers/Box/BadgesToBeEarnedBox';
 import LxpRewardBox from '@/components/buidlers/Box/LxpRewardBox';
@@ -41,28 +32,36 @@ import { useAccount } from 'wagmi';
 import API from '@/common/API';
 import { formatAddress } from '@/utils/utility';
 
+import EditBuilderRole from '../../components/buidlers/EditBuilderRole';
+
 import _ from 'lodash';
 
 function BuidlerDetails({ record, refresh }) {
   const { address } = useAccount();
-  const [viewerLoading, viewer, viewerError, viewerRefresh] =
+  const [viewerLoading, builder, viewerError, viewerRefresh] =
     useBuidler(address);
-  const isOnboardingCommittee = !!viewer?.role?.includes(
-    'Onboarding Committee'
-  );
   const router = useRouter();
   const isFromOnboarding = router?.query?.isFromOnboarding;
   const [onboarding, setOnboarding] = useState(false);
 
-  const enableMint = async () => {
+  const [isEditRole, setIsEditRole] = useState(false);
+
+  const handleEditRole = async (roles) => {
     try {
-      await API.post(`/buidler/${record.address}/enableMint`);
-      // const data = enableMintRes.data.data;
-      alert('Success!');
+      const res = await API.post('/buidler/updateRole', {
+        id: record.id,
+        roles: roles,
+      });
+      const result = res?.data;
+      if (result.status !== 'SUCCESS') {
+        throw new Error(result.message);
+      } else {
+        window.location.reload();
+      }
     } catch (err) {
       showMessage({
         type: 'error',
-        title: 'Failed to enable mint access',
+        title: 'Failed to create a project',
         body: err.message,
       });
     }
@@ -238,11 +237,19 @@ function BuidlerDetails({ record, refresh }) {
                 )}
                 {record.role?.length > 0 && (
                   <Grid marginTop={3} item>
-                    <Box display="flex" flexWrap="wrap">
+                    <Box display="flex" flexWrap="wrap" marginBottom={2}>
                       {record.role.map((item) => {
                         return <Tag key={item} text={item} />;
                       })}
                     </Box>
+                    <Button
+                      variant="outlined"
+                      onClick={() => {
+                        setIsEditRole(true);
+                      }}
+                    >
+                      {'Edit'}
+                    </Button>
                   </Grid>
                 )}
                 {record.contacts && (
@@ -301,81 +308,6 @@ function BuidlerDetails({ record, refresh }) {
                       }}
                     />
                   )}
-                  {isOnboardingCommittee && (
-                    <>
-                      <LXButton
-                        onClick={async () => {
-                          if (
-                            record.status == 'ACTIVE' ||
-                            record.status == 'ARCHIVED' ||
-                            record.status == 'SUSPENDED'
-                          ) {
-                            try {
-                              const data = await API.post(
-                                `/buidler/${record.address}/uploadIPFS`
-                              );
-                              const result = data?.data;
-                              if (result.status === 'SUCCESS') {
-                                alert('Synced!');
-                              }
-                            } catch (error) {
-                              showMessage({
-                                type: 'error',
-                                title: 'Failed to sync to IPFS',
-                                body: error,
-                              });
-                            }
-                          } else {
-                            showMessage({
-                              type: 'error',
-                              title: 'Failed to sync to IPFS',
-                              body: 'This member do not have builder card',
-                            });
-                          }
-                        }}
-                        variant="outlined"
-                      >
-                        Sync to IPFS
-                      </LXButton>
-                      <LXButton
-                        onClick={async () => {
-                          if (record.status === 'PENDING') {
-                            try {
-                              await enableMint();
-                              showMessage({
-                                type: 'success',
-                                title: 'Success!',
-                                body: 'Mint access has been enabled',
-                              });
-                              refresh();
-                            } catch (error) {
-                              showMessage({
-                                type: 'info',
-                                title: 'Failed to enable mint access',
-                                body: error,
-                              });
-                            }
-                          } else if (record.status === 'READYTOMINT') {
-                            showMessage({
-                              type: 'info',
-                              title: 'Failed to enable mint access',
-                              body: 'This member has already enabled mint access',
-                            });
-                          } else {
-                            showMessage({
-                              type: 'error',
-                              title: 'Failed to enable mint access',
-                              body: 'This member is not in the pending status',
-                            });
-                          }
-                        }}
-                        variant="outlined"
-                      >
-                        Enable Mint Access
-                      </LXButton>
-                      <AirdropDialog record={record} />
-                    </>
-                  )}
                 </Box>
               </Box>
             </Box>
@@ -397,6 +329,12 @@ function BuidlerDetails({ record, refresh }) {
             <WorkingGroupsBox record={record} />
           </Box>
         </Box>
+        <EditBuilderRole
+          role={record?.role}
+          open={isEditRole}
+          onClose={() => setIsEditRole(false)}
+          onSave={handleEditRole}
+        />
       </Container>
     </>
   );
