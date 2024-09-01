@@ -242,14 +242,16 @@ function BuidlerDetails({ record, refresh }) {
                         return <Tag key={item} text={item} />;
                       })}
                     </Box>
-                    <Button
-                      variant="outlined"
-                      onClick={() => {
-                        setIsEditRole(true);
-                      }}
-                    >
-                      {'Edit'}
-                    </Button>
+                    {builder?.role?.includes('Mod') && (
+                      <Button
+                        variant="outlined"
+                        onClick={() => {
+                          setIsEditRole(true);
+                        }}
+                      >
+                        {'Edit'}
+                      </Button>
+                    )}
                   </Grid>
                 )}
                 {record.contacts && (
