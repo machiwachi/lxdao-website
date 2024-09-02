@@ -107,10 +107,11 @@ export default function MintCard() {
         router.push(`/buidlers/${address}`);
       }
     } catch (err) {
+      console.log(typeof err);
       showMessage({
         type: 'error',
         title: 'Failed to mint',
-        body: err?.cause?.shortMessage || err,
+        body: err.toString(),
       });
     }
     setMinting(false);
@@ -203,7 +204,7 @@ export default function MintCard() {
           <LXButton
             variant="gradient"
             width="200px"
-            disabled={!(record?.status == 'READYTOMINT')}
+            disabled={false}
             onClick={() => {
               mint();
             }}
