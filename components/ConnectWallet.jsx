@@ -63,19 +63,17 @@ const ConnectWalletButton = () => {
   }, [isDisconnected, retries]);
 
   useEffect(() => {
-    (async () => {
-      if (
-        addressInfo.current.address &&
-        addressInfo.current.address !== address
-      ) {
-        removeLocalStorage('accessToken');
-        refreshAPIToken();
-        disconnect();
-        addressInfo.current.address = undefined;
-        window.location.reload();
-      }
-    })();
-  }, [address]);
+    if (
+      addressInfo.current.address &&
+      addressInfo.current.address !== address
+    ) {
+      removeLocalStorage('accessToken');
+      refreshAPIToken();
+      disconnect();
+      addressInfo.current.address = undefined;
+      window.location.reload();
+    }
+  }, [address, addressInfo]);
 
   const handleNonce = async () => {
     try {
