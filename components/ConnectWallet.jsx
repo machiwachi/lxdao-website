@@ -60,7 +60,7 @@ const ConnectWalletButton = () => {
     } else {
       setRetries(retries + 1);
     }
-  }, [isDisconnected]);
+  }, [isDisconnected, retries]);
 
   useEffect(() => {
     (async () => {
