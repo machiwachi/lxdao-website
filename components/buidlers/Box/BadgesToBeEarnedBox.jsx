@@ -47,7 +47,11 @@ export default function BadgesToBeEarnedBox({ record, address }) {
             name="Buidler card (SBT)"
             description="Governance rights entitled"
             eligible="Eligibility: Contribute in projects or working groups to earn up to 500 LXPU reward."
-            linkText="Contribute to earn"
+            linkText={
+              record?.status === 'READYTOMINT'
+                ? 'Mint now'
+                : 'Contribute to earn'
+            }
             linkUrl="/SBTCard"
           />
         )}

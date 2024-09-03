@@ -58,7 +58,7 @@ const ConnectWalletButton = () => {
       removeLocalStorage('accessToken');
       refreshAPIToken();
     } else {
-      setRetries(retries + 1);
+      if (isDisconnected && retries <= 10) setRetries(retries + 1);
     }
   }, [isDisconnected, retries]);
 
