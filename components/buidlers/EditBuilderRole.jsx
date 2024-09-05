@@ -66,12 +66,12 @@ export default function EditBuilderRole({ role, open, onClose, onSave }) {
               ))}
             </Box>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} style={{ display: 'flex', gap: '12px' }}>
             <Select
               value={newRole}
               onChange={(e) => setNewRole(e.target.value)}
               displayEmpty
-              fullWidth
+              style={{ flexGrow: 1 }}
             >
               <MenuItem value="" disabled>
                 Choose a role

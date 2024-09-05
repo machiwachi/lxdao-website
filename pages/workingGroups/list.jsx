@@ -12,6 +12,7 @@ import WorkingGroupCard from '@/components/workingGroups/WorkingGroupCard';
 import { useAccount } from 'wagmi';
 
 import API from '@/common/API';
+import { BuilderRole } from '@/models/builder';
 
 export default function WorkingGroupList() {
   const [listData, setListData] = useState([]);
@@ -58,7 +59,7 @@ export default function WorkingGroupList() {
         >
           LXDAO WORKING GROUPS
         </Typography>
-        {currentViewer && currentViewer?.role?.includes('Administrator') && (
+        {currentViewer && currentViewer?.role?.includes(BuilderRole.Mod) && (
           <Box display="flex" justifyContent="center">
             <Link
               sx={{ textDecoration: 'none' }}

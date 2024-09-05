@@ -25,6 +25,7 @@ import useBuidler from '@/components/useBuidler';
 import { useAccount } from 'wagmi';
 
 import API from '@/common/API';
+import { BuilderRole } from '@/models/builder';
 
 import LXButton from '../Button';
 import Select from '../Select';
@@ -425,7 +426,7 @@ function ProjectForm(props) {
             rules={{ required: true }}
             render={({ field: { onChange, value, onBlur } }) => {
               const isAdmin =
-                currentViewer && currentViewer?.role?.includes('Administrator');
+                currentViewer && currentViewer?.role?.includes(BuilderRole.Mod);
 
               return (
                 <>
@@ -448,7 +449,7 @@ function ProjectForm(props) {
                     }}
                     disabled={
                       !currentViewer &&
-                      currentViewer?.role?.includes('Administrator')
+                      currentViewer?.role?.includes(BuilderRole.Mod)
                     }
                     onBlur={onBlur}
                     options={managerOptions}

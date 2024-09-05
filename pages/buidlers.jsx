@@ -34,6 +34,7 @@ import Layout from '@/components/Layout';
 import SingleSelect from '@/components/Select';
 
 import API from '@/common/API';
+import { BuilderRole } from '@/models/builder';
 import {
   formatAddress,
   getMemberFirstBadgeAmount,
@@ -42,8 +43,6 @@ import {
 } from '@/utils/utility';
 
 import Skills from '../components/Skills';
-
-const roleNames = ['All', 'Buidler', 'Core', 'Project Manager', 'Investor'];
 
 const skillNames = [
   'All',
@@ -355,7 +354,7 @@ export default function Buidlers() {
             <SingleSelect
               value={role}
               label="Role"
-              dropdown={roleNames}
+              dropdown={['All', ...Object.values(BuilderRole)]}
               onChange={(value) => {
                 setPage(0);
                 setRole(value);

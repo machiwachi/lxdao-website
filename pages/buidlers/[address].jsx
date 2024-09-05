@@ -30,6 +30,7 @@ import useBuidler from '@/components/useBuidler';
 import { useAccount } from 'wagmi';
 
 import API from '@/common/API';
+import { BuilderRole } from '@/models/builder';
 import { formatAddress } from '@/utils/utility';
 
 import EditBuilderRole from '../../components/buidlers/EditBuilderRole';
@@ -242,16 +243,18 @@ function BuidlerDetails({ record, refresh }) {
                         return <Tag key={item} text={item} />;
                       })}
                     </Box>
-                    {builder?.role?.includes('Mod') && (
-                      <Button
-                        variant="outlined"
-                        onClick={() => {
-                          setIsEditRole(true);
-                        }}
-                      >
-                        {'Edit'}
-                      </Button>
-                    )}
+                  </Grid>
+                )}
+                {builder?.role?.includes(BuilderRole.Mod) && (
+                  <Grid marginTop={3} item>
+                    <Button
+                      variant="outlined"
+                      onClick={() => {
+                        setIsEditRole(true);
+                      }}
+                    >
+                      {'Edit'}
+                    </Button>
                   </Grid>
                 )}
                 {record.contacts && (
