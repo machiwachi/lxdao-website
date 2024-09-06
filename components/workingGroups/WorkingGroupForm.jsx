@@ -13,7 +13,6 @@ import {
 
 import Button from '@/components/Button';
 import TextInput from '@/components/TextInput';
-import UploadImage from '@/components/UploadImage';
 import UploadImg from '@/components/UploadImg';
 import showMessage from '@/components/showMessage';
 import useBuidler from '@/components/useBuidler';
@@ -22,6 +21,7 @@ import MemberTypeField from '@/components/workingGroups/MemberTypeField';
 import { useAccount } from 'wagmi';
 
 import API from '@/common/API';
+import { BuilderRole } from '@/models/builder';
 
 function WorkingGroupForm(props) {
   const { values, saveWorkingGroupHandler, isUpdate } = props;
@@ -277,7 +277,7 @@ function WorkingGroupForm(props) {
             rules={{ required: true }}
             render={({ field: { onChange, value, onBlur } }) => {
               const isAdmin =
-                currentViewer && currentViewer?.role?.includes('Administrator');
+                currentViewer && currentViewer?.role?.includes(BuilderRole.Mod);
 
               return (
                 <>
@@ -300,7 +300,7 @@ function WorkingGroupForm(props) {
                     }}
                     disabled={
                       !currentViewer &&
-                      currentViewer?.role?.includes('Administrator')
+                      currentViewer?.role?.includes(BuilderRole.Mod)
                     }
                     onBlur={onBlur}
                     options={leaderOptions}

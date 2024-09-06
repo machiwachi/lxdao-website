@@ -22,6 +22,7 @@ import WorkingGroupForm from '@/components/workingGroups/WorkingGroupForm';
 import { useAccount } from 'wagmi';
 
 import API from '@/common/API';
+import { BuilderRole } from '@/models/builder';
 
 import _ from 'lodash';
 
@@ -159,7 +160,7 @@ export default function WorkingGroupDetail() {
                 {data?.name}
               </Typography>
               {((currentViewer &&
-                currentViewer?.role?.includes('Administrator')) ||
+                currentViewer?.role?.includes(BuilderRole.Mod)) ||
                 address === teamLeaderAddress) && (
                 <Button
                   variant="gradient"
