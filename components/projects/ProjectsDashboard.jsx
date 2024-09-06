@@ -13,6 +13,7 @@ import useBuidler from '@/components/useBuidler';
 import { useAccount } from 'wagmi';
 
 import API from '@/common/API';
+import { BuilderRole } from '@/models/builder';
 import { getRandom } from '@/utils/utility';
 
 export const ProjectsDashboard = () => {
@@ -130,7 +131,7 @@ export const ProjectsDashboard = () => {
             Buidl Your Own
           </Link>
         </Button>
-        {currentViewer && currentViewer?.role?.includes('Administrator') && (
+        {currentViewer && currentViewer?.role?.includes(BuilderRole.Mod) && (
           <Box
             display="flex"
             justifyContent="center"

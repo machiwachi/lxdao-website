@@ -11,6 +11,7 @@ import useBuidler from '@/components/useBuidler';
 import { useAccount } from 'wagmi';
 
 import API from '@/common/API';
+import { BuilderRole } from '@/models/builder';
 
 function CreateProject() {
   const { address } = useAccount();
@@ -30,7 +31,7 @@ function CreateProject() {
             type: 'success',
             title: 'Project created',
           });
-  
+
           window.location.href = `${window.location.origin}/projects/${result?.data?.index_name}`;
         }
       }
@@ -72,7 +73,7 @@ function CreateProject() {
             </Typography>
           </Box>
           {currentViewer ? (
-            currentViewer?.role?.includes('Administrator') ? (
+            currentViewer?.role?.includes(BuilderRole.Mod) ? (
               <ProjectForm
                 values={{}}
                 isUpdate={false}

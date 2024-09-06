@@ -40,6 +40,7 @@ import { useAccount } from 'wagmi';
 
 import API from '@/common/API';
 import { AlertContext } from '@/context/AlertContext';
+import { BuilderRole } from '@/models/builder';
 import { WorkDetailItem } from '@/sections/SectionWorkSteps';
 import { getLocalStorage } from '@/utils/utility';
 
@@ -618,7 +619,7 @@ export const ProjectDetail = ({ projectId }) => {
               margin="20px 0"
             >
               {currentViewer &&
-                currentViewer?.role?.includes('Administrator') && (
+                currentViewer?.role?.includes(BuilderRole.Mod) && (
                   <Button
                     variant="gradient"
                     width="145px"

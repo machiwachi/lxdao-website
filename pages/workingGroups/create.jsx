@@ -11,6 +11,7 @@ import WorkingGroupForm from '@/components/workingGroups/WorkingGroupForm';
 import { useAccount } from 'wagmi';
 
 import API from '@/common/API';
+import { BuilderRole } from '@/models/builder';
 
 function CreateWorkingGroup() {
   const { address } = useAccount();
@@ -71,7 +72,7 @@ function CreateWorkingGroup() {
             </Typography>
           </Box>
           {currentViewer ? (
-            currentViewer?.role?.includes('Administrator') ? (
+            currentViewer?.role?.includes(BuilderRole.Mod) ? (
               <WorkingGroupForm
                 values={{}}
                 isUpdate={false}
