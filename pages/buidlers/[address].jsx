@@ -39,8 +39,7 @@ import _ from 'lodash';
 
 function BuidlerDetails({ record, refresh }) {
   const { address } = useAccount();
-  const [viewerLoading, builder, viewerError, viewerRefresh] =
-    useBuidler(address);
+  const [_, builder] = useBuidler(address);
   const router = useRouter();
   const isFromOnboarding = router?.query?.isFromOnboarding;
   const [onboarding, setOnboarding] = useState(false);
@@ -81,13 +80,17 @@ function BuidlerDetails({ record, refresh }) {
   )?.amount;
 
   useEffect(() => {
-    if (record?.status === 'PENDING' && firstMemberBadgeAmount === 0) {
+    if (
+      record?.status === 'PENDING' &&
+      firstMemberBadgeAmount === 0 &&
+      address == record.address
+    ) {
       setOnboarding(true);
     }
     return () => {
       setOnboarding(false);
     };
-  }, [record?.status, firstMemberBadgeAmount]);
+  }, [record, firstMemberBadgeAmount, address]);
 
   return (
     <>
