@@ -59,7 +59,6 @@ export default function Home() {
         );
 
         const result = res?.data;
-        console.log(result);
         if (result.status !== 'SUCCESS') {
           // error todo Muxin add common alert, wang teng design
           return;
