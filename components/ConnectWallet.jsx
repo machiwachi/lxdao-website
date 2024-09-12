@@ -53,7 +53,20 @@ const ConnectWalletButton = () => {
   }, [signature]);
 
   useEffect(() => {
-    const currentAccessToken = getLocalStorage('accessToken');
+    let currentAccessToken = getLocalStorage('accessToken');
+    // validate access token is jwt
+    if (currentAccessToken) {
+      try {
+        const decoded = jwtDecode(currentAccessToken);
+        if (decoded.exp < Date.now() / 1000) {
+          throw new Error('access token expired');
+        }
+      } catch (err) {
+        removeLocalStorage('accessToken');
+        console.log('err', err);
+        window.location.reload();
+      }
+    }
     if (isDisconnected && currentAccessToken && retries > 10) {
       removeLocalStorage('accessToken');
       refreshAPIToken();
@@ -125,3 +138,22 @@ const ConnectWalletButton = () => {
 };
 
 export { wagmiConfig, ConnectWalletButton };
+
+function jwtDecode(token) {
+  try {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split('')
+        .map(function (c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        })
+        .join('')
+    );
+    return JSON.parse(jsonPayload);
+  } catch (error) {
+    console.error('Failed to decode JWT:', error);
+    return null;
+  }
+}
