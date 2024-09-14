@@ -125,7 +125,7 @@ export default function MemberListWithBadge(props) {
                 options={MemberList}
                 renderOption={(props, option) => (
                   <li {...props} key={option.address}>
-                    {option.name}
+                    {option.name}#{option.address.slice(-4)}
                   </li>
                 )}
                 renderInput={(params) => {
