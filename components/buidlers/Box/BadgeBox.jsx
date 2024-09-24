@@ -1,26 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-import { Box, Typography } from '@mui/material';
-
-import {
-  createPublicClient,
-  fallback,
-  getAddress,
-  http,
-  parseAbiItem,
-} from 'viem';
-import { mainnet } from 'viem/chains';
+import { Box, Tooltip, Typography } from '@mui/material';
 
 export default function BadgeBox({ record }) {
   const [isHasOtherBadges, setIsHasOtherBadges] = useState([]);
-  const infura = http(
-    'https://mainnet.infura.io/v3/999c7c128542435eac32a6cdd05a31c1'
-  );
-
-  const publicClient = createPublicClient({
-    chain: mainnet,
-    transport: fallback([infura]),
-  });
 
   return (
     <Box
@@ -45,32 +28,70 @@ export default function BadgeBox({ record }) {
         {record?.badges &&
           record?.badges.map((badge) => {
             return badge.amount > 0 ? (
-              <Box
-                key={badge?.image}
-                component={'img'}
-                src={badge?.image}
-                width="60px"
-                height="60px"
-                maxWidth="60px"
-                maxHeight="60px"
-                objectFit="contain"
-                flexShrink={0}
-              />
+              <Tooltip
+                sx={{
+                  backgroundColor: '#fff',
+                  color: '#000',
+                  textAlign: 'center',
+                }}
+                slotProps={{
+                  tooltip: {
+                    sx: {
+                      border: '1px solid #D0D5DD',
+                      backgroundColor: '#ffff',
+                    },
+                  },
+                }}
+                title={
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      backgroundColor: '#fff',
+                      color: '#000',
+                      textAlign: 'center',
+                      gap: '10px',
+                      padding: '20px',
+                    }}
+                  >
+                    <Box
+                      key={badge?.image}
+                      component={'img'}
+                      src={badge?.image}
+                      width="140px"
+                      height="140px"
+                      objectFit="contain"
+                      flexShrink={0}
+                    />
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        fontWeight: 800,
+                      }}
+                    >
+                      {badge.name}
+                    </Typography>
+                    <Typography variant="body2">{badge.eligible}</Typography>
+                  </Box>
+                }
+              >
+                <Box
+                  key={badge?.image}
+                  component={'img'}
+                  src={badge?.image}
+                  width="60px"
+                  height="60px"
+                  maxWidth="60px"
+                  maxHeight="60px"
+                  objectFit="contain"
+                  flexShrink={0}
+                />
+              </Tooltip>
             ) : null;
           })}
         {isHasOtherBadges.map((badge, index) => (
-          // <Img3
-          //   key={badge?.image}
-          //   style={{
-          //     width: '60px',
-          //     height: '60px',
-          //     objectFit: 'contain',
-          //     minWidth: '60px',
-          //     flexShrink: 0,
-          //   }}
-          //   src={badge.image}
-          //   alt={badge.name}
-          // />
           <Box
             key={index}
             component={'img'}
