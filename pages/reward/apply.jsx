@@ -1,29 +1,31 @@
-import {
-  Box,
-  Container,
-  Typography,
-  InputAdornment,
-  OutlinedInput,
-  Checkbox,
-  FormControlLabel,
-  MenuItem,
-  Select,
-  Link,
-  Autocomplete,
-  CircularProgress,
-  TextField,
-  Chip,
-} from '@mui/material';
+/* eslint-disable @next/next/no-img-element */
+import React, { useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 
 import { useRouter } from 'next/router';
-import React, { useState, useEffect } from 'react';
-import { useForm, Controller } from 'react-hook-form';
 
-import API from '@/common/API';
+import {
+  Autocomplete,
+  Box,
+  Checkbox,
+  Chip,
+  CircularProgress,
+  Container,
+  FormControlLabel,
+  InputAdornment,
+  Link,
+  MenuItem,
+  OutlinedInput,
+  Select,
+  TextField,
+  Typography,
+} from '@mui/material';
 
 import LXButton from '@/components/Button';
 import Layout from '@/components/Layout';
 import showMessage from '@/components/showMessage';
+
+import API from '@/common/API';
 
 function Label({ required, value }) {
   return (
@@ -106,11 +108,11 @@ export default function Apply() {
         return;
       }
       const records = result.data;
-
+      console.log(records);
       let tempList = [];
       records.forEach((record) => {
-        let { id, name, address } = record;
-        tempList.push({ id, name, address });
+        let { id, name, address, avatar } = record;
+        tempList.push({ id, name, address, avatar });
       });
       setOptions(tempList);
     } catch (err) {
@@ -387,6 +389,23 @@ export default function Apply() {
                           }}
                           onBlur={onBlur}
                           options={options}
+                          renderOption={(props, option) => {
+                            console.log(option);
+                            return (
+                              <li {...props} key={option.address}>
+                                <img
+                                  src={option.avatar}
+                                  alt=""
+                                  style={{
+                                    width: 20,
+                                    height: 20,
+                                    marginRight: 10,
+                                  }}
+                                />
+                                {option.name}#{option.address.slice(-4)}
+                              </li>
+                            );
+                          }}
                           loading={loading}
                           renderInput={(params) => {
                             return (
