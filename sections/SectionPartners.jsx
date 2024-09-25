@@ -1,5 +1,6 @@
 import React from 'react';
-import { Box, Typography, Link } from '@mui/material';
+
+import { Box, Link, Typography } from '@mui/material';
 
 import Container from '@/components/Container';
 
@@ -79,6 +80,11 @@ const communitiesData = [
     logo: '/images/partners/BlockBooster-logo.svg',
     link: 'https://www.gitcoin.co/',
   },
+  {
+    name: 'Mask Network',
+    logo: '/images/partners/mask-logo.svg',
+    link: '	https://mask.io/',
+  },
 ];
 
 const sponsorshipsData = [
@@ -103,11 +109,6 @@ const sponsorshipsData = [
     link: 'https://mobymask.com/',
   },
   {
-    name: 'Mask Network',
-    logo: '/images/partners/mask-logo.svg',
-    link: '	https://mask.io/',
-  },
-  {
     name: 'Gitcoin',
     logo: '/images/partners/gitcoin-logo.svg',
     link: 'https://www.gitcoin.co/',
@@ -125,7 +126,7 @@ const SectionPartners = () => (
         flexDirection="column"
         gap="64px"
       >
-        <Typography variant="h2" lineHeight="58px" fontWeight={600}>
+        {/* <Typography variant="h2" lineHeight="58px" fontWeight={600}>
           Sponsorships
         </Typography>
         <Box
@@ -141,7 +142,7 @@ const SectionPartners = () => (
               </Link>
             );
           })}
-        </Box>
+        </Box> */}
         <Typography variant="h2" lineHeight="58px" fontWeight={600}>
           Our Partners
         </Typography>
