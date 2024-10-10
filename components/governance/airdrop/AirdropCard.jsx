@@ -46,7 +46,8 @@ export default function AirdropCard() {
     'ICL_URL_S01',
     'ICL_ZK_S01',
     'ICL_Defi_S01',
-    'ICL_English_S01',
+    'ICL_Narrative_S01',
+    'ICL_Starknet_S01',
     'ValuableGuestOffline',
     'ValuableGuestOnline',
   ];
