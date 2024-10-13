@@ -7,6 +7,7 @@ import Layout from '@/components/Layout';
 
 import API from '@/common/API';
 import NewSectionHero from '@/sections/NewSectionHero';
+import NewSectionPG from '@/sections/NewSectionPG';
 import NewSectionWork from '@/sections/NewSectionWork';
 import SectionBuidlers from '@/sections/SectionBuidlers';
 import SectionHomepageProjects from '@/sections/SectionHomepageProjects';
@@ -107,6 +108,7 @@ export default function Home() {
         projectAmount={projects.length}
         buidlerAmount={activeBuidlerAmount}
       />
+      <NewSectionPG />
       <SupportUs />
       <SectionMission
         projectAmount={projects.length}
