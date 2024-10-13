@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import Layout from '@/components/Layout';
 
 import API from '@/common/API';
+import NewSectionHero from '@/sections/NewSectionHero';
 import SectionBuidlers from '@/sections/SectionBuidlers';
 import SectionHero from '@/sections/SectionHomepageHero';
 import SectionHomepageProjects from '@/sections/SectionHomepageProjects';
@@ -101,7 +102,7 @@ export default function Home() {
 
   return (
     <Layout>
-      <SectionHero />
+      <NewSectionHero />
       <SupportUs />
       <SectionMission
         projectAmount={projects.length}
