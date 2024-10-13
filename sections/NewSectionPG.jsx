@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { Box, Card, Link, Typography } from '@mui/material';
 
+import Button from '@/components/Button';
 import Container from '@/components/Container';
 
 import { erc20Abi } from 'viem';
@@ -20,6 +21,7 @@ export default function NewSectionPG() {
         sx={{
           display: 'flex',
           position: 'relative',
+          justifyContent: 'space-between',
           width: '100%',
           height: '725px',
         }}
@@ -122,6 +124,63 @@ export default function NewSectionPG() {
               exemplifies this through its decentralized, open-source software
               that anyone can use, modify, and improve.
             </Typography>
+          </Box>
+        </Box>
+      </Box>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          mt: '140px',
+        }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            position: 'relative',
+            flexDirection: 'column',
+            gap: '100px',
+            justifyContent: 'space-between',
+            px: '30px',
+          }}
+        >
+          <Box
+            width="200px"
+            height="22px"
+            bgcolor="#10D7C4"
+            sx={{
+              position: 'absolute',
+              left: '-200px',
+              top: '10px',
+            }}
+          ></Box>
+          <Typography fontSize="28px" fontWeight="700">
+            Learn more in our report
+          </Typography>
+          <Button width="210px" borderRadius="100px" variant="gradient">
+            DOWNLOAD PDF
+          </Button>
+        </Box>
+        <Box ml="100px">
+          <Box
+            sx={{
+              position: 'relative',
+              width: '320px',
+              height: '320px',
+              bgcolor: '#10D7C4',
+              borderRadius: '100%',
+              mr: '200px',
+            }}
+          >
+            <Box
+              component="img"
+              src="/images/new/report.png"
+              sx={{
+                mt: '60px',
+                ml: '80px',
+                height: '196px',
+              }}
+            />
           </Box>
         </Box>
       </Box>
