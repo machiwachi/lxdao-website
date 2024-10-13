@@ -1,19 +1,67 @@
 import { useEffect, useState } from 'react';
 
 import { Box, Card, Link, Typography } from '@mui/material';
-import { Button as MuiButton } from '@mui/material';
-import { keyframes } from '@mui/system';
 
-import Button from '@/components/Button';
-import CommunityLinkGroup from '@/components/CommunityLinkGroup';
 import Container from '@/components/Container';
+
+import { erc20Abi } from 'viem';
+
+import { useReadContracts } from 'wagmi';
 
 import API from '@/common/API';
 import { SNAPSHOTURL, queryProposals } from '@/graphql/snapshot';
 
 import { request } from 'graphql-request';
 
-export default function NewSectionWork() {
+export default function NewSectionWork({ projectAmount, buidlerAmount }) {
+  const usdtAmount = useReadContracts({
+    allowFailure: false,
+    contracts: [
+      {
+        address: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+        abi: erc20Abi,
+        functionName: 'balanceOf',
+        args: ['0xB45e9F74D0a35fE1aa0B78feA03877EF96ae8dd2'],
+      },
+    ],
+  });
+
+  const usdcAmount = useReadContracts({
+    allowFailure: false,
+    contracts: [
+      {
+        address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+        abi: erc20Abi,
+        functionName: 'balanceOf',
+        args: ['0xB45e9F74D0a35fE1aa0B78feA03877EF96ae8dd2'],
+      },
+    ],
+  });
+
+  const daiAmount = useReadContracts({
+    allowFailure: false,
+    contracts: [
+      {
+        address: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
+        abi: erc20Abi,
+        functionName: 'balanceOf',
+        args: ['0xB45e9F74D0a35fE1aa0B78feA03877EF96ae8dd2'],
+      },
+    ],
+  });
+
+  const [totalTreasury, setTotalTreasury] = useState(0);
+
+  useEffect(() => {
+    if (usdtAmount.data && usdcAmount.data && daiAmount.data) {
+      const sum =
+        parseFloat(usdtAmount.data[0]) / 1e6 +
+        parseFloat(usdcAmount.data[0]) / 1e6 +
+        parseFloat(daiAmount.data[0]) / 1e18;
+      setTotalTreasury(sum);
+    }
+  }, [usdtAmount.data, usdcAmount.data, daiAmount.data]);
+
   return (
     <Container py="120px">
       <Box
@@ -66,7 +114,56 @@ export default function NewSectionWork() {
           <VotesCard />
         </Box>
       </Box>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+        }}
+      >
+        <Box
+          sx={{
+            height: '20px',
+            width: 'calc(100% - 260px)',
+            background:
+              'linear-gradient(135deg, #2975DF 0%, #32A5E1 50%, #3ACFE3 100%)',
+            mr: '24px',
+          }}
+        ></Box>
+        <Typography fontSize="24px" fontWeight={700} noWrap>
+          LXDAO in Numbers
+        </Typography>
+      </Box>
+      <Box
+        sx={{
+          display: 'flex',
+          mt: '48px',
+          justifyContent: 'space-between',
+        }}
+      >
+        <DataBox value="16K+" title="Twitter Followers & TG Members" />
+        <DataBox value={buidlerAmount} title="Registered member" />
+        <DataBox value={projectAmount} title="Supported projects" />
+        <DataBox value={totalTreasury} title="Treasury" />
+      </Box>
     </Container>
+  );
+}
+function DataBox({ value, title }) {
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        py: '48px',
+        gap: '32px',
+        width: '250px',
+      }}
+    >
+      <Typography fontSize="36px" fontWeight="700">
+        {value}
+      </Typography>
+      <Typography maxWidth="200px">{title}</Typography>
+    </Box>
   );
 }
 

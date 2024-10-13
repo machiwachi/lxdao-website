@@ -103,7 +103,10 @@ export default function Home() {
   return (
     <Layout>
       <NewSectionHero />
-      <NewSectionWork />
+      <NewSectionWork
+        projectAmount={projects.length}
+        buidlerAmount={activeBuidlerAmount}
+      />
       <SupportUs />
       <SectionMission
         projectAmount={projects.length}
