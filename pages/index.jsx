@@ -7,8 +7,8 @@ import Layout from '@/components/Layout';
 
 import API from '@/common/API';
 import NewSectionHero from '@/sections/NewSectionHero';
+import NewSectionWork from '@/sections/NewSectionWork';
 import SectionBuidlers from '@/sections/SectionBuidlers';
-import SectionHero from '@/sections/SectionHomepageHero';
 import SectionHomepageProjects from '@/sections/SectionHomepageProjects';
 import SectionMission from '@/sections/SectionMission';
 // import SectionActivities from '@/sections/SectionActivities';
@@ -103,6 +103,7 @@ export default function Home() {
   return (
     <Layout>
       <NewSectionHero />
+      <NewSectionWork />
       <SupportUs />
       <SectionMission
         projectAmount={projects.length}
