@@ -63,50 +63,132 @@ export default function NewSectionOnBoarding() {
           </Typography>
         </Box>
       </Container>
-      <Box>
+      <OnBoardingSection
+        title="Education"
+        description="We held various events to let the ideas about Public Goods reach more people."
+        index="1"
+      >
         <Box
-          maxWidth="1216px"
-          boxSizing="border-box"
-          marginX={{ lg: 'auto', md: '20px', xs: '20px' }}
+          sx={{
+            width: '100%',
+            overflow: 'scroll',
+          }}
         >
-          <OnBoardingTitle
-            index="1"
-            title="Education"
-            description="We held various events to let the ideas about Public Goods reach more people."
-          ></OnBoardingTitle>
-        </Box>
-        <Box>
           <Box
             sx={{
-              width: '100%',
-              overflow: 'scroll',
+              display: 'flex',
+              gap: '12px',
+              width: 'fit-content',
+              borderRadius: '24px',
+              ml: 'calc((100vw - Min(90vw, 1216px))/2)',
+              backgroundColor: '#CEE8F8',
+              padding: '12px',
             }}
           >
-            <Box
-              sx={{
-                display: 'flex',
-                gap: '12px',
-                width: 'fit-content',
-                borderRadius: '24px',
-                ml: 'calc((100vw - Min(90vw, 1216px))/2)',
-                backgroundColor: '#CEE8F8',
-                padding: '12px',
-              }}
-            >
-              {Array.from({ length: 10 }).map((_, index) => (
-                <Box
-                  key={index}
-                  sx={{
-                    width: '300px',
-                    height: '400px',
-                    borderRadius: '20px',
-                    backgroundImage: `linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent),url('/images/new/example.png')`,
-                  }}
-                ></Box>
-              ))}
-            </Box>
+            {Array.from({ length: 10 }).map((_, index) => (
+              <Box
+                key={index}
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'end',
+                  width: '300px',
+                  height: '400px',
+                  color: 'white',
+                  borderRadius: '20px',
+                  padding: '10px 20px',
+                  backgroundImage: `linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent),url('/images/new/example.png')`,
+                }}
+              >
+                <Typography fontSize="28px" fontWeight="600">
+                  EDCON
+                </Typography>
+                <Box fontSize="14px" leading="10px">
+                  <Typography>2024.07</Typography>
+                  <Typography>@Tokyo</Typography>
+                </Box>
+              </Box>
+            ))}
           </Box>
         </Box>
+      </OnBoardingSection>
+    </Box>
+  );
+}
+
+function OnBoardingSection({ title, description, index, children }) {
+  return (
+    <Box paddingTop="120px" paddingBottom="100px">
+      <Box
+        maxWidth="1216px"
+        boxSizing="border-box"
+        marginX={{ lg: 'auto', md: '20px', xs: '20px' }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'start',
+          }}
+        >
+          <Typography fontSize="80px" fontWeight="700">
+            {index}
+          </Typography>
+          <Box ml="20px">
+            <Typography fontSize="32px" fontWeight="700">
+              {title}
+            </Typography>
+            <Typography fontSize="20px" fontWeight="500">
+              {description}
+            </Typography>
+          </Box>
+        </Box>
+      </Box>
+      <Box>
+        {children}
+        {/* <Box
+        sx={{
+          width: '100%',
+          overflow: 'scroll',
+        }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            gap: '12px',
+            width: 'fit-content',
+            borderRadius: '24px',
+            ml: 'calc((100vw - Min(90vw, 1216px))/2)',
+            backgroundColor: '#CEE8F8',
+            padding: '12px',
+          }}
+        >
+          {Array.from({ length: 10 }).map((_, index) => (
+            <Box
+              key={index}
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'end',
+                width: '300px',
+                height: '400px',
+                color: 'white',
+                borderRadius: '20px',
+                padding: '10px 20px',
+                backgroundImage: `linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent),url('/images/new/example.png')`,
+              }}
+            >
+              <Typography fontSize="28px" fontWeight="600">
+                EDCON
+              </Typography>
+              <Box fontSize="14px">
+                <Typography>2024.07</Typography>
+                <Typography>@Tokyo</Typography>
+              </Box>
+            </Box>
+          ))}
+        </Box>
+      </Box> */}
       </Box>
     </Box>
   );
