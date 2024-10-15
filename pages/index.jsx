@@ -113,7 +113,7 @@ export default function Home() {
       <NewSectionPG />
       <NewSectionOnBoarding buidlers={buidlers.slice(0, 27)} />
       <NewSectionConnections />
-      <SupportUs />
+      {/* <SupportUs />
       <SectionMission
         projectAmount={projects.length}
         buidlerAmount={activeBuidlerAmount}
@@ -122,7 +122,7 @@ export default function Home() {
       <SectionHomepageProjects projects={projects} />
       <SectionBuidlers buidlers={buidlers} />
       <SectionWorkingGroup />
-      <SectionPartners />
+      <SectionPartners /> */}
     </Layout>
   );
 }

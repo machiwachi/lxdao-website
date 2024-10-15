@@ -187,6 +187,93 @@ export default function NewSectionConnections() {
             })}
           </Box>
         </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '96px',
+            mt: '120px',
+            width: '1218px',
+            justifyContent: 'center',
+            alignItems: 'center',
+            background:
+              'linear-gradient(135deg, #2975DF 0%, #32A5E1 50%, #3ACFE3 100%)',
+            borderRadius: '24px',
+            padding: '120px 100px',
+          }}
+        >
+          <Typography
+            sx={{
+              fontSize: '48px',
+              fontWeight: '700',
+              color: 'white',
+            }}
+          >
+            Support LXDAO
+          </Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              width: '100%',
+            }}
+          >
+            <Typography color="white" width="420px">
+              The problem we try to tackle at LXDAO requires long-term
+              endeavors. We have been here for two years, yet still need support
+              for the future works to happen.
+              <br />
+              <br />
+              If you agree with our ideas, please support us for a longer
+              runway.
+            </Typography>
+            <Box
+              sx={{
+                bgcolor: 'white',
+                borderRadius: '24px',
+                width: '240px',
+                height: 'fit-content',
+              }}
+            >
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  gap: '6px',
+                  textAlign: 'center',
+                  py: '18px',
+                  bgcolor: 'white',
+                  width: '240px',
+                  color: 'transparent',
+                  WebkitTextFillColor: 'transparent',
+                  WebkitBackgroundClip: 'text',
+                  backgroundClip: 'text',
+                  backgroundImage:
+                    'linear-gradient(to right, #2975DF, #32A5E1, #3ACFE3)',
+                }}
+              >
+                <Box
+                  sx={{
+                    fontSize: '22px',
+                    fontWeight: 700,
+                  }}
+                >
+                  Support Guide
+                </Box>
+                <Box
+                  sx={{
+                    fontSize: '18px',
+                  }}
+                >
+                  {'Notion ->'}
+                </Box>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
       </Container>
     </Box>
   );
