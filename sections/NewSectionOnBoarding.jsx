@@ -16,7 +16,7 @@ export default function NewSectionOnBoarding({ buidlers }) {
     <Box
       sx={{
         width: '100vw',
-        backgroundImage: `url('/images/new/top-bg.svg'), url('/images/new/hero-bg.svg')`,
+        backgroundImage: `url('/images/new/top-bg.svg'), url('/images/new/bottom-bg.svg')`,
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'bottom, top',
@@ -263,6 +263,79 @@ export default function NewSectionOnBoarding({ buidlers }) {
           </MuiButton>
         </Container>
       </OnBoardingSection>
+      <OnBoardingSection
+        title="Working Groups"
+        description="As part of the sustainable solution, LXDAO itself operates as a DAO to ensure 'public goods by the public, for the public.'"
+        index="05"
+      >
+        <Container
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          width="100%"
+          justifyContent="center"
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              my: '64px',
+              width: '100%',
+              gap: '24px',
+            }}
+          >
+            <WorkingGroupCard
+              title="Governance"
+              href="https://github.com/lxdao-io/governance"
+              image="https://cdn.lxdao.io/09d959d3-f9c2-455f-915e-f92e0d03ece5.jpg"
+            />
+            <WorkingGroupCard
+              title="Forge"
+              href="https://github.com/lxdao-io/governance"
+              image="https://cdn.lxdao.io/09d959d3-f9c2-455f-915e-f92e0d03ece5.jpg"
+            />
+            <WorkingGroupCard
+              title="Operation"
+              href="https://github.com/lxdao-io/governance"
+              image="https://cdn.lxdao.io/09d959d3-f9c2-455f-915e-f92e0d03ece5.jpg"
+            />
+          </Box>
+
+          <MuiButton
+            variant="contained"
+            sx={{
+              borderRadius: '100px',
+              padding: '12px 40px',
+            }}
+          >
+            VIEW ALL
+          </MuiButton>
+        </Container>
+      </OnBoardingSection>
+    </Box>
+  );
+}
+function WorkingGroupCard({ title, href, image }) {
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        bgcolor: '#CEE8F8',
+        p: '12px 12px 24px 12px',
+        borderRadius: '29px',
+      }}
+      onClick={() => {
+        window.open(href, '_blank');
+      }}
+    >
+      <Box component="img" width="360px" borderRadius="24px" src={image} />
+      <Typography mt="24px" fontSize="24px">
+        {title}
+      </Typography>
     </Box>
   );
 }
@@ -431,7 +504,7 @@ function OnBoardingSection({ title, description, index, children }) {
             <Typography fontSize="32px" fontWeight="700">
               {title}
             </Typography>
-            <Typography fontSize="20px" fontWeight="500">
+            <Typography fontSize="20px" fontWeight="500" maxWidth="710px">
               {description}
             </Typography>
           </Box>
