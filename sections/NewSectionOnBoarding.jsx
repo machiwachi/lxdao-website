@@ -1,6 +1,5 @@
 import { Box, Link, Typography } from '@mui/material';
 import { Button as MuiButton } from '@mui/material';
-import { keyframes } from '@mui/system';
 
 import Button from '@/components/Button';
 import CommunityLinkGroup from '@/components/CommunityLinkGroup';
@@ -9,6 +8,33 @@ import StyledTooltip from '@/components/StyledToolTip';
 import Tag from '@/components/Tag';
 
 import { getMemberFirstBadgeAmount } from '@/utils/utility';
+
+import styled, { keyframes } from 'styled-components';
+
+const textColorGradient = keyframes`
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+`;
+
+const HightlightText = styled.span`
+  background-size: 400% 400%;
+  background-image: linear-gradient(to right, #366eff, #23e5ff, #ff7fdb);
+  -webkit-background-clip: text;
+  animation: ${textColorGradient} 10s ease infinite;
+  color: transparent;
+  font-size: 36px;
+  line-height: 100px;
+  font-weight: 700;
+  @media screen and (max-width: 900px) {
+    font-size: 4.902rem;
+    line-height: 1.02;
+  }
+  @media screen and (max-width: 600px) {
+    font-size: 3.5625rem;
+    line-height: 1.02;
+  }
+`;
 
 export default function NewSectionOnBoarding({ buidlers }) {
   console.log(buidlers);
@@ -313,6 +339,16 @@ export default function NewSectionOnBoarding({ buidlers }) {
           </MuiButton>
         </Container>
       </OnBoardingSection>
+      <Typography
+        fontSize="36px"
+        paddingTop="100px"
+        paddingBottom="200px"
+        textAlign="center"
+        fontWeight="700"
+      >
+        Know more about&nbsp;
+        <HightlightText>How LXDAO Works</HightlightText>
+      </Typography>
     </Box>
   );
 }
@@ -484,7 +520,7 @@ const BuidlerAvatarBox = ({ buidler, active, display }) => {
 
 function OnBoardingSection({ title, description, index, children }) {
   return (
-    <Box paddingTop="120px" paddingBottom="100px">
+    <Box paddingTop="140px" paddingBottom="140px">
       <Box
         maxWidth="1216px"
         boxSizing="border-box"
