@@ -5,8 +5,13 @@ import { keyframes } from '@mui/system';
 import Button from '@/components/Button';
 import CommunityLinkGroup from '@/components/CommunityLinkGroup';
 import Container from '@/components/Container';
+import StyledTooltip from '@/components/StyledToolTip';
+import Tag from '@/components/Tag';
 
-export default function NewSectionOnBoarding() {
+import { getMemberFirstBadgeAmount } from '@/utils/utility';
+
+export default function NewSectionOnBoarding({ buidlers }) {
+  console.log(buidlers);
   return (
     <Box
       sx={{
@@ -66,7 +71,7 @@ export default function NewSectionOnBoarding() {
       <OnBoardingSection
         title="Education"
         description="We held various events to let the ideas about Public Goods reach more people."
-        index="1"
+        index="01"
       >
         <Box
           sx={{
@@ -112,9 +117,190 @@ export default function NewSectionOnBoarding() {
           </Box>
         </Box>
       </OnBoardingSection>
+      <OnBoardingSection
+        title="Onboarding"
+        description="We onboard talents with 'LX' to research & develop."
+        index="02"
+      >
+        <Container
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '12px',
+              width: '100%',
+              padding: '12px',
+              height: '100%',
+              backgroundColor: '#C6F5F1',
+              borderRadius: '24px',
+              my: '52px',
+            }}
+          >
+            {buidlers.map((buidler, index) => {
+              const firstMemberBadgeAmount = getMemberFirstBadgeAmount(
+                buidler?.badges
+              );
+              const active =
+                buidler?.status === 'ACTIVE' ||
+                (buidler?.status === 'PENDING' && firstMemberBadgeAmount > 0);
+              if (!active) return;
+              return (
+                <Box key={index}>
+                  <BudilerTooltip
+                    buidler={buidler}
+                    active={active}
+                    display={{ md: 'block', xs: 'none' }}
+                  />
+                  <BuidlerAvatarBox
+                    buidler={buidler}
+                    active={active}
+                    display={{ md: 'none', xs: 'block' }}
+                  />
+                </Box>
+              );
+            })}
+          </Box>
+          <MuiButton
+            variant="contained"
+            sx={{
+              borderRadius: '100px',
+              padding: '12px 40px',
+            }}
+          >
+            VIEW ALL MEMBERS
+          </MuiButton>
+        </Container>
+      </OnBoardingSection>
     </Box>
   );
 }
+
+const BudilerTooltip = ({
+  buidler,
+  handleBuidlerCardHover,
+  handleBuidlerCardLeave,
+  ...rest
+}) => {
+  const BuidlerDetails = ({ name, description, address, role }) => {
+    return (
+      <Box>
+        <Typography
+          color="#000000"
+          variant="h5"
+          lineHeight="24px"
+          fontWeight={500}
+          marginBottom={3}
+        >
+          {name}
+        </Typography>
+        <Typography
+          color="#666F85"
+          variant="body1"
+          lineHeight="24px"
+          fontWeight={400}
+          marginBottom="17px"
+        >
+          {description}
+        </Typography>
+        {role?.length && (
+          <Box display="flex" flexWrap="wrap" marginBottom="25px">
+            {role.map((roleItem, index) => {
+              return <Tag key={index} text={roleItem} />;
+            })}
+          </Box>
+        )}
+        <Link
+          href={`/buidlers/${address}`}
+          sx={{ textDecoration: 'none' }}
+          target="_blank"
+        >
+          <Typography
+            color="#101828"
+            variant="body1"
+            lineHeight="24px"
+            fontWeight={500}
+            textAlign="right"
+          >
+            More -{`>`}
+          </Typography>
+        </Link>
+      </Box>
+    );
+  };
+
+  const firstMemberBadgeAmount = getMemberFirstBadgeAmount(buidler?.badges);
+
+  return (
+    <Box {...rest}>
+      <StyledTooltip
+        title={<BuidlerDetails {...buidler} />}
+        placement="bottom-start"
+      >
+        <Box
+          sx={{ aspectRatio: '1 / 1' }}
+          onMouseOver={handleBuidlerCardHover}
+          onMouseLeave={handleBuidlerCardLeave}
+          position="relative"
+        >
+          <BuidlerAvatarBox
+            buidler={buidler}
+            active={
+              buidler?.status === 'ACTIVE' ||
+              (buidler?.status === 'PENDING' && firstMemberBadgeAmount > 0)
+            }
+            display="block"
+          />
+        </Box>
+      </StyledTooltip>
+    </Box>
+  );
+};
+
+const BuidlerAvatarBox = ({ buidler, active, display }) => {
+  return (
+    <Link
+      href={`/buidlers/${buidler.address}`}
+      target="_blank"
+      sx={{
+        textDecoration: 'none',
+        aspectRatio: '1 / 1',
+      }}
+      display={display}
+      width={{ sm: '121px', xs: '100%' }}
+      height={{ sm: '121px', xs: '100%' }}
+      position="relative"
+    >
+      {!active && (
+        <Box
+          sx={{ position: 'absolute', zIndex: 1 }}
+          component="img"
+          src={'/icons/onboarding.svg'}
+        />
+      )}
+      <Box
+        width={{ sm: '121px', xs: '100%' }}
+        sx={{ position: 'absolute', top: 0, left: 0, aspectRatio: '1 / 1' }}
+        backgroundColor={active ? 'transpent' : 'rgba(0,0,0,0.5)'}
+        display={{ md: 'block', xs: 'none' }}
+      />
+      <Box width={{ sm: '121px', xs: '100%' }} height="100%">
+        <Box
+          component="img"
+          width={{ xs: '100%' }}
+          src={buidler?.avatar || '/images/placeholder.jpeg'}
+          sx={{ aspectRatio: '1 / 1' }}
+          borderRadius="12px"
+          border="0.5px solid #D0D5DD"
+        />
+      </Box>
+    </Link>
+  );
+};
 
 function OnBoardingSection({ title, description, index, children }) {
   return (

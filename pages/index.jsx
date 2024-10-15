@@ -110,7 +110,7 @@ export default function Home() {
         buidlerAmount={activeBuidlerAmount}
       />
       <NewSectionPG />
-      <NewSectionOnBoarding />
+      <NewSectionOnBoarding buidlers={buidlers.slice(0, 27)} />
       <SupportUs />
       <SectionMission
         projectAmount={projects.length}
