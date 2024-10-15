@@ -130,6 +130,155 @@ export default function NewSectionConnections() {
           ))}
         </Box>
       </Box>
+      <Container>
+        <Box
+          sx={{
+            display: 'flex',
+            mt: '120px',
+            width: '1218px',
+            justifyContent: 'space-between',
+            alignItems: 'start',
+          }}
+        >
+          <Box fontSize="48px" fontWeight="700" maxWidth="320px">
+            LXDAO Partners
+          </Box>
+          <Box
+            display="flex"
+            gap={2}
+            flexWrap="wrap"
+            maxWidth="800px"
+            justifyContent="end"
+          >
+            {partnersData.map((partner, index) => {
+              return (
+                <Link href={partner.link} target="_blank" key={index}>
+                  <Box component={'img'} src={partner.logo} />
+                </Link>
+              );
+            })}
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            mt: '120px',
+            width: '1218px',
+            justifyContent: 'space-between',
+            alignItems: 'start',
+          }}
+        >
+          <Box fontSize="48px" fontWeight="700" maxWidth="320px">
+            Beloved Sponsors
+          </Box>
+          <Box
+            display="flex"
+            gap={2}
+            flexWrap="wrap"
+            maxWidth="800px"
+            justifyContent="end"
+          >
+            {sponsorshipsData.map((partner, index) => {
+              return (
+                <Link href={partner.link} target="_blank" key={index}>
+                  <Box component={'img'} src={partner.logo} />
+                </Link>
+              );
+            })}
+          </Box>
+        </Box>
+      </Container>
     </Box>
   );
 }
+
+const sponsorshipsData = [
+  {
+    name: 'Mask Network',
+    logo: '/images/partners/mask-logo.svg',
+    link: '	https://mask.io/',
+  },
+  {
+    name: 'Optimism',
+    logo: '/images/partners/optimism-logo.svg',
+    link: 'https://www.optimism.io/',
+  },
+];
+
+const partnersData = [
+  {
+    name: 'NextDAO',
+    logo: '/images/partners/nextdao-logo.svg',
+    link: 'https://twitter.com/theNextDAO',
+  },
+  {
+    name: 'GCC',
+    logo: '/images/partners/gcc-logo.svg',
+    link: 'https://www.gccofficial.org/',
+  },
+  {
+    name: 'PlanckerDAO',
+    logo: '/images/partners/Plancker-logo.svg',
+    link: 'https://plancker.org/',
+  },
+  {
+    name: 'DAOStar',
+    logo: '/images/partners/DAOStar-logo.svg',
+    link: 'https://daostar.org/',
+  },
+  {
+    name: 'MoleDAO',
+    logo: '/images/partners/moledao-logo.svg',
+    link: 'https://linktr.ee/moledao',
+  },
+  {
+    name: 'MarsDAO',
+    logo: '/images/partners/marsdao-logo.svg',
+    link: 'https://linktr.ee/MarsDAO',
+  },
+  {
+    name: 'EthSign',
+    logo: '/images/partners/ethsign-logo.svg',
+    link: 'https://linktr.ee/SignProtocol',
+  },
+  {
+    name: '8dao',
+    logo: '/images/partners/8dao-logo.svg',
+    link: 'https://8dao.io/',
+  },
+  {
+    name: 'Uncommons',
+    logo: '/images/partners/Uncommons-logo.svg',
+    link: 'https://www.notion.so/Uncommons-04ea0224d3cd4fe9b5181b6dd22d02b4',
+  },
+  {
+    name: 'AAStar',
+    logo: '/images/partners/AAStar-logo.svg',
+    link: 'https://www.aastar.xyz/',
+  },
+  {
+    name: 'Eleduck',
+    logo: '/images/partners/eleduck-logo.svg',
+    link: 'https://eleduck.com/',
+  },
+  {
+    name: 'Artele',
+    logo: '/images/partners/Artela-logo.svg',
+    link: 'https://artela.network/',
+  },
+  {
+    name: 'DMC',
+    logo: '/images/partners/DMC-logo.svg',
+    link: 'https://www.dmctech.io/en',
+  },
+  {
+    name: 'ETHPanda',
+    logo: '/images/partners/ETHPanda-logo.svg',
+    link: 'https://ethpanda.org/',
+  },
+  {
+    name: 'BlockBooster',
+    logo: '/images/partners/BlockBooster-logo.svg',
+    link: 'https://www.gitcoin.co/',
+  },
+];
