@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import Layout from '@/components/Layout';
 
 import API from '@/common/API';
+import NewSectionConnections from '@/sections/NewSectionConnections';
 import NewSectionHero from '@/sections/NewSectionHero';
 import NewSectionOnBoarding from '@/sections/NewSectionOnBoarding';
 import NewSectionPG from '@/sections/NewSectionPG';
@@ -111,6 +112,7 @@ export default function Home() {
       />
       <NewSectionPG />
       <NewSectionOnBoarding buidlers={buidlers.slice(0, 27)} />
+      <NewSectionConnections />
       <SupportUs />
       <SectionMission
         projectAmount={projects.length}
