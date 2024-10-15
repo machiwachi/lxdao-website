@@ -176,6 +176,113 @@ export default function NewSectionOnBoarding({ buidlers }) {
           </MuiButton>
         </Container>
       </OnBoardingSection>
+      <OnBoardingSection
+        title="Research"
+        description="We carry out research to dig out and keep updated with the latest happenings."
+        index="03"
+      >
+        <Container
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          width="100%"
+          justifyContent="center"
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: '#CEE8F8',
+              padding: '12px',
+              borderRadius: '24px',
+              my: '64px',
+              width: '100%',
+            }}
+          >
+            <Box
+              sx={{
+                bgcolor: 'white',
+                width: '100%',
+                height: '100%',
+                borderRadius: '24px',
+              }}
+            >
+              {Array.from({ length: 5 }).map((_, index) => (
+                <Box
+                  key={index}
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    p: '36px 60px',
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      gap: '4px',
+                      maxWidth: '120px',
+                      minWidth: '120px',
+                    }}
+                  >
+                    <MyTag color="blue">NFT</MyTag>
+                    <MyTag color="green">Open source</MyTag>
+                  </Box>
+                  <Box minWidth="600px">
+                    <Typography fontSize="24px" fontWeight="700">
+                      Report on Web3 Public Goods Ecosystem
+                    </Typography>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        gap: '16px',
+                        color: '#666',
+                        fontSize: '14px',
+                      }}
+                    >
+                      <Typography>2024/10/02</Typography>
+                      <Typography>@Tiao</Typography>
+                    </Box>
+                  </Box>
+                  <Box component="img" src="/images/new/arrow.svg" />
+                </Box>
+              ))}
+            </Box>
+          </Box>
+          <MuiButton
+            variant="contained"
+            sx={{
+              borderRadius: '100px',
+              padding: '12px 40px',
+            }}
+          >
+            VIEW ALL MEMBERS
+          </MuiButton>
+        </Container>
+      </OnBoardingSection>
+    </Box>
+  );
+}
+
+function MyTag({ color, children }) {
+  return (
+    <Box align="center">
+      <Typography
+        fontSize={{ md: '14px', xs: '12px' }}
+        sx={{
+          alignItems: 'center',
+          color: color == 'green' ? '#4DCC9E' : '#36AFF9',
+          background: color == 'green' ? 'rgba(77, 204, 158, 0.1)' : '#e4eff5',
+          display: 'initial',
+          lineHeight: '23.92px',
+          padding: '4px 12px',
+        }}
+      >
+        {children}
+      </Typography>
     </Box>
   );
 }
