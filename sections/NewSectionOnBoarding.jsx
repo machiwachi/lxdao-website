@@ -45,7 +45,7 @@ export default function NewSectionOnBoarding({ buidlers }) {
         backgroundImage: `url('/images/new/top-bg.svg'), url('/images/new/bottom-bg.svg')`,
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'bottom, top',
+        backgroundPosition: 'top, bottom',
       }}
     >
       <Container
@@ -290,6 +290,142 @@ export default function NewSectionOnBoarding({ buidlers }) {
         </Container>
       </OnBoardingSection>
       <OnBoardingSection
+        title="Projects"
+        description="We are the trustworthy team to ideate, develop and maintain Web3 Public Goods."
+        index="04"
+      >
+        <Container
+          maxWidth="1316px"
+          sx={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: '12px',
+            my: '52px',
+          }}
+        >
+          <ProjectGroupCard
+            title="Coordination & Governance"
+            width="calc(50% - 6px)"
+            image="/images/new/projects/puzzle.svg"
+            projects={[
+              {
+                name: 'FairSharing',
+                description:
+                  'FairSharing is reshape the way human collaborate and allocate, building a more equitable society.',
+                banner:
+                  'https://cdn.lxdao.io/bafkreiaxc6u7krl4xb4macgzmdnzfivj26fpw6j57zgo2lkxy7spv7oxay.png',
+              },
+              {
+                name: 'ETHPanda Collaboration',
+                description:
+                  'ETHPanda is composed of a group of Chinese-speaking builders who are concerned about Ethernet. We will promote the construction of a public network for Chinese-speaking builders of Ethernet, and bring everyone’s strength together to better support Ethernet.',
+                banner:
+                  'https://cdn.lxdao.io/af8e14c1-0515-4c75-b3fa-6fcac39e94bc.png',
+              },
+              {
+                name: 'OPCN',
+                description:
+                  'Officially established Optimism Chinese Community, OP Chinese Community is an organisation initiated by GCC, LXDAO, PlanckerDAO, Dengchain Community and TraDAO to spread the concept of Optimism technology and public goods, aiming to be a bridge linking the Chinese-speaking community and the Optimism ecosystem. It aims to be a bridge between the Chinese-speaking community and the Optimism ecosystem, to promote two-way communication within the Optimism ecosystem and the Chinese-speaking community, and to promote the prosperity of public goods.',
+                banner:
+                  'https://cdn.lxdao.io/a4514cbc-26b4-4d2d-9704-02630b7a22d2.png',
+              },
+            ]}
+          />
+          <ProjectGroupCard
+            title="Coordination & Governance"
+            width="calc(50% - 6px)"
+            image="/images/new/projects/puzzle.svg"
+            projects={[
+              {
+                name: 'FairSharing',
+                description:
+                  'FairSharing is reshape the way human collaborate and allocate, building a more equitable society.',
+                banner:
+                  'https://cdn.lxdao.io/bafkreiaxc6u7krl4xb4macgzmdnzfivj26fpw6j57zgo2lkxy7spv7oxay.png',
+              },
+              {
+                name: 'ETHPanda Collaboration',
+                description:
+                  'ETHPanda is composed of a group of Chinese-speaking builders who are concerned about Ethernet. We will promote the construction of a public network for Chinese-speaking builders of Ethernet, and bring everyone’s strength together to better support Ethernet.',
+                banner:
+                  'https://cdn.lxdao.io/af8e14c1-0515-4c75-b3fa-6fcac39e94bc.png',
+              },
+              {
+                name: 'OPCN',
+                description:
+                  'Officially established Optimism Chinese Community, OP Chinese Community is an organisation initiated by GCC, LXDAO, PlanckerDAO, Dengchain Community and TraDAO to spread the concept of Optimism technology and public goods, aiming to be a bridge linking the Chinese-speaking community and the Optimism ecosystem. It aims to be a bridge between the Chinese-speaking community and the Optimism ecosystem, to promote two-way communication within the Optimism ecosystem and the Chinese-speaking community, and to promote the prosperity of public goods.',
+                banner:
+                  'https://cdn.lxdao.io/a4514cbc-26b4-4d2d-9704-02630b7a22d2.png',
+              },
+            ]}
+          />
+          <ProjectGroupCard
+            title="Coordination & Governance"
+            width="calc((100% - 24px)/3)"
+            image="/images/new/projects/puzzle.svg"
+            projects={[
+              {
+                name: 'FairSharing',
+                description:
+                  'FairSharing is reshape the way human collaborate and allocate, building a more equitable society.',
+                banner:
+                  'https://cdn.lxdao.io/bafkreiaxc6u7krl4xb4macgzmdnzfivj26fpw6j57zgo2lkxy7spv7oxay.png',
+              },
+              {
+                name: 'ETHPanda Collaboration',
+                description:
+                  'ETHPanda is composed of a group of Chinese-speaking builders who are concerned about Ethernet. We will promote the construction of a public network for Chinese-speaking builders of Ethernet, and bring everyone’s strength together to better support Ethernet.',
+                banner:
+                  'https://cdn.lxdao.io/af8e14c1-0515-4c75-b3fa-6fcac39e94bc.png',
+              },
+            ]}
+          />
+
+          <ProjectGroupCard
+            title="Coordination & Governance"
+            width="calc((100% - 24px)/3)"
+            image="/images/new/projects/puzzle.svg"
+            projects={[
+              {
+                name: 'FairSharing',
+                description:
+                  'FairSharing is reshape the way human collaborate and allocate, building a more equitable society.',
+                banner:
+                  'https://cdn.lxdao.io/bafkreiaxc6u7krl4xb4macgzmdnzfivj26fpw6j57zgo2lkxy7spv7oxay.png',
+              },
+              {
+                name: 'ETHPanda Collaboration',
+                description:
+                  'ETHPanda is composed of a group of Chinese-speaking builders who are concerned about Ethernet. We will promote the construction of a public network for Chinese-speaking builders of Ethernet, and bring everyone’s strength together to better support Ethernet.',
+                banner:
+                  'https://cdn.lxdao.io/af8e14c1-0515-4c75-b3fa-6fcac39e94bc.png',
+              },
+            ]}
+          />
+          <ProjectGroupCard
+            title="Coordination & Governance"
+            width="calc((100% - 24px)/3)"
+            image="/images/new/projects/puzzle.svg"
+            projects={[
+              {
+                name: 'FairSharing',
+                description:
+                  'FairSharing is reshape the way human collaborate and allocate, building a more equitable society.',
+                banner:
+                  'https://cdn.lxdao.io/bafkreiaxc6u7krl4xb4macgzmdnzfivj26fpw6j57zgo2lkxy7spv7oxay.png',
+              },
+              {
+                name: 'ETHPanda Collaboration',
+                description:
+                  'ETHPanda is composed of a group of Chinese-speaking builders who are concerned about Ethernet. We will promote the construction of a public network for Chinese-speaking builders of Ethernet, and bring everyone’s strength together to better support Ethernet.',
+                banner:
+                  'https://cdn.lxdao.io/af8e14c1-0515-4c75-b3fa-6fcac39e94bc.png',
+              },
+            ]}
+          />
+        </Container>
+      </OnBoardingSection>
+      <OnBoardingSection
         title="Working Groups"
         description="As part of the sustainable solution, LXDAO itself operates as a DAO to ensure 'public goods by the public, for the public.'"
         index="05"
@@ -352,6 +488,110 @@ export default function NewSectionOnBoarding({ buidlers }) {
     </Box>
   );
 }
+
+function ProjectGroupCard({ title, width, image, projects }) {
+  return (
+    <Box
+      sx={{
+        width: { width },
+        p: '36px 24px',
+        bgcolor: '#C6F5F1',
+        borderRadius: '24px',
+      }}
+    >
+      <Box display="flex" alignItems="center" gap="9px">
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '40px',
+            height: '40px',
+            bgcolor: 'black',
+            borderRadius: '40px',
+          }}
+        >
+          <Box component="img" src={image} />
+        </Box>
+
+        <Typography
+          sx={{
+            fontSize: '24px',
+            fontWeight: '600',
+            maxWidth: '200px',
+            lineHeight: '24px',
+          }}
+        >
+          {title}
+        </Typography>
+      </Box>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          width: '100%',
+          mt: '24px',
+          gap: '12px',
+        }}
+      >
+        {projects.map((project, index) => (
+          <Box
+            key={index}
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '12px',
+              p: '16px 12px',
+              width: `calc((100% - 24px)/${projects.length})`,
+              maxWidth: '190px',
+              bgcolor: 'white',
+              borderRadius: '24px',
+            }}
+          >
+            <Box
+              width="100%"
+              height="auto"
+              borderRadius="12px"
+              component="img"
+              border="0.5px solid #D9D9D9"
+              src={project.banner}
+            ></Box>
+            <Box
+              sx={{
+                display: 'flex',
+                height: '48px',
+                alignItems: 'end',
+              }}
+            >
+              <Typography fontSize="18px" fontWeight="700" maxWidth="163px">
+                {project.name}
+              </Typography>
+            </Box>
+            <Typography
+              fontSize="14px"
+              color="#666"
+              width="163px"
+              textAlign="left"
+              height="75px"
+              textOverflow="ellipsis"
+              overflow="hidden"
+              lineHeight="1.4"
+              // whiteSpace="nowrap"
+              sx={{
+                display: '-webkit-box',
+                WebkitBoxOrient: 'vertical',
+                WebkitLineClamp: 4,
+              }}
+            >
+              {project.description}
+            </Typography>
+          </Box>
+        ))}
+      </Box>
+    </Box>
+  );
+}
+
 function WorkingGroupCard({ title, href, image }) {
   return (
     <Box
