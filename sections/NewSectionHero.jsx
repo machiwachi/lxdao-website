@@ -126,41 +126,54 @@ export default function NewSectionHero() {
             Learn More
           </MuiButton>
         </Box>
+      </Container>
+      <Box
+        sx={{
+          // width: '100%',
+          overflow: 'scroll',
+          // width: '1218px',
+          borderTop: '1px solid #2975DF55',
+        }}
+      >
         <Box
           sx={{
-            // width: '100%',
-            overflow: 'scroll',
-            width: '1218px',
-            borderTop: '1px solid #2975DF55',
+            display: 'flex',
+            gap: '40px',
+            paddingY: '40px',
+            animation: `${scroll} 30s linear infinite`,
+            '&:hover': {
+              animationPlayState: 'paused',
+            },
+            width: 'fit-content',
           }}
         >
-          <Box
-            sx={{
-              display: 'flex',
-              gap: '40px',
-              paddingY: '40px',
-              animation: `${scroll} 30s linear infinite`,
-              '&:hover': {
-                animationPlayState: 'paused',
-              },
-              width: 'fit-content',
-            }}
-          >
-            {/* 重复两次文字盒子以实现无缝循环 */}
-            {[...Array(2)].map((_, index) => (
-              <Box key={index} sx={{ display: 'flex', gap: '40px' }}>
-                <TextBox>LX</TextBox>
-                <TextBox>LiangXin</TextBox>
-                <TextBox>良心</TextBox>
-                <TextBox>Conciencia</TextBox>
-                <TextBox>양심</TextBox>
-                <TextBox>Conciencia</TextBox>
-                <TextBox>Gewissen</TextBox>
-              </Box>
-            ))}
-          </Box>
+          {/* 重复两次文字盒子以实现无缝循环 */}
+          {[...Array(4)].map((_, index) => (
+            <Box key={index} sx={{ display: 'flex', gap: '40px' }}>
+              <TextBox>LX</TextBox>
+              <TextBox>الضمائر</TextBox>
+              <TextBox>съвестта</TextBox>
+              <TextBox>svědomí</TextBox>
+              <TextBox>samvittigheder</TextBox>
+              <TextBox>совесть</TextBox>
+              <TextBox>gewetens</TextBox>
+              <TextBox>südametunnistus</TextBox>
+              <TextBox>omatunto</TextBox>
+              <TextBox>sirdsapziņa</TextBox>
+              <TextBox>consciences</TextBox>
+              <TextBox>Gewissen</TextBox>
+              <TextBox>συνειδήσεις</TextBox>
+              <TextBox>lelkiismeret</TextBox>
+              <TextBox>hati nurani</TextBox>
+              <TextBox>LiangXin</TextBox>
+              <TextBox>良心</TextBox>
+              <TextBox>Conciencia</TextBox>
+              <TextBox>양심</TextBox>
+              <TextBox>Gewissen</TextBox>
+            </Box>
+          ))}
         </Box>
-      </Container>
+      </Box>
     </Box>
   );
 }

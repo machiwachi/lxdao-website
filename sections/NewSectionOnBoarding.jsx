@@ -1,8 +1,6 @@
 import { Box, Link, Typography } from '@mui/material';
 import { Button as MuiButton } from '@mui/material';
 
-import Button from '@/components/Button';
-import CommunityLinkGroup from '@/components/CommunityLinkGroup';
 import Container from '@/components/Container';
 import StyledTooltip from '@/components/StyledToolTip';
 import Tag from '@/components/Tag';
@@ -37,7 +35,6 @@ const HightlightText = styled.span`
 `;
 
 export default function NewSectionOnBoarding({ buidlers }) {
-  console.log(buidlers);
   return (
     <Box
       sx={{
@@ -103,6 +100,7 @@ export default function NewSectionOnBoarding({ buidlers }) {
           sx={{
             width: '100%',
             overflow: 'scroll',
+            mt: '120px',
           }}
         >
           <Box
@@ -197,6 +195,9 @@ export default function NewSectionOnBoarding({ buidlers }) {
               borderRadius: '100px',
               padding: '12px 40px',
             }}
+            onClick={() => {
+              window.open('/buidlers', '_blank');
+            }}
           >
             VIEW ALL MEMBERS
           </MuiButton>
@@ -285,7 +286,7 @@ export default function NewSectionOnBoarding({ buidlers }) {
               padding: '12px 40px',
             }}
           >
-            VIEW ALL MEMBERS
+            VIEW ALL RESEARCH
           </MuiButton>
         </Container>
       </OnBoardingSection>
@@ -298,6 +299,7 @@ export default function NewSectionOnBoarding({ buidlers }) {
           maxWidth="1316px"
           sx={{
             display: 'flex',
+            justifyContent: 'center',
             flexWrap: 'wrap',
             gap: '12px',
             my: '52px',
@@ -314,6 +316,7 @@ export default function NewSectionOnBoarding({ buidlers }) {
                   'FairSharing is reshape the way human collaborate and allocate, building a more equitable society.',
                 banner:
                   'https://cdn.lxdao.io/bafkreiaxc6u7krl4xb4macgzmdnzfivj26fpw6j57zgo2lkxy7spv7oxay.png',
+                href: '/projects/012',
               },
               {
                 name: 'ETHPanda Collaboration',
@@ -321,6 +324,7 @@ export default function NewSectionOnBoarding({ buidlers }) {
                   'ETHPanda is composed of a group of Chinese-speaking builders who are concerned about Ethernet. We will promote the construction of a public network for Chinese-speaking builders of Ethernet, and bring everyone’s strength together to better support Ethernet.',
                 banner:
                   'https://cdn.lxdao.io/af8e14c1-0515-4c75-b3fa-6fcac39e94bc.png',
+                href: '/projects/021',
               },
               {
                 name: 'OPCN',
@@ -328,101 +332,124 @@ export default function NewSectionOnBoarding({ buidlers }) {
                   'Officially established Optimism Chinese Community, OP Chinese Community is an organisation initiated by GCC, LXDAO, PlanckerDAO, Dengchain Community and TraDAO to spread the concept of Optimism technology and public goods, aiming to be a bridge linking the Chinese-speaking community and the Optimism ecosystem. It aims to be a bridge between the Chinese-speaking community and the Optimism ecosystem, to promote two-way communication within the Optimism ecosystem and the Chinese-speaking community, and to promote the prosperity of public goods.',
                 banner:
                   'https://cdn.lxdao.io/a4514cbc-26b4-4d2d-9704-02630b7a22d2.png',
+                href: '/projects/018',
               },
             ]}
           />
           <ProjectGroupCard
-            title="Coordination & Governance"
+            title="Education"
             width="calc(50% - 6px)"
-            image="/images/new/projects/puzzle.svg"
+            image="/images/new/projects/lightbulb.svg"
             projects={[
               {
-                name: 'FairSharing',
+                name: 'MyFirstLayer2',
                 description:
-                  'FairSharing is reshape the way human collaborate and allocate, building a more equitable society.',
+                  'MyFirstLayer2 is an education project for newbies to learn and interact with Layer2. As you can see from the name, our users are beginners curious about the knowledge and projects on Layer2. We will use funny and easy-to-understand diagrams and animation to explain Layer2 to newbies.',
                 banner:
-                  'https://cdn.lxdao.io/bafkreiaxc6u7krl4xb4macgzmdnzfivj26fpw6j57zgo2lkxy7spv7oxay.png',
+                  'https://cdn.lxdao.io/bafybeibietdc7lxki2jeggdu5namnyisuujhgej2zsq26nn7orn2cngm6y.png',
+                href: '/projects/010',
               },
               {
-                name: 'ETHPanda Collaboration',
+                name: 'Intensive Co-learning',
                 description:
-                  'ETHPanda is composed of a group of Chinese-speaking builders who are concerned about Ethernet. We will promote the construction of a public network for Chinese-speaking builders of Ethernet, and bring everyone’s strength together to better support Ethernet.',
+                  'A co-learning program based on Github. Participants need to learn and share for 21 days in a row. The topics...',
                 banner:
-                  'https://cdn.lxdao.io/af8e14c1-0515-4c75-b3fa-6fcac39e94bc.png',
+                  'https://cdn.lxdao.io/bafkreifmpi4vszs4zqvm25us2omgpfr6gkxmc7cwvmle6xph6d5axsm4jm.png',
+                href: '/projects/012',
               },
               {
-                name: 'OPCN',
+                name: 'EIP Fun',
                 description:
-                  'Officially established Optimism Chinese Community, OP Chinese Community is an organisation initiated by GCC, LXDAO, PlanckerDAO, Dengchain Community and TraDAO to spread the concept of Optimism technology and public goods, aiming to be a bridge linking the Chinese-speaking community and the Optimism ecosystem. It aims to be a bridge between the Chinese-speaking community and the Optimism ecosystem, to promote two-way communication within the Optimism ecosystem and the Chinese-speaking community, and to promote the prosperity of public goods.',
+                  'EIP Fun is a project for making EIPs fun and easy to be adopted by buidlers and advancing EIP ecosystem development.',
                 banner:
-                  'https://cdn.lxdao.io/a4514cbc-26b4-4d2d-9704-02630b7a22d2.png',
+                  'https://cdn.lxdao.io/bafkreifmpi4vszs4zqvm25us2omgpfr6gkxmc7cwvmle6xph6d5axsm4jm.png',
+                href: '/projects/011',
               },
             ]}
           />
           <ProjectGroupCard
-            title="Coordination & Governance"
+            title="Tech Support"
             width="calc((100% - 24px)/3)"
-            image="/images/new/projects/puzzle.svg"
+            image="/images/new/projects/wrench.svg"
             projects={[
               {
-                name: 'FairSharing',
+                name: 'Zuzalu City',
                 description:
                   'FairSharing is reshape the way human collaborate and allocate, building a more equitable society.',
                 banner:
-                  'https://cdn.lxdao.io/bafkreiaxc6u7krl4xb4macgzmdnzfivj26fpw6j57zgo2lkxy7spv7oxay.png',
+                  'https://cdn.lxdao.io/92433f15-4b72-43c5-adce-ffebedcfc2a2.png',
+                href: '/projects/022',
               },
               {
-                name: 'ETHPanda Collaboration',
+                name: 'ETHPanda',
                 description:
                   'ETHPanda is composed of a group of Chinese-speaking builders who are concerned about Ethernet. We will promote the construction of a public network for Chinese-speaking builders of Ethernet, and bring everyone’s strength together to better support Ethernet.',
                 banner:
                   'https://cdn.lxdao.io/af8e14c1-0515-4c75-b3fa-6fcac39e94bc.png',
+                href: '/projects/024',
               },
             ]}
           />
 
           <ProjectGroupCard
-            title="Coordination & Governance"
+            title="Applications"
             width="calc((100% - 24px)/3)"
-            image="/images/new/projects/puzzle.svg"
+            image="/images/new/projects/mouse-pointer-click.svg"
             projects={[
               {
-                name: 'FairSharing',
+                name: 'Donate3',
                 description:
-                  'FairSharing is reshape the way human collaborate and allocate, building a more equitable society.',
+                  'Accept donations securely via a button on your website, or a link on social media , article and so on. Coming soon...',
                 banner:
-                  'https://cdn.lxdao.io/bafkreiaxc6u7krl4xb4macgzmdnzfivj26fpw6j57zgo2lkxy7spv7oxay.png',
+                  'https://cdn.lxdao.io/bafkreihrxxou74qo3aunx2qcuai2ocjxvc2zogpnw7t5bjufdufywrzuay.png',
+                href: '/projects/006',
               },
               {
-                name: 'ETHPanda Collaboration',
+                name: 'MetaPavo',
                 description:
-                  'ETHPanda is composed of a group of Chinese-speaking builders who are concerned about Ethernet. We will promote the construction of a public network for Chinese-speaking builders of Ethernet, and bring everyone’s strength together to better support Ethernet.',
+                  'All-in-one Web3 Information Linking Tool. Simply. Directly. Safety.',
                 banner:
-                  'https://cdn.lxdao.io/af8e14c1-0515-4c75-b3fa-6fcac39e94bc.png',
+                  'https://cdn.lxdao.io/bafkreibonzmrl3snslc2ijhees2hmd7xntb32vzlax6kllurpptvh5qsra.png',
+                href: '/projects/022',
               },
             ]}
           />
           <ProjectGroupCard
-            title="Coordination & Governance"
+            title="Dev Services"
             width="calc((100% - 24px)/3)"
-            image="/images/new/projects/puzzle.svg"
+            image="/images/new/projects/package-open.svg"
             projects={[
               {
-                name: 'FairSharing',
+                name: 'Img3',
                 description:
-                  'FairSharing is reshape the way human collaborate and allocate, building a more equitable society.',
+                  'Img3 is an essential infrastructure in the Web3 storage field. It provides the easiest way for you to implement images rendering, uploading, etc. based on Web3 storage like IPFS.',
                 banner:
-                  'https://cdn.lxdao.io/bafkreiaxc6u7krl4xb4macgzmdnzfivj26fpw6j57zgo2lkxy7spv7oxay.png',
+                  'https://cdn.lxdao.io/bafkreicetd3xpmgbj33g7lovw6oh6xexlbsi76icghrb2y5i4e5igexyqy.png',
+                href: '/projects/009',
               },
               {
-                name: 'ETHPanda Collaboration',
+                name: 'Web3logo',
                 description:
-                  'ETHPanda is composed of a group of Chinese-speaking builders who are concerned about Ethernet. We will promote the construction of a public network for Chinese-speaking builders of Ethernet, and bring everyone’s strength together to better support Ethernet.',
+                  'Web3logo will become the largest and most comprehensive Web3 emblem collection center, allowing users to quickly download all Web3 emblems and contribute to Web3 charitable initiatives.',
                 banner:
-                  'https://cdn.lxdao.io/af8e14c1-0515-4c75-b3fa-6fcac39e94bc.png',
+                  'https://cdn.lxdao.io/bafkreihphtmqgsj4kpxw2uwfdz76hs7zictduk3v32ryo5hs5ef55gmu6a.png',
+                href: '/projects/014',
               },
             ]}
           />
+          <MuiButton
+            variant="contained"
+            sx={{
+              borderRadius: '100px',
+              padding: '12px 40px',
+              mt: '52px',
+            }}
+            onClick={() => {
+              window.open('/projects', '_blank');
+            }}
+          >
+            VIEW ALL PROJECTS
+          </MuiButton>
         </Container>
       </OnBoardingSection>
       <OnBoardingSection
@@ -449,18 +476,18 @@ export default function NewSectionOnBoarding({ buidlers }) {
           >
             <WorkingGroupCard
               title="Governance"
-              href="https://github.com/lxdao-io/governance"
-              image="https://cdn.lxdao.io/09d959d3-f9c2-455f-915e-f92e0d03ece5.jpg"
+              href="/workingGroups/1"
+              image="https://cdn.lxdao.io/483c815a-5a91-49e3-839a-9c64f30b5535.png"
             />
             <WorkingGroupCard
               title="Forge"
-              href="https://github.com/lxdao-io/governance"
-              image="https://cdn.lxdao.io/09d959d3-f9c2-455f-915e-f92e0d03ece5.jpg"
+              href="/workingGroups/6"
+              image="https://cdn.lxdao.io/14c863c9-f086-40fc-b0d7-584c118d1840.png"
             />
             <WorkingGroupCard
               title="Operation"
-              href="https://github.com/lxdao-io/governance"
-              image="https://cdn.lxdao.io/09d959d3-f9c2-455f-915e-f92e0d03ece5.jpg"
+              href="/workingGroups/5"
+              image="https://cdn.lxdao.io/8ec73781-f67a-493e-8f39-422ab706c77f.png"
             />
           </Box>
 
@@ -469,6 +496,9 @@ export default function NewSectionOnBoarding({ buidlers }) {
             sx={{
               borderRadius: '100px',
               padding: '12px 40px',
+            }}
+            onClick={() => {
+              window.open('/workingGroups/list', '_blank');
             }}
           >
             VIEW ALL
@@ -546,6 +576,10 @@ function ProjectGroupCard({ title, width, image, projects }) {
               maxWidth: '190px',
               bgcolor: 'white',
               borderRadius: '24px',
+              cursor: 'pointer',
+            }}
+            onClick={() => {
+              window.open(project.href, '_blank');
             }}
           >
             <Box
@@ -603,6 +637,7 @@ function WorkingGroupCard({ title, href, image }) {
         bgcolor: '#CEE8F8',
         p: '12px 12px 24px 12px',
         borderRadius: '29px',
+        cursor: 'pointer',
       }}
       onClick={() => {
         window.open(href, '_blank');

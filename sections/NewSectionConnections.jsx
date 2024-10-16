@@ -1,15 +1,6 @@
 import { Box, Link, Typography } from '@mui/material';
-import { Button as MuiButton } from '@mui/material';
 
-import Button from '@/components/Button';
-import CommunityLinkGroup from '@/components/CommunityLinkGroup';
 import Container from '@/components/Container';
-import StyledTooltip from '@/components/StyledToolTip';
-import Tag from '@/components/Tag';
-
-import { getMemberFirstBadgeAmount } from '@/utils/utility';
-
-import styled, { keyframes } from 'styled-components';
 
 export default function NewSectionConnections() {
   return (
@@ -68,7 +59,6 @@ export default function NewSectionConnections() {
         height="810px"
         sx={{
           overflow: 'scroll',
-
           top: '0',
           left: '0',
           mt: '150px',
@@ -79,7 +69,7 @@ export default function NewSectionConnections() {
             display: 'flex',
             width: '100%',
             flexDirection: 'column',
-            justifyContent: 'center',
+            justifyContent: 'start',
             alignItems: 'start',
             flexWrap: 'wrap',
             gap: '37px',
@@ -94,6 +84,7 @@ export default function NewSectionConnections() {
                 p: '47px 34px',
                 background: 'white',
                 borderRadius: '20px',
+                zIndex: 100,
               }}
             >
               <Box>

@@ -1,18 +1,7 @@
-import { useEffect, useState } from 'react';
-
-import { Box, Card, Link, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 import Button from '@/components/Button';
 import Container from '@/components/Container';
-
-import { erc20Abi } from 'viem';
-
-import { useReadContracts } from 'wagmi';
-
-import API from '@/common/API';
-import { SNAPSHOTURL, queryProposals } from '@/graphql/snapshot';
-
-import { request } from 'graphql-request';
 
 export default function NewSectionPG() {
   return (
