@@ -63,32 +63,39 @@ export default function NewSectionWork({ projectAmount, buidlerAmount }) {
   }, [usdtAmount.data, usdcAmount.data, daiAmount.data]);
 
   return (
-    <Container py="120px">
+    <Container py={{ md: '120px', xs: '40px' }}>
       <Box
         sx={{
           display: 'flex',
-          alignItems: 'center',
+          flexDirection: { md: 'row', xs: 'column' },
+          alignItems: { md: 'center', xs: 'flex-start' },
         }}
       >
         <Box
           variant="h2"
           color="#101828"
-          fontSize="48px!important"
+          fontSize={{ md: '48px', xs: '32px' }}
           fontWeight="bold"
           lineHeight="44px"
           textTransform="uppercase"
-          mr="53px"
+          mr={{ md: '53px', xs: '0' }}
         >
           LXDAO Now
         </Box>
         <Box
           sx={{
-            width: '660px',
-            fontSize: '18px',
+            width: { md: '660px', xs: '100%' },
+            fontSize: { md: '18px', xs: '14px' },
             lineHeight: '140%',
+            mt: { md: '0', xs: '10px' },
           }}
         >
-          Check out what is going on in LXDAO community. <br />
+          Check out what is going on in LXDAO community.{' '}
+          <br
+            style={{
+              display: { md: 'block', xs: 'none' },
+            }}
+          />
           Join the events, meetings, and share your thoughts in our online
           discussions.
         </Box>
@@ -96,16 +103,16 @@ export default function NewSectionWork({ projectAmount, buidlerAmount }) {
       <Box
         sx={{
           overflow: 'scroll',
-          width: '1218px',
+          width: { md: '1218px', xs: '100%' },
         }}
       >
         <Box
           sx={{
             display: 'flex',
             gap: '16px',
-            paddingY: '40px',
+            paddingY: { md: '40px', xs: '20px' },
             width: 'fit-content',
-            mt: '52px',
+            mt: { md: '52px', xs: '20px' },
           }}
         >
           <EventsCard />
@@ -117,16 +124,18 @@ export default function NewSectionWork({ projectAmount, buidlerAmount }) {
       <Box
         sx={{
           display: 'flex',
+          flexDirection: { md: 'row', xs: 'column-reverse' },
           alignItems: 'center',
+          mt: '48px',
         }}
       >
         <Box
           sx={{
-            height: '20px',
-            width: 'calc(100% - 260px)',
+            height: { md: '20px', xs: '5px' },
+            width: { md: 'calc(100% - 260px)', xs: '100%' },
             background:
               'linear-gradient(135deg, #2975DF 0%, #32A5E1 50%, #3ACFE3 100%)',
-            mr: '24px',
+            mr: { md: '24px', xs: '0' },
           }}
         ></Box>
         <Typography fontSize="24px" fontWeight={700} noWrap>
@@ -136,7 +145,9 @@ export default function NewSectionWork({ projectAmount, buidlerAmount }) {
       <Box
         sx={{
           display: 'flex',
-          mt: '48px',
+          flexWrap: { md: 'nowrap', xs: 'wrap' },
+          flexDirection: { md: 'row', xs: 'column' },
+          mt: { md: '48px', xs: '10px' },
           justifyContent: 'space-between',
         }}
       >
@@ -154,15 +165,17 @@ function DataBox({ value, title }) {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        py: '48px',
-        gap: '32px',
-        width: '250px',
+        py: { md: '48px', xs: '20px' },
+        gap: { md: '32px', xs: '10px' },
+        alignItems: { md: 'flex-start', xs: 'center' },
+        textAlign: { md: 'left', xs: 'center' },
+        width: { md: '250px', xs: '100%' },
       }}
     >
-      <Typography fontSize="36px" fontWeight="700">
+      <Typography fontSize={{ md: '36px', xs: '24px' }} fontWeight="700">
         {value}
       </Typography>
-      <Typography maxWidth="200px">{title}</Typography>
+      <Typography maxWidth={{ md: '200px', xs: '150px' }}>{title}</Typography>
     </Box>
   );
 }
@@ -248,8 +261,8 @@ function LXCard({ children, index, title, footer, footerLink }) {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        width: '332px',
-        height: '520px',
+        width: { md: '332px', xs: '300px' },
+        height: { md: '520px', xs: '470px' },
         backgroundImage: `url(/images/new/card${index + 1}.png)`,
         backgroundSize: 'cover',
         py: '40px',
@@ -404,7 +417,7 @@ const WorkDetailItem = ({ type, data, ...rest }) => {
         sx={{ backgroundColor: '#ffffff' }}
         borderRadius="6px"
         gap="100px"
-        width={{ sm: '284px', xs: '350px' }}
+        width={{ sm: '284px', xs: '100%' }}
         {...rest}
       >
         <Box display="flex" flexDirection="column" gap={1}>
