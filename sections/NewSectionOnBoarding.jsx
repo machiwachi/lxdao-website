@@ -29,7 +29,7 @@ const HightlightText = styled.span`
     line-height: 1.02;
   }
   @media screen and (max-width: 600px) {
-    font-size: 3.5625rem;
+    font-size: 2.5rem;
     line-height: 1.02;
   }
 `;
@@ -57,12 +57,12 @@ export default function NewSectionOnBoarding({ buidlers }) {
         <Box
           alignSelf="end"
           component="img"
-          width="590px"
+          width={{ md: '590px', xs: '352px' }}
           src="/images/new/infinite.gif"
         ></Box>
         <Box alignSelf="start" mt="60px">
           <Typography
-            fontSize="40px"
+            fontSize={{ md: '40px', xs: '24px' }}
             maxWidth="674px"
             fontWeight="500"
             textAlign="left"
@@ -86,7 +86,7 @@ export default function NewSectionOnBoarding({ buidlers }) {
             society.
           </Typography>
           <br />
-          <Typography fontSize="32px" textAlign="left">
+          <Typography fontSize={{ md: '32px', xs: '20px' }} textAlign="left">
             Here is how we make it real.
           </Typography>
         </Box>
@@ -155,6 +155,7 @@ export default function NewSectionOnBoarding({ buidlers }) {
           <Box
             sx={{
               display: 'flex',
+
               flexWrap: 'wrap',
               gap: '12px',
               width: '100%',
@@ -212,7 +213,6 @@ export default function NewSectionOnBoarding({ buidlers }) {
           display="flex"
           flexDirection="column"
           alignItems="center"
-          width="100%"
           justifyContent="center"
         >
           <Box
@@ -241,9 +241,10 @@ export default function NewSectionOnBoarding({ buidlers }) {
                   key={index}
                   sx={{
                     display: 'flex',
+                    flexDirection: { md: 'row', xs: 'column' },
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    p: '36px 60px',
+                    p: { md: '36px 60px', xs: '24px 30px' },
                   }}
                 >
                   <Box
@@ -251,14 +252,14 @@ export default function NewSectionOnBoarding({ buidlers }) {
                       display: 'flex',
                       flexWrap: 'wrap',
                       gap: '4px',
-                      maxWidth: '120px',
-                      minWidth: '120px',
+                      maxWidth: { md: '120px', xs: '100%' },
+                      minWidth: { md: '120px', xs: '100%' },
                     }}
                   >
                     <MyTag color="blue">NFT</MyTag>
                     <MyTag color="green">Open source</MyTag>
                   </Box>
-                  <Box minWidth="600px">
+                  <Box minWidth={{ md: '600px', xs: '100%' }}>
                     <Typography fontSize="24px" fontWeight="700">
                       Report on Web3 Public Goods Ecosystem
                     </Typography>
@@ -274,7 +275,11 @@ export default function NewSectionOnBoarding({ buidlers }) {
                       <Typography>@Tiao</Typography>
                     </Box>
                   </Box>
-                  <Box component="img" src="/images/new/arrow.svg" />
+                  <Box
+                    sx={{ display: { md: 'block', xs: 'none' } }}
+                    component="img"
+                    src="/images/new/arrow.svg"
+                  />
                 </Box>
               ))}
             </Box>
@@ -295,154 +300,166 @@ export default function NewSectionOnBoarding({ buidlers }) {
         description="We are the trustworthy team to ideate, develop and maintain Web3 Public Goods."
         index="04"
       >
-        <Container
-          maxWidth="1316px"
+        <Box
           sx={{
             display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
             justifyContent: 'center',
-            flexWrap: 'wrap',
-            gap: '12px',
-            my: '52px',
+            width: '100%',
           }}
         >
-          <ProjectGroupCard
-            title="Coordination & Governance"
-            width="calc(50% - 6px)"
-            image="/images/new/projects/puzzle.svg"
-            projects={[
-              {
-                name: 'FairSharing',
-                description:
-                  'FairSharing is reshape the way human collaborate and allocate, building a more equitable society.',
-                banner:
-                  'https://cdn.lxdao.io/bafkreiaxc6u7krl4xb4macgzmdnzfivj26fpw6j57zgo2lkxy7spv7oxay.png',
-                href: '/projects/012',
-              },
-              {
-                name: 'ETHPanda Collaboration',
-                description:
-                  'ETHPanda is composed of a group of Chinese-speaking builders who are concerned about Ethernet. We will promote the construction of a public network for Chinese-speaking builders of Ethernet, and bring everyone’s strength together to better support Ethernet.',
-                banner:
-                  'https://cdn.lxdao.io/af8e14c1-0515-4c75-b3fa-6fcac39e94bc.png',
-                href: '/projects/021',
-              },
-              {
-                name: 'OPCN',
-                description:
-                  'Officially established Optimism Chinese Community, OP Chinese Community is an organisation initiated by GCC, LXDAO, PlanckerDAO, Dengchain Community and TraDAO to spread the concept of Optimism technology and public goods, aiming to be a bridge linking the Chinese-speaking community and the Optimism ecosystem. It aims to be a bridge between the Chinese-speaking community and the Optimism ecosystem, to promote two-way communication within the Optimism ecosystem and the Chinese-speaking community, and to promote the prosperity of public goods.',
-                banner:
-                  'https://cdn.lxdao.io/a4514cbc-26b4-4d2d-9704-02630b7a22d2.png',
-                href: '/projects/018',
-              },
-            ]}
-          />
-          <ProjectGroupCard
-            title="Education"
-            width="calc(50% - 6px)"
-            image="/images/new/projects/lightbulb.svg"
-            projects={[
-              {
-                name: 'MyFirstLayer2',
-                description:
-                  'MyFirstLayer2 is an education project for newbies to learn and interact with Layer2. As you can see from the name, our users are beginners curious about the knowledge and projects on Layer2. We will use funny and easy-to-understand diagrams and animation to explain Layer2 to newbies.',
-                banner:
-                  'https://cdn.lxdao.io/bafybeibietdc7lxki2jeggdu5namnyisuujhgej2zsq26nn7orn2cngm6y.png',
-                href: '/projects/010',
-              },
-              {
-                name: 'Intensive Co-learning',
-                description:
-                  'A co-learning program based on Github. Participants need to learn and share for 21 days in a row. The topics...',
-                banner:
-                  'https://cdn.lxdao.io/bafkreifmpi4vszs4zqvm25us2omgpfr6gkxmc7cwvmle6xph6d5axsm4jm.png',
-                href: '/projects/012',
-              },
-              {
-                name: 'EIP Fun',
-                description:
-                  'EIP Fun is a project for making EIPs fun and easy to be adopted by buidlers and advancing EIP ecosystem development.',
-                banner:
-                  'https://cdn.lxdao.io/bafkreifmpi4vszs4zqvm25us2omgpfr6gkxmc7cwvmle6xph6d5axsm4jm.png',
-                href: '/projects/011',
-              },
-            ]}
-          />
-          <ProjectGroupCard
-            title="Tech Support"
-            width="calc((100% - 24px)/3)"
-            image="/images/new/projects/wrench.svg"
-            projects={[
-              {
-                name: 'Zuzalu City',
-                description:
-                  'FairSharing is reshape the way human collaborate and allocate, building a more equitable society.',
-                banner:
-                  'https://cdn.lxdao.io/92433f15-4b72-43c5-adce-ffebedcfc2a2.png',
-                href: '/projects/022',
-              },
-              {
-                name: 'ETHPanda',
-                description:
-                  'ETHPanda is composed of a group of Chinese-speaking builders who are concerned about Ethernet. We will promote the construction of a public network for Chinese-speaking builders of Ethernet, and bring everyone’s strength together to better support Ethernet.',
-                banner:
-                  'https://cdn.lxdao.io/af8e14c1-0515-4c75-b3fa-6fcac39e94bc.png',
-                href: '/projects/024',
-              },
-            ]}
-          />
+          <Container
+            maxWidth="1316px"
+            sx={{
+              display: 'flex',
+              flexDirection: { md: 'row', xs: 'column' },
+              justifyContent: 'center',
+              flexWrap: 'wrap',
+              gap: '12px',
+              my: '52px',
+            }}
+          >
+            <ProjectGroupCard
+              title="Coordination & Governance"
+              width={{ md: 'calc(50% - 6px)', xs: '100%' }}
+              image="/images/new/projects/puzzle.svg"
+              projects={[
+                {
+                  name: 'FairSharing',
+                  description:
+                    'FairSharing is reshape the way human collaborate and allocate, building a more equitable society.',
+                  banner:
+                    'https://cdn.lxdao.io/bafkreiaxc6u7krl4xb4macgzmdnzfivj26fpw6j57zgo2lkxy7spv7oxay.png',
+                  href: '/projects/012',
+                },
+                {
+                  name: 'ETHPanda Collaboration',
+                  description:
+                    'ETHPanda is composed of a group of Chinese-speaking builders who are concerned about Ethernet. We will promote the construction of a public network for Chinese-speaking builders of Ethernet, and bring everyone’s strength together to better support Ethernet.',
+                  banner:
+                    'https://cdn.lxdao.io/af8e14c1-0515-4c75-b3fa-6fcac39e94bc.png',
+                  href: '/projects/021',
+                },
+                {
+                  name: 'OPCN',
+                  description:
+                    'Officially established Optimism Chinese Community, OP Chinese Community is an organisation initiated by GCC, LXDAO, PlanckerDAO, Dengchain Community and TraDAO to spread the concept of Optimism technology and public goods, aiming to be a bridge linking the Chinese-speaking community and the Optimism ecosystem. It aims to be a bridge between the Chinese-speaking community and the Optimism ecosystem, to promote two-way communication within the Optimism ecosystem and the Chinese-speaking community, and to promote the prosperity of public goods.',
+                  banner:
+                    'https://cdn.lxdao.io/a4514cbc-26b4-4d2d-9704-02630b7a22d2.png',
+                  href: '/projects/018',
+                },
+              ]}
+            />
+            <ProjectGroupCard
+              title="Education"
+              width={{ md: 'calc(50% - 6px)', xs: '100%' }}
+              image="/images/new/projects/lightbulb.svg"
+              projects={[
+                {
+                  name: 'MyFirstLayer2',
+                  description:
+                    'MyFirstLayer2 is an education project for newbies to learn and interact with Layer2. As you can see from the name, our users are beginners curious about the knowledge and projects on Layer2. We will use funny and easy-to-understand diagrams and animation to explain Layer2 to newbies.',
+                  banner:
+                    'https://cdn.lxdao.io/bafybeibietdc7lxki2jeggdu5namnyisuujhgej2zsq26nn7orn2cngm6y.png',
+                  href: '/projects/010',
+                },
+                {
+                  name: 'Intensive Co-learning',
+                  description:
+                    'A co-learning program based on Github. Participants need to learn and share for 21 days in a row. The topics...',
+                  banner:
+                    'https://cdn.lxdao.io/bafkreifmpi4vszs4zqvm25us2omgpfr6gkxmc7cwvmle6xph6d5axsm4jm.png',
+                  href: '/projects/012',
+                },
+                {
+                  name: 'EIP Fun',
+                  description:
+                    'EIP Fun is a project for making EIPs fun and easy to be adopted by buidlers and advancing EIP ecosystem development.',
+                  banner:
+                    'https://cdn.lxdao.io/bafkreifmpi4vszs4zqvm25us2omgpfr6gkxmc7cwvmle6xph6d5axsm4jm.png',
+                  href: '/projects/011',
+                },
+              ]}
+            />
+            <ProjectGroupCard
+              title="Tech Support"
+              width={'calc((100% - 24px)/3)'}
+              image="/images/new/projects/wrench.svg"
+              projects={[
+                {
+                  name: 'Zuzalu City',
+                  description:
+                    'FairSharing is reshape the way human collaborate and allocate, building a more equitable society.',
+                  banner:
+                    'https://cdn.lxdao.io/92433f15-4b72-43c5-adce-ffebedcfc2a2.png',
+                  href: '/projects/022',
+                },
+                {
+                  name: 'ETHPanda',
+                  description:
+                    'ETHPanda is composed of a group of Chinese-speaking builders who are concerned about Ethernet. We will promote the construction of a public network for Chinese-speaking builders of Ethernet, and bring everyone’s strength together to better support Ethernet.',
+                  banner:
+                    'https://cdn.lxdao.io/af8e14c1-0515-4c75-b3fa-6fcac39e94bc.png',
+                  href: '/projects/024',
+                },
+              ]}
+            />
 
-          <ProjectGroupCard
-            title="Applications"
-            width="calc((100% - 24px)/3)"
-            image="/images/new/projects/mouse-pointer-click.svg"
-            projects={[
-              {
-                name: 'Donate3',
-                description:
-                  'Accept donations securely via a button on your website, or a link on social media , article and so on. Coming soon...',
-                banner:
-                  'https://cdn.lxdao.io/bafkreihrxxou74qo3aunx2qcuai2ocjxvc2zogpnw7t5bjufdufywrzuay.png',
-                href: '/projects/006',
-              },
-              {
-                name: 'MetaPavo',
-                description:
-                  'All-in-one Web3 Information Linking Tool. Simply. Directly. Safety.',
-                banner:
-                  'https://cdn.lxdao.io/bafkreibonzmrl3snslc2ijhees2hmd7xntb32vzlax6kllurpptvh5qsra.png',
-                href: '/projects/022',
-              },
-            ]}
-          />
-          <ProjectGroupCard
-            title="Dev Services"
-            width="calc((100% - 24px)/3)"
-            image="/images/new/projects/package-open.svg"
-            projects={[
-              {
-                name: 'Img3',
-                description:
-                  'Img3 is an essential infrastructure in the Web3 storage field. It provides the easiest way for you to implement images rendering, uploading, etc. based on Web3 storage like IPFS.',
-                banner:
-                  'https://cdn.lxdao.io/bafkreicetd3xpmgbj33g7lovw6oh6xexlbsi76icghrb2y5i4e5igexyqy.png',
-                href: '/projects/009',
-              },
-              {
-                name: 'Web3logo',
-                description:
-                  'Web3logo will become the largest and most comprehensive Web3 emblem collection center, allowing users to quickly download all Web3 emblems and contribute to Web3 charitable initiatives.',
-                banner:
-                  'https://cdn.lxdao.io/bafkreihphtmqgsj4kpxw2uwfdz76hs7zictduk3v32ryo5hs5ef55gmu6a.png',
-                href: '/projects/014',
-              },
-            ]}
-          />
+            <ProjectGroupCard
+              title="Applications"
+              width={'calc((100% - 24px)/3)'}
+              image="/images/new/projects/mouse-pointer-click.svg"
+              projects={[
+                {
+                  name: 'Donate3',
+                  description:
+                    'Accept donations securely via a button on your website, or a link on social media , article and so on. Coming soon...',
+                  banner:
+                    'https://cdn.lxdao.io/bafkreihrxxou74qo3aunx2qcuai2ocjxvc2zogpnw7t5bjufdufywrzuay.png',
+                  href: '/projects/006',
+                },
+                {
+                  name: 'MetaPavo',
+                  description:
+                    'All-in-one Web3 Information Linking Tool. Simply. Directly. Safety.',
+                  banner:
+                    'https://cdn.lxdao.io/bafkreibonzmrl3snslc2ijhees2hmd7xntb32vzlax6kllurpptvh5qsra.png',
+                  href: '/projects/022',
+                },
+              ]}
+            />
+            <ProjectGroupCard
+              title="Dev Services"
+              width="calc((100% - 24px)/3)"
+              image="/images/new/projects/package-open.svg"
+              projects={[
+                {
+                  name: 'Img3',
+                  description:
+                    'Img3 is an essential infrastructure in the Web3 storage field. It provides the easiest way for you to implement images rendering, uploading, etc. based on Web3 storage like IPFS.',
+                  banner:
+                    'https://cdn.lxdao.io/bafkreicetd3xpmgbj33g7lovw6oh6xexlbsi76icghrb2y5i4e5igexyqy.png',
+                  href: '/projects/009',
+                },
+                {
+                  name: 'Web3logo',
+                  description:
+                    'Web3logo will become the largest and most comprehensive Web3 emblem collection center, allowing users to quickly download all Web3 emblems and contribute to Web3 charitable initiatives.',
+                  banner:
+                    'https://cdn.lxdao.io/bafkreihphtmqgsj4kpxw2uwfdz76hs7zictduk3v32ryo5hs5ef55gmu6a.png',
+                  href: '/projects/014',
+                },
+              ]}
+            />
+          </Container>
           <MuiButton
             variant="contained"
             sx={{
               borderRadius: '100px',
               padding: '12px 40px',
               mt: '52px',
+              justifySelf: 'center',
             }}
             onClick={() => {
               window.open('/projects', '_blank');
@@ -450,7 +467,7 @@ export default function NewSectionOnBoarding({ buidlers }) {
           >
             VIEW ALL PROJECTS
           </MuiButton>
-        </Container>
+        </Box>
       </OnBoardingSection>
       <OnBoardingSection
         title="Working Groups"
@@ -467,6 +484,7 @@ export default function NewSectionOnBoarding({ buidlers }) {
           <Box
             sx={{
               display: 'flex',
+              flexDirection: { md: 'row', xs: 'column' },
               alignItems: 'center',
               justifyContent: 'space-between',
               my: '64px',
@@ -558,6 +576,7 @@ function ProjectGroupCard({ title, width, image, projects }) {
       <Box
         sx={{
           display: 'flex',
+          flexDirection: { md: 'row', xs: 'column' },
           justifyContent: 'space-between',
           width: '100%',
           mt: '24px',
@@ -571,9 +590,12 @@ function ProjectGroupCard({ title, width, image, projects }) {
               display: 'flex',
               flexDirection: 'column',
               gap: '12px',
-              p: '16px 12px',
-              width: `calc((100% - 24px)/${projects.length})`,
-              maxWidth: '190px',
+              p: { md: '16px 12px', xs: '24px 16px' },
+              width: {
+                md: `calc((100% - 24px)/${projects.length})`,
+                xs: '100%',
+              },
+              maxWidth: { md: '190px', xs: '100%' },
               bgcolor: 'white',
               borderRadius: '24px',
               cursor: 'pointer',
@@ -597,14 +619,18 @@ function ProjectGroupCard({ title, width, image, projects }) {
                 alignItems: 'end',
               }}
             >
-              <Typography fontSize="18px" fontWeight="700" maxWidth="163px">
+              <Typography
+                fontSize={{ md: '18px', xs: '16px' }}
+                fontWeight="700"
+                maxWidth={{ md: '163px', xs: '100%' }}
+              >
                 {project.name}
               </Typography>
             </Box>
             <Typography
               fontSize="14px"
               color="#666"
-              width="163px"
+              width={{ md: '163px', xs: '100%' }}
               textAlign="left"
               height="75px"
               textOverflow="ellipsis"
@@ -762,8 +788,8 @@ const BuidlerAvatarBox = ({ buidler, active, display }) => {
         aspectRatio: '1 / 1',
       }}
       display={display}
-      width={{ sm: '121px', xs: '100%' }}
-      height={{ sm: '121px', xs: '100%' }}
+      width="121px"
+      height="121px"
       position="relative"
     >
       {!active && (
@@ -795,7 +821,7 @@ const BuidlerAvatarBox = ({ buidler, active, display }) => {
 
 function OnBoardingSection({ title, description, index, children }) {
   return (
-    <Box paddingTop="140px" paddingBottom="140px">
+    <Box paddingY={{ md: '140px', xs: '40px' }}>
       <Box
         maxWidth="1216px"
         boxSizing="border-box"
@@ -808,65 +834,24 @@ function OnBoardingSection({ title, description, index, children }) {
             justifyContent: 'start',
           }}
         >
-          <Typography fontSize="80px" fontWeight="700">
+          <Typography fontSize={{ md: '80px', xs: '60px' }} fontWeight="700">
             {index}
           </Typography>
           <Box ml="20px">
-            <Typography fontSize="32px" fontWeight="700">
+            <Typography fontSize={{ md: '32px', xs: '20px' }} fontWeight="700">
               {title}
             </Typography>
-            <Typography fontSize="20px" fontWeight="500" maxWidth="710px">
+            <Typography
+              fontSize={{ md: '20px', xs: '16px' }}
+              fontWeight="500"
+              maxWidth="710px"
+            >
               {description}
             </Typography>
           </Box>
         </Box>
       </Box>
-      <Box>
-        {children}
-        {/* <Box
-        sx={{
-          width: '100%',
-          overflow: 'scroll',
-        }}
-      >
-        <Box
-          sx={{
-            display: 'flex',
-            gap: '12px',
-            width: 'fit-content',
-            borderRadius: '24px',
-            ml: 'calc((100vw - Min(90vw, 1216px))/2)',
-            backgroundColor: '#CEE8F8',
-            padding: '12px',
-          }}
-        >
-          {Array.from({ length: 10 }).map((_, index) => (
-            <Box
-              key={index}
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'end',
-                width: '300px',
-                height: '400px',
-                color: 'white',
-                borderRadius: '20px',
-                padding: '10px 20px',
-                backgroundImage: `linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent),url('/images/new/example.png')`,
-              }}
-            >
-              <Typography fontSize="28px" fontWeight="600">
-                EDCON
-              </Typography>
-              <Box fontSize="14px">
-                <Typography>2024.07</Typography>
-                <Typography>@Tokyo</Typography>
-              </Box>
-            </Box>
-          ))}
-        </Box>
-      </Box> */}
-      </Box>
+      <Box>{children}</Box>
     </Box>
   );
 }
