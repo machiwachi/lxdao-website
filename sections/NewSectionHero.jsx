@@ -34,31 +34,32 @@ export default function NewSectionHero() {
         <Box
           sx={{
             display: 'flex',
-            justifyContent: 'center',
+            flexDirection: { md: 'row', xs: 'column-reverse' },
+            justifyContent: 's-tart',
             alignItems: 'center',
             textAlign: 'center',
             gap: '40px',
-            mt: '151px',
+            mt: { md: '151px', xs: '40px' },
           }}
         >
           <Box>
             <Typography
               sx={{
-                fontSize: '64px',
+                fontSize: { md: '64px', xs: '40px' },
                 fontWeight: 'bold',
                 lineHeight: '120%',
-                textAlign: 'left',
+                textAlign: { md: 'left', xs: 'center' },
               }}
             >
               Sustain Public Goods with Infinite Cycle
             </Typography>
             <Typography
               sx={{
-                fontSize: '20px',
+                fontSize: { md: '20px', xs: '16px' },
                 lineHeight: '180%',
-                textAlign: 'left',
-                maxWidth: '542px',
-                mt: '53px',
+                textAlign: { md: 'left', xs: 'center' },
+                maxWidth: { md: '542px', xs: '100%' },
+                mt: { md: '53px', xs: '20px' },
               }}
             >
               We believe Public Goods are essential to Web3. They are of great
@@ -68,6 +69,8 @@ export default function NewSectionHero() {
             <Box
               sx={{
                 display: 'flex',
+                flexDirection: { md: 'row', xs: 'column' },
+                alignItems: 'center',
                 width: '100%',
                 mt: '41px',
               }}
@@ -77,7 +80,7 @@ export default function NewSectionHero() {
                 color="#ffffff"
                 sx={{
                   textDecoration: 'none',
-                  mr: '30px',
+                  mr: { md: '30px', xs: '0' },
                 }}
               >
                 <Button
@@ -95,21 +98,21 @@ export default function NewSectionHero() {
           <Box
             component="img"
             sx={{
-              width: '503px',
+              width: { md: '503px', xs: '100%' },
             }}
             src="/images/new/infinite.gif"
           />
         </Box>
-        <Box mt="175px">
+        <Box mt={{ md: '175px', xs: '40px' }}>
           <Typography
             sx={{
-              fontSize: '32px',
+              fontSize: { md: '32px', xs: '24px' },
               fontWeight: '600',
               lineHeight: '180%',
-              width: '880px',
+              width: { md: '880px', xs: '100%' },
             }}
           >
-            ‘LX’ in LXDAO stands for Conscience (“良心” in Chinese). It is the
+            ’LX’ in LXDAO stands for Conscience (“良心” in Chinese). It is the
             core value we believe in.
           </Typography>
           <MuiButton
@@ -121,6 +124,7 @@ export default function NewSectionHero() {
               fontSize: '16px',
               fontWeight: '600',
               mt: '58px',
+              mb: { md: '0', xs: '40px' },
             }}
           >
             Learn More
