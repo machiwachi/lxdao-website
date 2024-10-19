@@ -25,7 +25,7 @@ const HightlightText = styled.span`
   line-height: 100px;
   font-weight: 700;
   @media screen and (max-width: 900px) {
-    font-size: 4.902rem;
+    font-size: 2.5rem;
     line-height: 1.02;
   }
   @media screen and (max-width: 600px) {
@@ -322,7 +322,6 @@ export default function NewSectionOnBoarding({ buidlers }) {
           >
             <ProjectGroupCard
               title="Coordination & Governance"
-              width={{ md: 'calc(50% - 6px)', xs: '100%' }}
               image="/images/new/projects/puzzle.svg"
               projects={[
                 {
@@ -353,7 +352,6 @@ export default function NewSectionOnBoarding({ buidlers }) {
             />
             <ProjectGroupCard
               title="Education"
-              width={{ md: 'calc(50% - 6px)', xs: '100%' }}
               image="/images/new/projects/lightbulb.svg"
               projects={[
                 {
@@ -384,7 +382,6 @@ export default function NewSectionOnBoarding({ buidlers }) {
             />
             <ProjectGroupCard
               title="Tech Support"
-              width={'calc((100% - 24px)/3)'}
               image="/images/new/projects/wrench.svg"
               projects={[
                 {
@@ -408,7 +405,6 @@ export default function NewSectionOnBoarding({ buidlers }) {
 
             <ProjectGroupCard
               title="Applications"
-              width={'calc((100% - 24px)/3)'}
               image="/images/new/projects/mouse-pointer-click.svg"
               projects={[
                 {
@@ -431,7 +427,6 @@ export default function NewSectionOnBoarding({ buidlers }) {
             />
             <ProjectGroupCard
               title="Dev Services"
-              width="calc((100% - 24px)/3)"
               image="/images/new/projects/package-open.svg"
               projects={[
                 {
@@ -478,17 +473,16 @@ export default function NewSectionOnBoarding({ buidlers }) {
           display="flex"
           flexDirection="column"
           alignItems="center"
-          width="100%"
           justifyContent="center"
         >
           <Box
             sx={{
               display: 'flex',
+              flexWrap: 'wrap',
               flexDirection: { md: 'row', xs: 'column' },
               alignItems: 'center',
               justifyContent: 'space-between',
               my: '64px',
-              width: '100%',
               gap: '24px',
             }}
           >
@@ -537,11 +531,15 @@ export default function NewSectionOnBoarding({ buidlers }) {
   );
 }
 
-function ProjectGroupCard({ title, width, image, projects }) {
+function ProjectGroupCard({ title, image, projects }) {
   return (
     <Box
       sx={{
-        width: { width },
+        width: {
+          md:
+            projects.length == 3 ? 'calc(50% - 6px)' : 'calc((100% - 24px)/3)',
+          xs: '100%',
+        },
         p: '36px 24px',
         bgcolor: '#C6F5F1',
         borderRadius: '24px',
@@ -669,8 +667,13 @@ function WorkingGroupCard({ title, href, image }) {
         window.open(href, '_blank');
       }}
     >
-      <Box component="img" width="360px" borderRadius="24px" src={image} />
-      <Typography mt="24px" fontSize="24px">
+      <Box
+        component="img"
+        width={{ md: '360px', xs: '300px' }}
+        borderRadius="24px"
+        src={image}
+      />
+      <Typography mt={{ md: '24px', xs: '16px' }} fontSize="24px">
         {title}
       </Typography>
     </Box>
