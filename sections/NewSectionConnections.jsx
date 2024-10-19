@@ -40,7 +40,7 @@ export default function NewSectionConnections() {
           src="/images/new/quote-right.svg"
           sx={{
             position: 'absolute',
-            width: { md: '60px', xs: '20px' },
+            width: { md: '30px', xs: '20px' },
             left: { md: '-80px', xs: '-20px' },
           }}
         />
@@ -51,7 +51,7 @@ export default function NewSectionConnections() {
           src="/images/new/quote-left.svg"
           sx={{
             position: 'absolute',
-            width: { md: '60px', xs: '20px' },
+            width: { md: '30px', xs: '20px' },
             top: { md: '40px', xs: '0px' },
             right: { md: '-90px', xs: '-20px' },
           }}

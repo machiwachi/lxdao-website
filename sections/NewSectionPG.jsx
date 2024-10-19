@@ -5,7 +5,7 @@ import Container from '@/components/Container';
 
 export default function NewSectionPG() {
   return (
-    <Container py="100px">
+    <Container py={{ md: '100px', xs: '60px' }}>
       <Box
         sx={{
           display: 'flex',
@@ -92,7 +92,7 @@ export default function NewSectionPG() {
             px: '30px',
           }}
         >
-          <Typography fontSize={{ md: '28px', xs: '18px' }} fontWeight="700">
+          <Typography fontSize={{ md: '28px', xs: '24px' }} fontWeight="700">
             Learn more in our report
           </Typography>
           <Box

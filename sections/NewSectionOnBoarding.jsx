@@ -55,7 +55,7 @@ export default function NewSectionOnBoarding({ buidlers }) {
         pt="70px"
       >
         <Box
-          alignSelf="end"
+          alignSelf={{ md: 'end', xs: 'center' }}
           component="img"
           width={{ md: '590px', xs: '352px' }}
           src="/images/new/infinite.gif"
@@ -65,7 +65,7 @@ export default function NewSectionOnBoarding({ buidlers }) {
             fontSize={{ md: '40px', xs: '24px' }}
             maxWidth="674px"
             fontWeight="500"
-            textAlign="left"
+            textAlign={{ md: 'left', xs: 'center' }}
           >
             We are committed to creating an{' '}
             <span
@@ -86,7 +86,10 @@ export default function NewSectionOnBoarding({ buidlers }) {
             society.
           </Typography>
           <br />
-          <Typography fontSize={{ md: '32px', xs: '20px' }} textAlign="left">
+          <Typography
+            fontSize={{ md: '32px', xs: '20px' }}
+            textAlign={{ md: 'left', xs: 'center' }}
+          >
             Here is how we make it real.
           </Typography>
         </Box>
@@ -100,7 +103,7 @@ export default function NewSectionOnBoarding({ buidlers }) {
           sx={{
             width: '100%',
             overflow: 'scroll',
-            mt: '120px',
+            mt: { md: '120px', xs: '60px' },
           }}
         >
           <Box
@@ -224,7 +227,7 @@ export default function NewSectionOnBoarding({ buidlers }) {
               backgroundColor: '#CEE8F8',
               padding: '12px',
               borderRadius: '24px',
-              my: '64px',
+              my: '60px',
               width: '100%',
             }}
           >
@@ -317,7 +320,7 @@ export default function NewSectionOnBoarding({ buidlers }) {
               justifyContent: 'center',
               flexWrap: 'wrap',
               gap: '12px',
-              my: '52px',
+              my: '60px',
             }}
           >
             <ProjectGroupCard
@@ -453,7 +456,7 @@ export default function NewSectionOnBoarding({ buidlers }) {
             sx={{
               borderRadius: '100px',
               padding: '12px 40px',
-              mt: '52px',
+              mt: { md: '52px', xs: '0px' },
               justifySelf: 'center',
             }}
             onClick={() => {
