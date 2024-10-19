@@ -30,7 +30,7 @@ export default function NewSectionConnections() {
       />
       <Box
         position="relative"
-        fontSize="40px"
+        fontSize={{ md: '40px', xs: '28px' }}
         textAlign="center"
         fontWeight="700"
         width="fit-content"
@@ -40,17 +40,20 @@ export default function NewSectionConnections() {
           src="/images/new/quote-right.svg"
           sx={{
             position: 'absolute',
-            left: '-80px',
+            width: { md: '60px', xs: '20px' },
+            left: { md: '-80px', xs: '-20px' },
           }}
         />
-        Heart Form our community
+        Heart From <Box component="br" display={{ md: 'none', xs: 'block' }} />
+        our community
         <Box
           component="img"
           src="/images/new/quote-left.svg"
           sx={{
             position: 'absolute',
-            top: '40px',
-            right: '-90px',
+            width: { md: '60px', xs: '20px' },
+            top: { md: '40px', xs: '0px' },
+            right: { md: '-90px', xs: '-20px' },
           }}
         />
       </Box>
@@ -61,7 +64,7 @@ export default function NewSectionConnections() {
           overflow: 'scroll',
           top: '0',
           left: '0',
-          mt: '150px',
+          mt: { md: '150px', xs: '30px' },
         }}
       >
         <Box
@@ -72,8 +75,9 @@ export default function NewSectionConnections() {
             justifyContent: 'start',
             alignItems: 'start',
             flexWrap: 'wrap',
-            gap: '37px',
+            gap: { md: '37px', xs: '20px' },
             height: '810px',
+            px: '20px',
           }}
         >
           {Array.from({ length: 10 }).map((_, index) => (
@@ -125,21 +129,28 @@ export default function NewSectionConnections() {
         <Box
           sx={{
             display: 'flex',
+            flexDirection: { md: 'row', xs: 'column' },
             mt: '120px',
-            width: '1218px',
-            justifyContent: 'space-between',
-            alignItems: 'start',
+            width: '100%',
+            justifyContent: { md: 'space-between', xs: 'center' },
+            alignItems: { md: 'start', xs: 'center' },
           }}
         >
-          <Box fontSize="48px" fontWeight="700" maxWidth="320px">
+          <Box
+            fontSize={{ md: '48px', xs: '32px' }}
+            fontWeight="700"
+            maxWidth={{ md: '320px', xs: '100%' }}
+            textAlign={{ md: 'start', xs: 'center' }}
+          >
             LXDAO Partners
           </Box>
           <Box
             display="flex"
             gap={2}
             flexWrap="wrap"
-            maxWidth="800px"
-            justifyContent="end"
+            mt={{ md: '0px', xs: '20px' }}
+            maxWidth={{ md: '800px', xs: '100%' }}
+            justifyContent={{ md: 'end', xs: 'center' }}
           >
             {partnersData.map((partner, index) => {
               return (
@@ -153,21 +164,28 @@ export default function NewSectionConnections() {
         <Box
           sx={{
             display: 'flex',
-            mt: '120px',
-            width: '1218px',
-            justifyContent: 'space-between',
-            alignItems: 'start',
+            flexDirection: { md: 'row', xs: 'column' },
+            mt: { md: '120px', xs: '60px' },
+            width: '100%',
+            justifyContent: { md: 'space-between', xs: 'center' },
+            alignItems: { md: 'start', xs: 'center' },
           }}
         >
-          <Box fontSize="48px" fontWeight="700" maxWidth="320px">
+          <Box
+            fontSize={{ md: '48px', xs: '32px' }}
+            fontWeight="700"
+            maxWidth={{ md: '320px', xs: '100%' }}
+            textAlign={{ md: 'start', xs: 'center' }}
+          >
             Beloved Sponsors
           </Box>
           <Box
             display="flex"
             gap={2}
             flexWrap="wrap"
-            maxWidth="800px"
-            justifyContent="end"
+            mt={{ md: '0px', xs: '20px' }}
+            maxWidth={{ md: '800px', xs: '100%' }}
+            justifyContent={{ md: 'end', xs: 'center' }}
           >
             {sponsorshipsData.map((partner, index) => {
               return (
@@ -182,20 +200,20 @@ export default function NewSectionConnections() {
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            gap: '96px',
-            mt: '120px',
-            width: '1218px',
+            gap: { md: '96px', xs: '20px' },
+            mt: { md: '120px', xs: '60px' },
+            maxWidth: '1218px',
             justifyContent: 'center',
             alignItems: 'center',
             background:
               'linear-gradient(135deg, #2975DF 0%, #32A5E1 50%, #3ACFE3 100%)',
             borderRadius: '24px',
-            padding: '120px 100px',
+            padding: { md: '120px 100px', xs: '60px 40px' },
           }}
         >
           <Typography
             sx={{
-              fontSize: '48px',
+              fontSize: { md: '48px', xs: '32px' },
               fontWeight: '700',
               color: 'white',
             }}
@@ -205,12 +223,13 @@ export default function NewSectionConnections() {
           <Box
             sx={{
               display: 'flex',
+              flexDirection: { md: 'row', xs: 'column' },
               justifyContent: 'space-between',
               alignItems: 'center',
               width: '100%',
             }}
           >
-            <Typography color="white" width="420px">
+            <Typography color="white" maxWidth="420px">
               The problem we try to tackle at LXDAO requires long-term
               endeavors. We have been here for two years, yet still need support
               for the future works to happen.
@@ -224,6 +243,7 @@ export default function NewSectionConnections() {
                 bgcolor: 'white',
                 borderRadius: '24px',
                 width: '240px',
+                mt: { md: '0px', xs: '40px' },
                 height: 'fit-content',
               }}
             >
