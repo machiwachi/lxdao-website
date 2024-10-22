@@ -117,27 +117,77 @@ export default function NewSectionOnBoarding({ buidlers }) {
               padding: '12px',
             }}
           >
-            {Array.from({ length: 10 }).map((_, index) => (
+            {[
+              {
+                title: 'Shanghai Blockchain Week',
+                date: '2024.10',
+                location: '@Shanghai',
+                img: 'https://cdn.lxdao.io/b76d73d6-21f9-4d1d-beef-1b178c9cbcbc.jpg',
+              },
+              {
+                title: 'Public Goods & DAO Governance ',
+                date: '2024.10',
+                location: '@Beijing',
+                img: 'https://cdn.lxdao.io/b8b385bd-efe4-4ada-ba03-57639e3da49a.jpg',
+              },
+              {
+                title: 'EDCON',
+                date: '2024.07',
+                location: '@Tokyo',
+                img: '/images/new/example.png',
+              },
+              {
+                title: 'The summer of public goods',
+                date: '2024.05/06',
+                location: '@Oakland',
+                img: 'https://cdn.lxdao.io/32a32d58-7b10-4a3a-8d43-19d077038ae3.jpg',
+              },
+              {
+                title: 'WAMAO',
+                date: '2023.12',
+                location: '@Chiang Mai',
+                img: 'https://cdn.lxdao.io/01a2ada3-0bce-40ef-b5cb-ac7c7f48c41f.jpg',
+              },
+              {
+                title: 'Ton/Telegram HackerHouse',
+                date: '2023.12',
+                location: '@Chiang Mai',
+                img: 'https://cdn.lxdao.io/fc383ede-41c4-404c-9c84-62135737b2c2.jpg',
+              },
+              {
+                title: 'Public Goods HackerHouse',
+                date: '2023.10',
+                location: '@Dali',
+                img: 'https://cdn.lxdao.io/476d289e-4a69-4395-8cce-ed9298eceaf2.jpg',
+              },
+            ].map(({ title, date, location, img }, index) => (
               <Box
                 key={index}
                 sx={{
                   display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'end',
+                  flexDirection: 'column',
+                  justifyContent: 'end',
+
                   width: '300px',
                   height: '400px',
                   color: 'white',
                   borderRadius: '20px',
                   padding: '10px 20px',
-                  backgroundImage: `linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent),url('/images/new/example.png')`,
+                  backgroundSize: 'cover',
+                  backgroundImage: `linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent),url(${img})`,
                 }}
               >
-                <Typography fontSize="28px" fontWeight="600">
-                  EDCON
+                <Typography fontSize="16px" fontWeight="600">
+                  {title}
                 </Typography>
-                <Box fontSize="14px" leading="10px">
-                  <Typography>2024.07</Typography>
-                  <Typography>@Tokyo</Typography>
+                <Box
+                  display="flex"
+                  justifyContent="space-between"
+                  leading="10px"
+                  minHeight="30px"
+                >
+                  <Typography fontSize="12px">{date}</Typography>
+                  <Typography fontSize="12px">{location}</Typography>
                 </Box>
               </Box>
             ))}
@@ -336,12 +386,12 @@ export default function NewSectionOnBoarding({ buidlers }) {
                   href: '/projects/012',
                 },
                 {
-                  name: 'ETHPanda Collaboration',
+                  name: 'LXDAO',
                   description:
-                    'ETHPanda is composed of a group of Chinese-speaking builders who are concerned about Ethernet. We will promote the construction of a public network for Chinese-speaking builders of Ethernet, and bring everyone’s strength together to better support Ethernet.',
+                    'Coordinated by the governance group, LXDAO’s governance drives decentralization, resource allocation, and...',
                   banner:
-                    'https://cdn.lxdao.io/af8e14c1-0515-4c75-b3fa-6fcac39e94bc.png',
-                  href: '/projects/021',
+                    'https://cdn.lxdao.io/a4c66bbb-4c69-43ec-a433-d61ebe921af4.png',
+                  href: '/',
                 },
                 {
                   name: 'OPCN',
@@ -370,7 +420,7 @@ export default function NewSectionOnBoarding({ buidlers }) {
                   description:
                     'A co-learning program based on Github. Participants need to learn and share for 21 days in a row. The topics...',
                   banner:
-                    'https://cdn.lxdao.io/bafkreifmpi4vszs4zqvm25us2omgpfr6gkxmc7cwvmle6xph6d5axsm4jm.png',
+                    'https://cdn.lxdao.io/67c6ff09-1a3f-4cc7-8204-efacab867921.png',
                   href: '/projects/012',
                 },
                 {
