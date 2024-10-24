@@ -11,6 +11,8 @@ import { useReadContracts } from 'wagmi';
 import API from '@/common/API';
 import { SNAPSHOTURL, queryProposals } from '@/graphql/snapshot';
 
+import axios from 'axios';
+import jsonpAdapter from 'axios-jsonp';
 import { request } from 'graphql-request';
 
 export default function NewSectionWork({ projectAmount, buidlerAmount }) {
@@ -197,7 +199,12 @@ function VotesCard() {
     })();
   }, []);
   return (
-    <LXCard index={2} title="Discussions" footer="Snapshot ->" link="/">
+    <LXCard
+      index={2}
+      title="Discussions"
+      footer="Snapshot ->"
+      footerLink="https://snapshot.org/#/lxdao.eth"
+    >
       <Box
         sx={{
           display: 'flex',
@@ -233,7 +240,12 @@ function DiscussionsCard() {
       });
   }, []);
   return (
-    <LXCard index={2} title="Discussions" footer="Forum ->" link="/">
+    <LXCard
+      index={2}
+      title="Discussions"
+      footer="Forum ->"
+      footerLink="https://forum.lxdao.io/"
+    >
       <Box
         sx={{
           display: 'flex',
@@ -287,6 +299,7 @@ function LXCard({ children, index, title, footer, footerLink }) {
       </Box>
       <Link
         href={footerLink}
+        target="_blank"
         sx={{
           textDecoration: 'none',
           fontSize: '32px',
@@ -301,8 +314,43 @@ function LXCard({ children, index, title, footer, footerLink }) {
   );
 }
 function MeetingsCard() {
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      const calendarId = 'lxdao.official@gmail.com';
+      const apiKey = 'AIzaSyCH1hpWTL4pVtdk_ke0Xc9he3JZwqZrcp4'; // Replace with your actual API key
+      const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events`;
+
+      try {
+        const response = await axios({
+          url,
+          adapter: jsonpAdapter,
+          params: {
+            key: apiKey,
+            timeMin: new Date().toISOString(),
+            maxResults: 4,
+            singleEvents: true,
+            orderBy: 'startTime',
+          },
+        });
+
+        setEvents(response.data.items);
+      } catch (error) {
+        console.error('Error fetching calendar events:', error);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
   return (
-    <LXCard index={1} title="Space & Meetings" footer="Calendar ->" link="/">
+    <LXCard
+      index={1}
+      title="Space & Meetings"
+      footer="Calendar ->"
+      footerLink="https://calendar.google.com/calendar/u/0/embed?src=lxdao.official@gmail.com&ctz=Asia/Macau"
+    >
       <Box
         sx={{
           display: 'flex',
@@ -310,8 +358,15 @@ function MeetingsCard() {
           gap: '32px',
         }}
       >
-        {Array.from({ length: 4 }).map((_, index) => (
-          <MeetingDetailCard title="Intensive Co-learning" key={index} />
+        {events.map((event, index) => (
+          <MeetingDetailCard
+            key={index}
+            title={event.summary}
+            link={event.htmlLink}
+            date={new Date(
+              event.start.dateTime || event.start.date
+            ).toLocaleDateString()}
+          />
         ))}
       </Box>
     </LXCard>
@@ -320,7 +375,12 @@ function MeetingsCard() {
 
 function EventsCard() {
   return (
-    <LXCard index={0} title="Event" footer="Luma ->" link="/">
+    <LXCard
+      index={0}
+      title="Event"
+      footer="Luma ->"
+      footerLink="https://lu.ma/LXDAO_Events"
+    >
       <Box
         sx={{
           display: 'flex',
@@ -328,25 +388,32 @@ function EventsCard() {
           gap: '20px',
         }}
       >
-        {Array.from({ length: 3 }).map((_, index) => (
-          <EventDetailCard title="Intensive Co-learning" key={index} />
-        ))}
+        <EventDetailCard
+          title="Coordination Day by LXDAO"
+          date="2024/11/11"
+          location="Shanghai, China"
+          link="https://lu.ma/LXDAO_Events"
+        />
       </Box>
     </LXCard>
   );
 }
 
-function MeetingDetailCard({ title }) {
+function MeetingDetailCard({ title, date, link }) {
   return (
     <Box
       sx={{
         display: 'flex',
         py: '12px',
         bgcolor: 'transparent',
+        cursor: 'pointer',
+      }}
+      onClick={() => {
+        window.open(link, '_blank');
       }}
     >
       <Typography fontSize="14px" mr="20px">
-        Sept 18
+        {date}
       </Typography>
       <Typography
         fontSize="14px"
@@ -367,12 +434,16 @@ function MeetingDetailCard({ title }) {
   );
 }
 
-function EventDetailCard({ title }) {
+function EventDetailCard({ title, date, location, link }) {
   return (
     <Card
       sx={{
         py: '22px',
         px: '23px',
+        cursor: 'pointer',
+      }}
+      onClick={() => {
+        window.open(link, '_blank');
       }}
     >
       <Typography
@@ -391,8 +462,8 @@ function EventDetailCard({ title }) {
         {title}
       </Typography>
       <Box display="flex" gap={4} color="#666F85" mt="8px">
-        <Typography fontSize="12px">Sept 18</Typography>
-        <Typography fontSize="12px">Shanghai, China</Typography>
+        <Typography fontSize="12px">{date}</Typography>
+        <Typography fontSize="12px">{location}</Typography>
       </Box>
     </Card>
   );
