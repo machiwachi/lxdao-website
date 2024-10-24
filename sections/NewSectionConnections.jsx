@@ -1,3 +1,5 @@
+import { Tweet } from 'react-tweet';
+
 import { Box, Link, Typography } from '@mui/material';
 
 import Container from '@/components/Container';
@@ -59,7 +61,7 @@ export default function NewSectionConnections() {
       </Box>
       <Box
         width="100%"
-        height="810px"
+        height="910px"
         sx={{
           overflow: 'scroll',
           top: '0',
@@ -76,53 +78,59 @@ export default function NewSectionConnections() {
             alignItems: 'start',
             flexWrap: 'wrap',
             gap: { md: '37px', xs: '20px' },
-            height: '810px',
+            height: '910px',
             px: '20px',
           }}
         >
-          {Array.from({ length: 10 }).map((_, index) => (
-            <Box
-              key={index}
-              width="280px"
-              sx={{
-                p: '47px 34px',
-                background: 'white',
-                borderRadius: '20px',
-                zIndex: 100,
-              }}
-            >
-              <Box>
-                qoutes from the community qoutes from the community qoutes from
-                the community
-              </Box>
+          {xId.map((id, index) => (
+            <Tweet key={index} id={id} />
+          ))}
+          {/* <Tweet width="100px" id="1628832338187636740" />
+          {testimonials.map(
+            ({ content, name, handler, avatar, link }, index) => (
               <Box
+                key={index}
+                width="280px"
                 sx={{
-                  display: 'flex',
-                  gap: '12px',
-                  mt: '48px',
+                  p: '47px 34px',
+                  background: 'white',
+                  borderRadius: '20px',
+                  zIndex: 100,
+                }}
+                onClick={() => {
+                  window.open(link, '_blank');
                 }}
               >
+                <Box>{content}</Box>
                 <Box
-                  width="40px"
-                  height="40px"
                   sx={{
-                    borderRadius: '50%',
-                    background: 'red',
+                    display: 'flex',
+                    gap: '12px',
+                    mt: '48px',
                   }}
-                ></Box>
-                <Box>
-                  <Box>XXX</Box>
+                >
                   <Box
+                    width="40px"
+                    height="40px"
                     sx={{
-                      fontSize: '12px',
+                      borderRadius: '50%',
+                      background: `url(${avatar})`,
                     }}
-                  >
-                    @XXX
+                  ></Box>
+                  <Box>
+                    <Box>{name}</Box>
+                    <Box
+                      sx={{
+                        fontSize: '12px',
+                      }}
+                    >
+                      @{handler}
+                    </Box>
                   </Box>
                 </Box>
               </Box>
-            </Box>
-          ))}
+            )
+          )} */}
         </Box>
       </Box>
       <Container>
@@ -378,5 +386,120 @@ const partnersData = [
     name: 'BlockBooster',
     logo: '/images/partners/BlockBooster-logo.svg',
     link: 'https://www.gitcoin.co/',
+  },
+];
+
+const xId = [
+  '1631840755982675969',
+  '1731662536435716572',
+  '1653387127009452032',
+  '1844410013919612973',
+  '1775069684385366026',
+  '1797864398624837718',
+  '1797801153650180421',
+  '1753329682463015177',
+  '1669273384121946113',
+  '1772257636224032817',
+  '1642840135753687041',
+];
+
+const testimonials = [
+  {
+    content: `这段时间恰好在和朋友们聊华语的开发者社区，给大家推荐在我心目中认可的且我可背书的三个组织. @LXDAO_Official \n
+
+技术氛围浓厚+去中心化程度高+工程化能力强可落地
+现在基本上我周围有在做项目或者想参与开发者社区的我都会推荐他们去LXDAO，属于踏实做事不重营销`,
+    name: '陈剑Jason 🐡',
+    handler: 'jason_chen998',
+    avatar: 'https://x.com/jason_chen998/photo',
+    link: 'https://x.com/jason_chen998/status/1631840755982675969',
+  },
+  {
+    content: `队形是LX,代表着良心,代表着领先
+
+今天的周一测试活动非常成功,实现了区块链历史上第一次Fully on chain 团建，来 @LXDAO_Official
+
+家人们！`,
+    name: 'lidamao',
+    handler: 'BestLidamao',
+    avatar: 'https://x.com/BestLidamao/photo',
+    link: 'https://x.com/BestLidamao/status/1731662536435716572',
+  },
+  {
+    content: `LXDAO was founded by a group of Asian Developers, who are problem-solving oriented`,
+    name: 'JayDen Wei',
+    handler: 'jaydenw3i',
+    avatar: 'https://x.com/jaydenw3i/photo',
+    link: 'https://x.com/jaydenw3i/status/1653387127009452032',
+  },
+  {
+    content: `Open-source thrives on the passion of its community. At Artela, we’re proud to be community-driven, putting our builders first. Today, we celebrate those who tirelessly shape our ecosystem!Featuring @LXDAO_Official @TradeOnArtemis and @artexswap`,
+    name: 'Artela',
+    handler: 'Artela_Network',
+    avatar: 'https://x.com/Artela_Network/photo',
+    link: 'https://x.com/Artela_Network/status/1844410013919612973',
+  },
+  {
+    content: `We're thrilled to share that we've formed a strategic partnership with @LXDAO_Official, a leading developer-focused community dedicated to sustainably supporting valuable Web3 public goods and open-source projects.`,
+    name: 'Artela',
+    handler: 'Artela_Network',
+    avatar: 'https://x.com/Artela_Network/photo',
+    link: 'https://x.com/Artela_Network/status/1775069684385366026',
+  },
+  {
+    content: `祝贺@LXDAO_Official和@brucexu_eth以及所有为了公共物品奉献的朋友们，两周年快乐！`,
+    name: 'Victor Zhou',
+    handler: 'ZainanZhou',
+    avatar: 'https://x.com/BestLidamao/photo',
+    link: 'https://x.com/ZainanZhou/status/179V7864398624837718',
+  },
+  {
+    content: `很高兴见证 @LXDAO_Official 成立两年来的快速发展。LXDAO 一直致力于支持中文社区的 Web3 公共物品发展。期待 BuidlerDAO 与 LXDAO 继续深化合作，共同推动 Web3 行业繁荣！`,
+    name: 'BuidlerDAO',
+    handler: 'BuidlerDAO',
+    avatar: 'https://x.com/BuidlerDAO/photo',
+    link: 'https://x.com/BuidlerDAO/status/1797801153650180421',
+  },
+  {
+    content: `优质输出的华语以太坊建设者list  评选标准：有优质硬核文章输出能力。视野广泛，对以太坊有深刻洞察的个人，或以太坊相关官方华语社区账号。
+LXDAO 是面向 Web3 华人开发者的开源社区，分享技术知识，常有公开课分享`,
+    name: 'PlanckerDAO',
+    handler: 'PlanckerDAO',
+    avatar: 'https://x.com/PlanckerDAO/photo',
+    link: 'https://x.com/PlanckerDAO/status/1753329682463015177',
+  },
+  {
+    content: `优质输出的华语以太坊建设者list  评选标准：有优质硬核文章输出能力。视野广泛，对以太坊有深刻洞察的个人，或以太坊相关官方华语社区账号。
+LXDAO 是面向 Web3 华人开发者的开源社区，分享技术知识，常有公开课分享`,
+    name: 'PlanckerDAO',
+    handler: 'PlanckerDAO',
+    avatar: 'https://x.com/PlanckerDAO/photo',
+    link: 'https://x.com/PlanckerDAO/status/1753329682463015177',
+  },
+  {
+    content: `Glad to see over 30 buidlers got their rewards from LXDAO last month!
+More decentralized and more people joining us for supporting Web3 Public Goods!`,
+    name: 'Bruce',
+    handler: 'brucexu_eth',
+    avatar: 'https://x.com/brucexu_eth/photo',
+    link: 'https://x.com/brucexu_eth/status/1669273384121946113',
+  },
+  {
+    content: `何为public goods：GCC《Web3公共物品生态研究报告》总结 作者： @HYbigboss
+本文以读后总结的形式，为大家介绍由 @LXDAO_Official
+及 @GCCofCommons 共同撰写的 76 页《Web3 公共物品⽣态研究报告》。这是目前关于web3公共物品的研究成果中，最有参考价值的资料之一`,
+    name: '极客 Web3',
+    handler: 'geeksweb3',
+    avatar: 'https://x.com/geeksweb3/photo',
+    link: 'https://x.com/geeksweb3/status/1772257636224032817',
+  },
+  {
+    content: `Partnership Announcement
+@LXDAO_official& @MarsDAO_
+We are excited to announce a partnership with LXDAO!  We will co-host and support various Web3 events, provide support for Web3 educational resources and incubate projects together！`,
+    name: 'MarsDAO',
+    handler: 'MarsDAO_',
+    avatar: 'https://x.com/MarsDAO_/photo',
+    link: 'https://x.com/MarsDAO_/status/1642840135753687041',
   },
 ];
