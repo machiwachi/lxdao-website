@@ -156,7 +156,7 @@ export default function NewSectionWork({ projectAmount, buidlerAmount }) {
         <DataBox value="16K+" title="Twitter Followers & TG Members" />
         <DataBox value={buidlerAmount} title="Registered member" />
         <DataBox value={projectAmount} title="Supported projects" />
-        <DataBox value={totalTreasury} title="Treasury" />
+        <DataBox value={totalTreasury.toFixed(2)} title="Treasury" />
       </Box>
     </Container>
   );

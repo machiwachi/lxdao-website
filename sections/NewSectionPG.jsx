@@ -112,8 +112,14 @@ export default function NewSectionPG() {
             variant="gradient"
             mt={{ md: '100px', xs: '40px' }}
             fontSize={{ md: '16px', xs: '14px' }}
+            onClick={() => {
+              window.open(
+                'https://docsend.com/view/7c5nu26eexpt4adj',
+                '_blank'
+              );
+            }}
           >
-            DOWNLOAD PDF
+            DECK LINK
           </Button>
         </Box>
         <Box

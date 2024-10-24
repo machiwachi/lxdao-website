@@ -81,7 +81,7 @@ export default function NewSectionOnBoarding({ buidlers }) {
                 fontWeight: '700',
               }}
             >
-              {''}open and beautiful
+              {''}open and beautiful{' '}
             </span>
             society.
           </Typography>
