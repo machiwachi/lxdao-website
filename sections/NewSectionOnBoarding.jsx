@@ -128,18 +128,19 @@ export default function NewSectionOnBoarding({ buidlers }) {
                 title: 'Public Goods & DAO Governance ',
                 date: '2024.10',
                 location: '@Beijing',
-                img: 'https://cdn.lxdao.io/b8b385bd-efe4-4ada-ba03-57639e3da49a.jpg',
+                img: 'https://cdn.lxdao.io/27eaf34c-72f1-4be2-8fe5-972375f2c2b0.jpg',
               },
               {
-                title: 'EDCON',
+                title: 'LXDAO in EDCON Tokyo',
                 date: '2024.07',
                 location: '@Tokyo',
-                img: '/images/new/example.png',
+                img: 'https://cdn.lxdao.io/00a0d35b-0be1-491e-8489-11b17667cc57.jpg',
               },
               {
                 title: 'The summer of public goods',
                 date: '2024.05/06',
-                location: '@Oakland',
+                location:
+                  '@Oakland/Beijing/\nShanghai/ChengDu/\nChangsha/Hangzhou',
                 img: 'https://cdn.lxdao.io/32a32d58-7b10-4a3a-8d43-19d077038ae3.jpg',
               },
               {
@@ -187,7 +188,9 @@ export default function NewSectionOnBoarding({ buidlers }) {
                   minHeight="30px"
                 >
                   <Typography fontSize="12px">{date}</Typography>
-                  <Typography fontSize="12px">{location}</Typography>
+                  <Typography fontSize="12px" textAlign="end">
+                    {location}
+                  </Typography>
                 </Box>
               </Box>
             ))}
@@ -342,6 +345,9 @@ export default function NewSectionOnBoarding({ buidlers }) {
             sx={{
               borderRadius: '100px',
               padding: '12px 40px',
+            }}
+            onClick={() => {
+              window.open('https://forum.lxdao.io/c/research/9', '_blank');
             }}
           >
             VIEW ALL RESEARCH
