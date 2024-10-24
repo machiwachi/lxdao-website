@@ -292,51 +292,53 @@ export default function NewSectionOnBoarding({ buidlers }) {
                 borderRadius: '24px',
               }}
             >
-              {Array.from({ length: 5 }).map((_, index) => (
-                <Box
+              {[
+                {
+                  title: '分享个小的项目想法：People’s History',
+                  time: '2024/07/29',
+                  author: '@cooper',
+                  href: 'https://forum.lxdao.io/t/peoples-history/2251',
+                  tags: ['Open source', 'General', ' idea'],
+                },
+                {
+                  title:
+                    'La Sape with Web3, 大家来脑暴！怎么链接现实社会整点狠活儿！',
+                  time: '2024/10/14',
+                  author: '@loxia.eth',
+                  href: 'https://forum.lxdao.io/t/la-sape-with-web3/1972',
+                  tags: ['General', 'idea'],
+                },
+                {
+                  title: '噶蛋计划回归：噶蛋计划DAO！',
+                  time: '2024/10/14',
+                  author: '@李大胖',
+                  href: 'https://forum.lxdao.io/t/dao/2250',
+                  tags: ['DAO', 'General', 'idea'],
+                },
+                {
+                  title:
+                    'If there is such a mobile app, would you like to use it?',
+                  time: '2024/09/29',
+                  author: '@kahn.yuan',
+                  href: 'https://forum.lxdao.io/t/if-there-is-such-a-mobile-app-would-you-like-to-use-it/2180',
+                  tags: ['DAO-tool', 'General', 'idea'],
+                },
+                {
+                  title: '“叙事”残酷共学开启！一起来探索链上社会的未来构想吧～',
+                  time: '2024/08/12',
+                  author: '@connie',
+                  href: 'https://forum.lxdao.io/t/topic/2017',
+                  tags: ['Learning', 'idea'],
+                },
+              ].map(({ title, time, author, href, tags }, index) => (
+                <ResearchBlock
                   key={index}
-                  sx={{
-                    display: 'flex',
-                    flexDirection: { md: 'row', xs: 'column' },
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    p: { md: '36px 60px', xs: '24px 30px' },
-                  }}
-                >
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexWrap: 'wrap',
-                      gap: '4px',
-                      maxWidth: { md: '120px', xs: '100%' },
-                      minWidth: { md: '120px', xs: '100%' },
-                    }}
-                  >
-                    <MyTag color="blue">NFT</MyTag>
-                    <MyTag color="green">Open source</MyTag>
-                  </Box>
-                  <Box minWidth={{ md: '600px', xs: '100%' }}>
-                    <Typography fontSize="24px" fontWeight="700">
-                      Report on Web3 Public Goods Ecosystem
-                    </Typography>
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        gap: '16px',
-                        color: '#666',
-                        fontSize: '14px',
-                      }}
-                    >
-                      <Typography>2024/10/02</Typography>
-                      <Typography>@Tiao</Typography>
-                    </Box>
-                  </Box>
-                  <Box
-                    sx={{ display: { md: 'block', xs: 'none' } }}
-                    component="img"
-                    src="/images/new/arrow.svg"
-                  />
-                </Box>
+                  title={title}
+                  time={time}
+                  author={author}
+                  href={href}
+                  tags={tags}
+                />
               ))}
             </Box>
           </Box>
@@ -938,6 +940,66 @@ function OnBoardingTitle({ title, description, index }) {
           {description}
         </Typography>
       </Box>
+    </Box>
+  );
+}
+
+function ResearchBlock({ title, time, author, href, tags }) {
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: { md: 'row', xs: 'column' },
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        p: { md: '36px 60px', xs: '24px 30px' },
+        cursor: 'pointer',
+      }}
+      onClick={() => {
+        window.open(href, '_blank');
+      }}
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '4px',
+          maxWidth: { md: '120px', xs: '100%' },
+          minWidth: { md: '120px', xs: '100%' },
+        }}
+      >
+        {tags.map((tag, index) => (
+          <MyTag key={index} color={index % 2 === 0 ? 'blue' : 'green'}>
+            {tag}
+          </MyTag>
+        ))}
+      </Box>
+      <Box minWidth={{ md: '600px', xs: '100%' }}>
+        <Typography
+          fontSize="24px"
+          width="720px"
+          textAlign="start"
+          fontWeight="700"
+        >
+          {title}
+        </Typography>
+        <Box
+          sx={{
+            display: 'flex',
+            gap: '16px',
+            color: '#666',
+            fontSize: '14px',
+          }}
+        >
+          <Typography>{time}</Typography>
+          <Typography>{author}</Typography>
+        </Box>
+      </Box>
+      <Box
+        sx={{ display: { md: 'block', xs: 'none' } }}
+        component="img"
+        src="/images/new/arrow.svg"
+      />
     </Box>
   );
 }
