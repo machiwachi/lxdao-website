@@ -126,6 +126,9 @@ export default function NewSectionHero() {
               mt: '58px',
               mb: { md: '0', xs: '40px' },
             }}
+            onClick={() => {
+              window.open('https://docs.lxdao.io/lxdao/xuan-yan', '_blank');
+            }}
           >
             Learn More
           </MuiButton>

@@ -86,8 +86,6 @@ export default function NewSectionPG() {
             display: 'flex',
             position: 'relative',
             flexDirection: 'column',
-
-            justifyContent: 'space-between',
             alignItems: 'center',
             px: '30px',
           }}
@@ -105,22 +103,36 @@ export default function NewSectionPG() {
               top: { md: '10px', xs: '0' },
             }}
           ></Box>
-
-          <Button
-            width={{ md: '210px', xs: '180px' }}
-            borderRadius="100px"
-            variant="gradient"
-            mt={{ md: '100px', xs: '40px' }}
-            fontSize={{ md: '16px', xs: '14px' }}
-            onClick={() => {
-              window.open(
-                'https://docsend.com/view/7c5nu26eexpt4adj',
-                '_blank'
-              );
+          <Box
+            sx={{
+              display: 'flex',
+              gap: '20px',
+              mt: { md: '150px', xs: '40px' },
             }}
           >
-            DECK LINK
-          </Button>
+            <Button
+              width={{ md: '210px', xs: '180px' }}
+              borderRadius="100px"
+              variant="gradient"
+              fontSize={{ md: '16px', xs: '14px' }}
+              onClick={() => {
+                window.open('/publicgoods-report-en.pdf', '_blank');
+              }}
+            >
+              PDF (ENG)
+            </Button>
+            <Button
+              width={{ md: '210px', xs: '180px' }}
+              borderRadius="100px"
+              variant="gradient"
+              fontSize={{ md: '16px', xs: '14px' }}
+              onClick={() => {
+                window.open('/publicgoods-report-cn.pdf', '_blank');
+              }}
+            >
+              PDF (中文)
+            </Button>
+          </Box>
         </Box>
         <Box
           ml={{ md: '100px', xs: '0' }}
