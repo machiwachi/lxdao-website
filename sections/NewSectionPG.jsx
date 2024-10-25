@@ -86,11 +86,15 @@ export default function NewSectionPG() {
             display: 'flex',
             position: 'relative',
             flexDirection: 'column',
-            alignItems: 'center',
+
             px: '30px',
           }}
         >
-          <Typography fontSize={{ md: '28px', xs: '24px' }} fontWeight="700">
+          <Typography
+            fontSize={{ md: '28px', xs: '24px' }}
+            fontWeight="700"
+            textAlign="start"
+          >
             Learn more in our report
           </Typography>
           <Box

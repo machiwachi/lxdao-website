@@ -391,7 +391,7 @@ function EventsCard() {
         <EventDetailCard
           title="Coordination Day by LXDAO"
           date="2024/11/11"
-          location="Shanghai, China"
+          location="Bangkok, Thailand"
           link="https://lu.ma/LXDAO_Events"
         />
       </Box>

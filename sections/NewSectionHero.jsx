@@ -147,7 +147,7 @@ export default function NewSectionHero() {
             display: 'flex',
             gap: '40px',
             paddingY: '40px',
-            animation: `${scroll} 30s linear infinite`,
+            animation: `${scroll} 180s linear infinite`,
             '&:hover': {
               animationPlayState: 'paused',
             },

@@ -1,4 +1,7 @@
+import { useEffect, useState } from 'react';
 import { Tweet } from 'react-tweet';
+import { TweetProps, useTweet } from 'react-tweet';
+import { getTweet } from 'react-tweet/api';
 
 import { Box, Link, Typography } from '@mui/material';
 
@@ -83,7 +86,7 @@ export default function NewSectionConnections() {
           }}
         >
           {xId.map((id, index) => (
-            <Tweet key={index} id={id} />
+            <TweetCard key={index} id={id} />
           ))}
           {/* <Tweet width="100px" id="1628832338187636740" />
           {testimonials.map(
@@ -145,9 +148,9 @@ export default function NewSectionConnections() {
           }}
         >
           <Box
-            fontSize={{ md: '48px', xs: '32px' }}
+            fontSize={{ md: '36px', xs: '28px' }}
             fontWeight="700"
-            maxWidth={{ md: '320px', xs: '100%' }}
+            maxWidth={{ md: '280px', xs: '100%' }}
             textAlign={{ md: 'start', xs: 'center' }}
           >
             LXDAO Partners
@@ -180,9 +183,9 @@ export default function NewSectionConnections() {
           }}
         >
           <Box
-            fontSize={{ md: '48px', xs: '32px' }}
+            fontSize={{ md: '36px', xs: '28px' }}
             fontWeight="700"
-            maxWidth={{ md: '320px', xs: '100%' }}
+            maxWidth={{ md: '280px', xs: '100%' }}
             textAlign={{ md: 'start', xs: 'center' }}
           >
             Beloved Sponsors
@@ -294,6 +297,56 @@ export default function NewSectionConnections() {
           </Box>
         </Box>
       </Container>
+    </Box>
+  );
+}
+
+function TweetCard({ id }) {
+  const { data: tweet, error, isLoading } = useTweet(id);
+  if (isLoading) return <></>;
+  console.log('tweet', tweet);
+
+  return (
+    <Box
+      width="280px"
+      sx={{
+        p: '47px 34px',
+        background: 'white',
+        borderRadius: '20px',
+        zIndex: 100,
+      }}
+      onClick={() => {
+        window.open(tweet.url, '_blank');
+      }}
+    >
+      <Box>{tweet.text}</Box>
+      <Box
+        sx={{
+          display: 'flex',
+          gap: '12px',
+          mt: '48px',
+        }}
+      >
+        <Box
+          width="40px"
+          height="40px"
+          component="img"
+          src={tweet.user.profile_image_url_https}
+          sx={{
+            borderRadius: '50%',
+          }}
+        ></Box>
+        <Box>
+          <Box>{tweet.user.name}</Box>
+          <Box
+            sx={{
+              fontSize: '12px',
+            }}
+          >
+            @{tweet.user.screen_name}
+          </Box>
+        </Box>
+      </Box>
     </Box>
   );
 }
