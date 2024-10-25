@@ -11,14 +11,6 @@ import NewSectionHero from '@/sections/NewSectionHero';
 import NewSectionOnBoarding from '@/sections/NewSectionOnBoarding';
 import NewSectionPG from '@/sections/NewSectionPG';
 import NewSectionWork from '@/sections/NewSectionWork';
-import SectionBuidlers from '@/sections/SectionBuidlers';
-import SectionHomepageProjects from '@/sections/SectionHomepageProjects';
-import SectionMission from '@/sections/SectionMission';
-// import SectionActivities from '@/sections/SectionActivities';
-import SectionPartners from '@/sections/SectionPartners';
-import SectionWorkSteps from '@/sections/SectionWorkSteps';
-import SectionWorkingGroup from '@/sections/SectionWorkingGroup';
-import SupportUs from '@/sections/SupportUs';
 import { scrollToSection } from '@/utils/utility';
 
 export default function Home() {
@@ -59,7 +51,7 @@ export default function Home() {
 
       while (hasMoreData) {
         const res = await API.get(
-          `/buidler?per_page=200&page=${page}&status=ACTIVE&status=READYTOMINT&status=PENDING`
+          `/buidler?per_page=27&page=${page}&status=ACTIVE&status=READYTOMINT&status=PENDING`
         );
 
         const result = res?.data;
@@ -69,12 +61,14 @@ export default function Home() {
         }
 
         if (result?.data && result.data.length > 0) {
-          result.data.forEach((member) => {
-            members.push(member);
-            if (member?.badges && member?.badges['MemberFirstBadge'] >= 1) {
-              ActiveMembers.push(member);
-            }
-          });
+          // result.data.forEach((member) => {
+          //   members.push(member);
+          //   if (member?.badges && member?.badges['MemberFirstBadge'] >= 1) {
+          //     ActiveMembers.push(member);
+          //   }
+          // });
+          members.push(...result.data.slice(0, 27));
+          setActiveBuidlerAmount(result.pagination.total);
 
           if (result.data.length < 200) {
             hasMoreData = false;
@@ -87,7 +81,6 @@ export default function Home() {
       }
 
       setBuidlers(members);
-      setActiveBuidlerAmount(ActiveMembers.length);
     } catch (err) {
       console.error(err);
     }

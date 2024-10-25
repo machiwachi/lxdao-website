@@ -16,6 +16,7 @@ import jsonpAdapter from 'axios-jsonp';
 import { request } from 'graphql-request';
 
 export default function NewSectionWork({ projectAmount, buidlerAmount }) {
+  console.log('projectAmount', buidlerAmount);
   const usdtAmount = useReadContracts({
     allowFailure: false,
     contracts: [
@@ -153,15 +154,31 @@ export default function NewSectionWork({ projectAmount, buidlerAmount }) {
           justifyContent: 'space-between',
         }}
       >
-        <DataBox value="16K+" title="Twitter Followers & TG Members" />
-        <DataBox value={buidlerAmount} title="Registered member" />
-        <DataBox value={projectAmount} title="Supported projects" />
-        <DataBox value={totalTreasury.toFixed(2)} title="Treasury" />
+        <DataBox
+          value="16K+"
+          title="Twitter Followers & TG Members"
+          link={'https://x.com/LXDAO_Official'}
+        />
+        <DataBox
+          value={buidlerAmount}
+          title="Registered member"
+          link={'/buidlers'}
+        />
+        <DataBox
+          value={projectAmount}
+          title="Supported projects"
+          link={'/projects'}
+        />
+        <DataBox
+          value={`$${(219594 / 1e3).toFixed(0)}k+`}
+          title="Treasury"
+          link="https://app.safe.global/home?safe=eth:0xB45e9F74D0a35fE1aa0B78feA03877EF96ae8dd2"
+        />
       </Box>
     </Container>
   );
 }
-function DataBox({ value, title }) {
+function DataBox({ value, title, link }) {
   return (
     <Box
       sx={{
@@ -172,6 +189,10 @@ function DataBox({ value, title }) {
         alignItems: { md: 'flex-start', xs: 'center' },
         textAlign: { md: 'left', xs: 'center' },
         width: { md: '250px', xs: '100%' },
+        cursor: 'pointer',
+      }}
+      onClick={() => {
+        window.open(link, '_blank');
       }}
     >
       <Typography fontSize={{ md: '36px', xs: '24px' }} fontWeight="700">

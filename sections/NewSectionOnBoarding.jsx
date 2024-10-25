@@ -128,7 +128,7 @@ export default function NewSectionOnBoarding({ buidlers }) {
                 title: 'Public Goods & DAO Governance ',
                 date: '2024.10',
                 location: '@Beijing',
-                img: 'https://cdn.lxdao.io/27eaf34c-72f1-4be2-8fe5-972375f2c2b0.jpg',
+                img: 'https://cdn.lxdao.io/b8b385bd-efe4-4ada-ba03-57639e3da49a.jpg',
               },
               {
                 title: 'LXDAO in EDCON Tokyo',
@@ -159,7 +159,7 @@ export default function NewSectionOnBoarding({ buidlers }) {
                 title: 'Public Goods HackerHouse',
                 date: '2023.10',
                 location: '@Dali',
-                img: 'https://cdn.lxdao.io/476d289e-4a69-4395-8cce-ed9298eceaf2.jpg',
+                img: 'https://cdn.lxdao.io/27eaf34c-72f1-4be2-8fe5-972375f2c2b0.jpg',
               },
             ].map(({ title, date, location, img }, index) => (
               <Box
@@ -429,7 +429,7 @@ export default function NewSectionOnBoarding({ buidlers }) {
                     'A co-learning program based on Github. Participants need to learn and share for 21 days in a row. The topics...',
                   banner:
                     'https://cdn.lxdao.io/67c6ff09-1a3f-4cc7-8204-efacab867921.png',
-                  href: '/projects/012',
+                  href: 'https://github.com/IntensiveCoLearning',
                 },
                 {
                   name: 'EIP Fun',
@@ -482,7 +482,7 @@ export default function NewSectionOnBoarding({ buidlers }) {
                     'All-in-one Web3 Information Linking Tool. Simply. Directly. Safety.',
                   banner:
                     'https://cdn.lxdao.io/bafkreibonzmrl3snslc2ijhees2hmd7xntb32vzlax6kllurpptvh5qsra.png',
-                  href: '/projects/022',
+                  href: '/projects/002',
                 },
               ]}
             />
@@ -584,6 +584,12 @@ export default function NewSectionOnBoarding({ buidlers }) {
         paddingBottom="200px"
         textAlign="center"
         fontWeight="700"
+        onClick={() => {
+          window.open(
+            'https://www.notion.so/lxdao/LXDAO-Notion-Space-e6c82cfdae8b4ded98507538a9703dbc',
+            '_blank'
+          );
+        }}
       >
         Know more about&nbsp;
         <HightlightText>How LXDAO Works</HightlightText>
@@ -977,7 +983,7 @@ function ResearchBlock({ title, time, author, href, tags }) {
       <Box minWidth={{ md: '600px', xs: '100%' }}>
         <Typography
           fontSize="24px"
-          width="720px"
+          width={{ md: '720px' }}
           textAlign="start"
           fontWeight="700"
         >

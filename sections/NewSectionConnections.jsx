@@ -282,6 +282,12 @@ export default function NewSectionConnections() {
                     fontSize: '22px',
                     fontWeight: 700,
                   }}
+                  onClick={() => {
+                    window.open(
+                      'https://mirror.xyz/lxdao.eth/H7v4nkLRr7N2CfMi7zGUOH0CU7r-MHh8pBcrGUtxRIw',
+                      '_blank'
+                    );
+                  }}
                 >
                   Support Guide
                 </Box>
@@ -304,7 +310,6 @@ export default function NewSectionConnections() {
 function TweetCard({ id }) {
   const { data: tweet, error, isLoading } = useTweet(id);
   if (isLoading) return <></>;
-  console.log('tweet', tweet);
 
   return (
     <Box
