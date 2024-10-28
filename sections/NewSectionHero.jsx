@@ -17,7 +17,7 @@ export default function NewSectionHero() {
       sx={{
         width: '100vw',
         backgroundImage: `url('/images/new/hero-bg.svg')`,
-        backgroundSize: 'cover',
+        backgroundSize: '100vw calc(100vw * 0.572)',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'bottom',
       }}

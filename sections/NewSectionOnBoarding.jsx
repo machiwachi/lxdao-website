@@ -36,167 +36,169 @@ const HightlightText = styled.span`
 
 export default function NewSectionOnBoarding({ buidlers }) {
   return (
-    <Box
-      sx={{
-        width: '100vw',
-        backgroundImage: `url('/images/new/top-bg.svg'), url('/images/new/bottom-bg.svg')`,
-        backgroundSize: 'cover',
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'top, bottom',
-      }}
-    >
-      <Container
-        minHeight={{ md: '990px', xs: '660px' }}
-        display="flex"
-        flexDirection="column"
-        justifyContent="flex-start"
-        alignItems="center"
-        textAlign="center"
-        pt="70px"
+    <>
+      <Box
+        sx={{
+          width: '100vw',
+          backgroundImage: `url('/images/new/top-bg.svg')`,
+          backgroundSize: '100vw',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'top',
+        }}
       >
-        <Box
-          alignSelf={{ md: 'end', xs: 'center' }}
-          component="img"
-          width={{ md: '590px', xs: '352px' }}
-          src="https://cdn.lxdao.io/62691c55-956b-453c-974e-3aa1533c83d0.gif"
-        ></Box>
-        <Box alignSelf="start" mt="60px">
-          <Typography
-            fontSize={{ md: '40px', xs: '24px' }}
-            maxWidth="674px"
-            fontWeight="500"
-            textAlign={{ md: 'left', xs: 'center' }}
-          >
-            We are committed to creating an{' '}
-            <span
-              style={{
-                fontWeight: '700',
-              }}
+        <Container
+          minHeight={{ md: '990px', xs: '660px' }}
+          display="flex"
+          flexDirection="column"
+          justifyContent="flex-start"
+          alignItems="center"
+          textAlign="center"
+          pt="70px"
+        >
+          <Box
+            alignSelf={{ md: 'end', xs: 'center' }}
+            component="img"
+            width={{ md: '590px', xs: '352px' }}
+            src="https://cdn.lxdao.io/62691c55-956b-453c-974e-3aa1533c83d0.gif"
+          ></Box>
+          <Box alignSelf="start" mt="60px">
+            <Typography
+              fontSize={{ md: '40px', xs: '24px' }}
+              maxWidth="674px"
+              fontWeight="500"
+              textAlign={{ md: 'left', xs: 'center' }}
             >
-              infinite cycle
-            </span>{' '}
-            that promotes public goods and open source for an&nbsp;
-            <span
-              style={{
-                fontWeight: '700',
-              }}
+              We are committed to creating an{' '}
+              <span
+                style={{
+                  fontWeight: '700',
+                }}
+              >
+                infinite cycle
+              </span>{' '}
+              that promotes public goods and open source for an&nbsp;
+              <span
+                style={{
+                  fontWeight: '700',
+                }}
+              >
+                {''}open and beautiful{' '}
+              </span>
+              society.
+            </Typography>
+            <br />
+            <Typography
+              fontSize={{ md: '32px', xs: '20px' }}
+              textAlign={{ md: 'left', xs: 'center' }}
             >
-              {''}open and beautiful{' '}
-            </span>
-            society.
-          </Typography>
-          <br />
-          <Typography
-            fontSize={{ md: '32px', xs: '20px' }}
-            textAlign={{ md: 'left', xs: 'center' }}
-          >
-            Here is how we make it real.
-          </Typography>
-        </Box>
-      </Container>
-      <OnBoardingSection
-        title="Education"
-        description="We held various events to let the ideas about Public Goods reach more people."
-        index="01"
-      >
-        <Box
-          sx={{
-            width: '100%',
-            overflow: 'scroll',
-            mt: { md: '120px', xs: '60px' },
-          }}
+              Here is how we make it real.
+            </Typography>
+          </Box>
+        </Container>
+        <OnBoardingSection
+          title="Education"
+          description="We held various events to let the ideas about Public Goods reach more people."
+          index="01"
         >
           <Box
             sx={{
-              display: 'flex',
-              gap: '12px',
-              width: 'fit-content',
-              borderRadius: '24px',
-              ml: 'calc((100vw - Min(90vw, 1216px))/2)',
-              backgroundColor: '#CEE8F8',
-              padding: '12px',
+              width: '100%',
+              overflow: 'scroll',
+              mt: { md: '120px', xs: '60px' },
             }}
           >
-            {[
-              {
-                title: 'Shanghai Blockchain Week',
-                date: '2024.10',
-                location: '@Shanghai',
-                img: 'https://cdn.lxdao.io/b76d73d6-21f9-4d1d-beef-1b178c9cbcbc.jpg',
-              },
-              {
-                title: 'Public Goods & DAO Governance ',
-                date: '2024.10',
-                location: '@Beijing',
-                img: 'https://cdn.lxdao.io/b8b385bd-efe4-4ada-ba03-57639e3da49a.jpg',
-              },
-              {
-                title: 'LXDAO in EDCON Tokyo',
-                date: '2024.07',
-                location: '@Tokyo',
-                img: 'https://cdn.lxdao.io/00a0d35b-0be1-491e-8489-11b17667cc57.jpg',
-              },
-              {
-                title: 'The summer of public goods',
-                date: '2024.05/06',
-                location:
-                  '@Oakland/Beijing/\nShanghai/ChengDu/\nChangsha/Hangzhou',
-                img: 'https://cdn.lxdao.io/32a32d58-7b10-4a3a-8d43-19d077038ae3.jpg',
-              },
-              {
-                title: 'WAMAO',
-                date: '2023.12',
-                location: '@Chiang Mai',
-                img: 'https://cdn.lxdao.io/01a2ada3-0bce-40ef-b5cb-ac7c7f48c41f.jpg',
-              },
-              {
-                title: 'Ton/Telegram HackerHouse',
-                date: '2023.12',
-                location: '@Chiang Mai',
-                img: 'https://cdn.lxdao.io/fc383ede-41c4-404c-9c84-62135737b2c2.jpg',
-              },
-              {
-                title: 'Public Goods HackerHouse',
-                date: '2023.10',
-                location: '@Dali',
-                img: 'https://cdn.lxdao.io/27eaf34c-72f1-4be2-8fe5-972375f2c2b0.jpg',
-              },
-            ].map(({ title, date, location, img }, index) => (
-              <Box
-                key={index}
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'end',
-
-                  width: '300px',
-                  height: '400px',
-                  color: 'white',
-                  borderRadius: '20px',
-                  padding: '10px 20px',
-                  backgroundSize: 'cover',
-                  backgroundImage: `linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent),url(${img})`,
-                }}
-              >
-                <Typography fontSize="16px" fontWeight="600">
-                  {title}
-                </Typography>
+            <Box
+              sx={{
+                display: 'flex',
+                gap: '12px',
+                width: 'fit-content',
+                borderRadius: '24px',
+                ml: 'calc((100vw - Min(90vw, 1216px))/2)',
+                backgroundColor: '#CEE8F8',
+                padding: '12px',
+              }}
+            >
+              {[
+                {
+                  title: 'Shanghai Blockchain Week',
+                  date: '2024.10',
+                  location: '@Shanghai',
+                  img: 'https://cdn.lxdao.io/b76d73d6-21f9-4d1d-beef-1b178c9cbcbc.jpg',
+                },
+                {
+                  title: 'Public Goods & DAO Governance ',
+                  date: '2024.10',
+                  location: '@Beijing',
+                  img: 'https://cdn.lxdao.io/b8b385bd-efe4-4ada-ba03-57639e3da49a.jpg',
+                },
+                {
+                  title: 'LXDAO in EDCON Tokyo',
+                  date: '2024.07',
+                  location: '@Tokyo',
+                  img: 'https://cdn.lxdao.io/00a0d35b-0be1-491e-8489-11b17667cc57.jpg',
+                },
+                {
+                  title: 'The summer of public goods',
+                  date: '2024.05/06',
+                  location:
+                    '@Oakland/Beijing/\nShanghai/ChengDu/\nChangsha/Hangzhou',
+                  img: 'https://cdn.lxdao.io/32a32d58-7b10-4a3a-8d43-19d077038ae3.jpg',
+                },
+                {
+                  title: 'WAMAO',
+                  date: '2023.12',
+                  location: '@Chiang Mai',
+                  img: 'https://cdn.lxdao.io/01a2ada3-0bce-40ef-b5cb-ac7c7f48c41f.jpg',
+                },
+                {
+                  title: 'Ton/Telegram HackerHouse',
+                  date: '2023.12',
+                  location: '@Chiang Mai',
+                  img: 'https://cdn.lxdao.io/fc383ede-41c4-404c-9c84-62135737b2c2.jpg',
+                },
+                {
+                  title: 'Public Goods HackerHouse',
+                  date: '2023.10',
+                  location: '@Dali',
+                  img: 'https://cdn.lxdao.io/27eaf34c-72f1-4be2-8fe5-972375f2c2b0.jpg',
+                },
+              ].map(({ title, date, location, img }, index) => (
                 <Box
-                  display="flex"
-                  justifyContent="space-between"
-                  leading="10px"
-                  minHeight="30px"
+                  key={index}
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'end',
+
+                    width: '300px',
+                    height: '400px',
+                    color: 'white',
+                    borderRadius: '20px',
+                    padding: '10px 20px',
+                    backgroundSize: 'cover',
+                    backgroundImage: `linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent),url(${img})`,
+                  }}
                 >
-                  <Typography fontSize="12px">{date}</Typography>
-                  <Typography fontSize="12px" textAlign="end">
-                    {location}
+                  <Typography fontSize="16px" fontWeight="600">
+                    {title}
                   </Typography>
+                  <Box
+                    display="flex"
+                    justifyContent="space-between"
+                    leading="10px"
+                    minHeight="30px"
+                  >
+                    <Typography fontSize="12px">{date}</Typography>
+                    <Typography fontSize="12px" textAlign="end">
+                      {location}
+                    </Typography>
+                  </Box>
                 </Box>
-              </Box>
-            ))}
+              ))}
+            </Box>
           </Box>
-        </Box>
-      </OnBoardingSection>
+        </OnBoardingSection>
+      </Box>
       <OnBoardingSection
         title="Onboarding"
         description="We onboard talents with 'LX' to research & develop."
@@ -525,76 +527,87 @@ export default function NewSectionOnBoarding({ buidlers }) {
           </MuiButton>
         </Box>
       </OnBoardingSection>
-      <OnBoardingSection
-        title="Working Groups"
-        description="As part of the sustainable solution, LXDAO itself operates as a DAO to ensure 'public goods by the public, for the public.'"
-        index="05"
-      >
-        <Container
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              flexDirection: { md: 'row', xs: 'column' },
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              my: '64px',
-              gap: '24px',
-            }}
-          >
-            <WorkingGroupCard
-              title="Governance"
-              href="/workingGroups/1"
-              image="https://cdn.lxdao.io/483c815a-5a91-49e3-839a-9c64f30b5535.png"
-            />
-            <WorkingGroupCard
-              title="Forge"
-              href="/workingGroups/6"
-              image="https://cdn.lxdao.io/14c863c9-f086-40fc-b0d7-584c118d1840.png"
-            />
-            <WorkingGroupCard
-              title="Operation"
-              href="/workingGroups/5"
-              image="https://cdn.lxdao.io/8ec73781-f67a-493e-8f39-422ab706c77f.png"
-            />
-          </Box>
-
-          <MuiButton
-            variant="contained"
-            sx={{
-              borderRadius: '100px',
-              padding: '12px 40px',
-            }}
-            onClick={() => {
-              window.open('/workingGroups/list', '_blank');
-            }}
-          >
-            VIEW ALL
-          </MuiButton>
-        </Container>
-      </OnBoardingSection>
-      <Typography
-        fontSize="36px"
-        paddingTop="100px"
-        paddingBottom="200px"
-        textAlign="center"
-        fontWeight="700"
-        onClick={() => {
-          window.open(
-            'https://www.notion.so/lxdao/LXDAO-Notion-Space-e6c82cfdae8b4ded98507538a9703dbc',
-            '_blank'
-          );
+      <Box
+        sx={{
+          width: '100vw',
+          backgroundImage: `url('/images/new/bottom-bg.svg')`,
+          backgroundSize: '100vw',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'bottom',
         }}
       >
-        Know more about&nbsp;
-        <HightlightText>How LXDAO Works</HightlightText>
-      </Typography>
-    </Box>
+        <OnBoardingSection
+          title="Working Groups"
+          description="As part of the sustainable solution, LXDAO itself operates as a DAO to ensure 'public goods by the public, for the public.'"
+          index="05"
+        >
+          <Container
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Box
+              sx={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                flexDirection: { md: 'row', xs: 'column' },
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                my: '64px',
+                gap: '24px',
+              }}
+            >
+              <WorkingGroupCard
+                title="Governance"
+                href="/workingGroups/1"
+                image="https://cdn.lxdao.io/483c815a-5a91-49e3-839a-9c64f30b5535.png"
+              />
+              <WorkingGroupCard
+                title="Forge"
+                href="/workingGroups/6"
+                image="https://cdn.lxdao.io/14c863c9-f086-40fc-b0d7-584c118d1840.png"
+              />
+              <WorkingGroupCard
+                title="Operation"
+                href="/workingGroups/5"
+                image="https://cdn.lxdao.io/8ec73781-f67a-493e-8f39-422ab706c77f.png"
+              />
+            </Box>
+
+            <MuiButton
+              variant="contained"
+              sx={{
+                borderRadius: '100px',
+                padding: '12px 40px',
+              }}
+              onClick={() => {
+                window.open('/workingGroups/list', '_blank');
+              }}
+            >
+              VIEW ALL
+            </MuiButton>
+          </Container>
+        </OnBoardingSection>
+
+        <Typography
+          fontSize="36px"
+          paddingTop="100px"
+          paddingBottom="200px"
+          textAlign="center"
+          fontWeight="700"
+          onClick={() => {
+            window.open(
+              'https://www.notion.so/lxdao/LXDAO-Notion-Space-e6c82cfdae8b4ded98507538a9703dbc',
+              '_blank'
+            );
+          }}
+        >
+          Know more about&nbsp;
+          <HightlightText>How LXDAO Works</HightlightText>
+        </Typography>
+      </Box>
+    </>
   );
 }
 
