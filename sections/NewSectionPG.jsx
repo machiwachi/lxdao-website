@@ -43,10 +43,7 @@ export default function NewSectionPG() {
           </Typography>
           <ReasonsBox
             title="What"
-            description="In the Web3 context, public goods are resources that everyone can
-              access and no one can be excluded from using. ShapeShift dApp
-              exemplifies this through its decentralized, open-source software
-              that anyone can use, modify, and improve."
+            description="Web3 public goods are shared resources—like decentralized infrastructure, open-source code, and community-driven projects—designed to benefit everyone in the ecosystem. These resources are open and accessible to all, free from profit motives, and sustained through transparent, community-led efforts on blockchain technology."
           />
         </Box>
         <Box
@@ -57,19 +54,13 @@ export default function NewSectionPG() {
           }}
         >
           <ReasonsBox
-            title="What"
-            description="In the Web3 context, public goods are resources that everyone can
-              access and no one can be excluded from using. ShapeShift dApp
-              exemplifies this through its decentralized, open-source software
-              that anyone can use, modify, and improve."
+            title="Why"
+            description="Supporting Web3 public goods empowers communities to build essential resources that everyone can access—open-source tools, decentralized finance, and community-governed networks. This ensures a fair, transparent, and inclusive digital future beyond centralized control."
           />
 
           <ReasonsBox
             title="How"
-            description="In the Web3 context, public goods are resources that everyone can
-              access and no one can be excluded from using. ShapeShift dApp
-              exemplifies this through its decentralized, open-source software
-              that anyone can use, modify, and improve."
+            description="We advance public goods through community-driven DAOs, which fund, develop, and maintain open resources. By joining a DAO, members can pool resources and expertise to support projects such as community events, educational platforms, and open-source software, ensuring these resources benefit everyone in the ecosystem."
           />
         </Box>
       </Box>

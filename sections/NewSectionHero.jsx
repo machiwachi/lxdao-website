@@ -100,7 +100,7 @@ export default function NewSectionHero() {
             sx={{
               width: { md: '503px', xs: '100%' },
             }}
-            src="/images/new/infinite.gif"
+            src="https://cdn.lxdao.io/62691c55-956b-453c-974e-3aa1533c83d0.gif"
           />
         </Box>
         <Box mt={{ md: '175px', xs: '40px' }}>

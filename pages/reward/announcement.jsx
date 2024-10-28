@@ -1038,7 +1038,6 @@ function UnReleasedStablecoinTable({
     // let {
     //   target: { value },
     // } = event;
-    console.log(option);
     setCurrentMember(option ? option.address : '');
   };
 

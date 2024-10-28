@@ -90,7 +90,6 @@ export default function WorkingGroupDetail() {
     const formattedValues = values?.leaderId?.id
       ? { ...values, leaderId: values?.leaderId?.id }
       : values;
-    console.log(formattedValues);
     try {
       const response = await API.put(`/workinggroup/${workingGroupId}`, {
         ...formattedValues,

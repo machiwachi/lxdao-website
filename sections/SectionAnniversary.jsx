@@ -1,16 +1,23 @@
 'use client';
-import React, { useState, useEffect } from 'react';
-import { Box, Typography, InputBase, Link, Button } from '@mui/material';
+
+import React, { useEffect, useState } from 'react';
+
+import { Box, Button, InputBase, Link, Typography } from '@mui/material';
+
 import showMessage from '@/components/showMessage';
+
+import { parseEther } from 'viem';
+
 import {
   useAccount,
   useReadContract,
   useSwitchChain,
   useWriteContract,
 } from 'wagmi';
-import { parseEther } from 'viem';
-import { useConnectModal } from '@rainbow-me/rainbowkit';
+
 import { anniversaryContract } from '@/abi/index';
+
+import { useConnectModal } from '@rainbow-me/rainbowkit';
 
 const SectionAnniversary = () => {
   const [totalSupply, setTotalSupply] = useState('----');
@@ -42,7 +49,6 @@ const SectionAnniversary = () => {
     try {
       setLoading(true);
       if (chainId != anniversaryContract.chainId) {
-        console.log('change');
         await switchChainAsync({
           chainId: anniversaryContract.chainId,
         });

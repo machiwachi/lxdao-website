@@ -8,7 +8,6 @@ export default function TweetCard({ id }) {
   const [tweet, setTweet] = useState(null);
 
   useEffect(() => {
-    console.log('id', id);
     getTweet(id).then(setTweet);
   }, [id]);
 

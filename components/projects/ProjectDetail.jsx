@@ -46,8 +46,6 @@ import { getLocalStorage } from '@/utils/utility';
 
 import { format } from 'date-fns';
 
-// console.log(Dialog, DialogContent, DialogTitle);
-
 const useStyles = makeStyles({
   tooltip: {
     background: '#fff',

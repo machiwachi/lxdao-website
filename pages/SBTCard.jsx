@@ -40,7 +40,6 @@ export default function MintCard() {
   const [minting, setMinting] = React.useState(false);
   const [projects, setProjects] = React.useState([]);
   const [, record, , refresh] = useBuidler(address);
-  console.log({ record, address });
   const router = useRouter();
   const [workingGroupsData, setWorkingGroupsData] = useState([]);
   const { data: balance } = useBalance({
@@ -108,7 +107,6 @@ export default function MintCard() {
         router.push(`/buidlers/${address}`);
       }
     } catch (err) {
-      console.log(typeof err);
       showMessage({
         type: 'error',
         title: 'Failed to mint',

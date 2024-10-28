@@ -16,7 +16,6 @@ import jsonpAdapter from 'axios-jsonp';
 import { request } from 'graphql-request';
 
 export default function NewSectionWork({ projectAmount, buidlerAmount }) {
-  console.log('projectAmount', buidlerAmount);
   const usdtAmount = useReadContracts({
     allowFailure: false,
     contracts: [

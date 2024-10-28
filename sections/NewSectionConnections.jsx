@@ -85,55 +85,9 @@ export default function NewSectionConnections() {
             px: '20px',
           }}
         >
-          {xId.map((id, index) => (
-            <TweetCard key={index} id={id} />
+          {xData.map((item, index) => (
+            <TweetCard key={index} item={item} />
           ))}
-          {/* <Tweet width="100px" id="1628832338187636740" />
-          {testimonials.map(
-            ({ content, name, handler, avatar, link }, index) => (
-              <Box
-                key={index}
-                width="280px"
-                sx={{
-                  p: '47px 34px',
-                  background: 'white',
-                  borderRadius: '20px',
-                  zIndex: 100,
-                }}
-                onClick={() => {
-                  window.open(link, '_blank');
-                }}
-              >
-                <Box>{content}</Box>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    gap: '12px',
-                    mt: '48px',
-                  }}
-                >
-                  <Box
-                    width="40px"
-                    height="40px"
-                    sx={{
-                      borderRadius: '50%',
-                      background: `url(${avatar})`,
-                    }}
-                  ></Box>
-                  <Box>
-                    <Box>{name}</Box>
-                    <Box
-                      sx={{
-                        fontSize: '12px',
-                      }}
-                    >
-                      @{handler}
-                    </Box>
-                  </Box>
-                </Box>
-              </Box>
-            )
-          )} */}
         </Box>
       </Box>
       <Container>
@@ -281,6 +235,8 @@ export default function NewSectionConnections() {
                   sx={{
                     fontSize: '22px',
                     fontWeight: 700,
+                    py: '20px',
+                    cursor: 'pointer',
                   }}
                   onClick={() => {
                     window.open(
@@ -291,13 +247,6 @@ export default function NewSectionConnections() {
                 >
                   Support Guide
                 </Box>
-                <Box
-                  sx={{
-                    fontSize: '18px',
-                  }}
-                >
-                  {'Notion ->'}
-                </Box>
               </Box>
             </Box>
           </Box>
@@ -307,10 +256,16 @@ export default function NewSectionConnections() {
   );
 }
 
-function TweetCard({ id }) {
-  const { data: tweet, error, isLoading } = useTweet(id);
-  if (isLoading) return <></>;
-
+function TweetCard({ item }) {
+  // const { data: tweet, isLoading } = useTweet(id);
+  // if (isLoading) return <></>;
+  // console.log({
+  //   id,
+  //   text: tweet?.text,
+  //   profile: tweet?.user?.profile_image_url_https,
+  //   user_name: tweet?.user?.name,
+  //   user_handler: tweet?.user?.screen_name,
+  // });
   return (
     <Box
       width="280px"
@@ -319,12 +274,13 @@ function TweetCard({ id }) {
         background: 'white',
         borderRadius: '20px',
         zIndex: 100,
+        cursor: 'pointer',
       }}
       onClick={() => {
-        window.open(tweet.url, '_blank');
+        window.open(`https://x.com/x/status/${item.id}`, '_blank');
       }}
     >
-      <Box>{tweet.text}</Box>
+      <Box>{item?.text}</Box>
       <Box
         sx={{
           display: 'flex',
@@ -336,19 +292,19 @@ function TweetCard({ id }) {
           width="40px"
           height="40px"
           component="img"
-          src={tweet.user.profile_image_url_https}
+          src={item?.profile}
           sx={{
             borderRadius: '50%',
           }}
         ></Box>
         <Box>
-          <Box>{tweet.user.name}</Box>
+          <Box>{item?.user_name}</Box>
           <Box
             sx={{
               fontSize: '12px',
             }}
           >
-            @{tweet.user.screen_name}
+            @{item?.user_handler}
           </Box>
         </Box>
       </Box>
@@ -448,7 +404,6 @@ const partnersData = [
 ];
 
 const xId = [
-  '1631840755982675969',
   '1731662536435716572',
   '1653387127009452032',
   '1844410013919612973',
@@ -460,104 +415,85 @@ const xId = [
   '1772257636224032817',
   '1642840135753687041',
 ];
-
-const testimonials = [
+const xData = [
   {
-    content: `这段时间恰好在和朋友们聊华语的开发者社区，给大家推荐在我心目中认可的且我可背书的三个组织. @LXDAO_Official \n
-
-技术氛围浓厚+去中心化程度高+工程化能力强可落地
-现在基本上我周围有在做项目或者想参与开发者社区的我都会推荐他们去LXDAO，属于踏实做事不重营销`,
-    name: '陈剑Jason 🐡',
-    handler: 'jason_chen998',
-    avatar: 'https://x.com/jason_chen998/photo',
-    link: 'https://x.com/jason_chen998/status/1631840755982675969',
+    id: '1731662536435716572',
+    text: '队形是LX,代表着良心,代表着领先😎\n今天的周一测试活动非常成功,实现了区块链历史上第一次Full…团建，来自@LXDAO_Official 家人们！ https://t.co/UhNYWvJBUH',
+    profile:
+      'https://pbs.twimg.com/profile_images/1695122503369375744/rTyQ72_p_normal.jpg',
+    user_name: 'lidamao.eth ( 本升专导师 )',
+    user_handler: 'BestLidamao',
   },
   {
-    content: `队形是LX,代表着良心,代表着领先
-
-今天的周一测试活动非常成功,实现了区块链历史上第一次Fully on chain 团建，来 @LXDAO_Official
-
-家人们！`,
-    name: 'lidamao',
-    handler: 'BestLidamao',
-    avatar: 'https://x.com/BestLidamao/photo',
-    link: 'https://x.com/BestLidamao/status/1731662536435716572',
+    id: '1653387127009452032',
+    text: 'LXDAO was founded by a group of Asian Developers, who are problem-solving oriented',
+    profile:
+      'https://pbs.twimg.com/profile_images/1573142830133874689/CDce98AK_normal.png',
+    user_name: 'Jayden Wei',
+    user_handler: 'jaydenw3i',
   },
   {
-    content: `LXDAO was founded by a group of Asian Developers, who are problem-solving oriented`,
-    name: 'JayDen Wei',
-    handler: 'jaydenw3i',
-    avatar: 'https://x.com/jaydenw3i/photo',
-    link: 'https://x.com/jaydenw3i/status/1653387127009452032',
+    id: '1844410013919612973',
+    text: 'Open-source thrives on the passion of its communit…eOnArtemis and @artexswap https://t.co/zbkYaCVY5H',
+    profile:
+      'https://pbs.twimg.com/profile_images/1786260022676324353/q9a40NSw_normal.png',
+    user_name: 'Artela',
+    user_handler: 'Artela_Network',
   },
   {
-    content: `Open-source thrives on the passion of its community. At Artela, we’re proud to be community-driven, putting our builders first. Today, we celebrate those who tirelessly shape our ecosystem!Featuring @LXDAO_Official @TradeOnArtemis and @artexswap`,
-    name: 'Artela',
-    handler: 'Artela_Network',
-    avatar: 'https://x.com/Artela_Network/photo',
-    link: 'https://x.com/Artela_Network/status/1844410013919612973',
+    id: '1775069684385366026',
+    text: "🌟 We're thrilled to share that we've formed a str…and open-source projects. https://t.co/qhwx5PDD3K",
+    profile:
+      'https://pbs.twimg.com/profile_images/1786260022676324353/q9a40NSw_normal.png',
+    user_name: 'Artela',
+    user_handler: 'Artela_Network',
   },
   {
-    content: `We're thrilled to share that we've formed a strategic partnership with @LXDAO_Official, a leading developer-focused community dedicated to sustainably supporting valuable Web3 public goods and open-source projects.`,
-    name: 'Artela',
-    handler: 'Artela_Network',
-    avatar: 'https://x.com/Artela_Network/photo',
-    link: 'https://x.com/Artela_Network/status/1775069684385366026',
+    id: '1797864398624837718',
+    text: '祝贺@LXDAO_Official 和@brucexu_eth 以及所有为了公共物品奉献的朋友们，两周年快乐！',
+    profile:
+      'https://pbs.twimg.com/profile_images/1753136367763398656/HWtghbrf_normal.jpg',
+    user_name: 'Victor Zhou🍊🛡️Namefi.io',
+    user_handler: 'ZainanZhou',
   },
   {
-    content: `祝贺@LXDAO_Official和@brucexu_eth以及所有为了公共物品奉献的朋友们，两周年快乐！`,
-    name: 'Victor Zhou',
-    handler: 'ZainanZhou',
-    avatar: 'https://x.com/BestLidamao/photo',
-    link: 'https://x.com/ZainanZhou/status/179V7864398624837718',
+    id: '1797801153650180421',
+    text: '🔥很高兴见证 @LXDAO_Official  成立两年来的快速发展。LXDAO 一直致力于支持中…物品发展。期待 BuidlerDAO 与 LXDAO 继续深化合作，共同推动 Web3 行业繁荣！',
+    profile:
+      'https://pbs.twimg.com/profile_images/1683519202915917824/_fkeg3QZ_normal.jpg',
+    user_name: 'BuidlerDAO',
+    user_handler: 'BuidlerDAO',
   },
   {
-    content: `很高兴见证 @LXDAO_Official 成立两年来的快速发展。LXDAO 一直致力于支持中文社区的 Web3 公共物品发展。期待 BuidlerDAO 与 LXDAO 继续深化合作，共同推动 Web3 行业繁荣！`,
-    name: 'BuidlerDAO',
-    handler: 'BuidlerDAO',
-    avatar: 'https://x.com/BuidlerDAO/photo',
-    link: 'https://x.com/BuidlerDAO/status/1797801153650180421',
+    id: '1753329682463015177',
+    text: '17. 开发者社区：@OpenBuildxyz、@RebaseCommunity、@LXDAO_Of…社区，分享技术知识，常有公开课分享。\n@Dapp_Learning 是专注于以太坊开源开发者社区。',
+    profile:
+      'https://pbs.twimg.com/profile_images/1506109203953651717/4CXSukXE_normal.jpg',
+    user_name: 'PlanckerDAO',
+    user_handler: 'PlanckerDAO',
   },
   {
-    content: `优质输出的华语以太坊建设者list  评选标准：有优质硬核文章输出能力。视野广泛，对以太坊有深刻洞察的个人，或以太坊相关官方华语社区账号。
-LXDAO 是面向 Web3 华人开发者的开源社区，分享技术知识，常有公开课分享`,
-    name: 'PlanckerDAO',
-    handler: 'PlanckerDAO',
-    avatar: 'https://x.com/PlanckerDAO/photo',
-    link: 'https://x.com/PlanckerDAO/status/1753329682463015177',
+    id: '1669273384121946113',
+    text: 'Glad to see over 30 buidlers got their rewards fro…\n\nhttps://t.co/X2lWiXHZqs https://t.co/rRXalV8lXA',
+    profile:
+      'https://pbs.twimg.com/profile_images/1559299527135227905/Fo3pqrYX_normal.jpg',
+    user_name: 'brucexu.eth ❤️🐼🦇🔊',
+    user_handler: 'brucexu_eth',
   },
   {
-    content: `优质输出的华语以太坊建设者list  评选标准：有优质硬核文章输出能力。视野广泛，对以太坊有深刻洞察的个人，或以太坊相关官方华语社区账号。
-LXDAO 是面向 Web3 华人开发者的开源社区，分享技术知识，常有公开课分享`,
-    name: 'PlanckerDAO',
-    handler: 'PlanckerDAO',
-    avatar: 'https://x.com/PlanckerDAO/photo',
-    link: 'https://x.com/PlanckerDAO/status/1753329682463015177',
+    id: '1772257636224032817',
+    text: '何为public goods：GCC《Web3公共物品生态研究报告》总结\n作者： @HYbigbos…b3公共物品的研究成果中，最有参考价值的资料之一。 https://t.co/ccx2n1mjTJ',
+    profile:
+      'https://pbs.twimg.com/profile_images/1706281072496160768/Ynv1yPW3_normal.jpg',
+    user_name: '极客Web3 (GeeksWeb3)',
+    user_handler: 'geeksweb3',
   },
   {
-    content: `Glad to see over 30 buidlers got their rewards from LXDAO last month!
-More decentralized and more people joining us for supporting Web3 Public Goods!`,
-    name: 'Bruce',
-    handler: 'brucexu_eth',
-    avatar: 'https://x.com/brucexu_eth/photo',
-    link: 'https://x.com/brucexu_eth/status/1669273384121946113',
-  },
-  {
-    content: `何为public goods：GCC《Web3公共物品生态研究报告》总结 作者： @HYbigboss
-本文以读后总结的形式，为大家介绍由 @LXDAO_Official
-及 @GCCofCommons 共同撰写的 76 页《Web3 公共物品⽣态研究报告》。这是目前关于web3公共物品的研究成果中，最有参考价值的资料之一`,
-    name: '极客 Web3',
-    handler: 'geeksweb3',
-    avatar: 'https://x.com/geeksweb3/photo',
-    link: 'https://x.com/geeksweb3/status/1772257636224032817',
-  },
-  {
-    content: `Partnership Announcement
-@LXDAO_official& @MarsDAO_
-We are excited to announce a partnership with LXDAO!  We will co-host and support various Web3 events, provide support for Web3 educational resources and incubate projects together！`,
-    name: 'MarsDAO',
-    handler: 'MarsDAO_',
-    avatar: 'https://x.com/MarsDAO_/photo',
-    link: 'https://x.com/MarsDAO_/status/1642840135753687041',
+    id: '1642840135753687041',
+    text: '📢 Partnership Announcement 📢\n🤝 @LXDAO_official&…cubate projects together！ https://t.co/h67EF2HNAj',
+    profile:
+      'https://pbs.twimg.com/profile_images/1614842451323416580/dXvA51Fq_normal.jpg',
+    user_name: 'MarsDAO',
+    user_handler: 'MarsDAO_',
   },
 ];

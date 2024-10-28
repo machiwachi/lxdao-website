@@ -35,7 +35,7 @@ export default function Profile() {
       try {
         API.get(`/email/sendEmailAfterApplyMember?address=${address}`);
       } catch (err) {
-        console.log('邮件发送失败');
+        console.log('failed to send email');
       }
       if (result.status !== 'SUCCESS') {
         throw new Error(result.message);

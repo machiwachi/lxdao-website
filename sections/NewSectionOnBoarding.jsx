@@ -58,7 +58,7 @@ export default function NewSectionOnBoarding({ buidlers }) {
           alignSelf={{ md: 'end', xs: 'center' }}
           component="img"
           width={{ md: '590px', xs: '352px' }}
-          src="/images/new/infinite.gif"
+          src="https://cdn.lxdao.io/62691c55-956b-453c-974e-3aa1533c83d0.gif"
         ></Box>
         <Box alignSelf="start" mt="60px">
           <Typography
