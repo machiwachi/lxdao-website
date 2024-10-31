@@ -596,6 +596,7 @@ export default function NewSectionOnBoarding({ buidlers }) {
           paddingBottom="200px"
           textAlign="center"
           fontWeight="700"
+          cursor="pointer"
           onClick={() => {
             window.open(
               'https://www.notion.so/lxdao/LXDAO-Notion-Space-e6c82cfdae8b4ded98507538a9703dbc',
