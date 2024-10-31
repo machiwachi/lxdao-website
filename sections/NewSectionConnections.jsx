@@ -257,15 +257,6 @@ export default function NewSectionConnections() {
 }
 
 function TweetCard({ item }) {
-  // const { data: tweet, isLoading } = useTweet(id);
-  // if (isLoading) return <></>;
-  // console.log({
-  //   id,
-  //   text: tweet?.text,
-  //   profile: tweet?.user?.profile_image_url_https,
-  //   user_name: tweet?.user?.name,
-  //   user_handler: tweet?.user?.screen_name,
-  // });
   return (
     <Box
       width="280px"
@@ -280,7 +271,13 @@ function TweetCard({ item }) {
         window.open(`https://x.com/x/status/${item.id}`, '_blank');
       }}
     >
-      <Box>{item?.text}</Box>
+      <Box
+        sx={{
+          wordWrap: 'break-word',
+        }}
+      >
+        {item?.text}
+      </Box>
       <Box
         sx={{
           display: 'flex',
@@ -434,7 +431,7 @@ const xData = [
   },
   {
     id: '1844410013919612973',
-    text: 'Open-source thrives on the passion of its communit…eOnArtemis and @artexswap https://t.co/zbkYaCVY5H',
+    text: 'Open-source thrives on the passion of its community. At Artela, we’re proud to be community-driven, putting our builders first. Today, we celebrate those who tirelessly shape our ecosystem! 🚀💡 Featuring @LXDAO_Official @TradeOnArtemis and @artexswap',
     profile:
       'https://pbs.twimg.com/profile_images/1786260022676324353/q9a40NSw_normal.png',
     user_name: 'Artela',
@@ -442,7 +439,7 @@ const xData = [
   },
   {
     id: '1775069684385366026',
-    text: "🌟 We're thrilled to share that we've formed a str…and open-source projects. https://t.co/qhwx5PDD3K",
+    text: "🌟 We're thrilled to share that we've formed a strategic partnership with @LXDAO_Official, a leading developer-focused community dedicated to sustainably supporting valuable Web3 public goods and open-source projects.",
     profile:
       'https://pbs.twimg.com/profile_images/1786260022676324353/q9a40NSw_normal.png',
     user_name: 'Artela',
@@ -474,7 +471,7 @@ const xData = [
   },
   {
     id: '1669273384121946113',
-    text: 'Glad to see over 30 buidlers got their rewards fro…\n\nhttps://t.co/X2lWiXHZqs https://t.co/rRXalV8lXA',
+    text: 'Glad to see over 30 buidlers got their rewards from LXDAO last month!\nMore decentralized and more people joining us for supporting Web3 Public Goods!\nThe only sad thing is cost ~50u gas fee🥺 https://app.safe.global/transactions/history?safe=eth:0xB45e9F74D0a35fE1aa0B78feA03877EF96ae8dd2',
     profile:
       'https://pbs.twimg.com/profile_images/1559299527135227905/Fo3pqrYX_normal.jpg',
     user_name: 'brucexu.eth ❤️🐼🦇🔊',
@@ -489,11 +486,11 @@ const xData = [
     user_handler: 'geeksweb3',
   },
   {
-    id: '1642840135753687041',
-    text: '📢 Partnership Announcement 📢\n🤝 @LXDAO_official&…cubate projects together！ https://t.co/h67EF2HNAj',
+    id: '1774682198949732487',
+    text: 'LXDAO is the best Web3 DAO. Our mission is to make it easier for more people to enter Web3 and understand Crypto knowledge. Welcome to join us!',
     profile:
-      'https://pbs.twimg.com/profile_images/1614842451323416580/dXvA51Fq_normal.jpg',
-    user_name: 'MarsDAO',
-    user_handler: 'MarsDAO_',
+      'https://pbs.twimg.com/profile_images/1795003391275618304/W-F7vstn_400x400.jpg',
+    user_name: 'TYYYT',
+    user_handler: 'wutaner',
   },
 ];
