@@ -141,7 +141,7 @@ export default function NewSectionOnBoarding({ buidlers }) {
                   title: 'The summer of public goods',
                   date: '2024.05/06',
                   location:
-                    '@Oakland/Beijing/\nShanghai/ChengDu/\nChangsha/Hangzhou',
+                    '@Auckland/Beijing/Shanghai/\nChengdu/Changsha/Hangzhou',
                   img: 'https://cdn.lxdao.io/32a32d58-7b10-4a3a-8d43-19d077038ae3.jpg',
                 },
                 {
@@ -450,7 +450,7 @@ export default function NewSectionOnBoarding({ buidlers }) {
                 {
                   name: 'Zuzalu City',
                   description:
-                    'FairSharing is reshape the way human collaborate and allocate, building a more equitable society.',
+                    'Zazula City is a pro bono initiative dedicated to building a toolkit for the Open Source community, aiming to provide an online space for Zuzalu to build open-source tools for all to use, and to coordinate with builders in the community to drive the app experience and tool development to better empower the community.',
                   banner:
                     'https://cdn.lxdao.io/92433f15-4b72-43c5-adce-ffebedcfc2a2.png',
                   href: '/projects/022',

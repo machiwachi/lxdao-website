@@ -51,6 +51,7 @@ export default function NewSectionPG() {
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'end',
+            transform: { md: 'translateY(-25px)' },
           }}
         >
           <ReasonsBox
