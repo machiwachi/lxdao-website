@@ -203,7 +203,7 @@ export default function MintCard() {
           <LXButton
             variant="gradient"
             width="200px"
-            disabled={false}
+            disabled={record?.status !== 'READYTOMINT'}
             onClick={() => {
               mint();
             }}
