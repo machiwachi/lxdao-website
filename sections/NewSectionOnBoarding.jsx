@@ -213,7 +213,6 @@ export default function NewSectionOnBoarding({ buidlers }) {
           <Box
             sx={{
               display: 'flex',
-
               flexWrap: 'wrap',
               gap: '12px',
               width: '100%',
@@ -872,8 +871,8 @@ const BuidlerAvatarBox = ({ buidler, active, display }) => {
         aspectRatio: '1 / 1',
       }}
       display={display}
-      width="121px"
-      height="121px"
+      width={{ md: '121px', xs: 'calc((100vw - 96px)/3)' }}
+      height={{ md: '121px', xs: 'auto' }}
       position="relative"
     >
       {!active && (
@@ -884,12 +883,13 @@ const BuidlerAvatarBox = ({ buidler, active, display }) => {
         />
       )}
       <Box
-        width={{ sm: '121px', xs: '100%' }}
+        width="100%"
+        height="100%"
         sx={{ position: 'absolute', top: 0, left: 0, aspectRatio: '1 / 1' }}
         backgroundColor={active ? 'transpent' : 'rgba(0,0,0,0.5)'}
         display={{ md: 'block', xs: 'none' }}
       />
-      <Box width={{ sm: '121px', xs: '100%' }} height="100%">
+      <Box width="100%" height="100%">
         <Box
           component="img"
           width={{ xs: '100%' }}
