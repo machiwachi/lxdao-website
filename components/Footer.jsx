@@ -1,6 +1,8 @@
 import React from 'react';
 import Mailchimp from 'react-mailchimp-form';
 
+import { useRouter } from 'next/router';
+
 import { Box, Grid, Link, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
@@ -74,8 +76,12 @@ const NavList = ({ title, items }) => (
 
 const Footer = () => {
   const theme = useTheme();
+  const router = useRouter();
   return (
-    <Box sx={{ background: '#F1F1F1' }} width="100%">
+    <Box
+      sx={{ background: router.pathname == '/' ? '#C6F5F1' : '#F1F1F1' }}
+      width="100%"
+    >
       <Container paddingY={{ md: '112px', xs: '44px' }} margin="0 auto">
         <Box
           display="flex"

@@ -108,7 +108,6 @@ export default function Apply() {
         return;
       }
       const records = result.data;
-      console.log(records);
       let tempList = [];
       records.forEach((record) => {
         let { id, name, address, avatar } = record;
@@ -390,7 +389,6 @@ export default function Apply() {
                           onBlur={onBlur}
                           options={options}
                           renderOption={(props, option) => {
-                            console.log(option);
                             return (
                               <li {...props} key={option.address}>
                                 <img
