@@ -12,8 +12,11 @@ import {
   IconButton,
   MenuItem,
   Select,
+  Switch,
   Typography,
 } from '@mui/material';
+
+import API from '@/common/API';
 
 function CustomTag({ text, onRemove }) {
   return (
@@ -33,7 +36,15 @@ function CustomTag({ text, onRemove }) {
   );
 }
 
-export default function EditBuilderRole({ role, open, onClose, onSave }) {
+export default function EditBuilderRole({
+  role,
+  address,
+  open,
+  onClose,
+  onSave,
+  status,
+}) {
+  console.log(status);
   const [roles, setRoles] = useState(role);
   const [newRole, setNewRole] = useState('');
 
@@ -52,6 +63,17 @@ export default function EditBuilderRole({ role, open, onClose, onSave }) {
 
   const handleSave = () => {
     onSave(roles);
+  };
+
+  const handleMintableChange = async (e) => {
+    try {
+      const res = await API.post(`/buidler/${address}/enableMint`);
+      if (res.status === 200) {
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -91,6 +113,21 @@ export default function EditBuilderRole({ role, open, onClose, onSave }) {
               Add
             </Button>
           </Grid>
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          style={{ display: 'flex', alignItems: 'center', gap: '12px' }}
+        >
+          <Typography>Able to Mint:</Typography>
+          <Switch
+            checked={status === 'READYTOMINT'}
+            disabled={status !== 'PENDING'}
+            onChange={handleMintableChange}
+          />
+          <Typography>
+            {status === 'READYTOMINT' ? 'Mintable now' : 'Not mintable'}
+          </Typography>
         </Grid>
       </DialogContent>
       <DialogActions>

@@ -338,6 +338,8 @@ function BuidlerDetails({ record, refresh }) {
           </Box>
         </Box>
         <EditBuilderRole
+          status={record?.status}
+          address={record?.address}
           role={record?.role}
           open={isEditRole}
           onClose={() => setIsEditRole(false)}
