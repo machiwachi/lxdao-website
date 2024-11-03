@@ -625,7 +625,7 @@ function ProjectGroupCard({ title, image, projects }) {
         borderRadius: '24px',
       }}
     >
-      <Box display="flex" alignItems="center" gap="9px">
+      <Box display="flex" alignItems="center" gap="9px" height="48px">
         <Box
           sx={{
             display: 'flex',
@@ -708,7 +708,6 @@ function ProjectGroupCard({ title, image, projects }) {
             <Typography
               fontSize="14px"
               color="#666"
-              width={{ md: '163px', xs: '100%' }}
               textAlign="left"
               height="75px"
               textOverflow="ellipsis"
@@ -749,7 +748,7 @@ function WorkingGroupCard({ title, href, image }) {
     >
       <Box
         component="img"
-        width={{ md: '360px', xs: '300px' }}
+        width={{ lg: '360px', md: 'calc((100vw - 160px)/3)', xs: '300px' }}
         borderRadius="24px"
         src={image}
       />
