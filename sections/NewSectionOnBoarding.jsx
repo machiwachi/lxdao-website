@@ -24,6 +24,10 @@ const HightlightText = styled.span`
   font-size: 36px;
   line-height: 100px;
   font-weight: 700;
+  cursor: pointer;
+  &:hover {
+    border-bottom: 2px solid #23e5ff;
+  }
   @media screen and (max-width: 900px) {
     font-size: 2.5rem;
     line-height: 1.02;
@@ -120,7 +124,13 @@ export default function NewSectionOnBoarding({ buidlers }) {
             >
               {[
                 {
-                  title: 'Shanghai Blockchain Week',
+                  title: 'Coordination Day by LXDAO',
+                  date: '2024.11',
+                  location: '@Bangkok',
+                  img: 'https://cdn.lxdao.io/1b7bcfc2-52fe-496d-aa13-224969943dfb.png',
+                },
+                {
+                  title: 'Onchain Villages, Onchain Future',
                   date: '2024.10',
                   location: '@Shanghai',
                   img: 'https://cdn.lxdao.io/b76d73d6-21f9-4d1d-beef-1b178c9cbcbc.jpg',
@@ -596,15 +606,26 @@ export default function NewSectionOnBoarding({ buidlers }) {
           textAlign="center"
           fontWeight="700"
           cursor="pointer"
-          onClick={() => {
-            window.open(
-              'https://www.notion.so/lxdao/LXDAO-Notion-Space-e6c82cfdae8b4ded98507538a9703dbc',
-              '_blank'
-            );
-          }}
         >
           Know more about&nbsp;
-          <HightlightText>How LXDAO Works</HightlightText>
+          <HightlightText
+            onClick={() => {
+              window.open(
+                'https://www.notion.so/lxdao/LXDAO-Notion-Space-e6c82cfdae8b4ded98507538a9703dbc',
+                '_blank'
+              );
+            }}
+          >
+            How LXDAO Works
+            <Box
+              sx={{
+                width: '30px',
+                ml: '10px',
+              }}
+              component="img"
+              src="/images/new/color-arrow.svg"
+            />
+          </HightlightText>
         </Typography>
       </Box>
     </>

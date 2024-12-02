@@ -70,6 +70,7 @@ export default function NewSectionConnections() {
           top: '0',
           left: '0',
           mt: { md: '150px', xs: '30px' },
+          ml: { xl: 'calc((100vw - Min(90vw, 1216px))/2)' },
         }}
       >
         <Box
@@ -83,6 +84,7 @@ export default function NewSectionConnections() {
             gap: { md: '37px', xs: '20px' },
             height: '910px',
             px: '20px',
+            maxWidth: '1216px',
           }}
         >
           {xData.map((item, index) => (
