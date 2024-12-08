@@ -60,7 +60,7 @@ export default function GovernanceRightClaimBtn({ record }) {
 
   return (
     <Button
-      variant="outlined"
+      variant={'gradient'}
       style={{
         textAlign: 'center',
       }}
