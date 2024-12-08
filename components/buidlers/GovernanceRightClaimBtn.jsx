@@ -9,14 +9,16 @@ import {
   useAccount,
   useClient,
   useReadContract,
+  useSwitchChain,
   useWriteContract,
 } from 'wagmi';
 
 import { voteContract } from 'abi';
 
 export default function GovernanceRightClaimBtn({ record }) {
-  const { address } = useAccount();
+  const { address, chainId } = useAccount();
   const client = useClient();
+  const { switchChainAsync } = useSwitchChain();
   const [loading, setLoading] = useState(false);
   const { data: currentSeason, error } = useReadContract({
     ...voteContract,
@@ -32,6 +34,11 @@ export default function GovernanceRightClaimBtn({ record }) {
   const handleClaim = async () => {
     try {
       setLoading(true);
+      if (chainId != voteContract.chainId) {
+        await switchChainAsync({
+          chainId: voteContract.chainId,
+        });
+      }
       const tx = await writeContractAsync({
         ...voteContract,
         functionName: 'mint',
