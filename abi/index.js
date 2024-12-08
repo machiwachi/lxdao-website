@@ -4,6 +4,7 @@ import { abi as anniversaryAbi } from './anniversary';
 import { abi as badgeAbi } from './badge.js'
 import { abi as buidlerCardAbi } from './buidlerCard.js'
 import { abi as lxpAbi } from './lxp.js'
+import { abi as voteAbi } from './vote.js'
 
 const CHAIN_ID = parseInt(process.env.NEXT_PUBLIC_CHAIN_ID) || 10
 
@@ -11,12 +12,14 @@ const addressConfig = {
     10: {
         badge: "0x8f4c2c84bB47670D15c17c7C60f29c97dCF00b0b",
         buidler: "0xd7F2995db07e87C870238E80bb45CD0957dd8D02",
-        lxp: "0xA798cbF127fCBeeBE3359254271Fc1074362a9A4"
+        lxp: "0xA798cbF127fCBeeBE3359254271Fc1074362a9A4",
+        vote: '0x4084EBe61A7968DEc063b1E4E7fc24e28F786c22'
     },
     11155420: {
         badge: "0x07F56634C09BaFd8F1029DC98aD11090533Ff8A6",
         buidler: "0xa94eB22Bfc57A12576F5c2BEC6041D5ac88177e3",
-        lxp: "0x700b875D8F55b2607F12b11d70f411FB326FF254"
+        lxp: "0x700b875D8F55b2607F12b11d70f411FB326FF254",
+        vote: '0x4084EBe61A7968DEc063b1E4E7fc24e28F786c22'
     }
 }
 const addresses = addressConfig[CHAIN_ID];
@@ -42,5 +45,11 @@ export const buidlerContract = {
 export const lxpContract = {
     address: addresses.lxp,
     abi: lxpAbi,
+    chainId: CHAIN_ID
+}
+
+export const voteContract = {
+    address: addresses.vote,
+    abi: voteAbi,
     chainId: CHAIN_ID
 }
