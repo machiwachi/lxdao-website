@@ -25,10 +25,10 @@ export default function GovernanceRightClaimBtn({ record }) {
     args: [address, currentSeason],
   });
   console.log({ balanceOf, currentSeason });
-  const { writeAsync } = useWriteContract();
+  const { writeContractAsync, isError } = useWriteContract();
   const handleClaim = async () => {
     try {
-      const tx = await writeAsync({
+      const tx = await writeContractAsync({
         ...voteContract,
         functionName: 'mint',
       });
