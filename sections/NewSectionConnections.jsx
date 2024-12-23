@@ -400,6 +400,11 @@ const partnersData = [
     logo: '/images/partners/BlockBooster-logo.svg',
     link: 'https://www.gitcoin.co/',
   },
+  {
+    name: 'GETBLOCK',
+    logo: '/images/partners/getblock.svg',
+    link: 'https://getblock.io/',
+  },
 ];
 
 const xId = [
