@@ -405,6 +405,11 @@ const partnersData = [
     logo: '/images/partners/getblock.svg',
     link: 'https://getblock.io/',
   },
+  {
+    name: 'MintBlickchain',
+    logo: '/images/partners/mint-blockchain.svg',
+    link: 'https://www.mintchain.io/',
+  },
 ];
 
 const xId = [
