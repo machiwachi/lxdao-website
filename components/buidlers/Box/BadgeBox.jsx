@@ -60,7 +60,6 @@ export default function BadgeBox({ record }) {
                       key={badge?.image}
                       component={'img'}
                       src={badge?.image}
-                      width="140px"
                       height="140px"
                       objectFit="contain"
                       flexShrink={0}
@@ -81,9 +80,7 @@ export default function BadgeBox({ record }) {
                   key={badge?.image}
                   component={'img'}
                   src={badge?.image}
-                  width="60px"
                   height="60px"
-                  maxWidth="60px"
                   maxHeight="60px"
                   objectFit="contain"
                   flexShrink={0}
