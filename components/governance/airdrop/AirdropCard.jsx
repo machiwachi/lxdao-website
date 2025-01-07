@@ -40,6 +40,14 @@ export default function AirdropCard() {
   const [selectMintBadgeValue, setSelectMintBadgeValue] = useState('');
 
   const badgeList = [
+    'AI_FXDS',
+    'AI_GZSC',
+    'AI_HM',
+    'AI_KSKF',
+    'AI_XGDB',
+    'AI_YYLD',
+    'AI_ZHYGJ',
+    'AI_ZJQXJZ',
     'MemberFirstBadge',
     'DHDBadge',
     'ICL_Arbitrum_S01',
