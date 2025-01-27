@@ -62,9 +62,7 @@ export default function NewSectionHero() {
                 mt: { md: '53px', xs: '20px' },
               }}
             >
-              We believe Public Goods are essential to Web3. They are of great
-              potential for positive externality. We work on how to sustain
-              Public Goods with infinite cycle.
+              LXDAO is an R&D-focused DAO dedicated to building an Infinite Cycle that supports valuable Public Goods and open-source projects.
             </Typography>
             <Box
               sx={{
