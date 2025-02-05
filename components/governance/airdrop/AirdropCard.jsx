@@ -51,6 +51,7 @@ export default function AirdropCard() {
     'MemberFirstBadge',
     'DHDBadge',
     'ICL_Arbitrum_S01',
+    'ICL_Optimism_S01',
     'ICL_English_S01',
     'ICL_English_S02',
     'ICL_URL_S01',
