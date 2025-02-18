@@ -360,7 +360,7 @@ function UnReleasedLXPTable({ isAccountingTeam, hasMemberFirstBadge, name }) {
       params.push('status=' + value);
     });
     params.push('page=1');
-    params.push('per_page=' + 9999);
+    params.push('per_page=' + 20);
     query += params.join('&');
     const res = await API.get(query);
     const result = res.data;
@@ -404,11 +404,13 @@ function UnReleasedLXPTable({ isAccountingTeam, hasMemberFirstBadge, name }) {
       const formattedAmounts = amounts.map((value) =>
         parseEther(value.toString())
       );
+      console.log('writeContractAsync before');
       const hash = await writeContractAsync({
         ...lxpContract,
         functionName: 'batchMint',
         args: [addresses, formattedAmounts],
       });
+      console.log('writeContractAsync after');
       const res = await API.post(`/lxpoints/release`, { hash: hash });
       const result = res.data;
       if (result.status !== 'SUCCESS') {
