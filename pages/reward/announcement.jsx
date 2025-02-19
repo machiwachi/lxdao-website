@@ -411,7 +411,7 @@ function UnReleasedLXPTable({ isAccountingTeam, hasMemberFirstBadge, name }) {
         args: [addresses, formattedAmounts],
       });
       console.log('writeContractAsync after');
-      const res = await API.post(`/lxpoints/release`, { hash: hash });
+      const res = await API.post(`/lxpoints/release`, { hash: hash, addresses: addresses });
       const result = res.data;
       if (result.status !== 'SUCCESS') {
         alert(result.message);
