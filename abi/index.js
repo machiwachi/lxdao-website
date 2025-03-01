@@ -13,13 +13,13 @@ const addressConfig = {
         badge: "0x8f4c2c84bB47670D15c17c7C60f29c97dCF00b0b",
         buidler: "0xd7F2995db07e87C870238E80bb45CD0957dd8D02",
         lxp: "0xA798cbF127fCBeeBE3359254271Fc1074362a9A4",
-        vote: '0x89c36Ed555A2A948219dF19A82B3c31C57147d87'
+        vote: '0x158C23A40208EefaEDbe9C80502B59e88755c9a5'
     },
     11155420: {
         badge: "0x07F56634C09BaFd8F1029DC98aD11090533Ff8A6",
         buidler: "0xa94eB22Bfc57A12576F5c2BEC6041D5ac88177e3",
         lxp: "0x700b875D8F55b2607F12b11d70f411FB326FF254",
-        vote: '0x89c36Ed555A2A948219dF19A82B3c31C57147d87'
+        vote: '0x158C23A40208EefaEDbe9C80502B59e88755c9a5'
     }
 }
 const addresses = addressConfig[CHAIN_ID];
