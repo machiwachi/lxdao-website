@@ -40,14 +40,6 @@ export default function AirdropCard() {
   const [selectMintBadgeValue, setSelectMintBadgeValue] = useState('');
 
   const badgeList = [
-    'AI_FXDS',
-    'AI_GZSC',
-    'AI_HM',
-    'AI_KSKF',
-    'AI_XGDB',
-    'AI_YYLD',
-    'AI_ZHYGJ',
-    'AI_ZJQXJZ',
     'MemberFirstBadge',
     'DHDBadge',
     'ICL_Arbitrum_S01',
@@ -62,6 +54,22 @@ export default function AirdropCard() {
     'ICL_Starknet_S01',
     'ValuableGuestOffline',
     'ValuableGuestOnline',
+    'AI_JMZX',
+    'AI_XJCZ',
+    'AI_ZJ',
+    'AI_JLSH',
+    'AI_JK',
+    'AI_CRSX',
+    'AI_ZJF',
+    'AI_CBGH',
+    'AI_LC',
+    'AI_SCJ',
+    'AI_DZCW',
+    'AI_SSZZ',
+    'AI_MS',
+    'AI_ZJUI',
+    'AI_ZJ2',
+    'AI_XLFX',
   ];
 
   const handleChangeSelectMintBadgeValue = (event) => {
