@@ -1,0 +1,8 @@
+# .nixpacks.toml
+[phases.setup]
+# 这些包只在构建期存在，最终镜像里不会保留
+nixPackages = [
+  "python311",      # 提供给 node-gyp
+  "gcc", "gnumake", # C/C++ 工具链
+  "pkg-config"
+]
