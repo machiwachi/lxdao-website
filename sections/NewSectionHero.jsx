@@ -51,7 +51,7 @@ export default function NewSectionHero() {
                 textAlign: { md: 'left', xs: 'center' },
               }}
             >
-              Sustain Public Goods with Infinite Cycle
+              Sustain open-source with Infinite Cycle
             </Typography>
             <Typography
               sx={{
