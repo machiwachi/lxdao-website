@@ -218,6 +218,19 @@ const Header = () => {
               </ListItemButton>
             </ListItem>
           </Link>
+          <Link href="https://github.com/lxdao-official" target="_blank" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <ListItem disablePadding>
+              <ListItemButton sx={{ py: 0.25, minHeight: 28 }}>
+                <ListItemText 
+                  primary="Github" 
+                  primaryTypographyProps={{ 
+                    fontSize: '0.875rem',
+                    lineHeight: '1.2'
+                  }} 
+                />
+              </ListItemButton>
+            </ListItem>
+          </Link>
         </List>
 
         <Link href="https://docs.lxdao.io/lxdao" target="_blank" style={{ textDecoration: 'none', color: 'inherit' }}>
@@ -387,6 +400,7 @@ const Header = () => {
               { label: 'Telegram', href: 'https://t.me/lxdao' },
               { label: 'Event', href: 'https://lu.ma/lxdao' },
               { label: 'Working Docs', href: 'https://lxdao.notion.site/' },
+              { label: 'Github', href: 'https://github.com/lxdao-official' },
             ].map(({ label, href }) => (
               <MenuItem
                 key={label}

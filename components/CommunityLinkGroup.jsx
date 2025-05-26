@@ -10,8 +10,11 @@ const CommunityLinkGroup = ({ marginBottom = 10 }) => (
     <Link href="https://t.me/LXDAO" target="_blank">
       <Box component={'img'} src={'/icons/telegram-circle.svg'} />
     </Link>
-    <Link href="https://forum.lxdao.io/" target="_blank">
+    <Link href="https://forum.lxdao.io" target="_blank">
       <Box component={'img'} src={'/icons/forum-circle.svg'} />
+    </Link>
+    <Link href="https://github.com/lxdao-official" target="_blank">
+      <Box component={'img'} src={'/icons/github-circle.svg'} />
     </Link>
   </Box>
 );
