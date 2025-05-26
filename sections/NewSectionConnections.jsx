@@ -429,7 +429,7 @@ const xData = [
     id: '1731662536435716572',
     text: '队形是LX,代表着良心,代表着领先😎\n今天的周一测试活动非常成功,实现了区块链历史上第一次Full…团建，来自@LXDAO_Official 家人们！ https://t.co/UhNYWvJBUH',
     profile:
-      'https://pbs.twimg.com/profile_images/1695122503369375744/rTyQ72_p_normal.jpg',
+      'https://pbs.twimg.com/profile_images/1881781642127437824/Il0B43-k_200x200.jpg',
     user_name: 'lidamao.eth ( 本升专导师 )',
     user_handler: 'BestLidamao',
   },
@@ -437,7 +437,7 @@ const xData = [
     id: '1653387127009452032',
     text: 'LXDAO was founded by a group of Asian Developers, who are problem-solving oriented',
     profile:
-      'https://pbs.twimg.com/profile_images/1573142830133874689/CDce98AK_normal.png',
+      'https://pbs.twimg.com/profile_images/1922902792202588160/1DiUb2nA_200x200.jpg',
     user_name: 'Jayden Wei',
     user_handler: 'jaydenw3i',
   },
@@ -445,7 +445,7 @@ const xData = [
     id: '1844410013919612973',
     text: 'Open-source thrives on the passion of its community. At Artela, we’re proud to be community-driven, putting our builders first. Today, we celebrate those who tirelessly shape our ecosystem! 🚀💡 Featuring @LXDAO_Official @TradeOnArtemis and @artexswap',
     profile:
-      'https://pbs.twimg.com/profile_images/1786260022676324353/q9a40NSw_normal.png',
+      'https://pbs.twimg.com/profile_images/1872490996401090560/jmi15jQx_400x400.jpg',
     user_name: 'Artela',
     user_handler: 'Artela_Network',
   },
@@ -453,7 +453,7 @@ const xData = [
     id: '1775069684385366026',
     text: "🌟 We're thrilled to share that we've formed a strategic partnership with @LXDAO_Official, a leading developer-focused community dedicated to sustainably supporting valuable Web3 public goods and open-source projects.",
     profile:
-      'https://pbs.twimg.com/profile_images/1786260022676324353/q9a40NSw_normal.png',
+      'https://pbs.twimg.com/profile_images/1872490996401090560/jmi15jQx_400x400.jpg',
     user_name: 'Artela',
     user_handler: 'Artela_Network',
   },
@@ -485,7 +485,7 @@ const xData = [
     id: '1669273384121946113',
     text: 'Glad to see over 30 buidlers got their rewards from LXDAO last month!\nMore decentralized and more people joining us for supporting Web3 Public Goods!\nThe only sad thing is cost ~50u gas fee🥺 https://app.safe.global/transactions/history?safe=eth:0xB45e9F74D0a35fE1aa0B78feA03877EF96ae8dd2',
     profile:
-      'https://pbs.twimg.com/profile_images/1559299527135227905/Fo3pqrYX_normal.jpg',
+      'https://pbs.twimg.com/profile_images/1906994546455822336/OEoYVc1W_400x400.jpg',
     user_name: 'brucexu.eth ❤️🐼🦇🔊',
     user_handler: 'brucexu_eth',
   },
@@ -493,7 +493,7 @@ const xData = [
     id: '1772257636224032817',
     text: '何为public goods：GCC《Web3公共物品生态研究报告》总结\n作者： @HYbigbos…b3公共物品的研究成果中，最有参考价值的资料之一。 https://t.co/ccx2n1mjTJ',
     profile:
-      'https://pbs.twimg.com/profile_images/1706281072496160768/Ynv1yPW3_normal.jpg',
+      'https://pbs.twimg.com/profile_images/1872229837051731968/DVaT_vra_400x400.jpg',
     user_name: '极客Web3 (GeeksWeb3)',
     user_handler: 'geeksweb3',
   },
@@ -501,7 +501,7 @@ const xData = [
     id: '1774682198949732487',
     text: 'LXDAO is the best Web3 DAO. Our mission is to make it easier for more people to enter Web3 and understand Crypto knowledge. Welcome to join us!',
     profile:
-      'https://pbs.twimg.com/profile_images/1795003391275618304/W-F7vstn_400x400.jpg',
+      'https://pbs.twimg.com/profile_images/1891861963808047104/-h6uWN0A_400x400.jpg',
     user_name: 'TYYYT',
     user_handler: 'wutaner',
   },

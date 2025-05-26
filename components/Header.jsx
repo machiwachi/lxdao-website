@@ -222,7 +222,7 @@ const Header = () => {
             <ListItem disablePadding>
               <ListItemButton sx={{ py: 0.25, minHeight: 28 }}>
                 <ListItemText 
-                  primary="Github" 
+                  primary="GitHub" 
                   primaryTypographyProps={{ 
                     fontSize: '0.875rem',
                     lineHeight: '1.2'
@@ -400,7 +400,7 @@ const Header = () => {
               { label: 'Telegram', href: 'https://t.me/lxdao' },
               { label: 'Event', href: 'https://lu.ma/lxdao' },
               { label: 'Working Docs', href: 'https://lxdao.notion.site/' },
-              { label: 'Github', href: 'https://github.com/lxdao-official' },
+              { label: 'GitHub', href: 'https://github.com/lxdao-official' },
             ].map(({ label, href }) => (
               <MenuItem
                 key={label}

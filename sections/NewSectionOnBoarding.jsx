@@ -437,7 +437,7 @@ export default function NewSectionOnBoarding({ buidlers }) {
                 {
                   name: 'Intensive Co-learning',
                   description:
-                    'A co-learning program based on Github. Participants need to learn and share for 21 days in a row. The topics...',
+                    'A co-learning program based on GitHub. Participants need to learn and share for 21 days in a row. The topics...',
                   banner:
                     'https://cdn.lxdao.io/67c6ff09-1a3f-4cc7-8204-efacab867921.png',
                   href: 'https://github.com/IntensiveCoLearning',

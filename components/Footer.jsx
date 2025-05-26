@@ -93,7 +93,7 @@ const Footer = () => {
                 title="Development"
                 items={[
                   {
-                    name: 'Github',
+                    name: 'GitHub',
                     link: 'https://github.com/lxdao-official',
                   },
                   {
