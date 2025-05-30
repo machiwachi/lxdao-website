@@ -172,6 +172,10 @@ export default function AnniversaryNFT2025() {
             >
               {buttonText}
             </Button>
+
+            <Typography variant="subtitle2" ml={2} color="#646F7C">
+              minted by {totalSupply} LXers
+            </Typography>
           </Box>
         </Box>
       </Container>
