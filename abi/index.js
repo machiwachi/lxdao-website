@@ -25,9 +25,9 @@ const addressConfig = {
 const addresses = addressConfig[CHAIN_ID];
 
 export const anniversaryContract = {
-    address: "0x96682f486b4C641C1625cEd12D9AF54B4c6a1B52",
+    address: "0xA798cbF127fCBeeBE3359254271Fc1074362a9A4",
     abi: anniversaryAbi,
-    chainId: 10,
+    chainId: 11155111,
 };
 
 export const badgeContract = {

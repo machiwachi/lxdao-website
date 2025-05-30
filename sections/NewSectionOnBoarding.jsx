@@ -894,6 +894,8 @@ const BuidlerAvatarBox = ({ buidler, active, display }) => {
       width={{ md: '121px', xs: 'calc((100vw - 96px)/3)' }}
       height={{ md: '121px', xs: 'auto' }}
       position="relative"
+      // Remove the active prop from being passed to the DOM
+      data-active={active ? 'true' : 'false'} // Use data-* attribute instead if you need it in the DOM
     >
       {!active && (
         <Box

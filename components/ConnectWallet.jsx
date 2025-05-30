@@ -4,7 +4,7 @@ import { useState } from 'react';
 import showMessage from '@/components/showMessage';
 
 import { useAccount, useDisconnect, useSignMessage } from 'wagmi';
-import { mainnet, optimism, optimismSepolia } from 'wagmi/chains';
+import { mainnet, optimism, optimismSepolia, sepolia } from 'wagmi/chains';
 
 import API, { refreshAPIToken } from '@/common/API';
 import {
@@ -17,10 +17,24 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { getDefaultConfig } from '@rainbow-me/rainbowkit';
 import '@rainbow-me/rainbowkit/styles.css';
 
+// Create a custom Sepolia chain with the specified RPC URL
+const customSepolia = {
+  ...sepolia,
+  rpcUrls: {
+    ...sepolia.rpcUrls,
+    default: {
+      http: ['https://sepolia.infura.io/v3/6959166847ff4ba499178f3d110c920f'],
+    },
+    public: {
+      http: ['https://sepolia.infura.io/v3/6959166847ff4ba499178f3d110c920f'],
+    },
+  },
+};
+
 const wagmiConfig = getDefaultConfig({
   appName: 'LXDAO Official Website',
   projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID,
-  chains: [mainnet, optimism, optimismSepolia],
+  chains: [mainnet, optimism, optimismSepolia, customSepolia],
   ssr: true, // If your dApp uses server side rendering (SSR)
   infuraAPIKey: '6959166847ff4ba499178f3d110c920f',
 });
