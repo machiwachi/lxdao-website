@@ -158,7 +158,7 @@ export default function AnniversaryNFT2025() {
               fontWeight: '600',
             }}
           >
-            Available only from 2025-06-01 to 2025-06-13
+            Available only from 2025-06-01 to 2025-06-15
           </Typography>
           <Box display="flex" alignItems="center">
             <Button
