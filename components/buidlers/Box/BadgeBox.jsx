@@ -6,6 +6,7 @@ import { createPublicClient, http } from 'viem';
 import { optimism } from 'viem/chains';
 
 import { voteContract } from '../../../abi';
+import Anniversary from './Anniversary';
 
 const publicClient = createPublicClient({
   chain: optimism,
@@ -15,6 +16,7 @@ const publicClient = createPublicClient({
 export default function BadgeBox({ record }) {
   const [isHasOtherBadges, setIsHasOtherBadges] = useState([]);
   const [voteTokens, setVoteTokens] = useState([]);
+  console.log('record===>', record);
 
   useEffect(() => {
     const fetchVoteTokens = async () => {
@@ -267,6 +269,7 @@ export default function BadgeBox({ record }) {
             />
           </Tooltip>
         ))}
+        <Anniversary address={record?.address} />
       </Box>
     </Box>
   );
