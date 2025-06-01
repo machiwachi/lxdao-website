@@ -17,7 +17,7 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { getDefaultConfig } from '@rainbow-me/rainbowkit';
 import '@rainbow-me/rainbowkit/styles.css';
 
-// Create a custom Sepolia chain with the specified RPC URL
+// Create custom chains with the specified RPC URLs
 const customSepolia = {
   ...sepolia,
   rpcUrls: {
@@ -31,10 +31,23 @@ const customSepolia = {
   },
 };
 
+const customMainnet = {
+  ...mainnet,
+  rpcUrls: {
+    ...mainnet.rpcUrls,
+    default: {
+      http: ['https://mainnet.infura.io/v3/6959166847ff4ba499178f3d110c920f'],
+    },
+    public: {
+      http: ['https://mainnet.infura.io/v3/6959166847ff4ba499178f3d110c920f'],
+    },
+  },
+};
+
 const wagmiConfig = getDefaultConfig({
   appName: 'LXDAO Official Website',
   projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID,
-  chains: [mainnet, optimism, optimismSepolia, customSepolia],
+  chains: [customMainnet, optimism, optimismSepolia, customSepolia],
   ssr: true, // If your dApp uses server side rendering (SSR)
   infuraAPIKey: '6959166847ff4ba499178f3d110c920f',
 });
