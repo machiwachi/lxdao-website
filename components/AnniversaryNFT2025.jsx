@@ -160,7 +160,11 @@ export default function AnniversaryNFT2025() {
           >
             Available only from 2025-06-01 to 2025-06-15
           </Typography>
-          <Box display="flex" alignItems="center">
+          <Box
+            display="flex"
+            flexDirection={{ xs: 'column', sm: 'row' }}
+            alignItems="center"
+          >
             <Button
               variant="gradient"
               borderRadius="100px"
