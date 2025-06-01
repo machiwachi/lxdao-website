@@ -47,7 +47,7 @@ const Anniversary = ({address}) => {
         "id": "LXDAO 3rd Anniversary NFT",
         "name": "LXDAO 3rd Anniversary NFT",
         "description": "LXDAO 3rd Anniversary NFT",
-        "image": "/images/anniversary.png",
+        "image": "/images/Anniversary.png",
         "eligible": "LXDAO 3rd anniversary witness",
         "amount": 1
     }
