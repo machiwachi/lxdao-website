@@ -123,6 +123,9 @@ export default function AnniversaryNFT2025() {
             loop
             playsInline
             sx={{
+              transform: 'scale(1.075)',
+              position: 'relative',
+              top: '1px',
               width: '100%',
               height: '100%',
               objectFit: 'cover',
