@@ -163,7 +163,8 @@ export default function BadgeBox({ record }) {
                       key={badge?.image}
                       component={'img'}
                       src={badge?.image}
-                      height="140px"
+                      maxHeight="140px"
+                      maxWidth="100%"
                       objectFit="contain"
                       flexShrink={0}
                     />

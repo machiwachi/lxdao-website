@@ -46,7 +46,7 @@ function formatContacts(contacts) {
 function BuidlerContacts({ contacts, privateContacts }) {
   const formattedContacts = formatContacts(contacts || {});
   return (
-    <Box display="flex" flexWrap="wrap" width="100%" gap={{ sm: 0, md: 1 }}>
+    <Box display="flex" flexWrap="wrap" width="100%" gap={1}>
       {Object.keys(formattedContacts)
         .reverse()
         .map((key, index) => {
@@ -58,7 +58,7 @@ function BuidlerContacts({ contacts, privateContacts }) {
                 href={formattedContacts[key]}
                 color="primary"
                 sx={{
-                  borderRadius: '100px',
+                  borderRadius: '100px'
                 }}
               >
                 <Chip
