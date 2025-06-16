@@ -2,7 +2,6 @@ import { Box, Link, Typography } from '@mui/material';
 import { Button as MuiButton } from '@mui/material';
 import { keyframes } from '@mui/system';
 
-import AnniversaryNFT2025 from '@/components/AnniversaryNFT2025';
 import Button from '@/components/Button';
 import CommunityLinkGroup from '@/components/CommunityLinkGroup';
 import Container from '@/components/Container';
@@ -17,8 +16,8 @@ export default function NewSectionHero() {
     <Box
       sx={{
         width: '100vw',
-        backgroundImage: `url('/images/new/hero-bg-tmp.svg')`,
-        backgroundSize: '100vw',
+        backgroundImage: `url('/images/new/hero-bg.svg')`,
+        backgroundSize: '100vw calc(100vw * 0.572)',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'bottom',
       }}
@@ -30,7 +29,7 @@ export default function NewSectionHero() {
         justifyContent="flex-start"
         alignItems="center"
         textAlign="center"
-        // gap={{ lg: '120px', xs: '40px' }}
+        gap={{ lg: '120px', xs: '40px' }}
       >
         <Box
           sx={{
@@ -63,8 +62,7 @@ export default function NewSectionHero() {
                 mt: { md: '53px', xs: '20px' },
               }}
             >
-              LXDAO is an R&D-driven DAO building an Infinite Cycle to help
-              sustain open-source projects and public goods.
+              LXDAO is an R&D-driven DAO building an Infinite Cycle to help sustain open-source projects and public goods.
             </Typography>
             <Box
               sx={{
@@ -103,8 +101,7 @@ export default function NewSectionHero() {
             src="https://cdn.lxdao.io/62691c55-956b-453c-974e-3aa1533c83d0.gif"
           />
         </Box>
-        <AnniversaryNFT2025 />
-        <Box mt={{ md: '80px', xs: '40px' }} mb={{ md: '80px', xs: '40px' }}>
+        <Box mt={{ md: '175px', xs: '40px' }}>
           <Typography
             sx={{
               fontSize: { md: '32px', xs: '24px' },
