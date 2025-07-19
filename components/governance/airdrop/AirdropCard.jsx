@@ -16,7 +16,7 @@ import showMessage from '@/components/showMessage';
 
 import { isAddress } from 'viem';
 
-import { useAccount, useSwitchChain, useWriteContract } from 'wagmi';
+import { useAccount, useSwitchChain, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
 
 import { badgeContract } from '@/abi';
 import API from '@/common/API';
@@ -26,16 +26,22 @@ import MemberListWithBadge from './MemberListWithBadge';
 export default function AirdropCard() {
   const { chainId } = useAccount();
   const [addresses, setAddresses] = useState([]);
+  const [refreshMembers, setRefreshMembers] = useState([]);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const { switchChainAsync } = useSwitchChain();
 
   const {
     data: airdrop,
-    isSuccess: airdropIsSuccess,
-    isLoading: airdropIsLoading,
     isError: airdropIsError,
     error: airdropError,
     writeContractAsync: airdropWrite,
   } = useWriteContract();
+
+  const {
+    isSuccess: isConfirmed,
+  } = useWaitForTransactionReceipt({
+    hash: airdrop,
+  });
 
   const [selectMintBadgeValue, setSelectMintBadgeValue] = useState('');
 
@@ -101,9 +107,52 @@ export default function AirdropCard() {
     await airdropBadge(selectMintBadgeValue, addresses, amounts);
   };
 
+  const refreshBadges = async () => {
+    const refreshAddresses = refreshMembers
+      .filter((member) => isAddress(member.address))
+      .map((member) => member.address);
+
+    if (refreshAddresses.length === 0) {
+      showMessage({
+        type: 'warning',
+        title: 'No members selected',
+        body: 'Please select members to refresh their badges',
+      });
+      return;
+    }
+
+    setIsRefreshing(true);
+    try {
+      const updatedBuidler = await API.post(`/buidler/updateAllBadges`, {
+        addresses: refreshAddresses,
+      });
+
+      if (updatedBuidler?.data?.status === 'SUCCESS') {
+        showMessage({
+          type: 'success',
+          title: 'Badges refreshed successfully!',
+        });
+      } else {
+        showMessage({
+          type: 'error',
+          title: 'Failed to refresh badges',
+          body: updatedBuidler?.data?.message,
+        });
+      }
+    } catch (error) {
+      showMessage({
+        type: 'error',
+        title: 'Failed to refresh badges',
+        body: error.message,
+      });
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
   useEffect(() => {
     (async () => {
-      if (airdropIsSuccess && airdrop) {
+      if (isConfirmed && addresses.length > 0) {
         const updatedBuidler = await API.post(`/buidler/updateAllBadges`, {
           addresses: addresses,
         });
@@ -130,20 +179,21 @@ export default function AirdropCard() {
         });
       }
     })();
-  }, [airdropIsSuccess, airdrop]);
+  }, [isConfirmed, addresses, airdropIsError, airdropError]);
   return (
-    <Box
-      position="relative"
-      sx={{
-        width: 500,
-        border: 'solid 1px',
-        borderRadius: 5,
-        display: 'flex',
-        flexDirection: 'column',
-        padding: '24px',
-        gap: '12px',
-      }}
-    >
+    <Stack spacing={3}>
+      <Box
+        position="relative"
+        sx={{
+          width: 500,
+          border: 'solid 1px',
+          borderRadius: 5,
+          display: 'flex',
+          flexDirection: 'column',
+          padding: '24px',
+          gap: '12px',
+        }}
+      >
       <Typography
         sx={{
           fontSize: 40,
@@ -245,7 +295,7 @@ export default function AirdropCard() {
                   <Stack flexWrap={true} gap={1}>
                     {value.map((tag, index) => {
                       const handleDelete = () => {
-                        onChange(value.filter((item, i) => i !== index));
+                        onChange(value.filter((_, i) => i !== index));
                       };
                       return (
                         <Chip
@@ -289,5 +339,66 @@ export default function AirdropCard() {
         </Button>
       </Box>
     </Box>
+
+    <Box
+      position="relative"
+      sx={{
+        width: 500,
+        border: 'solid 1px',
+        borderRadius: 5,
+        display: 'flex',
+        flexDirection: 'column',
+        padding: '24px',
+        gap: '12px',
+      }}
+    >
+      <Typography
+        sx={{
+          fontSize: 40,
+        }}
+      >
+        Refresh Badges
+      </Typography>
+
+      <Box display="flex" marginBottom="60px" width="100%">
+        <Box
+          marginRight="10px"
+          textAlign="left"
+          sx={{
+            fontWeight: 'bold',
+            color: '#101828',
+            lineHeight: '56px',
+          }}
+        >
+          {'Members: '}
+        </Box>
+        <Box flex={1}>
+          <MemberListWithBadge
+            value={refreshMembers}
+            onChange={setRefreshMembers}
+          />
+        </Box>
+      </Box>
+
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="end"
+        position="absolute"
+        bottom="20px"
+        right="20px"
+      >
+        <Button
+          onClick={refreshBadges}
+          variant="gradient"
+          size="large"
+          width={200}
+          disabled={isRefreshing}
+        >
+          {isRefreshing ? 'Refreshing...' : 'Refresh Badges'}
+        </Button>
+      </Box>
+    </Box>
+    </Stack>
   );
 }
