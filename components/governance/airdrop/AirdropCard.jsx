@@ -190,7 +190,7 @@ export default function AirdropCard() {
         showMessage({
           type: 'error',
           title: 'Failed to airdrop membership badge',
-          body: <>{airdropError}</>,
+          body: airdropError?.message || airdropError?.toString() || 'An error occurred',
         });
       }
     })();
