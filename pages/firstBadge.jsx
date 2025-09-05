@@ -259,7 +259,7 @@ const FirstBadge = () => {
               children: (
                 <OneTask
                   iconPath="/images/badge/clock.svg"
-                  desc="Every Saturday at 10:00 am UTC+8"
+                  desc="Every Saturday at 11:00 am UTC+8"
                 />
               ),
             },
