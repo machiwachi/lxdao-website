@@ -277,18 +277,6 @@ const Header = () => {
 						</ListItem>
 					</Link>
 				</List>
-
-				<Link
-					href="https://docs.lxdao.io/lxdao"
-					target="_blank"
-					style={{ textDecoration: "none", color: "inherit" }}
-				>
-					<ListItem disablePadding>
-						<ListItemButton sx={{ py: 0.75 }}>
-							<ListItemText primary="Docs" />
-						</ListItemButton>
-					</ListItem>
-				</Link>
 			</List>
 		</Box>
 	);
