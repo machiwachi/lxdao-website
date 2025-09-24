@@ -147,8 +147,8 @@ export function stringCut(str, len) {
 }
 
 export function removeItem(array, item) {
-  let tempArray = [...array];
-  let index = tempArray.indexOf(item);
+  const tempArray = [...array];
+  const index = tempArray.indexOf(item);
 
   if (index >= 0) {
     tempArray.splice(index, 1);
@@ -221,7 +221,7 @@ export function ipfsToBytes(ipfsURI) {
 
 export function getImg3DidStrFromUrl(url) {
   if (!url) return url;
-  const pattern = new RegExp(`\\b[a-zA-Z0-9]{59}\\b`, 'g');
+  const pattern = /\b[a-zA-Z0-9]{59}\b/g;
   const matches = url.match(pattern);
-  return matches && matches[0] ? `ipfs://${matches[0]}` : url;
+  return matches?.[0] ? `ipfs://${matches[0]}` : url;
 }
