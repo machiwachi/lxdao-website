@@ -277,6 +277,17 @@ const Header = () => {
             </ListItem>
           </Link>
         </List>
+        <Link
+          href="https://docs.lxdao.io/docs/jian-jie"
+          target="_blank"
+          style={{ textDecoration: 'none', color: 'inherit' }}
+        >
+          <ListItem disablePadding>
+            <ListItemButton sx={{ py: 0.75 }}>
+              <ListItemText primary="Docs" />
+            </ListItemButton>
+          </ListItem>
+        </Link>
       </List>
     </Box>
   );
@@ -388,6 +399,16 @@ const Header = () => {
             </MenuItem>
           ))}
         </Menu>
+        <Link
+          href="https://docs.lxdao.io/docs/jian-jie"
+          target="_blank"
+          color={'inherit'}
+          sx={{
+            textDecoration: 'none',
+          }}
+        >
+          <Typography>Docs</Typography>
+        </Link>
         <Box
           sx={{
             cursor: 'pointer',
