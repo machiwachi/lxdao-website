@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { useRouter } from 'next/router';
 
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import MenuIcon from '@mui/icons-material/Menu';
 import {
   Box,
@@ -11,10 +10,8 @@ import {
   ListItem,
   ListItemButton,
   ListItemText,
-  Menu,
-  MenuItem,
   SwipeableDrawer,
-  Typography,
+  Typography
 } from '@mui/material';
 
 import { ConnectWalletButton } from '@/components/ConnectWallet';
@@ -27,8 +24,6 @@ import OnBoardingAlertBtn from './OnBoardingAlertBtn';
 const Header = () => {
   const { address } = useAccount();
   const [openMenu, setOpenMenu] = useState(false);
-  const [governanceAnchorEl, setGovernanceAnchorEl] = useState(null);
-  const [communityAnchorEl, setCommunityAnchorEl] = useState(null);
   const [, record, ,] = useBuidler(address);
   const router = useRouter();
 
@@ -44,23 +39,7 @@ const Header = () => {
     setOpenMenu(open);
   };
 
-  const handleGovernanceMenuClick = (event) => {
-    setGovernanceAnchorEl(event.currentTarget);
-  };
-
-  const handleGovernanceMenuClose = () => {
-    setGovernanceAnchorEl(null);
-  };
-
-  const handleCommunityMenuClick = (event) => {
-    setCommunityAnchorEl(event.currentTarget);
-  };
-
-  const handleCommunityMenuClose = () => {
-    setCommunityAnchorEl(null);
-  };
-
-  const HiddenMenu = () => (
+  const MobileMenu = () => (
     <Box
       role="presentation"
       onClick={() => setOpenMenu(false)}
@@ -79,12 +58,13 @@ const Header = () => {
           </ListItem>
         </Link>
         <Link
-          href="/projects"
+          href="https://docs.lxdao.io/docs/jian-jie"
+          target="_blank"
           style={{ textDecoration: 'none', color: 'inherit' }}
         >
           <ListItem disablePadding>
             <ListItemButton sx={{ py: 0.75 }}>
-              <ListItemText primary="Projects" />
+              <ListItemText primary="About" />
             </ListItemButton>
           </ListItem>
         </Link>
@@ -94,200 +74,36 @@ const Header = () => {
         >
           <ListItem disablePadding>
             <ListItemButton sx={{ py: 0.75 }}>
-              <ListItemText primary="Buidlers" />
+              <ListItemText primary="Members" />
             </ListItemButton>
           </ListItem>
         </Link>
         <Link
-          href="/workinggroups"
+          href="/projects"
           style={{ textDecoration: 'none', color: 'inherit' }}
         >
           <ListItem disablePadding>
             <ListItemButton sx={{ py: 0.75 }}>
-              <ListItemText primary="Working Groups" />
+              <ListItemText primary="Buidl" />
             </ListItemButton>
           </ListItem>
         </Link>
 
-        <ListItem disablePadding>
-          <ListItemButton sx={{ py: 0.75 }}>
-            <ListItemText primary="Governance" />
-          </ListItemButton>
-        </ListItem>
-        <List component="div" sx={{ pl: 3, py: 0 }}>
-          <Link
-            href="/reward/announcement"
-            target="_blank"
-            style={{ textDecoration: 'none', color: 'inherit' }}
-          >
-            <ListItem disablePadding>
-              <ListItemButton sx={{ py: 0.25, minHeight: 28 }}>
-                <ListItemText
-                  primary="Reward Announcement"
-                  primaryTypographyProps={{
-                    fontSize: '0.875rem',
-                    lineHeight: '1.2',
-                  }}
-                />
-              </ListItemButton>
-            </ListItem>
-          </Link>
-          <Link
-            href="https://snapshot.org/#/lxdao.eth"
-            target="_blank"
-            style={{ textDecoration: 'none', color: 'inherit' }}
-          >
-            <ListItem disablePadding>
-              <ListItemButton sx={{ py: 0.25, minHeight: 28 }}>
-                <ListItemText
-                  primary="Snapshot"
-                  primaryTypographyProps={{
-                    fontSize: '0.875rem',
-                    lineHeight: '1.2',
-                  }}
-                />
-              </ListItemButton>
-            </ListItem>
-          </Link>
-          <Link
-            href="https://lxdao.notion.site/Governance-Group-c4ae9fb26068453483a8c1e6abf993b8"
-            target="_blank"
-            style={{ textDecoration: 'none', color: 'inherit' }}
-          >
-            <ListItem disablePadding>
-              <ListItemButton sx={{ py: 0.25, minHeight: 28 }}>
-                <ListItemText
-                  primary="Handbook Doc"
-                  primaryTypographyProps={{
-                    fontSize: '0.875rem',
-                    lineHeight: '1.2',
-                  }}
-                />
-              </ListItemButton>
-            </ListItem>
-          </Link>
-        </List>
 
-        <ListItem disablePadding>
-          <ListItemButton sx={{ py: 0.75 }}>
-            <ListItemText primary="Community" />
-          </ListItemButton>
-        </ListItem>
-        <List component="div" sx={{ pl: 3, py: 0 }}>
-          <Link
-            href="https://www.notion.so/lxdao/1341eee9bd9343a7a60b211de7822af3?v=101f42763e12488999211f15a7b75b81&cookie_sync_completed=true"
-            target="_blank"
-            style={{ textDecoration: 'none', color: 'inherit' }}
-          >
-            <ListItem disablePadding>
-              <ListItemButton sx={{ py: 0.25, minHeight: 28 }}>
-                <ListItemText
-                  primary="Bounty Task"
-                  primaryTypographyProps={{
-                    fontSize: '0.875rem',
-                    lineHeight: '1.2',
-                  }}
-                />
-              </ListItemButton>
-            </ListItem>
-          </Link>
-          <Link
-            href="https://forum.lxdao.io"
-            target="_blank"
-            style={{ textDecoration: 'none', color: 'inherit' }}
-          >
-            <ListItem disablePadding>
-              <ListItemButton sx={{ py: 0.25, minHeight: 28 }}>
-                <ListItemText
-                  primary="Forum"
-                  primaryTypographyProps={{
-                    fontSize: '0.875rem',
-                    lineHeight: '1.2',
-                  }}
-                />
-              </ListItemButton>
-            </ListItem>
-          </Link>
-          <Link
-            href="https://t.me/lxdao"
-            target="_blank"
-            style={{ textDecoration: 'none', color: 'inherit' }}
-          >
-            <ListItem disablePadding>
-              <ListItemButton sx={{ py: 0.25, minHeight: 28 }}>
-                <ListItemText
-                  primary="Telegram"
-                  primaryTypographyProps={{
-                    fontSize: '0.875rem',
-                    lineHeight: '1.2',
-                  }}
-                />
-              </ListItemButton>
-            </ListItem>
-          </Link>
-          <Link
-            href="https://lu.ma/lxdao"
-            target="_blank"
-            style={{ textDecoration: 'none', color: 'inherit' }}
-          >
-            <ListItem disablePadding>
-              <ListItemButton sx={{ py: 0.25, minHeight: 28 }}>
-                <ListItemText
-                  primary="Event"
-                  primaryTypographyProps={{
-                    fontSize: '0.875rem',
-                    lineHeight: '1.2',
-                  }}
-                />
-              </ListItemButton>
-            </ListItem>
-          </Link>
-          <Link
-            href="https://lxdao.notion.site/"
-            target="_blank"
-            style={{ textDecoration: 'none', color: 'inherit' }}
-          >
-            <ListItem disablePadding>
-              <ListItemButton sx={{ py: 0.25, minHeight: 28 }}>
-                <ListItemText
-                  primary="Working Docs"
-                  primaryTypographyProps={{
-                    fontSize: '0.875rem',
-                    lineHeight: '1.2',
-                  }}
-                />
-              </ListItemButton>
-            </ListItem>
-          </Link>
-          <Link
-            href="https://github.com/lxdao-official"
-            target="_blank"
-            style={{ textDecoration: 'none', color: 'inherit' }}
-          >
-            <ListItem disablePadding>
-              <ListItemButton sx={{ py: 0.25, minHeight: 28 }}>
-                <ListItemText
-                  primary="GitHub"
-                  primaryTypographyProps={{
-                    fontSize: '0.875rem',
-                    lineHeight: '1.2',
-                  }}
-                />
-              </ListItemButton>
-            </ListItem>
-          </Link>
-        </List>
         <Link
-          href="https://docs.lxdao.io/docs/jian-jie"
+          href="https://forum.lxdao.io"
           target="_blank"
           style={{ textDecoration: 'none', color: 'inherit' }}
         >
           <ListItem disablePadding>
             <ListItemButton sx={{ py: 0.75 }}>
-              <ListItemText primary="Docs" />
+              <ListItemText
+                primary="Forum"
+              />
             </ListItemButton>
           </ListItem>
         </Link>
+
       </List>
     </Box>
   );
@@ -320,85 +136,6 @@ const Header = () => {
         fontSize={2}
         lineHeight={3}
       >
-        <Typography
-          sx={{ cursor: 'pointer' }}
-          onClick={() => {
-            router.push('/buidlers');
-          }}
-        >
-          Members
-        </Typography>
-        <Typography
-          sx={{ cursor: 'pointer' }}
-          onClick={() => {
-            router.push('/projects');
-          }}
-        >
-          Projects
-        </Typography>
-        <Typography
-          sx={{ cursor: 'pointer' }}
-          onClick={() => {
-            router.push('/workingGroups/list');
-          }}
-        >
-          Working Groups
-        </Typography>
-        <Box
-          sx={{
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 0.5,
-          }}
-          onClick={handleGovernanceMenuClick}
-          id="governance-menu-button"
-        >
-          <Typography>Governance</Typography>
-          <KeyboardArrowDownIcon />
-        </Box>
-        <Menu
-          id="governance-menu"
-          anchorEl={governanceAnchorEl}
-          open={Boolean(governanceAnchorEl)}
-          onClose={handleGovernanceMenuClose}
-          MenuListProps={{
-            'aria-labelledby': 'governance-menu-button',
-          }}
-          PaperProps={{
-            elevation: 2,
-            sx: {
-              width: '210px',
-              mt: 1.5,
-            },
-          }}
-        >
-          {[
-            { label: 'Reward Announcement', href: '/reward/announcement' },
-            { label: 'Snapshot', href: 'https://snapshot.org/#/lxdao.eth' },
-            {
-              label: 'Handbook Doc',
-              href: 'https://lxdao.notion.site/Governance-Group-c4ae9fb26068453483a8c1e6abf993b8',
-            },
-          ].map(({ label, href }) => (
-            <MenuItem
-              key={label}
-              onClick={handleGovernanceMenuClose}
-              component={Link}
-              href={href}
-              target="_blank"
-              sx={{
-                color: 'text.primary',
-                '&:hover': {
-                  backgroundColor: 'action.hover',
-                },
-                py: 0.75,
-              }}
-            >
-              {label}
-            </MenuItem>
-          ))}
-        </Menu>
         <Link
           href="https://docs.lxdao.io/docs/jian-jie"
           target="_blank"
@@ -407,67 +144,43 @@ const Header = () => {
             textDecoration: 'none',
           }}
         >
-          <Typography>Docs</Typography>
+          <Typography>About</Typography>
         </Link>
-        <Box
+
+
+        <Link
+          href="/buidlers"
+          target="_blank"
+          color={'inherit'}
           sx={{
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 0.5,
-          }}
-          onClick={handleCommunityMenuClick}
-          id="community-menu-button"
-        >
-          <Typography>Community</Typography>
-          <KeyboardArrowDownIcon />
-        </Box>
-        <Menu
-          id="community-menu"
-          anchorEl={communityAnchorEl}
-          open={Boolean(communityAnchorEl)}
-          onClose={handleCommunityMenuClose}
-          MenuListProps={{
-            'aria-labelledby': 'community-menu-button',
-          }}
-          PaperProps={{
-            elevation: 2,
-            sx: {
-              width: '210px',
-              mt: 1.5,
-            },
+            textDecoration: 'none',
           }}
         >
-          {[
-            {
-              label: 'Bounty Task',
-              href: 'https://www.notion.so/lxdao/1341eee9bd9343a7a60b211de7822af3?v=101f42763e12488999211f15a7b75b81&cookie_sync_completed=true',
-            },
-            { label: 'Forum', href: 'https://forum.lxdao.io' },
-            { label: 'Telegram', href: 'https://t.me/lxdao' },
-            { label: 'Event', href: 'https://lu.ma/lxdao' },
-            { label: 'Working Docs', href: 'https://lxdao.notion.site/' },
-            { label: 'GitHub', href: 'https://github.com/lxdao-official' },
-          ].map(({ label, href }) => (
-            <MenuItem
-              key={label}
-              onClick={handleCommunityMenuClose}
-              component={Link}
-              href={href}
-              target="_blank"
-              sx={{
-                color: 'text.primary',
-                '&:hover': {
-                  backgroundColor: 'action.hover',
-                },
-                py: 0.75,
-                fontSize: '0.875rem',
-              }}
-            >
-              {label}
-            </MenuItem>
-          ))}
-        </Menu>
+          <Typography>Members</Typography>
+        </Link>
+        <Link
+          href="/projects"
+          target="_blank"
+          color={'inherit'}
+          sx={{
+            textDecoration: 'none',
+          }}
+        >
+          <Typography>Buidl</Typography>
+        </Link>
+
+        <Link
+          href="https://forum.lxdao.io"
+          target="_blank"
+          color={'inherit'}
+          sx={{
+            textDecoration: 'none',
+          }}
+        >
+          <Typography>Forum</Typography>
+        </Link>
+
+
       </Box>
       <Box display="flex" alignItems="center" gap="20px">
         {record?.avatar && (
@@ -517,7 +230,7 @@ const Header = () => {
         onClose={toggleDrawer(false)}
         onOpen={toggleDrawer(true)}
       >
-        <HiddenMenu />
+        <MobileMenu />
       </SwipeableDrawer>
     </Box>
   );
