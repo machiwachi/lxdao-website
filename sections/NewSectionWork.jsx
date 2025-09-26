@@ -117,7 +117,7 @@ export default function NewSectionWork({ projectAmount, buidlerAmount }) {
             mt: { md: '52px', xs: '20px' },
           }}
         >
-          <EventsCard />
+          {/* <EventsCard /> */}
           <MeetingsCard />
           <DiscussionsCard />
           <VotesCard />
@@ -221,7 +221,7 @@ function VotesCard() {
   return (
     <LXCard
       index={2}
-      title="Discussions"
+      title="Votes"
       footer="Snapshot ->"
       footerLink="https://snapshot.org/#/lxdao.eth"
     >
