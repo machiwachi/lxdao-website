@@ -125,7 +125,7 @@ export default function NewSectionHero() {
               mb: { md: '0', xs: '40px' },
             }}
             onClick={() => {
-              window.open('https://docs.lxdao.io/lxdao/xuan-yan', '_blank');
+              window.open('https://docs.lxdao.io/docs/shi-ming-yuan-jing-he-jia-zhi-guan', '_blank');
             }}
           >
             Learn More
