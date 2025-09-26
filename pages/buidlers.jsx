@@ -2,6 +2,8 @@
 
 /* eslint-disable no-undef */
 import React, { useEffect, useState } from 'react';
+import { format } from 'date-fns';
+import BuidlerContacts from '@/components/BuidlerContacts';
 
 import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
@@ -41,8 +43,6 @@ import {
   totalLXPoints,
   totalStableCoins,
 } from '@/utils/utility';
-
-import Skills from '../components/Skills';
 
 const skillNames = [
   'All',
@@ -160,7 +160,6 @@ export default function Buidlers() {
   const [list, setList] = useState([]);
   const [search, setSearch] = useState('');
   const [role, setRole] = useState('');
-  const [skill, setSkill] = useState('');
   const [memberStatus, setMemberStatus] = useState('');
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -169,14 +168,12 @@ export default function Buidlers() {
   const searchList = async (
     search = '',
     role = '',
-    skill = '',
     memberStatus = ''
   ) => {
     let query = `/buidler?`;
     let params = [];
     const trimmedSearch = search.trim();
     const trimmedRole = role === 'All' ? '' : role.trim();
-    const trimmedSkill = skill === 'All' ? '' : skill.trim();
     const trimmedMemberStatus =
       memberStatus === 'All' ? '' : memberStatus.trim();
     if (trimmedSearch) {
@@ -184,9 +181,6 @@ export default function Buidlers() {
     }
     if (trimmedRole) {
       params.push('role=' + trimmedRole);
-    }
-    if (trimmedSkill) {
-      params.push('skill=' + trimmedSkill);
     }
     if (trimmedMemberStatus) {
       if (trimmedMemberStatus === 'Buidler Card Holder') {
@@ -224,7 +218,7 @@ export default function Buidlers() {
   };
 
   useEffect(() => {
-    searchList(search, role, skill, memberStatus);
+    searchList(search, role, memberStatus);
   }, [page, rowsPerPage]);
 
   const handleChangePage = (event, newPage) => {
@@ -237,7 +231,8 @@ export default function Buidlers() {
   };
 
   const MemberBasicInfo = (props) => {
-    const { avatar, name, address, status, badges } = props;
+    const { avatar, name, address, status, badges, contacts: allContacts } = props;
+    const contacts = { twitter: allContacts?.twitter }
 
     let memberStatusImgUrl = '/icons/member-status-grey.svg';
     let memberStatusText = 'Onboarding';
@@ -252,12 +247,18 @@ export default function Buidlers() {
       memberStatusText = 'Member';
     }
     return (
-      <Box display="flex" gap="22px" alignItems="center" position="relative">
+      <Box
+        display="flex"
+        gap={{ xs: '12px', md: '22px' }}
+        alignItems="center"
+        position="relative"
+        flexDirection={{ xs: 'column', md: 'row' }}
+      >
         <Tooltip title={memberStatusText}>
           <Box
             component="img"
             src={memberStatusImgUrl}
-            sx={{ position: 'absolute', top: 0 }}
+            sx={{ position: 'absolute', top: 0, left: 0 }}
           />
         </Tooltip>
         <Link href={`/buidlers/${address}`} target="_blank">
@@ -265,7 +266,7 @@ export default function Buidlers() {
             component="img"
             src={avatar || '/images/placeholder.jpeg'}
             alt="avatar"
-            style={{
+            sx={{
               width: '80px',
               height: '80px',
               border: '0.5px solid #E5E5E5',
@@ -290,6 +291,9 @@ export default function Buidlers() {
             copyTextOriginal={address}
             copyText={formatAddress(address)}
           />
+          <Box>
+            <BuidlerContacts contacts={contacts} withLabel={false} />
+          </Box>
         </Box>
       </Box>
     );
@@ -344,7 +348,7 @@ export default function Buidlers() {
               onChange={(value) => {
                 setPage(0);
                 setSearch(value);
-                searchList(value, role, skill, memberStatus);
+                searchList(value, role, memberStatus);
               }}
               label="Search"
               placeholder="Search members"
@@ -358,17 +362,7 @@ export default function Buidlers() {
               onChange={(value) => {
                 setPage(0);
                 setRole(value);
-                searchList(search, value, skill, memberStatus);
-              }}
-            />
-            <SingleSelect
-              value={skill}
-              label="Skill"
-              dropdown={skillNames}
-              onChange={(value) => {
-                setPage(0);
-                setSkill(value);
-                searchList(search, role, value, memberStatus);
+                searchList(search, value, memberStatus);
               }}
             />
             <SingleSelect
@@ -378,7 +372,7 @@ export default function Buidlers() {
               onChange={(value) => {
                 setPage(0);
                 setMemberStatus(value);
-                searchList(search, role, skill, value);
+                searchList(search, role, value);
               }}
             />
           </Box>
@@ -428,18 +422,20 @@ export default function Buidlers() {
                         fontWeight: 400,
                       }}
                     >
-                      Skills
+                      Self-Introduction
                     </TableCell>
+                    {/* 桌面端显示“Joined Since”，移动端隐藏 */}
                     <TableCell
                       align="left"
                       sx={{
                         fontSize: '16px',
                         color: '#666F85',
                         fontWeight: 400,
+                        width: '200px',
+                        display: { xs: 'none', md: 'table-cell' },
                       }}
-                      width="200px"
                     >
-                      Projects involved
+                      Joined Since
                     </TableCell>
                     <TableCell
                       align="left"
@@ -463,15 +459,22 @@ export default function Buidlers() {
                           address={member?.address}
                           status={member?.status}
                           badges={member?.badges}
+                          contacts={member?.contacts}
                         />
                       </TableCell>
                       <TableCell component="th" scope="row">
                         <Box display="flex" flexWrap="wrap">
-                          <Skills skills={member?.skills} />
+                          {member.description}
                         </Box>
                       </TableCell>
-                      <TableCell align="left">
-                        {member?.projects?.length}
+                      {/* 桌面端显示“Joined Since”，移动端隐藏 */}
+                      <TableCell
+                        align="left"
+                        sx={{
+                          display: { xs: 'none', md: 'table-cell' },
+                        }}
+                      >
+                        {format(new Date(member?.createdAt), 'yyyy-MM-dd')}
                       </TableCell>
                       <TableCell align="left">
                         <Box>

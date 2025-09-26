@@ -43,8 +43,9 @@ function formatContacts(contacts) {
   return formattedContacts;
 }
 
-function BuidlerContacts({ contacts, privateContacts }) {
+function BuidlerContacts({ contacts, privateContacts, withLabel = true }) {
   const formattedContacts = formatContacts(contacts || {});
+  console.log(formattedContacts);
   return (
     <Box display="flex" flexWrap="wrap" width="100%" gap={1}>
       {Object.keys(formattedContacts)
@@ -73,7 +74,7 @@ function BuidlerContacts({ contacts, privateContacts }) {
                       }}
                     />
                   }
-                  label={key}
+                  label={withLabel ? key : 'X'}
                   variant="outlined"
                 />
               </Typography>
