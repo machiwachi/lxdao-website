@@ -11,7 +11,7 @@ import {
   ListItemButton,
   ListItemText,
   SwipeableDrawer,
-  Typography
+  Typography,
 } from '@mui/material';
 
 import { ConnectWalletButton } from '@/components/ConnectWallet';
@@ -79,7 +79,7 @@ const Header = () => {
           </ListItem>
         </Link>
         <Link
-          href="https://lxdao.notion.site/LXDAO-Buidl-27cdceffe40b800ea22de86ac0c0286f#27cdceffe40b80fe95b7c0597d1ed83a"
+          href="https://lxdao.notion.site/LXDAO-Buidl-27cdceffe40b800ea22de86ac0c0286f"
           style={{ textDecoration: 'none', color: 'inherit' }}
         >
           <ListItem disablePadding>
@@ -89,7 +89,6 @@ const Header = () => {
           </ListItem>
         </Link>
 
-
         <Link
           href="https://forum.lxdao.io"
           target="_blank"
@@ -97,13 +96,10 @@ const Header = () => {
         >
           <ListItem disablePadding>
             <ListItemButton sx={{ py: 0.75 }}>
-              <ListItemText
-                primary="Forum"
-              />
+              <ListItemText primary="Forum" />
             </ListItemButton>
           </ListItem>
         </Link>
-
       </List>
     </Box>
   );
@@ -147,7 +143,6 @@ const Header = () => {
           <Typography>About</Typography>
         </Link>
 
-
         <Link
           href="/buidlers"
           target="_blank"
@@ -159,7 +154,7 @@ const Header = () => {
           <Typography>Members</Typography>
         </Link>
         <Link
-          href="https://lxdao.notion.site/LXDAO-Buidl-27cdceffe40b800ea22de86ac0c0286f#27cdceffe40b80fe95b7c0597d1ed83a"
+          href="https://lxdao.notion.site/LXDAO-Buidl-27cdceffe40b800ea22de86ac0c0286f"
           target="_blank"
           color={'inherit'}
           sx={{
@@ -179,8 +174,6 @@ const Header = () => {
         >
           <Typography>Forum</Typography>
         </Link>
-
-
       </Box>
       <Box display="flex" alignItems="center" gap="20px">
         {record?.avatar && (
