@@ -545,64 +545,10 @@ export default function NewSectionOnBoarding({ buidlers }) {
           backgroundPosition: 'bottom',
         }}
       >
-        <OnBoardingSection
-          title="Working Groups"
-          description="As part of the sustainable solution, LXDAO itself operates as a DAO to ensure 'public goods by the public, for the public.'"
-          index="05"
-        >
-          <Container
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Box
-              sx={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                flexDirection: { md: 'row', xs: 'column' },
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                my: '64px',
-                gap: '24px',
-              }}
-            >
-              <WorkingGroupCard
-                title="Governance"
-                href="/workingGroups/1"
-                image="https://cdn.lxdao.io/483c815a-5a91-49e3-839a-9c64f30b5535.png"
-              />
-              <WorkingGroupCard
-                title="Forge"
-                href="/workingGroups/6"
-                image="https://cdn.lxdao.io/14c863c9-f086-40fc-b0d7-584c118d1840.png"
-              />
-              <WorkingGroupCard
-                title="Operation"
-                href="/workingGroups/5"
-                image="https://cdn.lxdao.io/8ec73781-f67a-493e-8f39-422ab706c77f.png"
-              />
-            </Box>
-
-            <MuiButton
-              variant="contained"
-              sx={{
-                borderRadius: '100px',
-                padding: '12px 40px',
-              }}
-              onClick={() => {
-                window.open('/workingGroups/list', '_blank');
-              }}
-            >
-              VIEW ALL
-            </MuiButton>
-          </Container>
-        </OnBoardingSection>
-
         <Typography
           fontSize="36px"
           paddingTop="100px"
-          paddingBottom="200px"
+          paddingBottom="100px"
           textAlign="center"
           fontWeight="700"
           cursor="pointer"

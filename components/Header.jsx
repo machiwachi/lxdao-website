@@ -79,7 +79,7 @@ const Header = () => {
           </ListItem>
         </Link>
         <Link
-          href="/projects"
+          href="https://lxdao.notion.site/LXDAO-Buidl-27cdceffe40b800ea22de86ac0c0286f#27cdceffe40b80fe95b7c0597d1ed83a"
           style={{ textDecoration: 'none', color: 'inherit' }}
         >
           <ListItem disablePadding>
@@ -159,7 +159,7 @@ const Header = () => {
           <Typography>Members</Typography>
         </Link>
         <Link
-          href="/projects"
+          href="https://lxdao.notion.site/LXDAO-Buidl-27cdceffe40b800ea22de86ac0c0286f#27cdceffe40b80fe95b7c0597d1ed83a"
           target="_blank"
           color={'inherit'}
           sx={{

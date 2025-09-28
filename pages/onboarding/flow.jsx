@@ -30,7 +30,7 @@ export default function Flow() {
       title: 'BUIDL',
       content:
         "Are you ready to dive in? Explore the projects that pique your interest and join forces with us! Let's collaborate to bring your ideas to life and make a meaningful impact together.",
-      url: 'https://lxdao.io/projects',
+      url: 'https://lxdao.notion.site/LXDAO-Buidl-27cdceffe40b800ea22de86ac0c0286f#27cdceffe40b80fe95b7c0597d1ed83a',
     },
     {
       icon: '/icons/onboarding/REWARDS.svg',
@@ -59,7 +59,8 @@ export default function Flow() {
         }}
       >
         {data.map((value, index) => (
-          <Link key={index}
+          <Link
+            key={index}
             href={value.url}
             target="_blank"
             sx={{ textDecoration: 'none' }}
