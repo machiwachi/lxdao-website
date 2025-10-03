@@ -14,12 +14,12 @@ import NewSectionWork from '@/sections/NewSectionWork';
 import { scrollToSection } from '@/utils/utility';
 import { getPublishedEvents } from '@/utils/notion';
 
-export const getServerSideProps = async () => {
-  console.log('getServerSideProps');
-  const publishedPosts = await getPublishedEvents();
+export const getStaticProps = async () => {
+  console.log('getStaticProps');
+  const publishedEvents = await getPublishedEvents();
 
   // 基于 Notion 返回映射为 EducationGallery 所需格式
-  const educationEvents = (publishedPosts || [])
+  const educationEvents = (publishedEvents || [])
     .map((p) => ({
       title: p.title || '',
       date: p.date || '',
@@ -30,16 +30,16 @@ export const getServerSideProps = async () => {
 
   return {
     props: {
-      publishedPosts: publishedPosts,
+      publishedPosts: publishedEvents,
       educationEvents,
     },
+    revalidate: 60,
   };
 };
 
 export default function Home({ publishedPosts, educationEvents }) {
   console.log(publishedPosts);
   const [projects, setProjects] = useState([]);
-  const [latest3Projects, setLatest3Projects] = useState([]);
   const [buidlers, setBuidlers] = useState([]);
   const [activeBuidlerAmount, setActiveBuidlerAmount] = useState(0);
 
@@ -113,12 +113,6 @@ export default function Home({ publishedPosts, educationEvents }) {
   useEffect(() => {
     handleInit();
   }, []);
-
-  useEffect(() => {
-    if (projects.length > 0) {
-      setLatest3Projects(projects.slice(0, 3));
-    }
-  }, [projects]);
 
   return (
     <Layout>

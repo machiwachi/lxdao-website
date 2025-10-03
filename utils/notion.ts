@@ -74,7 +74,10 @@ export const getPublishedEvents = async (): Promise<Event[]> => {
   // 使用 Data Source 查询（与当前项目已有写法保持一致）
   const response: unknown = await notion.dataSources.query({
     data_source_id: '2803d6f3-d3a6-8108-8268-000b26b54b69',
+    sorts: [{ property: '活动日期', direction: 'descending' }],
   });
+
+  console.dir(response, { depth: null });
 
   const results: NotionPage[] =
     (response as { results?: NotionPage[] })?.results || [];
