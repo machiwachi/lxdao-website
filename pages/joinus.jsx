@@ -2,8 +2,8 @@
 import React from 'react';
 
 import Layout from '@/components/Layout';
-import SectionJoinUsHero from '@/sections/SectionJoinUsHero';
 import SectionApplicationSteps from '@/sections/SectionApplicationSteps';
+import SectionJoinUsHero from '@/sections/SectionJoinUsHero';
 
 export default function JoinUs() {
   return (

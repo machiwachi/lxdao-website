@@ -1,5 +1,4 @@
-import { Box, Link, Typography } from '@mui/material';
-import { Button as MuiButton } from '@mui/material';
+import { Box, Link, Button as MuiButton, Typography } from '@mui/material';
 
 import Container from '@/components/Container';
 import StyledTooltip from '@/components/StyledToolTip';
@@ -104,6 +103,7 @@ export default function NewSectionOnBoarding({ buidlers }) {
           description="We held various events to let the ideas about Public Goods reach more people."
           index="01"
         >
+          <div>--------------------------------</div>
           <Box
             sx={{
               width: '100%',
@@ -990,4 +990,7 @@ function ResearchBlock({ title, time, author, href, tags }) {
       />
     </Box>
   );
+}
+function useEffect(arg0: () => Promise<void>, arg1: undefined[]) {
+  throw new Error('Function not implemented.');
 }

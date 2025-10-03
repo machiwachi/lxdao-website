@@ -12,8 +12,21 @@ import NewSectionOnBoarding from '@/sections/NewSectionOnBoarding';
 import NewSectionPG from '@/sections/NewSectionPG';
 import NewSectionWork from '@/sections/NewSectionWork';
 import { scrollToSection } from '@/utils/utility';
+import { getPublishedPosts } from '@/utils/notion';
 
-export default function Home() {
+export const getServerSideProps = async () => {
+  console.log('getServerSideProps');
+  const publishedPosts = await getPublishedPosts();
+
+  return {
+    props: {
+      publishedPosts: publishedPosts,
+    },
+  };
+};
+
+export default function Home({ publishedPosts }) {
+  console.log(publishedPosts);
   const [projects, setProjects] = useState([]);
   const [latest3Projects, setLatest3Projects] = useState([]);
   const [buidlers, setBuidlers] = useState([]);
