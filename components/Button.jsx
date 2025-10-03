@@ -1,9 +1,12 @@
-import React from 'react';
-
 import { Box } from '@mui/material';
 
 // eslint-disable-next-line react/prop-types
-const Button = ({ variant, borderRadius = '6px', children, ...rest }) => (
+const Button = ({
+  variant,
+  borderRadius = '6px',
+  children = null,
+  ...rest
+}) => (
   <Box
     display="flex"
     alignItems="center"

@@ -117,6 +117,7 @@ export default function NewSectionOnBoarding({ buidlers, educationEvents }) {
           flexDirection="column"
           alignItems="center"
           justifyContent="center"
+          minHeight="0px"
         >
           <Box
             sx={{
@@ -131,16 +132,16 @@ export default function NewSectionOnBoarding({ buidlers, educationEvents }) {
               my: '52px',
             }}
           >
-            {buidlers.map((buidler, index) => {
+            {buidlers.map((buidler) => {
               const firstMemberBadgeAmount = getMemberFirstBadgeAmount(
                 buidler?.badges
               );
               const active =
                 buidler?.status === 'ACTIVE' ||
                 (buidler?.status === 'PENDING' && firstMemberBadgeAmount > 0);
-              if (!active) return;
+              if (!active) return null;
               return (
-                <Box key={index}>
+                <Box key={buidler.address}>
                   <BudilerTooltip
                     buidler={buidler}
                     active={active}
@@ -181,6 +182,7 @@ export default function NewSectionOnBoarding({ buidlers, educationEvents }) {
           flexDirection="column"
           alignItems="center"
           justifyContent="center"
+          minHeight="0px"
         >
           <Box
             sx={{
@@ -241,9 +243,9 @@ export default function NewSectionOnBoarding({ buidlers, educationEvents }) {
                   href: 'https://forum.lxdao.io/t/topic/2017',
                   tags: ['Learning', 'idea'],
                 },
-              ].map(({ title, time, author, href, tags }, index) => (
+              ].map(({ title, time, author, href, tags }) => (
                 <ResearchBlock
-                  key={index}
+                  key={title}
                   title={title}
                   time={time}
                   author={author}
@@ -283,6 +285,7 @@ export default function NewSectionOnBoarding({ buidlers, educationEvents }) {
         >
           <Container
             maxWidth="1316px"
+            minHeight="0px"
             sx={{
               display: 'flex',
               flexDirection: { md: 'row', xs: 'column' },
@@ -479,13 +482,21 @@ export default function NewSectionOnBoarding({ buidlers, educationEvents }) {
   );
 }
 
-function ProjectGroupCard({ title, image, projects }) {
+function ProjectGroupCard({
+  title,
+  image,
+  projects,
+}: {
+  title: string;
+  image: string;
+  projects: any[];
+}) {
   return (
     <Box
       sx={{
         width: {
           md:
-            projects.length == 3 ? 'calc(50% - 6px)' : 'calc((100% - 24px)/3)',
+            projects.length === 3 ? 'calc(50% - 6px)' : 'calc((100% - 24px)/3)',
           xs: '100%',
         },
         p: '36px 24px',
@@ -531,7 +542,7 @@ function ProjectGroupCard({ title, image, projects }) {
       >
         {projects.map((project, index) => (
           <Box
-            key={index}
+            key={project.name}
             sx={{
               display: 'flex',
               flexDirection: 'column',
@@ -597,7 +608,15 @@ function ProjectGroupCard({ title, image, projects }) {
   );
 }
 
-function WorkingGroupCard({ title, href, image }) {
+function WorkingGroupCard({
+  title,
+  href,
+  image,
+}: {
+  title: string;
+  href: string;
+  image: string;
+}) {
   return (
     <Box
       sx={{
@@ -627,15 +646,21 @@ function WorkingGroupCard({ title, href, image }) {
   );
 }
 
-function MyTag({ color, children }) {
+function MyTag({
+  color,
+  children,
+}: {
+  color: string;
+  children: React.ReactNode;
+}) {
   return (
     <Box sx={{ textAlign: 'center' }}>
       <Typography
         fontSize={{ md: '14px', xs: '12px' }}
         sx={{
           alignItems: 'center',
-          color: color == 'green' ? '#4DCC9E' : '#36AFF9',
-          background: color == 'green' ? 'rgba(77, 204, 158, 0.1)' : '#e4eff5',
+          color: color === 'green' ? '#4DCC9E' : '#36AFF9',
+          background: color === 'green' ? 'rgba(77, 204, 158, 0.1)' : '#e4eff5',
           display: 'initial',
           lineHeight: '23.92px',
           padding: '4px 12px',
@@ -653,7 +678,17 @@ const BudilerTooltip = ({
   handleBuidlerCardLeave,
   ...rest
 }) => {
-  const BuidlerDetails = ({ name, description, address, role }) => {
+  const BuidlerDetails = ({
+    name,
+    description,
+    address,
+    role,
+  }: {
+    name: string;
+    description: string;
+    address: string;
+    role: string[];
+  }) => {
     return (
       <Box>
         <Typography
@@ -677,7 +712,7 @@ const BudilerTooltip = ({
         {role?.length && (
           <Box display="flex" flexWrap="wrap" marginBottom="25px">
             {role.map((roleItem, index) => {
-              return <Tag key={index} text={roleItem} />;
+              return <Tag key={roleItem} text={roleItem} />;
             })}
           </Box>
         )}
@@ -728,7 +763,15 @@ const BudilerTooltip = ({
   );
 };
 
-const BuidlerAvatarBox = ({ buidler, active, display }) => {
+const BuidlerAvatarBox = ({
+  buidler,
+  active,
+  display,
+}: {
+  buidler: any;
+  active: boolean;
+  display: any;
+}) => {
   return (
     <Link
       href={`/buidlers/${buidler.address}`}
@@ -755,7 +798,7 @@ const BuidlerAvatarBox = ({ buidler, active, display }) => {
         width="100%"
         height="100%"
         sx={{ position: 'absolute', top: 0, left: 0, aspectRatio: '1 / 1' }}
-        backgroundColor={active ? 'transpent' : 'rgba(0,0,0,0.5)'}
+        bgcolor={active ? 'transpent' : 'rgba(0,0,0,0.5)'}
         display={{ md: 'block', xs: 'none' }}
       />
       <Box width="100%" height="100%">
@@ -833,7 +876,19 @@ function OnBoardingTitle({ title, description, index }) {
   );
 }
 
-function ResearchBlock({ title, time, author, href, tags }) {
+function ResearchBlock({
+  title,
+  time,
+  author,
+  href,
+  tags,
+}: {
+  title: string;
+  time: string;
+  author: string;
+  href: string;
+  tags: string[];
+}) {
   return (
     <Box
       sx={{
@@ -858,7 +913,7 @@ function ResearchBlock({ title, time, author, href, tags }) {
         }}
       >
         {tags.map((tag, index) => (
-          <MyTag key={index} color={index % 2 === 0 ? 'blue' : 'green'}>
+          <MyTag key={tag} color={index % 2 === 0 ? 'blue' : 'green'}>
             {tag}
           </MyTag>
         ))}
