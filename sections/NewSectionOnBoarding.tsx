@@ -3,6 +3,7 @@ import { Box, Link, Button as MuiButton, Typography } from '@mui/material';
 import Container from '@/components/Container';
 import StyledTooltip from '@/components/StyledToolTip';
 import Tag from '@/components/Tag';
+import EducationGallery from '@/components/EducationGallery';
 
 import { getMemberFirstBadgeAmount } from '@/utils/utility';
 
@@ -37,7 +38,7 @@ const HightlightText = styled.span`
   }
 `;
 
-export default function NewSectionOnBoarding({ buidlers }) {
+export default function NewSectionOnBoarding({ buidlers, educationEvents }) {
   return (
     <>
       <Box
@@ -103,110 +104,7 @@ export default function NewSectionOnBoarding({ buidlers }) {
           description="We held various events to let the ideas about Public Goods reach more people."
           index="01"
         >
-          <div>--------------------------------</div>
-          <Box
-            sx={{
-              width: '100%',
-              overflow: 'scroll',
-              mt: { md: '120px', xs: '60px' },
-            }}
-          >
-            <Box
-              sx={{
-                display: 'flex',
-                gap: '12px',
-                width: 'fit-content',
-                borderRadius: '24px',
-                ml: 'calc((100vw - Min(90vw, 1216px))/2)',
-                backgroundColor: '#CEE8F8',
-                padding: '12px',
-              }}
-            >
-              {[
-                {
-                  title: 'Coordination Day by LXDAO',
-                  date: '2024.11',
-                  location: '@Bangkok',
-                  img: 'https://cdn.lxdao.io/1b7bcfc2-52fe-496d-aa13-224969943dfb.png',
-                },
-                {
-                  title: 'Onchain Villages, Onchain Future',
-                  date: '2024.10',
-                  location: '@Shanghai',
-                  img: 'https://cdn.lxdao.io/b76d73d6-21f9-4d1d-beef-1b178c9cbcbc.jpg',
-                },
-                {
-                  title: 'Public Goods & DAO Governance ',
-                  date: '2024.10',
-                  location: '@Beijing',
-                  img: 'https://cdn.lxdao.io/b8b385bd-efe4-4ada-ba03-57639e3da49a.jpg',
-                },
-                {
-                  title: 'LXDAO in EDCON Tokyo',
-                  date: '2024.07',
-                  location: '@Tokyo',
-                  img: 'https://cdn.lxdao.io/00a0d35b-0be1-491e-8489-11b17667cc57.jpg',
-                },
-                {
-                  title: 'The summer of public goods',
-                  date: '2024.05/06',
-                  location:
-                    '@Auckland/Beijing/Shanghai/\nChengdu/Changsha/Hangzhou',
-                  img: 'https://cdn.lxdao.io/32a32d58-7b10-4a3a-8d43-19d077038ae3.jpg',
-                },
-                {
-                  title: 'WAMAO',
-                  date: '2023.12',
-                  location: '@Chiang Mai',
-                  img: 'https://cdn.lxdao.io/01a2ada3-0bce-40ef-b5cb-ac7c7f48c41f.jpg',
-                },
-                {
-                  title: 'Ton/Telegram HackerHouse',
-                  date: '2023.12',
-                  location: '@Chiang Mai',
-                  img: 'https://cdn.lxdao.io/fc383ede-41c4-404c-9c84-62135737b2c2.jpg',
-                },
-                {
-                  title: 'Public Goods HackerHouse',
-                  date: '2023.10',
-                  location: '@Dali',
-                  img: 'https://cdn.lxdao.io/27eaf34c-72f1-4be2-8fe5-972375f2c2b0.jpg',
-                },
-              ].map(({ title, date, location, img }, index) => (
-                <Box
-                  key={index}
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'end',
-
-                    width: '300px',
-                    height: '400px',
-                    color: 'white',
-                    borderRadius: '20px',
-                    padding: '10px 20px',
-                    backgroundSize: 'cover',
-                    backgroundImage: `linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent),url(${img})`,
-                  }}
-                >
-                  <Typography fontSize="16px" fontWeight="600">
-                    {title}
-                  </Typography>
-                  <Box
-                    display="flex"
-                    justifyContent="space-between"
-                    leading="10px"
-                    minHeight="30px"
-                  >
-                    <Typography fontSize="12px">{date}</Typography>
-                    <Typography fontSize="12px" textAlign="end">
-                      {location}
-                    </Typography>
-                  </Box>
-                </Box>
-              ))}
-            </Box>
-          </Box>
+          <EducationGallery items={educationEvents || []} />
         </OnBoardingSection>
       </Box>
       <OnBoardingSection
@@ -247,6 +145,8 @@ export default function NewSectionOnBoarding({ buidlers }) {
                     buidler={buidler}
                     active={active}
                     display={{ md: 'block', xs: 'none' }}
+                    handleBuidlerCardHover={undefined}
+                    handleBuidlerCardLeave={undefined}
                   />
                   <BuidlerAvatarBox
                     buidler={buidler}
@@ -546,12 +446,13 @@ export default function NewSectionOnBoarding({ buidlers }) {
         }}
       >
         <Typography
+          component="div"
           fontSize="36px"
           paddingTop="100px"
           paddingBottom="100px"
           textAlign="center"
           fontWeight="700"
-          cursor="pointer"
+          sx={{ cursor: 'pointer' }}
         >
           Know more about&nbsp;
           <HightlightText
@@ -728,7 +629,7 @@ function WorkingGroupCard({ title, href, image }) {
 
 function MyTag({ color, children }) {
   return (
-    <Box align="center">
+    <Box sx={{ textAlign: 'center' }}>
       <Typography
         fontSize={{ md: '14px', xs: '12px' }}
         sx={{

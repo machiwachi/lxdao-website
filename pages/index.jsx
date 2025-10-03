@@ -12,20 +12,31 @@ import NewSectionOnBoarding from '@/sections/NewSectionOnBoarding';
 import NewSectionPG from '@/sections/NewSectionPG';
 import NewSectionWork from '@/sections/NewSectionWork';
 import { scrollToSection } from '@/utils/utility';
-import { getPublishedPosts } from '@/utils/notion';
+import { getPublishedEvents } from '@/utils/notion';
 
 export const getServerSideProps = async () => {
   console.log('getServerSideProps');
-  const publishedPosts = await getPublishedPosts();
+  const publishedPosts = await getPublishedEvents();
+
+  // 基于 Notion 返回映射为 EducationGallery 所需格式
+  const educationEvents = (publishedPosts || [])
+    .map((p) => ({
+      title: p.title || '',
+      date: p.date || '',
+      location: p.location || '',
+      img: Array.isArray(p.images) && p.images.length > 0 ? p.images[0] : '',
+    }))
+    .filter((e) => e.title && e.img);
 
   return {
     props: {
       publishedPosts: publishedPosts,
+      educationEvents,
     },
   };
 };
 
-export default function Home({ publishedPosts }) {
+export default function Home({ publishedPosts, educationEvents }) {
   console.log(publishedPosts);
   const [projects, setProjects] = useState([]);
   const [latest3Projects, setLatest3Projects] = useState([]);
@@ -117,7 +128,10 @@ export default function Home({ publishedPosts }) {
         buidlerAmount={activeBuidlerAmount}
       />
       <NewSectionPG />
-      <NewSectionOnBoarding buidlers={buidlers.slice(0, 27)} />
+      <NewSectionOnBoarding
+        buidlers={buidlers.slice(0, 27)}
+        educationEvents={educationEvents}
+      />
       <NewSectionConnections />
       {/* <SupportUs />
       <SectionMission
