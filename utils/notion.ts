@@ -77,7 +77,11 @@ export const getPublishedEvents = async (): Promise<Event[]> => {
     sorts: [{ property: '活动日期', direction: 'descending' }],
   });
 
-  console.dir(response, { depth: null });
+  const reponse1 = await notion.blocks.children.list({
+    block_id: '2823d6f3d3a680b2bbaeff85aba270f4',
+  });
+
+  console.dir(reponse1, { depth: null });
 
   const results: NotionPage[] =
     (response as { results?: NotionPage[] })?.results || [];

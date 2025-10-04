@@ -90,6 +90,17 @@ const Header = () => {
         </Link>
 
         <Link
+          href="https://lxdao.notion.site/LXDAO-27edceffe40b80ffae24d0ab3a17c650"
+          style={{ textDecoration: 'none', color: 'inherit' }}
+        >
+          <ListItem disablePadding>
+            <ListItemButton sx={{ py: 0.75 }}>
+              <ListItemText primary="Governance" />
+            </ListItemButton>
+          </ListItem>
+        </Link>
+
+        <Link
           href="https://forum.lxdao.io"
           target="_blank"
           style={{ textDecoration: 'none', color: 'inherit' }}
@@ -162,6 +173,16 @@ const Header = () => {
           }}
         >
           <Typography>Buidl</Typography>
+        </Link>
+        <Link
+          href="https://lxdao.notion.site/LXDAO-27edceffe40b80ffae24d0ab3a17c650"
+          target="_blank"
+          color={'inherit'}
+          sx={{
+            textDecoration: 'none',
+          }}
+        >
+          <Typography>Governance</Typography>
         </Link>
 
         <Link

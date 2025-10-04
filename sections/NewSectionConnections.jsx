@@ -49,8 +49,7 @@ export default function NewSectionConnections() {
             left: { md: '-80px', xs: '-20px' },
           }}
         />
-        Heart From <Box component="br" display={{ md: 'none', xs: 'block' }} />
-        our community
+        Heart from our community
         <Box
           component="img"
           src="/images/new/quote-left.svg"
@@ -62,6 +61,7 @@ export default function NewSectionConnections() {
           }}
         />
       </Box>
+
       <Box
         width="100%"
         height="910px"
@@ -88,7 +88,12 @@ export default function NewSectionConnections() {
           }}
         >
           {xData.map((item, index) => (
-            <TweetCard key={index} item={item} />
+            <blockquote class="twitter-tweet">
+              <a href="https://twitter.com/SpaceX/status/1732824684683784516?ref_src=twsrc%5Etfw">
+                December 7, 2023
+              </a>
+            </blockquote>
+            // <TweetCard key={index} item={item} />
           ))}
         </Box>
       </Box>

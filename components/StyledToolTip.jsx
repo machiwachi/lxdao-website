@@ -9,7 +9,7 @@ const useStyles = makeStyles({
     marginLeft: '0px !important',
     backgroundColor: '#ffffff',
     borderRadius: '0',
-    width: '420px !important',
+    width: '420px',
     padding: '24px',
   },
 });
