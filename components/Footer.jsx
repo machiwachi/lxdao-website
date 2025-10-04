@@ -113,12 +113,8 @@ const Footer = () => {
                 items={[
                   { name: 'Join Us', link: '/onboarding/intro' },
                   {
-                    name: 'Make a proposal',
-                    link: 'https://www.notion.so/lxdao/How-do-we-work-93038c708217465384cc7d9f377547c5',
-                  },
-                  {
-                    name: 'Bounty Task',
-                    link: 'https://forum.lxdao.io/c/bounty',
+                    name: 'Governance',
+                    link: 'https://lxdao.notion.site/LXDAO-27edceffe40b80ffae24d0ab3a17c650',
                   },
                 ]}
               />
