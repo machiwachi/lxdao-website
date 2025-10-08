@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 
 import { useRouter } from 'next/router';
 
@@ -12,11 +12,20 @@ import NewSectionOnBoarding from '@/sections/NewSectionOnBoarding';
 import NewSectionPG from '@/sections/NewSectionPG';
 import NewSectionWork from '@/sections/NewSectionWork';
 import { scrollToSection } from '@/utils/utility';
-import { getPublishedEvents } from '@/utils/notion';
+import {
+  getPublishedEvents,
+  getTwitterData,
+  getPartnersData,
+  getSponsorshipsData,
+} from '@/utils/notion';
 
 export const getStaticProps = async () => {
-  console.log('getStaticProps');
   const publishedEvents = await getPublishedEvents();
+  const twitterData = await getTwitterData();
+  const partnersData = await getPartnersData();
+  const sponsorshipsData = await getSponsorshipsData();
+
+  console.log(partnersData);
 
   // 基于 Notion 返回映射为 EducationGallery 所需格式
   const educationEvents = (publishedEvents || [])
@@ -30,15 +39,21 @@ export const getStaticProps = async () => {
 
   return {
     props: {
-      publishedPosts: publishedEvents,
       educationEvents,
+      twitterData,
+      partnersData,
+      sponsorshipsData,
     },
     revalidate: 60,
   };
 };
 
-export default function Home({ publishedPosts, educationEvents }) {
-  console.log(publishedPosts);
+export default function Home({
+  educationEvents,
+  twitterData,
+  partnersData,
+  sponsorshipsData,
+}) {
   const [projects, setProjects] = useState([]);
   const [buidlers, setBuidlers] = useState([]);
   const [activeBuidlerAmount, setActiveBuidlerAmount] = useState(0);
@@ -50,7 +65,7 @@ export default function Home({ publishedPosts, educationEvents }) {
     if (scrollToSectionName) {
       scrollToSection(scrollToSectionName);
     }
-  }, []);
+  }, [scrollToSectionName]);
 
   useEffect(() => {
     API.get(`/project?page=1&per_page=30`)
@@ -66,10 +81,9 @@ export default function Home({ publishedPosts, educationEvents }) {
       });
   }, []);
 
-  const handleInit = async () => {
+  const handleInit = useCallback(async () => {
     try {
       const members = [];
-      const ActiveMembers = [];
       let page = 1;
       let hasMoreData = true;
 
@@ -108,11 +122,11 @@ export default function Home({ publishedPosts, educationEvents }) {
     } catch (err) {
       console.error(err);
     }
-  };
+  }, []);
 
   useEffect(() => {
     handleInit();
-  }, []);
+  }, [handleInit]);
 
   return (
     <Layout>
@@ -126,7 +140,11 @@ export default function Home({ publishedPosts, educationEvents }) {
         buidlers={buidlers.slice(0, 27)}
         educationEvents={educationEvents}
       />
-      <NewSectionConnections />
+      <NewSectionConnections
+        twitterData={twitterData}
+        partnersData={partnersData}
+        sponsorshipsData={sponsorshipsData}
+      />
       {/* <SupportUs />
       <SectionMission
         projectAmount={projects.length}

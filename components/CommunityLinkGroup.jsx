@@ -1,14 +1,7 @@
-import React from 'react';
-
-import { Typography, Box, Link } from '@mui/material';
+import { Box, Link, Typography } from '@mui/material';
+import { BsGithub, BsTelegram, BsTwitter, BsWechat } from 'react-icons/bs';
+import { MdForum } from 'react-icons/md';
 import StyledToolTip from './StyledToolTip';
-import {
-  BsWechat,
-  BsGithub,
-  BsTwitter,
-  BsTelegram,
-  BsDiscord,
-} from 'react-icons/bs';
 
 const CommunityLinkGroup = ({ marginBottom = 10 }) => (
   <Box display="flex" gap={4} marginBottom={marginBottom}>
@@ -19,7 +12,7 @@ const CommunityLinkGroup = ({ marginBottom = 10 }) => (
       <BsTelegram size={24} />
     </Link>
     <Link href="https://forum.lxdao.io" target="_blank">
-      <BsDiscord size={24} />
+      <MdForum size={24} />
     </Link>
     <Link href="https://github.com/lxdao-official" target="_blank">
       <BsGithub size={24} />

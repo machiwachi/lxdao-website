@@ -1,11 +1,7 @@
 import { Client } from '@notionhq/client';
 
-// 初始化 Notion 客户端
-const notion = new Client({
-  auth: process.env.NOTION_SECRET,
-});
+const notion = new Client({ auth: process.env.NOTION_SECRET });
 
-// 统一输出结构（根据提供的 Notion 数据源字段）
 export interface Event {
   id: string;
   title: string;
@@ -15,119 +11,211 @@ export interface Event {
   images: string[];
 }
 
-// 最小 Notion 类型以避免使用 any
-interface NotionRichText {
-  plain_text?: string;
+export interface TwitterItem {
+  id: string;
+  text: string;
+  profile: string;
+  user_name: string;
+  user_handler: string;
 }
 
-interface NotionFile {
-  file?: { url?: string };
-  external?: { url?: string };
+export interface Partner {
+  name: string;
+  logo: string;
+  link: string;
 }
 
-interface NotionTitleProperty {
-  title?: NotionRichText[];
+export interface Sponsorship {
+  name: string;
+  logo: string;
+  link: string;
 }
 
-interface NotionMultiSelectProperty {
-  multi_select?: { name?: string }[];
-}
-
-interface NotionDateProperty {
-  date?: { start?: string };
-}
-
-interface NotionPlaceValue {
-  name?: string;
-  plain_text?: string;
-}
-
-interface NotionPlaceProperty {
-  place?: NotionPlaceValue | string;
-}
-
-interface NotionFilesProperty {
-  files?: NotionFile[];
-}
-
-type NotionProperties = Record<string, unknown> & {
-  名称?: NotionTitleProperty;
-  标签?: NotionMultiSelectProperty;
-  活动日期?: NotionDateProperty;
-  位置?: NotionPlaceProperty;
-  文件和媒体?: NotionFilesProperty;
+// 小工具：尽可能把 Notion 任意属性转成字符串
+const textOf = (v: any): string => {
+  if (!v) return '';
+  if (typeof v === 'string') return v.trim();
+  if (typeof v === 'number') return String(v);
+  if (typeof v === 'boolean') return v ? 'true' : 'false';
+  if (typeof v?.plain_text === 'string') return v.plain_text.trim();
+  if (typeof v?.name === 'string') return v.name.trim();
+  if (typeof v?.url === 'string') return v.url.trim();
+  if (typeof v?.email === 'string') return v.email.trim();
+  if (typeof v?.phone_number === 'string') return v.phone_number.trim();
+  if (typeof v?.text === 'string') return v.text.trim();
+  const file = v?.file?.url || v?.external?.url;
+  if (typeof file === 'string') return file.trim();
+  const t = v?.type;
+  if (t === 'title')
+    return (v.title || [])
+      .map((r: any) => r?.plain_text || '')
+      .join('')
+      .trim();
+  if (t === 'rich_text')
+    return (v.rich_text || [])
+      .map((r: any) => r?.plain_text || '')
+      .join('')
+      .trim();
+  if (Array.isArray(v))
+    return v
+      .map((r) => (typeof r === 'string' ? r : r?.plain_text || ''))
+      .join('')
+      .trim();
+  for (const x of Object.values(v as Record<string, unknown>)) {
+    const s = textOf(x as any);
+    if (s) return s;
+  }
+  return '';
 };
 
-interface NotionPage {
-  id: string;
-  properties?: NotionProperties;
-}
+const pick = (props: Record<string, any>, keys: string[]): string => {
+  for (const k of keys)
+    if (props[k]) {
+      const s = textOf(props[k]);
+      if (s) return s;
+    }
+  return '';
+};
 
-// 获取所有已发布的条目（基于提供的 Notion Data Source 示例字段）
-export const getPublishedEvents = async (): Promise<Event[]> => {
-  const databaseId = '2803d6f3-d3a6-80d0-8576-c4d2c8b707f1';
-  // const databaseId = process.env.NOTION_DATABASE_ID;
-  if (!databaseId) {
-    throw new Error('NOTION_DATABASE_ID is not defined');
+const firstImage = (props: Record<string, any>): string => {
+  for (const v of Object.values(props)) {
+    const url =
+      v && typeof v === 'object' && (v as any).url
+        ? (v as any).url
+        : textOf(v as any);
+    if (
+      typeof url === 'string' &&
+      (/(png|jpg|jpeg|gif|webp)/i.test(url) || url.includes('pbs.twimg.com'))
+    )
+      return url;
   }
+  return '';
+};
 
-  // 使用 Data Source 查询（与当前项目已有写法保持一致）
-  const response: unknown = await notion.dataSources.query({
+export const getPublishedEvents = async (): Promise<Event[]> => {
+  const { results = [] } = await notion.dataSources.query({
     data_source_id: '2803d6f3-d3a6-8108-8268-000b26b54b69',
     sorts: [{ property: '活动日期', direction: 'descending' }],
+  } as any);
+
+  return (results as any[]).map((page) => {
+    const props = (page?.properties || {}) as Record<string, any>;
+    const title = textOf(props['名称']);
+    const tags = (props['标签']?.multi_select || [])
+      .map((t: any) => t?.name)
+      .filter(Boolean);
+    const date = props['活动日期']?.date?.start || null;
+    const location = textOf(props['位置']);
+    const images = (props['文件和媒体']?.files || [])
+      .map((f: any) => f?.file?.url || f?.external?.url)
+      .filter(Boolean);
+    return { id: page.id, title, date, tags, location, images } as Event;
   });
-
-  const reponse1 = await notion.blocks.children.list({
-    block_id: '2823d6f3d3a680b2bbaeff85aba270f4',
-  });
-
-  console.dir(reponse1, { depth: null });
-
-  const results: NotionPage[] =
-    (response as { results?: NotionPage[] })?.results || [];
-
-  const items: Event[] = results.map((page) => {
-    const props: NotionProperties = page?.properties || {};
-
-    // 名称（title）
-    const titleProp = props['名称']?.title || [];
-    const title: string = titleProp[0]?.plain_text || '';
-
-    // 标签（multi_select）
-    const tagsProp = props['标签']?.multi_select || [];
-    const tags: string[] = Array.isArray(tagsProp)
-      ? tagsProp.map((t) => (t?.name || '').trim()).filter(Boolean)
-      : [];
-
-    // 活动日期（date）
-    const dateStart: string | undefined = props['活动日期']?.date?.start;
-
-    // 位置（place）
-    // Notion place 属性结构可能包含 name/address 等，这里读 name 或 plain_text
-    const locationVal = props['位置']?.place;
-    const location: string | undefined =
-      typeof locationVal === 'string'
-        ? locationVal
-        : locationVal?.name || locationVal?.plain_text || undefined;
-
-    // 文件和媒体（files）
-    const files = props['文件和媒体']?.files || [];
-    const images: string[] = files
-      .map((f) => (f?.file?.url || f?.external?.url || '').trim())
-      .filter((u) => !!u);
-
-    return {
-      id: page?.id,
-      title,
-      date: dateStart ?? null,
-      tags,
-      location: location ?? null,
-      images,
-    } as Event;
-  });
-
-  return items;
 };
 
-// 兼容旧命名（如仍有地方使用 posts）
 export const getPublishedPosts = getPublishedEvents;
+
+export const getTwitterData = async (): Promise<TwitterItem[]> => {
+  const { results = [] } = await notion.dataSources.query({
+    data_source_id: '2863d6f3-d3a6-80ef-b711-000b785b8819',
+    page_size: 100,
+    sorts: [{ timestamp: 'last_edited_time', direction: 'descending' }],
+  });
+
+  return (results as any[])
+    .map((p) => {
+      const props = (p?.properties || {}) as Record<string, any>;
+      const text =
+        pick(props, ['推文内容', 'text', 'content', 'Text', 'Content']) ||
+        textOf(props);
+      const id =
+        pick(props, [
+          'id',
+          'tweet_id',
+          'tweetId',
+          'Tweet ID',
+          'TweetId',
+          '标题',
+          'title',
+        ]) ||
+        p?.id ||
+        '';
+      const profile =
+        pick(props, [
+          'ProfileImage',
+          'Profile Image',
+          '用户资料',
+          'profile',
+          'avatar',
+          'image',
+          'img',
+          'Profile',
+          'Avatar',
+          'Image',
+        ]) || firstImage(props);
+      const user_name = pick(props, [
+        '用户名',
+        'user_name',
+        'username',
+        'name',
+        'User Name',
+        'Username',
+        'Name',
+      ]);
+      const user_handler = pick(props, [
+        '用户账号',
+        'user_handler',
+        'handle',
+        'user_handle',
+        'twitter',
+        'Twitter',
+        'Handle',
+      ]);
+      return { id, text, profile, user_name, user_handler } as TwitterItem;
+    })
+    .filter((it) => !!it.text);
+};
+
+export const getPartnersData = async (): Promise<Partner[]> => {
+  // 使用伙伴数据数据库ID（需要替换为实际的数据库ID）
+  const { results = [] } = await notion.dataSources.query({
+    data_source_id: '2863d6f3-d3a6-80c5-ac11-000b080e7161', // 暂时使用相同的数据库ID，需要替换
+    page_size: 100,
+    sorts: [{ timestamp: 'last_edited_time', direction: 'descending' }],
+  });
+
+  console.log('partners', results);
+
+  return (results as any[])
+    .map((p) => {
+      const props = (p?.properties || {}) as Record<string, any>;
+      const name = pick(props, ['名称', 'name', 'Name', 'title']);
+      const logo =
+        pick(props, ['Logo', 'logo', 'Logo Image', 'image', 'Image', '图片']) ||
+        firstImage(props);
+      const link = pick(props, ['链接', 'link', 'Link', 'url', 'URL', '网站']);
+      return { name, logo, link } as Partner;
+    })
+    .filter((partner) => !!partner.name);
+};
+
+export const getSponsorshipsData = async (): Promise<Sponsorship[]> => {
+  // 使用赞助商数据数据库ID（需要替换为实际的数据库ID）
+  const { results = [] } = await notion.dataSources.query({
+    data_source_id: '2863d6f3-d3a6-800d-b32e-000bd3a6d2c4', // 暂时使用相同的数据库ID，需要替换
+    page_size: 100,
+    sorts: [{ timestamp: 'last_edited_time', direction: 'descending' }],
+  });
+
+  return (results as any[])
+    .map((p) => {
+      const props = (p?.properties || {}) as Record<string, any>;
+      const name = pick(props, ['名称', 'name', 'Name', 'title']);
+      const logo =
+        pick(props, ['Logo', 'logo', 'Logo Image', 'image', 'Image', '图片']) ||
+        firstImage(props);
+      const link = pick(props, ['链接', 'link', 'Link', 'url', 'URL', '网站']);
+      return { name, logo, link } as Sponsorship;
+    })
+    .filter((sponsor) => !!sponsor.name);
+};

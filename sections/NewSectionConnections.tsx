@@ -1,13 +1,12 @@
-import { useEffect, useState } from 'react';
-import { Tweet } from 'react-tweet';
-import { TweetProps, useTweet } from 'react-tweet';
-import { getTweet } from 'react-tweet/api';
-
 import { Box, Link, Typography } from '@mui/material';
 
 import Container from '@/components/Container';
 
-export default function NewSectionConnections() {
+export default function NewSectionConnections({
+  twitterData = [],
+  partnersData = [],
+  sponsorshipsData = [],
+}) {
   return (
     <Box
       sx={{
@@ -87,17 +86,12 @@ export default function NewSectionConnections() {
             maxWidth: '1216px',
           }}
         >
-          {xData.map((item, index) => (
-            <blockquote class="twitter-tweet">
-              <a href="https://twitter.com/SpaceX/status/1732824684683784516?ref_src=twsrc%5Etfw">
-                December 7, 2023
-              </a>
-            </blockquote>
-            // <TweetCard key={index} item={item} />
+          {twitterData.map((item) => (
+            <TweetCard key={item.id} item={item} />
           ))}
         </Box>
       </Box>
-      <Container>
+      <Container minHeight="910px">
         <Box
           sx={{
             display: 'flex',
@@ -124,9 +118,9 @@ export default function NewSectionConnections() {
             maxWidth={{ md: '800px', xs: '100%' }}
             justifyContent={{ md: 'end', xs: 'center' }}
           >
-            {partnersData.map((partner, index) => {
+            {partnersData.map((partner) => {
               return (
-                <Link href={partner.link} target="_blank" key={index}>
+                <Link href={partner.link} target="_blank" key={partner.name}>
                   <Box component={'img'} src={partner.logo} />
                 </Link>
               );
@@ -159,9 +153,9 @@ export default function NewSectionConnections() {
             maxWidth={{ md: '800px', xs: '100%' }}
             justifyContent={{ md: 'end', xs: 'center' }}
           >
-            {sponsorshipsData.map((partner, index) => {
+            {sponsorshipsData.map((partner) => {
               return (
-                <Link href={partner.link} target="_blank" key={index}>
+                <Link href={partner.link} target="_blank" key={partner.name}>
                   <Box component={'img'} src={partner.logo} />
                 </Link>
               );
@@ -247,7 +241,7 @@ export default function NewSectionConnections() {
                   }}
                   onClick={() => {
                     window.open(
-                      'https://mirror.xyz/lxdao.eth/H7v4nkLRr7N2CfMi7zGUOH0CU7r-MHh8pBcrGUtxRIw',
+                      'https://lxdao.notion.site/Two-Years-of-DAO-From-Nearly-Depleted-Treasury-to-Community-Envisioning-the-Decade-Ahead-286dceffe40b8013ae5fd1d232b4accd?pvs=74',
                       '_blank'
                     );
                   }}
@@ -275,7 +269,10 @@ function TweetCard({ item }) {
         cursor: 'pointer',
       }}
       onClick={() => {
-        window.open(`https://x.com/x/status/${item.id}`, '_blank');
+        const maybeId = String(item?.id || '').match(/\d{15,21}/)?.[0];
+        if (maybeId) {
+          window.open(`https://x.com/i/status/${maybeId}`, '_blank');
+        }
       }}
     >
       <Box
@@ -315,199 +312,3 @@ function TweetCard({ item }) {
     </Box>
   );
 }
-
-const sponsorshipsData = [
-  {
-    name: 'Mask Network',
-    logo: '/images/partners/mask-logo.svg',
-    link: '	https://mask.io/',
-  },
-  {
-    name: 'Optimism',
-    logo: '/images/partners/optimism-logo.svg',
-    link: 'https://www.optimism.io/',
-  },
-];
-
-const partnersData = [
-  {
-    name: 'NextDAO',
-    logo: '/images/partners/nextdao-logo.svg',
-    link: 'https://twitter.com/theNextDAO',
-  },
-  {
-    name: 'GCC',
-    logo: '/images/partners/gcc-logo.svg',
-    link: 'https://www.gccofficial.org/',
-  },
-  {
-    name: 'PlanckerDAO',
-    logo: '/images/partners/Plancker-logo.svg',
-    link: 'https://plancker.org/',
-  },
-  {
-    name: 'DAOStar',
-    logo: '/images/partners/DAOStar-logo.svg',
-    link: 'https://daostar.org/',
-  },
-  {
-    name: 'MoleDAO',
-    logo: '/images/partners/moledao-logo.svg',
-    link: 'https://linktr.ee/moledao',
-  },
-  {
-    name: 'MarsDAO',
-    logo: '/images/partners/marsdao-logo.svg',
-    link: 'https://linktr.ee/MarsDAO',
-  },
-  {
-    name: 'EthSign',
-    logo: '/images/partners/ethsign-logo.svg',
-    link: 'https://linktr.ee/SignProtocol',
-  },
-  {
-    name: '8dao',
-    logo: '/images/partners/8dao-logo.svg',
-    link: 'https://8dao.io/',
-  },
-  {
-    name: 'Uncommons',
-    logo: '/images/partners/Uncommons-logo.svg',
-    link: 'https://www.notion.so/Uncommons-04ea0224d3cd4fe9b5181b6dd22d02b4',
-  },
-  {
-    name: 'AAStar',
-    logo: '/images/partners/AAStar-logo.svg',
-    link: 'https://www.aastar.xyz/',
-  },
-  {
-    name: 'Eleduck',
-    logo: '/images/partners/eleduck-logo.svg',
-    link: 'https://eleduck.com/',
-  },
-  {
-    name: 'Artele',
-    logo: '/images/partners/Artela-logo.svg',
-    link: 'https://artela.network/',
-  },
-  {
-    name: 'DMC',
-    logo: '/images/partners/DMC-logo.svg',
-    link: 'https://www.dmctech.io/en',
-  },
-  {
-    name: 'ETHPanda',
-    logo: '/images/partners/ETHPanda-logo.svg',
-    link: 'https://ethpanda.org/',
-  },
-  {
-    name: 'BlockBooster',
-    logo: '/images/partners/BlockBooster-logo.svg',
-    link: 'https://www.gitcoin.co/',
-  },
-  {
-    name: 'GETBLOCK',
-    logo: '/images/partners/getblock.svg',
-    link: 'https://getblock.io/',
-  },
-  {
-    name: 'MintBlickchain',
-    logo: '/images/partners/mint-blockchain.svg',
-    link: 'https://www.mintchain.io/',
-  },
-];
-
-const xId = [
-  '1731662536435716572',
-  '1653387127009452032',
-  '1844410013919612973',
-  '1775069684385366026',
-  '1797864398624837718',
-  '1797801153650180421',
-  '1753329682463015177',
-  '1669273384121946113',
-  '1772257636224032817',
-  '1642840135753687041',
-];
-const xData = [
-  {
-    id: '1731662536435716572',
-    text: '队形是LX,代表着良心,代表着领先😎\n今天的周一测试活动非常成功,实现了区块链历史上第一次Full…团建，来自@LXDAO_Official 家人们！ https://t.co/UhNYWvJBUH',
-    profile:
-      'https://pbs.twimg.com/profile_images/1881781642127437824/Il0B43-k_200x200.jpg',
-    user_name: 'lidamao.eth ( 本升专导师 )',
-    user_handler: 'BestLidamao',
-  },
-  {
-    id: '1653387127009452032',
-    text: 'LXDAO was founded by a group of Asian Developers, who are problem-solving oriented',
-    profile:
-      'https://pbs.twimg.com/profile_images/1922902792202588160/1DiUb2nA_200x200.jpg',
-    user_name: 'Jayden Wei',
-    user_handler: 'jaydenw3i',
-  },
-  {
-    id: '1844410013919612973',
-    text: 'Open-source thrives on the passion of its community. At Artela, we’re proud to be community-driven, putting our builders first. Today, we celebrate those who tirelessly shape our ecosystem! 🚀💡 Featuring @LXDAO_Official @TradeOnArtemis and @artexswap',
-    profile:
-      'https://pbs.twimg.com/profile_images/1872490996401090560/jmi15jQx_400x400.jpg',
-    user_name: 'Artela',
-    user_handler: 'Artela_Network',
-  },
-  {
-    id: '1775069684385366026',
-    text: "🌟 We're thrilled to share that we've formed a strategic partnership with @LXDAO_Official, a leading developer-focused community dedicated to sustainably supporting valuable Web3 public goods and open-source projects.",
-    profile:
-      'https://pbs.twimg.com/profile_images/1872490996401090560/jmi15jQx_400x400.jpg',
-    user_name: 'Artela',
-    user_handler: 'Artela_Network',
-  },
-  {
-    id: '1797864398624837718',
-    text: '祝贺@LXDAO_Official 和@brucexu_eth 以及所有为了公共物品奉献的朋友们，两周年快乐！',
-    profile:
-      'https://pbs.twimg.com/profile_images/1753136367763398656/HWtghbrf_normal.jpg',
-    user_name: 'Victor Zhou🍊🛡️Namefi.io',
-    user_handler: 'ZainanZhou',
-  },
-  {
-    id: '1797801153650180421',
-    text: '🔥很高兴见证 @LXDAO_Official  成立两年来的快速发展。LXDAO 一直致力于支持中…物品发展。期待 BuidlerDAO 与 LXDAO 继续深化合作，共同推动 Web3 行业繁荣！',
-    profile:
-      'https://pbs.twimg.com/profile_images/1683519202915917824/_fkeg3QZ_normal.jpg',
-    user_name: 'BuidlerDAO',
-    user_handler: 'BuidlerDAO',
-  },
-  {
-    id: '1753329682463015177',
-    text: '17. 开发者社区：@OpenBuildxyz、@RebaseCommunity、@LXDAO_Of…社区，分享技术知识，常有公开课分享。\n@Dapp_Learning 是专注于以太坊开源开发者社区。',
-    profile:
-      'https://pbs.twimg.com/profile_images/1506109203953651717/4CXSukXE_normal.jpg',
-    user_name: 'PlanckerDAO',
-    user_handler: 'PlanckerDAO',
-  },
-  {
-    id: '1669273384121946113',
-    text: 'Glad to see over 30 buidlers got their rewards from LXDAO last month!\nMore decentralized and more people joining us for supporting Web3 Public Goods!\nThe only sad thing is cost ~50u gas fee🥺 https://app.safe.global/transactions/history?safe=eth:0xB45e9F74D0a35fE1aa0B78feA03877EF96ae8dd2',
-    profile:
-      'https://pbs.twimg.com/profile_images/1906994546455822336/OEoYVc1W_400x400.jpg',
-    user_name: 'brucexu.eth ❤️🐼🦇🔊',
-    user_handler: 'brucexu_eth',
-  },
-  {
-    id: '1772257636224032817',
-    text: '何为public goods：GCC《Web3公共物品生态研究报告》总结\n作者： @HYbigbos…b3公共物品的研究成果中，最有参考价值的资料之一。 https://t.co/ccx2n1mjTJ',
-    profile:
-      'https://pbs.twimg.com/profile_images/1872229837051731968/DVaT_vra_400x400.jpg',
-    user_name: '极客Web3 (GeeksWeb3)',
-    user_handler: 'geeksweb3',
-  },
-  {
-    id: '1774682198949732487',
-    text: 'LXDAO is the best Web3 DAO. Our mission is to make it easier for more people to enter Web3 and understand Crypto knowledge. Welcome to join us!',
-    profile:
-      'https://pbs.twimg.com/profile_images/1891861963808047104/-h6uWN0A_400x400.jpg',
-    user_name: 'TYYYT',
-    user_handler: 'wutaner',
-  },
-];

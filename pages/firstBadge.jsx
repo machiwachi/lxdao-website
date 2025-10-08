@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext'; /* eslint-disable no-undef */
+import { FaTelegram, FaTwitter, FaGithub } from 'react-icons/fa';
+import { SiNotion } from 'react-icons/si';
 import { useAccount } from 'wagmi';
 import {
   Box,
@@ -12,6 +14,25 @@ import {
 
 import { CardShow } from '@/components/CardShow';
 import Layout from '@/components/Layout';
+
+function IconContainer({ children }) {
+  return (
+    <Box
+      sx={{
+        width: '48px',
+        height: '48px',
+        borderRadius: '50%',
+        backgroundColor: 'white',
+        border: '1px solid #D0D5DD',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      {children}
+    </Box>
+  );
+}
 
 function OneTask({ iconPath, desc }) {
   return (
@@ -60,7 +81,11 @@ function MultiTasks() {
       <Stack gap={2}>
         {[
           {
-            icon: '/images/badge/twitter.svg',
+            icon: (
+              <IconContainer>
+                <FaTwitter size={24} color="#101828" />
+              </IconContainer>
+            ),
             desc: (
               <Typography variant="body1" color="#101828" fontWeight={500}>
                 Follow the official Twitter:{' '}
@@ -75,7 +100,11 @@ function MultiTasks() {
             ),
           },
           {
-            icon: '/images/badge/twitter.svg',
+            icon: (
+              <IconContainer>
+                <FaTwitter size={24} color="#101828" />
+              </IconContainer>
+            ),
             desc: (
               <Typography variant="body1" color="#101828" fontWeight={500}>
                 Follow the LXDAO Twitter List{' '}
@@ -90,22 +119,11 @@ function MultiTasks() {
             ),
           },
           {
-            icon: '/images/badge/discord.svg',
-            desc: (
-              <Typography variant="body1" color="#101828" fontWeight={500}>
-                Discord{' '}
-                <Link
-                  underline="none"
-                  color="#36AFF9"
-                  href="http://discord.lxdao.io/"
-                >
-                  http://discord.lxdao.io/
-                </Link>
-              </Typography>
+            icon: (
+              <IconContainer>
+                <SiNotion size={24} color="#101828" />
+              </IconContainer>
             ),
-          },
-          {
-            icon: '/images/badge/notion.svg',
             desc: (
               <Typography variant="body1" color="#101828" fontWeight={500}>
                 Notion{' '}
@@ -120,7 +138,11 @@ function MultiTasks() {
             ),
           },
           {
-            icon: '/images/badge/github.svg',
+            icon: (
+              <IconContainer>
+                <FaGithub size={24} color="#101828" />
+              </IconContainer>
+            ),
             desc: (
               <Typography
                 variant="body1"
@@ -141,10 +163,22 @@ function MultiTasks() {
             ),
           },
           {
-            icon: '/images/badge/email.svg',
+            icon: (
+              <IconContainer>
+                <FaTelegram size={24} color="#101828" />
+              </IconContainer>
+            ),
             desc: (
               <Typography variant="body1" color="#101828" fontWeight={500}>
-                Subscribe to newsletter (entry at right-bottom of the page)
+                Join our Telegram group{' '}
+                <Link
+                  underline="none"
+                  color="#36AFF9"
+                  href="https://t.me/LXDAO"
+                  target="_blank"
+                >
+                  https://t.me/LXDAO
+                </Link>
               </Typography>
             ),
           },
@@ -158,7 +192,7 @@ function MultiTasks() {
             width="100%"
             sx={{ overflowWrap: 'anywhere' }}
           >
-            <Box component="img" src={val.icon} width={'48px'} />
+            {val.icon}
             {val.desc}
           </Box>
         ))}
@@ -218,12 +252,12 @@ const FirstBadge = () => {
           buttonText=""
           tip={
             <>
-              Please complete the following 3 tasks and wait for the governance
-              working group to verify (contact{' '}
+              Please complete the following 3 tasks and wait for the Community
+              Manager to verify (contact{' '}
               <Link underline="none" color="#36AFF9">
                 <a href="mailto: zqsanjingshou@gmail.com">Marcus</a>
               </Link>{' '}
-              to check the status)
+              to check your status)
             </>
           }
         />
@@ -241,7 +275,7 @@ const FirstBadge = () => {
                       target="_blank"
                       sx={{ textDecoration: 'none' }}
                     >
-                      Go to the forum to introduce yourself and let everyone
+                      Introduce yourself on the forum and let everyone get to
                       know you. {'->'}
                     </Link>
                   }
@@ -259,7 +293,16 @@ const FirstBadge = () => {
               children: (
                 <OneTask
                   iconPath="/images/badge/clock.svg"
-                  desc="Every Saturday at 11:00 am UTC+8"
+                  desc={
+                    <Link
+                      href="https://forum.lxdao.io/c/governance/community-call/22"
+                      target="_blank"
+                      sx={{ textDecoration: 'none' }}
+                    >
+                      Check the latest posts to join our weekly meeting (every
+                      Saturday at 11:00 AM UTC+8). {'->'}
+                    </Link>
+                  }
                 />
               ),
             },
