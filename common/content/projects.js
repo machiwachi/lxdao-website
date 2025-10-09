@@ -96,10 +96,6 @@ const projects = [
         url: 'https://twitter.com/mfnft_official',
       },
       {
-        name: 'discord',
-        url: 'https://discord.lxdao.io',
-      },
-      {
         name: 'opensea',
         url: 'https://opensea.io/collection/mfnft-official',
       },
@@ -219,10 +215,6 @@ const projects = [
         url: 'https://twitter.com/Web3in2032',
       },
       {
-        name: 'discord',
-        url: 'https://discord.lxdao.io',
-      },
-      {
         name: 'opensea',
         url: 'https://opensea.io/collection/web3-in-2032',
       },
@@ -267,10 +259,6 @@ const projects = [
       {
         name: 'twitter',
         url: 'https://twitter.com/marryinweb3',
-      },
-      {
-        name: 'discord',
-        url: 'https://discord.lxdao.io',
       },
       {
         name: 'opensea',

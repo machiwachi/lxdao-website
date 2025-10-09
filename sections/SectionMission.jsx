@@ -146,10 +146,6 @@ const SectionMission = ({ projectAmount, buidlerAmount }) => {
               detail={
                 <div>
                   <div>
-                    <span>Discord: </span>
-                    <span>955+</span>
-                  </div>
-                  <div>
                     <span>Media: </span>
                     <span>12k+</span>
                   </div>

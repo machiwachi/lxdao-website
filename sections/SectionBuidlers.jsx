@@ -178,7 +178,7 @@ const SectionBuidlers = ({ buidlers }) => {
           })}
         </Box>
         <Link
-          href={`/onboarding/intro`}
+          href={`/onboarding/profile`}
           color="#ffffff"
           sx={{
             textDecoration: 'none',

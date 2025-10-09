@@ -107,7 +107,7 @@ const Footer = () => {
               <NavList
                 title="Buidl Together"
                 items={[
-                  { name: 'Join Us', link: '/onboarding/intro' },
+                  { name: 'Join Us', link: '/onboarding/profile' },
                   {
                     name: 'Governance',
                     link: 'https://lxdao.notion.site/LXDAO-27edceffe40b80ffae24d0ab3a17c650',

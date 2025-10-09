@@ -70,7 +70,7 @@ const Language = () => {
           <MenuItem
             onClick={() => {
               alert(
-                'If you want to translate to your native language, please contact us on Discord.'
+                'If you want to translate to your native language, please contact us on Forum.'
               );
             }}
           >

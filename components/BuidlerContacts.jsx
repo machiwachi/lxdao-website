@@ -9,7 +9,6 @@ import { removeEmpty } from '@/utils/utility';
 // email: xxx@xxx.com
 // telegram: @xxx
 // wechat: xxx
-// discord: xxx
 function formatContacts(contacts) {
   let formattedContacts = {};
   Object.keys(removeEmpty(contacts)).map((key) => {
@@ -25,9 +24,8 @@ function formatContacts(contacts) {
         formattedContacts['email'] = `mailto:${contacts.email}`;
         break;
       case 'telegram':
-        formattedContacts[
-          'telegram'
-        ] = `https://telegram.me/${contacts.telegram.replace('@', '')}`;
+        formattedContacts['telegram'] =
+          `https://telegram.me/${contacts.telegram.replace('@', '')}`;
         break;
 
       default:
@@ -38,7 +36,6 @@ function formatContacts(contacts) {
 
   // todo might need to pop up to show the contact
   delete formattedContacts['wechat'];
-  delete formattedContacts['discord'];
 
   return formattedContacts;
 }
@@ -59,7 +56,7 @@ function BuidlerContacts({ contacts, privateContacts, withLabel = true }) {
                 href={formattedContacts[key]}
                 color="primary"
                 sx={{
-                  borderRadius: '100px'
+                  borderRadius: '100px',
                 }}
               >
                 <Chip

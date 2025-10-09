@@ -165,11 +165,7 @@ export default function Buidlers() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [pagination, setPagination] = useState({});
 
-  const searchList = async (
-    search = '',
-    role = '',
-    memberStatus = ''
-  ) => {
+  const searchList = async (search = '', role = '', memberStatus = '') => {
     let query = `/buidler?`;
     let params = [];
     const trimmedSearch = search.trim();
@@ -231,8 +227,15 @@ export default function Buidlers() {
   };
 
   const MemberBasicInfo = (props) => {
-    const { avatar, name, address, status, badges, contacts: allContacts } = props;
-    const contacts = { twitter: allContacts?.twitter }
+    const {
+      avatar,
+      name,
+      address,
+      status,
+      badges,
+      contacts: allContacts,
+    } = props;
+    const contacts = { twitter: allContacts?.twitter };
 
     let memberStatusImgUrl = '/icons/member-status-grey.svg';
     let memberStatusText = 'Onboarding';
@@ -330,7 +333,7 @@ export default function Buidlers() {
             </Typography>
           </Box>
           <Link
-            href={`/onboarding/intro`}
+            href={`/onboarding/profile`}
             color="#ffffff"
             sx={{
               textDecoration: 'none',

@@ -32,23 +32,10 @@ const SectionApplicationSteps = () => {
             marginBottom={8}
             maxWidth={{ md: '1200px', sm: '700px', xs: '300px' }}
           >
-            Our main community is on Discord, we use Discord for chatting,
-            events, and notifications. We also have a Forum for formal public
-            discussion, soft proposals, sharing, etc.
+            We have a Forum for formal public discussion, soft proposals,
+            sharing, etc.
           </Typography>
           <Box display="flex" flexDirection="row">
-            <Link
-              sx={{ textDecoration: 'none' }}
-              textTransform="uppercase"
-              href="https://discord.lxdao.io"
-              target="_blank"
-              paddingY={4}
-              marginRight="20px"
-            >
-              <Button variant="gradient" width="260px">
-                Join the Discord
-              </Button>
-            </Link>
             <Link
               sx={{ textDecoration: 'none' }}
               textTransform="uppercase"
@@ -56,7 +43,7 @@ const SectionApplicationSteps = () => {
               target="_blank"
               paddingY={4}
             >
-              <Button variant="outlined" width="210px">
+              <Button variant="gradient" width="210px">
                 Open the Forum
               </Button>
             </Link>

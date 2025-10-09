@@ -45,7 +45,6 @@ function ProjectForm(props) {
   const nowDate = format(new Date(), 'yyyy-MM-dd');
 
   const linkListAll = [
-    'discord',
     'email',
     'fairsharing',
     'forum',

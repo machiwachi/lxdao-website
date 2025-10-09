@@ -55,10 +55,9 @@ export default function Profile() {
   return (
     <OnBoardingLayout
       title="Learning about you"
-      back="/onboarding/intro"
       next={`/buidlers/xxxxx?onboarding=true`}
       disableNext={!record?.name}
-      currentStep={2}
+      currentStep={1}
       hideButton={true}
     >
       {(address && address === record?.address) ||
@@ -73,7 +72,6 @@ export default function Profile() {
             padding: '24px 40px',
           }}
           isOnboardingProcess={true}
-          backUrl="/onboarding/intro"
           values={_.cloneDeep(
             _.pick(record, [
               'avatar',

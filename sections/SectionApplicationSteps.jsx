@@ -118,7 +118,7 @@ const SectionApplicationSteps = () => {
           <Link
             sx={{ textDecoration: 'none' }}
             textTransform="uppercase"
-            href="/onboarding/intro"
+            href="/onboarding/profile"
             target="_blank"
             marginTop={4}
             paddingY={4}

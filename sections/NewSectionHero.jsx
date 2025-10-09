@@ -62,7 +62,8 @@ export default function NewSectionHero() {
                 mt: { md: '53px', xs: '20px' },
               }}
             >
-              LXDAO is an R&D-driven DAO building an Infinite Cycle to help sustain open-source projects and public goods.
+              LXDAO is an R&D-driven DAO building an Infinite Cycle to help
+              sustain open-source projects and public goods.
             </Typography>
             <Box
               sx={{
@@ -74,7 +75,7 @@ export default function NewSectionHero() {
               }}
             >
               <Link
-                href={`/onboarding/intro`}
+                href={`/onboarding/profile`}
                 color="#ffffff"
                 sx={{
                   textDecoration: 'none',
@@ -125,7 +126,10 @@ export default function NewSectionHero() {
               mb: { md: '0', xs: '40px' },
             }}
             onClick={() => {
-              window.open('https://docs.lxdao.io/docs/shi-ming-yuan-jing-he-jia-zhi-guan', '_blank');
+              window.open(
+                'https://docs.lxdao.io/docs/shi-ming-yuan-jing-he-jia-zhi-guan',
+                '_blank'
+              );
             }}
           >
             Learn More

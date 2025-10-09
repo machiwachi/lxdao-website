@@ -77,17 +77,6 @@ function ContactsField(props) {
             }}
           />
         </Grid>
-        <Grid item xs={12}>
-          <TextField
-            fullWidth
-            label="Discord"
-            value={value.discord}
-            placeholder="yourDiscordID#xxxx"
-            onChange={(event) => {
-              update('discord', event.target.value);
-            }}
-          />
-        </Grid>
       </Grid>
     </Box>
   );
