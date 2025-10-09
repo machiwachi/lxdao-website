@@ -1,41 +1,40 @@
 import React, { useState } from 'react';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { useCopyToClipboard } from 'usehooks-ts';
 import { Tooltip, Box } from '@mui/material';
 
 function CopyText({ copyText, copyTextOriginal, textStyle, iconSize }) {
   const [copyTip, setCopyTip] = useState('Copy to Clipboard');
+  const [_, copy] = useCopyToClipboard();
 
   return (
-    <CopyToClipboard
-      text={copyTextOriginal}
-      onCopy={() => {
-        setCopyTip('Copied');
-        setTimeout(() => {
-          setCopyTip('Copy to Clipboard');
-        }, 1000);
-      }}
-    >
-      <Tooltip title={copyTip} placement="top">
+    <Tooltip title={copyTip} placement="top">
+      <Box
+        display="flex"
+        sx={{
+          cursor: 'pointer',
+          ...textStyle,
+        }}
+        onClick={() => {
+          setCopyTip('Copied');
+          setTimeout(() => {
+            setCopyTip('Copy to Clipboard');
+          }, 1000);
+
+          copy(copyTextOriginal);
+        }}
+      >
+        {copyText}
         <Box
-          display="flex"
+          marginLeft={1}
+          width={iconSize || '20px'}
+          component={'img'}
+          src={`/icons/copy.svg`}
           sx={{
-            cursor: 'pointer',
-            ...textStyle,
+            display: 'block',
           }}
-        >
-          {copyText}
-          <Box
-            marginLeft={1}
-            width={iconSize || '20px'}
-            component={'img'}
-            src={`/icons/copy.svg`}
-            sx={{
-              display: 'block',
-            }}
-          />
-        </Box>
-      </Tooltip>
-    </CopyToClipboard>
+        />
+      </Box>
+    </Tooltip>
   );
 }
 

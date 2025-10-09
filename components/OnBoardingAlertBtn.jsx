@@ -6,7 +6,7 @@ import { styled as muistyle } from '@mui/material/styles';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAccount } from 'wagmi';
-import useWindowSize from 'react-use/lib/useWindowSize';
+import { useWindowSize } from 'usehooks-ts';
 import styled, { keyframes } from 'styled-components';
 import Confetti from 'react-confetti';
 

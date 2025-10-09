@@ -3,7 +3,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from 'react';
 import Confetti from 'react-confetti';
-import useWindowSize from 'react-use/lib/useWindowSize';
+import { useWindowSize } from 'usehooks-ts';
 
 import { useRouter } from 'next/router';
 
