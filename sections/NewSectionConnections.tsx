@@ -5,7 +5,6 @@ import Container from '@/components/Container';
 export default function NewSectionConnections({
   twitterData = [],
   partnersData = [],
-  sponsorshipsData = [],
 }) {
   return (
     <Box
@@ -119,41 +118,6 @@ export default function NewSectionConnections({
             justifyContent={{ md: 'end', xs: 'center' }}
           >
             {partnersData.map((partner) => {
-              return (
-                <Link href={partner.link} target="_blank" key={partner.name}>
-                  <Box component={'img'} src={partner.logo} />
-                </Link>
-              );
-            })}
-          </Box>
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: { md: 'row', xs: 'column' },
-            mt: { md: '120px', xs: '60px' },
-            width: '100%',
-            justifyContent: { md: 'space-between', xs: 'center' },
-            alignItems: { md: 'start', xs: 'center' },
-          }}
-        >
-          <Box
-            fontSize={{ md: '36px', xs: '28px' }}
-            fontWeight="700"
-            maxWidth={{ md: '280px', xs: '100%' }}
-            textAlign={{ md: 'start', xs: 'center' }}
-          >
-            Beloved Sponsors
-          </Box>
-          <Box
-            display="flex"
-            gap={2}
-            flexWrap="wrap"
-            mt={{ md: '0px', xs: '20px' }}
-            maxWidth={{ md: '800px', xs: '100%' }}
-            justifyContent={{ md: 'end', xs: 'center' }}
-          >
-            {sponsorshipsData.map((partner) => {
               return (
                 <Link href={partner.link} target="_blank" key={partner.name}>
                   <Box component={'img'} src={partner.logo} />

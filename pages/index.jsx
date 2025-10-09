@@ -16,14 +16,12 @@ import {
   getPublishedEvents,
   getTwitterData,
   getPartnersData,
-  getSponsorshipsData,
 } from '@/utils/notion';
 
 export const getStaticProps = async () => {
   const publishedEvents = await getPublishedEvents();
   const twitterData = await getTwitterData();
   const partnersData = await getPartnersData();
-  const sponsorshipsData = await getSponsorshipsData();
 
   console.log(partnersData);
 
@@ -42,18 +40,12 @@ export const getStaticProps = async () => {
       educationEvents,
       twitterData,
       partnersData,
-      sponsorshipsData,
     },
     revalidate: 60,
   };
 };
 
-export default function Home({
-  educationEvents,
-  twitterData,
-  partnersData,
-  sponsorshipsData,
-}) {
+export default function Home({ educationEvents, twitterData, partnersData }) {
   const [projects, setProjects] = useState([]);
   const [buidlers, setBuidlers] = useState([]);
   const [activeBuidlerAmount, setActiveBuidlerAmount] = useState(0);
@@ -143,7 +135,6 @@ export default function Home({
       <NewSectionConnections
         twitterData={twitterData}
         partnersData={partnersData}
-        sponsorshipsData={sponsorshipsData}
       />
       {/* <SupportUs />
       <SectionMission

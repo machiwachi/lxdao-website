@@ -25,12 +25,6 @@ export interface Partner {
   link: string;
 }
 
-export interface Sponsorship {
-  name: string;
-  logo: string;
-  link: string;
-}
-
 // 小工具：尽可能把 Notion 任意属性转成字符串
 const textOf = (v: any): string => {
   if (!v) return '';
@@ -197,25 +191,4 @@ export const getPartnersData = async (): Promise<Partner[]> => {
       return { name, logo, link } as Partner;
     })
     .filter((partner) => !!partner.name);
-};
-
-export const getSponsorshipsData = async (): Promise<Sponsorship[]> => {
-  // 使用赞助商数据数据库ID（需要替换为实际的数据库ID）
-  const { results = [] } = await notion.dataSources.query({
-    data_source_id: '2863d6f3-d3a6-800d-b32e-000bd3a6d2c4', // 暂时使用相同的数据库ID，需要替换
-    page_size: 100,
-    sorts: [{ timestamp: 'last_edited_time', direction: 'descending' }],
-  });
-
-  return (results as any[])
-    .map((p) => {
-      const props = (p?.properties || {}) as Record<string, any>;
-      const name = pick(props, ['名称', 'name', 'Name', 'title']);
-      const logo =
-        pick(props, ['Logo', 'logo', 'Logo Image', 'image', 'Image', '图片']) ||
-        firstImage(props);
-      const link = pick(props, ['链接', 'link', 'Link', 'url', 'URL', '网站']);
-      return { name, logo, link } as Sponsorship;
-    })
-    .filter((sponsor) => !!sponsor.name);
 };
