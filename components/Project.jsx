@@ -4,7 +4,7 @@ import { removeItem } from '@/utils/utility';
 function Project({ data }) {
   return (
     <Link
-      href={`/projects/${data.project.number}`}
+      href={`/projects/${data.project.index_name}`}
       target="_blank"
       color={'inherit'}
       sx={{
