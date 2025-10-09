@@ -50,27 +50,47 @@ export default function WorkingGroupList() {
         maxWidth="1200px"
         width="auto"
       >
-        <Typography
-          fontSize="70px"
-          fontWeight="600"
-          lineHeight="70px"
-          color="#101828"
-          marginBottom="60px"
-        >
-          LXDAO WORKING GROUPS
-        </Typography>
-        {currentViewer && currentViewer?.role?.includes(BuilderRole.Mod) && (
-          <Box display="flex" justifyContent="center">
-            <Link
-              sx={{ textDecoration: 'none' }}
-              href={`/workingGroups/create`}
+        <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
+          <Typography
+            fontSize="70px"
+            fontWeight="600"
+            lineHeight="70px"
+            color="#101828"
+          >
+            LXDAO WORKING GROUPS
+          </Typography>
+          <Box
+            sx={{
+              backgroundColor: '#FEF3F2',
+              border: '1px solid #FEE4E2',
+              borderRadius: '16px',
+              padding: '12px 24px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 1,
+              marginBottom: '40px',
+            }}
+          >
+            <Typography
+              fontSize="14px"
+              fontWeight="500"
+              color="#B42318"
+              sx={{ textTransform: 'uppercase', letterSpacing: '0.5px' }}
             >
-              <Button variant="gradient" width="250px">
-                Create a working group
-              </Button>
-            </Link>
+              📚 Historical Archive
+            </Typography>
           </Box>
-        )}
+          <Typography
+            fontSize="16px"
+            fontWeight="400"
+            color="#667085"
+            textAlign="center"
+            maxWidth="600px"
+          >
+            Working Groups have been deprecated. The data below is preserved for
+            historical reference only.
+          </Typography>
+        </Box>
         <Box
           display="flex"
           gap="24px"

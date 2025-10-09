@@ -66,26 +66,44 @@ function CreateWorkingGroup() {
               fontWeight={600}
               lineHeight="70px"
               color="#101828"
-              marginBottom={10}
+              marginBottom={4}
             >
               Create a new Working Group
             </Typography>
           </Box>
-          {currentViewer ? (
-            currentViewer?.role?.includes(BuilderRole.Mod) ? (
-              <WorkingGroupForm
-                values={{}}
-                isUpdate={false}
-                saveWorkingGroupHandler={saveWorkingGroupHandler}
-              />
-            ) : (
-              <Box color="red">
-                You don&apos;t have access to create a working group.
-              </Box>
-            )
-          ) : (
-            <></>
-          )}
+          <Box
+            sx={{
+              backgroundColor: '#FEF3F2',
+              border: '2px solid #FEE4E2',
+              borderRadius: '16px',
+              padding: '40px',
+              textAlign: 'center',
+              maxWidth: '600px',
+              marginTop: 4,
+            }}
+          >
+            <Typography
+              fontSize="24px"
+              fontWeight="600"
+              color="#B42318"
+              marginBottom={2}
+            >
+              📚 Working Groups Have Been Deprecated
+            </Typography>
+            <Typography
+              fontSize="16px"
+              fontWeight="400"
+              color="#667085"
+              marginBottom={3}
+            >
+              Working Groups are no longer active at LXDAO. This feature has
+              been archived and creating new working groups is disabled.
+            </Typography>
+            <Typography fontSize="14px" fontWeight="400" color="#667085">
+              Please refer to our current organizational structure for
+              collaboration opportunities.
+            </Typography>
+          </Box>
         </Box>
       </Container>
     </Layout>

@@ -54,7 +54,7 @@ export default function Buddy() {
             <Link href={`/buidlers/${data.address}`} color="#667085">
               {data.name}
             </Link>{' '}
-            {`is here to assist you and provide answers if needed. \n\nWe encourage you to participate in DAO activities, such as joining a working group or project, attending community calls, and submitting proposals.\n\nAdditionally, your Buddy will notify you of important meetings to ensure you don't miss out. Our aim is to help you get acquainted with living in LXDAO and make the most out of your experience.\n\n`}
+            {`is here to assist you and provide answers if needed. \n\nWe encourage you to participate in DAO activities, such as joining a project, attending community calls, and submitting proposals.\n\nAdditionally, your Buddy will notify you of important meetings to ensure you don't miss out. Our aim is to help you get acquainted with living in LXDAO and make the most out of your experience.\n\n`}
           </Typography>
           <Typography>
             <Link

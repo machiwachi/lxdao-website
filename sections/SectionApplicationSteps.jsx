@@ -14,7 +14,7 @@ const steps = [
   {
     label: 'Contribute',
     description:
-      'Make a difference and earn USDT or LXP by contributing to projects.',
+      'Make a difference and earn USDC by contributing to Pods or operational work.',
     icon: '/icons/contribute-step.svg',
   },
   {

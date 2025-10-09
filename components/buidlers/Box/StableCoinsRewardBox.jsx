@@ -6,19 +6,20 @@ import {
   AccordionDetails,
   AccordionSummary,
   Box,
-  Link,
   Typography,
 } from '@mui/material';
 
 import StableCoinsTable from '@/components/buidlers/StableCoinsTable';
 
 import { totalStableCoins } from '@/utils/utility';
+import { useId } from 'react';
 
 export default function StableCoinsRewardBox({ record }) {
   const [stableCoinAccordionOpen, setStableCoinAccordionOpen] = useState(false);
   const handleStableCoinAccordionOnChange = (e, value) => {
     setStableCoinAccordionOpen(value);
   };
+  const id = useId();
   return (
     <Box display="flex" flexDirection="column" marginTop={3}>
       <Accordion
@@ -37,7 +38,7 @@ export default function StableCoinsRewardBox({ record }) {
           height={{ md: '128px', sm: '200px' }}
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
-          id="panel1a-header"
+          id={id}
           sx={{
             '&.MuiAccordionSummary-root': {
               height: {
@@ -61,18 +62,7 @@ export default function StableCoinsRewardBox({ record }) {
           >
             <Box>
               <Typography fontWeight="600" variant="body1" color="#101828">
-                Stablecoin Reward{' '}
-                <Link
-                  href="/reward/apply"
-                  target="_blank"
-                  sx={{
-                    display: 'inline',
-                    fontSize: '14px',
-                    fontWeight: 500,
-                  }}
-                >
-                  (Apply Stablecoin {'->'})
-                </Link>
+                Stablecoin Reward
               </Typography>
 
               <Typography

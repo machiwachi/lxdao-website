@@ -6,15 +6,29 @@ import WorkingGroupSimpleCard from '@/components/WorkingGroupSimpleCard';
 export default function WorkingGroupsBox({ record }) {
   return (
     <Box marginTop={3} marginBottom={3}>
-      <Box>
-        <Typography
-          color="#101828"
-          fontWeight="600"
-          variant="body1"
-          marginBottom={2}
-        >
+      <Box display="flex" alignItems="center" gap={1.5} marginBottom={2}>
+        <Typography color="#101828" fontWeight="600" variant="body1">
           Working Group
         </Typography>
+        <Box
+          sx={{
+            backgroundColor: '#FEF3F2',
+            border: '1px solid #FEE4E2',
+            borderRadius: '6px',
+            padding: '4px 8px',
+            display: 'inline-flex',
+            alignItems: 'center',
+          }}
+        >
+          <Typography
+            fontSize="12px"
+            fontWeight="500"
+            color="#B42318"
+            sx={{ textTransform: 'uppercase', letterSpacing: '0.3px' }}
+          >
+            Archive
+          </Typography>
+        </Box>
       </Box>
       <Box display="flex" marginTop={2}>
         {record?.workingGroups?.length ? (

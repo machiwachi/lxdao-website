@@ -47,10 +47,11 @@ const SectionMemberType = ({ activeBuidlers, memberType, setMemberType }) => {
               <>
                 LX Community members are the users or fans of the LXDAO
                 projects. Everyone can join LXDAO and become a community member.
-                As a community member, you can contribute to LXDAO and get
-                LXPoints rewards, you can also receive benefits from LXDAO
-                projects. For example, VIP privilege from projects, airdrop,
-                whitelist, early access, etc.
+                As a community member, you can contribute to LXDAO and get USDC
+                rewards by contributing to Pods or operational work, with
+                retrospective LXP incentives. You can also receive benefits from
+                LXDAO projects. For example, VIP privilege from projects,
+                airdrop, whitelist, early access, etc.
               </>
             }
             selected={memberType === 'member'}

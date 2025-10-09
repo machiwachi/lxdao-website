@@ -46,7 +46,7 @@ export default function BadgesToBeEarnedBox({ record, address }) {
             image={`/images/card.png`}
             name="Buidler card (SBT)"
             description="Governance rights entitled"
-            eligible="Eligibility: Contribute in projects or working groups to earn up to 500 LXPU reward."
+            eligible="Eligibility: Contribute to Pods or operational work to earn USDC rewards."
             linkText={
               record?.status === 'READYTOMINT'
                 ? 'Mint now'

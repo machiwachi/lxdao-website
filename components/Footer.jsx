@@ -100,10 +100,6 @@ const Footer = () => {
                     name: 'Developer Guide',
                     link: 'https://github.com/lxdao-official/LXDAO-Developer-Guide',
                   },
-                  {
-                    name: 'Reward Announcement',
-                    link: '/reward/announcement',
-                  },
                 ]}
               />
             </Grid>

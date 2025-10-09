@@ -34,15 +34,46 @@ const SectionWorkingGroup = () => {
   return (
     <Box width="100%" backgroundColor="#36AFF9">
       <Container paddingY={{ md: '112px', xs: 8 }} margin="0 auto">
-        <Typography
-          variant="h2"
-          lineHeight="58px"
-          fontWeight="600"
-          color="#ffffff"
-          marginBottom={8}
-        >
-          LXDAO Working Groups
-        </Typography>
+        <Box display="flex" flexDirection="column" gap={2} marginBottom={8}>
+          <Typography
+            variant="h2"
+            lineHeight="58px"
+            fontWeight="600"
+            color="#ffffff"
+          >
+            LXDAO Working Groups
+          </Typography>
+          <Box
+            sx={{
+              backgroundColor: 'rgba(254, 243, 242, 0.95)',
+              border: '1px solid #FEE4E2',
+              borderRadius: '12px',
+              padding: '10px 20px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 1,
+              alignSelf: 'flex-start',
+            }}
+          >
+            <Typography
+              fontSize="14px"
+              fontWeight="500"
+              color="#B42318"
+              sx={{ textTransform: 'uppercase', letterSpacing: '0.5px' }}
+            >
+              📚 Historical Archive
+            </Typography>
+          </Box>
+          <Typography
+            fontSize="16px"
+            fontWeight="400"
+            color="#ffffff"
+            sx={{ opacity: 0.9 }}
+          >
+            Working Groups have been deprecated. The data below is preserved for
+            historical reference only.
+          </Typography>
+        </Box>
         <Box
           display="flex"
           gap="24px"

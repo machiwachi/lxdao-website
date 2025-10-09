@@ -137,6 +137,32 @@ export default function WorkingGroupDetail() {
       <Container maxWidth="778px" marginX={{ md: 'auto', xs: '20px' }}>
         <Box display="flex" flexDirection="column" gap="16px">
           <Box
+            sx={{
+              backgroundColor: '#FEF3F2',
+              border: '1px solid #FEE4E2',
+              borderRadius: '12px',
+              padding: '16px 24px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 2,
+              marginTop: 2,
+              marginBottom: 2,
+            }}
+          >
+            <Typography
+              fontSize="14px"
+              fontWeight="500"
+              color="#B42318"
+              sx={{ textTransform: 'uppercase', letterSpacing: '0.5px' }}
+            >
+              📚 Historical Archive
+            </Typography>
+            <Typography fontSize="14px" fontWeight="400" color="#667085">
+              This working group has been deprecated and is shown for historical
+              reference only.
+            </Typography>
+          </Box>
+          <Box
             height="320px"
             width="100%"
             border="0.5px solid #d0d5dd"

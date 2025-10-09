@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useRouter } from 'next/router';
 
@@ -12,8 +12,10 @@ import {
   Typography,
 } from '@mui/material';
 
-import CustomButton from '@/components/Button';
-import LXButton from '@/components/Button';
+import {
+  default as CustomButton,
+  default as LXButton,
+} from '@/components/Button';
 import Layout from '@/components/Layout';
 import ProjectCard from '@/components/projects/ProjectCard';
 
@@ -22,7 +24,7 @@ import showMessage from '@/components/showMessage';
 import useBuidler from '@/components/useBuidler';
 import WorkingGroupCard from '@/components/workingGroups/WorkingGroupCard';
 
-import { toBytes, toHex } from 'viem';
+import { toHex } from 'viem';
 
 import {
   useAccount,
@@ -211,22 +213,43 @@ export default function MintCard() {
             {minting ? 'Minting...' : 'Mint'}
           </LXButton>
           <Typography fontSize="16px" color="#666F85">
-            Contribute in projects, working groups or pick up some bounty tasks
-            from{' '}
+            Contribute in projects or pick up some bounty tasks from{' '}
             <Link
               href="https://www.notion.so/lxdao/1341eee9bd9343a7a60b211de7822af3?v=101f42763e12488999211f15a7b75b81"
               target="_blank"
             >
               here
             </Link>{' '}
-            to earn up to 500 LXPU reward. Then request a current member with
-            SBT held to initialize a proposal.
+            to earn USDC rewards by contributing to Pods or operational work
+            (community operations, design, finance, etc.). Then request a
+            current member with SBT held to initialize a proposal.
           </Typography>
         </Stack>
         <Stack gap={3} mb={3}>
-          <Typography variant="subtitle2" fontWeight="800">
-            Working groups
-          </Typography>
+          <Box display="flex" alignItems="center" gap={1.5}>
+            <Typography variant="subtitle2" fontWeight="800">
+              Working groups
+            </Typography>
+            <Box
+              sx={{
+                backgroundColor: '#FEF3F2',
+                border: '1px solid #FEE4E2',
+                borderRadius: '6px',
+                padding: '4px 10px',
+                display: 'inline-flex',
+                alignItems: 'center',
+              }}
+            >
+              <Typography
+                fontSize="12px"
+                fontWeight="500"
+                color="#B42318"
+                sx={{ textTransform: 'uppercase', letterSpacing: '0.3px' }}
+              >
+                Archive
+              </Typography>
+            </Box>
+          </Box>
           <Box
             display="flex"
             gap="24px"

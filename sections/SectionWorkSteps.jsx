@@ -245,7 +245,7 @@ const SectionWorkSteps = ({ projects }) => {
   const [ideaData, setIdeasData] = useState([]);
   const [proposalData, setProposalData] = useState([]);
 
-  const handleInit=async () => {
+  const handleInit = async () => {
     const result = await request(SNAPSHOTURL, queryProposals);
     const latest3Result = result.proposals.slice(0, 3);
     const proposals = latest3Result?.map((item) => ({
@@ -255,7 +255,7 @@ const SectionWorkSteps = ({ projects }) => {
       scores: item.scores,
     }));
     setProposalData(proposals);
-  }
+  };
 
   useEffect(() => {
     API.get(`/community/ideas.json`)
@@ -269,8 +269,8 @@ const SectionWorkSteps = ({ projects }) => {
       });
   }, []);
 
-  useEffect(()=>{
-    handleInit()
+  useEffect(() => {
+    handleInit();
   }, []);
 
   return (
@@ -385,7 +385,7 @@ const SectionWorkSteps = ({ projects }) => {
           rightBgColor="#36AFF9"
           stepIcon="/icons/success.svg"
           stepTitle="Rewards allocation"
-          stepDes="Sustainability is an essential part of LXDAO's mission. At this stage, due to the limited DAO treasury, we will try to apply for external grants, donations, and investments for projects first. If we cannot get them, we will use LXPoints as PoW for you for now and convert them into tokens or fiats later."
+          stepDes="Sustainability is an essential part of LXDAO's mission. We seek external funding through grants, donations, and investments. Contributors earn USDC rewards for their work on Pods or operational work (community operations, design, finance, etc.), with retrospective LXP incentives."
           rightSection={
             <Box
               component="img"

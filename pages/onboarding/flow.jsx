@@ -36,8 +36,8 @@ export default function Flow() {
       icon: '/icons/onboarding/REWARDS.svg',
       title: 'REWARDS',
       content:
-        'LXDAO aims to prioritize sustainability. We seek external funding through grants, donations, and investments for our projects. We also compensate LXP as a reward for your work and convert them into tokens or fiat at a later stage.',
-      url: 'https://lxdao.io/reward/apply',
+        'LXDAO aims to prioritize sustainability. We seek external funding through grants, donations, and investments for our projects. We also compensate USDC rewards for your contributions to Pods or operational work, with retrospective LXP incentives.',
+      url: 'https://lxdao.notion.site/LXP-Rules-80afdaa00f754fb6a222313d5e322917',
     },
   ];
   return (

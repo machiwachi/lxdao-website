@@ -132,8 +132,9 @@ const SectionJoinUsHero = () => {
               textAlign="left"
             >
               In LXDAO, you can buidl many Web3 projects with like-minded
-              buidlers in a Web3 way, increase your Web3 experience, get paid
-              and/or LXPoints, and make many good friends.
+              buidlers in a Web3 way, increase your Web3 experience, earn USDC
+              rewards by contributing to Pods or operational work, and make many
+              good friends.
             </Typography>
           </Box>
         </Box>
@@ -218,8 +219,8 @@ const SectionJoinUsHero = () => {
 //             textAlign="left"
 //           >
 //             In LXDAO, you can buidl many Web3 projects with like-minded buidlers
-//             in a Web3 way, increase your Web3 experience, get paid and/or
-//             LXPoints, and make many good friends.
+//             in a Web3 way, increase your Web3 experience, earn USDC rewards
+//             by contributing to Pods or operational work, and make many good friends.
 //           </Typography>
 //         </Box>
 //       </Container>

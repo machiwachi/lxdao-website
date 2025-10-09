@@ -6,7 +6,6 @@ import {
   AccordionDetails,
   AccordionSummary,
   Box,
-  Link,
   Typography,
 } from '@mui/material';
 
@@ -61,18 +60,7 @@ export default function LxpRewardBox({ record }) {
           >
             <Box>
               <Typography fontWeight="600" variant="body1" color="#101828">
-                LXP Reward{' '}
-                <Link
-                  href="/reward/apply"
-                  target="_blank"
-                  sx={{
-                    display: 'inline',
-                    fontSize: '14px',
-                    fontWeight: 500,
-                  }}
-                >
-                  (Apply LXP {'->'})
-                </Link>
+                LXP Reward
               </Typography>
 
               <Typography
