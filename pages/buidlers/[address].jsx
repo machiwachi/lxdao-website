@@ -22,7 +22,6 @@ import ProjectsBox from '@/components/buidlers/Box/ProjectsBox';
 import SkillsBox from '@/components/buidlers/Box/SkillsBox';
 import StableCoinsRewardBox from '@/components/buidlers/Box/StableCoinsRewardBox';
 import WorkingGroupsBox from '@/components/buidlers/Box/WorkingGroupsBox';
-import GovernanceRightClaimBtn from '@/components/buidlers/GovernanceRightClaimBtn';
 import ProfileEditDialog from '@/components/buidlers/ProfileEditDialog';
 import OnBoardingLayout from '@/components/onboarding/OnBoardingLayout';
 import showMessage from '@/components/showMessage';
@@ -62,7 +61,7 @@ function BuidlerDetails({ record, refresh }) {
     } catch (err) {
       showMessage({
         type: 'error',
-        title: 'Failed to create a project',
+        title: 'Failed to update role',
         body: err.message,
       });
     }
@@ -307,7 +306,6 @@ function BuidlerDetails({ record, refresh }) {
                   gap={1}
                 >
                   <ProfileEditDialog record={record} />
-                  <GovernanceRightClaimBtn record={record} />
                   {address !== record.address && (
                     <Divider
                       sx={{
@@ -322,7 +320,7 @@ function BuidlerDetails({ record, refresh }) {
               </Box>
             </Box>
           </Box>
-          {/* right senction */}
+          {/* right section */}
           <Box boxSizing="border-box" flex="1">
             <BadgeBox record={record} />
 
