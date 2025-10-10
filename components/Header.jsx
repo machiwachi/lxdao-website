@@ -16,6 +16,7 @@ import {
 
 import { ConnectWalletButton } from '@/components/ConnectWallet';
 import useBuidler from '@/components/useBuidler';
+import EXTERNAL_LINKS from '@/config/externalLinks';
 
 import { useAccount } from 'wagmi';
 
@@ -58,7 +59,7 @@ const Header = () => {
           </ListItem>
         </Link>
         <Link
-          href="https://www.notion.so/lxdao/Introduction-723ae07d53fd40b79928d227afd6a487"
+          href={EXTERNAL_LINKS.docs.about}
           target="_blank"
           style={{ textDecoration: 'none', color: 'inherit' }}
         >
@@ -79,7 +80,7 @@ const Header = () => {
           </ListItem>
         </Link>
         <Link
-          href="https://lxdao.notion.site/LXDAO-Buidl-288dceffe40b8033a8ccdc65b83189cf"
+          href={EXTERNAL_LINKS.docs.buidl}
           style={{ textDecoration: 'none', color: 'inherit' }}
         >
           <ListItem disablePadding>
@@ -90,7 +91,7 @@ const Header = () => {
         </Link>
 
         <Link
-          href="https://lxdao.notion.site/LXDAO-27edceffe40b80ffae24d0ab3a17c650"
+          href={EXTERNAL_LINKS.docs.governance}
           style={{ textDecoration: 'none', color: 'inherit' }}
         >
           <ListItem disablePadding>
@@ -101,7 +102,7 @@ const Header = () => {
         </Link>
 
         <Link
-          href="https://forum.lxdao.io"
+          href={EXTERNAL_LINKS.social.forum}
           target="_blank"
           style={{ textDecoration: 'none', color: 'inherit' }}
         >
@@ -144,7 +145,7 @@ const Header = () => {
         lineHeight={3}
       >
         <Link
-          href="https://www.notion.so/lxdao/Introduction-723ae07d53fd40b79928d227afd6a487"
+          href={EXTERNAL_LINKS.docs.about}
           target="_blank"
           color={'inherit'}
           sx={{
@@ -165,7 +166,7 @@ const Header = () => {
           <Typography>Members</Typography>
         </Link>
         <Link
-          href="https://lxdao.notion.site/LXDAO-Buidl-288dceffe40b8033a8ccdc65b83189cf"
+          href={EXTERNAL_LINKS.docs.buidl}
           target="_blank"
           color={'inherit'}
           sx={{
@@ -175,7 +176,7 @@ const Header = () => {
           <Typography>Buidl</Typography>
         </Link>
         <Link
-          href="https://lxdao.notion.site/LXDAO-27edceffe40b80ffae24d0ab3a17c650"
+          href={EXTERNAL_LINKS.docs.governance}
           target="_blank"
           color={'inherit'}
           sx={{
@@ -186,7 +187,7 @@ const Header = () => {
         </Link>
 
         <Link
-          href="https://forum.lxdao.io"
+          href={EXTERNAL_LINKS.social.forum}
           target="_blank"
           color={'inherit'}
           sx={{

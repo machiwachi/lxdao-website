@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { Box, Grid, Link, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
+import EXTERNAL_LINKS from '@/config/externalLinks';
 import CommunityLinkGroup from './CommunityLinkGroup';
 import Container from './Container';
 
@@ -52,11 +53,11 @@ const Footer = () => {
                 items={[
                   {
                     name: 'GitHub',
-                    link: 'https://github.com/lxdao-official',
+                    link: EXTERNAL_LINKS.social.github,
                   },
                   {
                     name: 'Developer Guide',
-                    link: 'https://github.com/lxdao-official/LXDAO-Developer-Guide',
+                    link: EXTERNAL_LINKS.docs.developerGuide,
                   },
                 ]}
               />
@@ -68,7 +69,7 @@ const Footer = () => {
                   { name: 'Join Us', link: '/onboarding/intro' },
                   {
                     name: 'Governance',
-                    link: 'https://lxdao.notion.site/LXDAO-27edceffe40b80ffae24d0ab3a17c650',
+                    link: EXTERNAL_LINKS.docs.governance,
                   },
                 ]}
               />
@@ -77,15 +78,14 @@ const Footer = () => {
               <NavList
                 title="Resources"
                 items={[
-                  { name: 'Forum', link: 'https://forum.lxdao.io/' },
+                  { name: 'Forum', link: EXTERNAL_LINKS.social.forum },
                   {
                     name: 'Snapshot',
-                    link: 'https://snapshot.org/#/lxdao.eth',
+                    link: EXTERNAL_LINKS.governance.snapshot,
                   },
                   {
                     name: 'LXDAO Media Kit',
-                    link: 'https://web3logo.info/detail/LXDAO/1',
-                    // link: 'https://www.figma.com/file/kBSNRnzvDNyLX5SrM7P2Mh/LXDAO-Media-kit?node-id=2%3A15&t=Sbk019qSH9SwRL7y-0',
+                    link: EXTERNAL_LINKS.brand.mediaKit,
                   },
                 ]}
               />
