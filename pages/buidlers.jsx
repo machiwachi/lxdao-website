@@ -333,7 +333,7 @@ export default function Buidlers() {
             </Typography>
           </Box>
           <Link
-            href={`/onboarding/profile`}
+            href={`/onboarding/intro`}
             color="#ffffff"
             sx={{
               textDecoration: 'none',

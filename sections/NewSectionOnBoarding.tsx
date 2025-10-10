@@ -461,7 +461,7 @@ export default function NewSectionOnBoarding({ buidlers, educationEvents }) {
           <HightlightText
             onClick={() => {
               window.open(
-                'https://www.notion.so/lxdao/LXDAO-Notion-Space-e6c82cfdae8b4ded98507538a9703dbc',
+                'https://lxdao.notion.site/LXDAO-27edceffe40b80ffae24d0ab3a17c650',
                 '_blank'
               );
             }}

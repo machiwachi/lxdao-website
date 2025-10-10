@@ -107,7 +107,7 @@ export default function OnBoardingAlertBtn() {
                 if (buidler?.name) {
                   router.push(`/buidlers/${address}?isFromOnboarding=true`);
                 } else {
-                  router.push('/onboarding/profile');
+                  router.push('/onboarding/intro');
                 }
               }}
             >
@@ -199,7 +199,7 @@ export default function OnBoardingAlertBtn() {
                 router.push('/onboarding/profile');
                 return;
               }
-              router.push('/onboarding/profile');
+              router.push('/onboarding/intro');
             }}
           >
             Onboarding

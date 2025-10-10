@@ -269,7 +269,7 @@ function TweetCard({ item }) {
               fontSize: '12px',
             }}
           >
-            @{item?.user_handler}
+            {item?.user_handler}
           </Box>
         </Box>
       </Box>
