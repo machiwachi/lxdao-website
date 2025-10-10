@@ -58,7 +58,7 @@ const Header = () => {
           </ListItem>
         </Link>
         <Link
-          href="https://docs.lxdao.io/docs/jian-jie"
+          href="https://www.notion.so/lxdao/Introduction-723ae07d53fd40b79928d227afd6a487"
           target="_blank"
           style={{ textDecoration: 'none', color: 'inherit' }}
         >
@@ -79,7 +79,7 @@ const Header = () => {
           </ListItem>
         </Link>
         <Link
-          href="https://lxdao.notion.site/LXDAO-Buidl-27cdceffe40b800ea22de86ac0c0286f"
+          href="https://lxdao.notion.site/LXDAO-Buidl-288dceffe40b8033a8ccdc65b83189cf"
           style={{ textDecoration: 'none', color: 'inherit' }}
         >
           <ListItem disablePadding>
@@ -144,7 +144,7 @@ const Header = () => {
         lineHeight={3}
       >
         <Link
-          href="https://docs.lxdao.io/docs/jian-jie"
+          href="https://www.notion.so/lxdao/Introduction-723ae07d53fd40b79928d227afd6a487"
           target="_blank"
           color={'inherit'}
           sx={{
@@ -165,7 +165,7 @@ const Header = () => {
           <Typography>Members</Typography>
         </Link>
         <Link
-          href="https://lxdao.notion.site/LXDAO-Buidl-27cdceffe40b800ea22de86ac0c0286f"
+          href="https://lxdao.notion.site/LXDAO-Buidl-288dceffe40b8033a8ccdc65b83189cf"
           target="_blank"
           color={'inherit'}
           sx={{

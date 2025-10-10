@@ -127,7 +127,7 @@ export default function NewSectionHero() {
             }}
             onClick={() => {
               window.open(
-                'https://docs.lxdao.io/docs/shi-ming-yuan-jing-he-jia-zhi-guan',
+                'https://www.notion.so/lxdao/Introduction-723ae07d53fd40b79928d227afd6a487',
                 '_blank'
               );
             }}
