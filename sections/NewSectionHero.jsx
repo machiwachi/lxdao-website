@@ -62,8 +62,8 @@ export default function NewSectionHero() {
                 mt: { md: '53px', xs: '20px' },
               }}
             >
-              LXDAO is an R&D-driven DAO building an Infinite Cycle to help
-              sustain open-source projects and public goods.
+              LXDAO is a research and development-driven DAO creating an
+              Infinite Cycle to sustain open-source projects and public goods.
             </Typography>
             <Box
               sx={{
