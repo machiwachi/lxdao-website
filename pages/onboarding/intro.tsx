@@ -51,11 +51,16 @@ export default function Intro() {
       ),
     },
   ];
+
   return (
     <OnBoardingLayout
       title="Learning about LXDAO"
       next="/onboarding/profile"
       currentStep={1}
+      back={null}
+      disableNext={false}
+      hideButton={false}
+      layoutTitle={null}
     >
       <Box
         sx={{
