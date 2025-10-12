@@ -8,7 +8,6 @@ export interface Event {
   id: string;
   title: string;
   date: string | null;
-  tags: string[];
   location: string | null;
   images: string[];
 }
@@ -52,6 +51,12 @@ const textOf = (v: any): string => {
       .map((r: any) => r?.plain_text || '')
       .join('')
       .trim();
+
+  if (t === 'date') {
+    return [v.date?.start || '', v.date?.end || null]
+      .filter(Boolean)
+      .join(' ~ ');
+  }
   if (Array.isArray(v))
     return v
       .map((r) => (typeof r === 'string' ? r : r?.plain_text || ''))
@@ -96,16 +101,12 @@ export const getPublishedEvents = async (): Promise<Event[]> => {
 
   return (results as any[]).map((page) => {
     const props = (page?.properties || {}) as Record<string, any>;
-    const title = textOf(props['名称']);
-    const tags = (props['标签']?.multi_select || [])
-      .map((t: any) => t?.name)
-      .filter(Boolean);
-    const date = props['活动日期']?.date?.start || null;
-    const location = textOf(props['位置']);
-    const images = (props['文件和媒体']?.files || [])
-      .map((f: any) => f?.file?.url || f?.external?.url)
-      .filter(Boolean);
-    return { id: page.id, title, date, tags, location, images } as Event;
+    const title = pick(props, ['名称']);
+    const date = pick(props, ['活动日期']);
+    console.dir(props);
+    const location = pick(props, ['位置']);
+    const images = [pick(props, ['文件和媒体'])];
+    return { id: page.id, title, date, location, images } as Event;
   });
 };
 
@@ -176,8 +177,6 @@ export const getPartnersData = async (): Promise<Partner[]> => {
     page_size: 100,
     sorts: [{ timestamp: 'last_edited_time', direction: 'descending' }],
   });
-
-  console.log('partners', results);
 
   return (results as any[])
     .map((p) => {

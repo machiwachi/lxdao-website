@@ -37,9 +37,9 @@ const LINKS = {
 
   // Notion 数据源 IDs
   notionDataSources: {
-    events: '2803d6f3-d3a6-8108-8268-000b26b54b69',
-    twitter: '2863d6f3-d3a6-80ef-b711-000b785b8819',
-    partners: '2863d6f3-d3a6-80c5-ac11-000b080e7161',
+    events: '28adceff-e40b-80e3-800e-000b37ab7adf',
+    twitter: '289dceff-e40b-80d8-bf95-000b3d3fa7bb',
+    partners: '289dceff-e40b-80c2-a394-000b3c9b00e9',
   },
 } as const;
 
