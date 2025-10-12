@@ -16,7 +16,7 @@ import {
 
 import { ConnectWalletButton } from '@/components/ConnectWallet';
 import useBuidler from '@/components/useBuidler';
-import EXTERNAL_LINKS from '@/config/externalLinks';
+import LINKS from '@/config/links';
 
 import { useAccount } from 'wagmi';
 
@@ -59,7 +59,7 @@ const Header = () => {
           </ListItem>
         </Link>
         <Link
-          href={EXTERNAL_LINKS.docs.about}
+          href={LINKS.docs.about}
           target="_blank"
           style={{ textDecoration: 'none', color: 'inherit' }}
         >
@@ -80,7 +80,7 @@ const Header = () => {
           </ListItem>
         </Link>
         <Link
-          href={EXTERNAL_LINKS.docs.buidl}
+          href={LINKS.docs.buidl}
           style={{ textDecoration: 'none', color: 'inherit' }}
         >
           <ListItem disablePadding>
@@ -91,7 +91,7 @@ const Header = () => {
         </Link>
 
         <Link
-          href={EXTERNAL_LINKS.docs.governance}
+          href={LINKS.docs.governance}
           style={{ textDecoration: 'none', color: 'inherit' }}
         >
           <ListItem disablePadding>
@@ -102,7 +102,7 @@ const Header = () => {
         </Link>
 
         <Link
-          href={EXTERNAL_LINKS.social.forum}
+          href={LINKS.social.forum}
           target="_blank"
           style={{ textDecoration: 'none', color: 'inherit' }}
         >
@@ -145,7 +145,7 @@ const Header = () => {
         lineHeight={3}
       >
         <Link
-          href={EXTERNAL_LINKS.docs.about}
+          href={LINKS.docs.about}
           target="_blank"
           color={'inherit'}
           sx={{
@@ -166,7 +166,7 @@ const Header = () => {
           <Typography>Members</Typography>
         </Link>
         <Link
-          href={EXTERNAL_LINKS.docs.buidl}
+          href={LINKS.docs.buidl}
           target="_blank"
           color={'inherit'}
           sx={{
@@ -176,7 +176,7 @@ const Header = () => {
           <Typography>Buidl</Typography>
         </Link>
         <Link
-          href={EXTERNAL_LINKS.docs.governance}
+          href={LINKS.docs.governance}
           target="_blank"
           color={'inherit'}
           sx={{
@@ -187,7 +187,7 @@ const Header = () => {
         </Link>
 
         <Link
-          href={EXTERNAL_LINKS.social.forum}
+          href={LINKS.social.forum}
           target="_blank"
           color={'inherit'}
           sx={{

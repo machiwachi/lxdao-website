@@ -1,6 +1,7 @@
 import { Box, Link, Typography } from '@mui/material';
 
 import Container from '@/components/Container';
+import LINKS from '@/config/links';
 
 export default function NewSectionConnections({
   twitterData = [],
@@ -204,10 +205,7 @@ export default function NewSectionConnections({
                     cursor: 'pointer',
                   }}
                   onClick={() => {
-                    window.open(
-                      'https://lxdao.notion.site/Two-Years-of-DAO-From-Nearly-Depleted-Treasury-to-Community-Envisioning-the-Decade-Ahead-286dceffe40b8013ae5fd1d232b4accd?pvs=74',
-                      '_blank'
-                    );
+                    window.open(LINKS.docs.supportGuide, '_blank');
                   }}
                 >
                   Support Guide

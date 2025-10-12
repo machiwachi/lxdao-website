@@ -1,9 +1,8 @@
 import { useRouter } from 'next/router';
 
 import { Box, Grid, Link, Typography } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 
-import EXTERNAL_LINKS from '@/config/externalLinks';
+import LINKS from '@/config/links';
 import CommunityLinkGroup from './CommunityLinkGroup';
 import Container from './Container';
 
@@ -53,11 +52,11 @@ const Footer = () => {
                 items={[
                   {
                     name: 'GitHub',
-                    link: EXTERNAL_LINKS.social.github,
+                    link: LINKS.social.github,
                   },
                   {
                     name: 'Developer Guide',
-                    link: EXTERNAL_LINKS.docs.developerGuide,
+                    link: LINKS.docs.developerGuide,
                   },
                 ]}
               />
@@ -69,7 +68,7 @@ const Footer = () => {
                   { name: 'Join Us', link: '/onboarding/intro' },
                   {
                     name: 'Governance',
-                    link: EXTERNAL_LINKS.docs.governance,
+                    link: LINKS.docs.governance,
                   },
                 ]}
               />
@@ -78,14 +77,14 @@ const Footer = () => {
               <NavList
                 title="Resources"
                 items={[
-                  { name: 'Forum', link: EXTERNAL_LINKS.social.forum },
+                  { name: 'Forum', link: LINKS.social.forum },
                   {
                     name: 'Snapshot',
-                    link: EXTERNAL_LINKS.governance.snapshot,
+                    link: LINKS.governance.snapshot,
                   },
                   {
                     name: 'LXDAO Media Kit',
-                    link: EXTERNAL_LINKS.brand.mediaKit,
+                    link: LINKS.brand.mediaKit,
                   },
                 ]}
               />

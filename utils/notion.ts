@@ -1,5 +1,7 @@
 import { Client } from '@notionhq/client';
 
+import LINKS from '@/config/links';
+
 const notion = new Client({ auth: process.env.NOTION_SECRET });
 
 export interface Event {
@@ -88,7 +90,7 @@ const firstImage = (props: Record<string, any>): string => {
 
 export const getPublishedEvents = async (): Promise<Event[]> => {
   const { results = [] } = await notion.dataSources.query({
-    data_source_id: '2803d6f3-d3a6-8108-8268-000b26b54b69',
+    data_source_id: LINKS.notionDataSources.events,
     sorts: [{ property: '活动日期', direction: 'descending' }],
   } as any);
 
@@ -107,11 +109,9 @@ export const getPublishedEvents = async (): Promise<Event[]> => {
   });
 };
 
-export const getPublishedPosts = getPublishedEvents;
-
 export const getTwitterData = async (): Promise<TwitterItem[]> => {
   const { results = [] } = await notion.dataSources.query({
-    data_source_id: '2863d6f3-d3a6-80ef-b711-000b785b8819',
+    data_source_id: LINKS.notionDataSources.twitter,
     page_size: 100,
     sorts: [{ timestamp: 'last_edited_time', direction: 'descending' }],
   });
@@ -171,9 +171,8 @@ export const getTwitterData = async (): Promise<TwitterItem[]> => {
 };
 
 export const getPartnersData = async (): Promise<Partner[]> => {
-  // 使用伙伴数据数据库ID（需要替换为实际的数据库ID）
   const { results = [] } = await notion.dataSources.query({
-    data_source_id: '2863d6f3-d3a6-80c5-ac11-000b080e7161', // 暂时使用相同的数据库ID，需要替换
+    data_source_id: LINKS.notionDataSources.partners,
     page_size: 100,
     sorts: [{ timestamp: 'last_edited_time', direction: 'descending' }],
   });

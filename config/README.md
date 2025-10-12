@@ -7,40 +7,46 @@
 ### 导入配置
 
 ```javascript
-import EXTERNAL_LINKS from '@/config/externalLinks';
+import LINKS from '@/config/links';
 ```
 
 ### 使用链接
 
 ```javascript
 // 文档链接
-<Link href={EXTERNAL_LINKS.docs.about}>About</Link>
-<Link href={EXTERNAL_LINKS.docs.buidl}>Buidl</Link>
-<Link href={EXTERNAL_LINKS.docs.governance}>Governance</Link>
-<Link href={EXTERNAL_LINKS.docs.developerGuide}>Developer Guide</Link>
+<Link href={LINKS.docs.about}>About</Link>
+<Link href={LINKS.docs.buidl}>Buidl</Link>
+<Link href={LINKS.docs.governance}>Governance</Link>
+<Link href={LINKS.docs.developerGuide}>Developer Guide</Link>
+<Link href={LINKS.docs.supportGuide}>Support Guide</Link>
 
 // 社交媒体链接
-<Link href={EXTERNAL_LINKS.social.twitter}>Twitter</Link>
-<Link href={EXTERNAL_LINKS.social.telegram}>Telegram</Link>
-<Link href={EXTERNAL_LINKS.social.github}>GitHub</Link>
-<Link href={EXTERNAL_LINKS.social.forum}>Forum</Link>
+<Link href={LINKS.social.twitter}>Twitter</Link>
+<Link href={LINKS.social.telegram}>Telegram</Link>
+<Link href={LINKS.social.github}>GitHub</Link>
+<Link href={LINKS.social.forum}>Forum</Link>
 
 // 治理链接
-<Link href={EXTERNAL_LINKS.governance.snapshot}>Snapshot</Link>
+<Link href={LINKS.governance.snapshot}>Snapshot</Link>
 
 // 品牌资源链接
-<Link href={EXTERNAL_LINKS.brand.mediaKit}>Media Kit</Link>
+<Link href={LINKS.brand.mediaKit}>Media Kit</Link>
+
+// Notion 数据源
+const events = await getEvents(LINKS.notionDataSources.events);
+const tweets = await getTwitter(LINKS.notionDataSources.twitter);
 ```
 
 ## 配置结构
 
 ```typescript
-interface ExternalLinks {
+interface Links {
   docs: {
     about: string;
     buidl: string;
     governance: string;
     developerGuide: string;
+    supportGuide: string;
   };
   social: {
     twitter: string;
@@ -54,13 +60,19 @@ interface ExternalLinks {
   brand: {
     mediaKit: string;
   };
+  notionDataSources: {
+    events: string;
+    twitter: string;
+    partners: string;
+  };
 }
 
-const EXTERNAL_LINKS: ExternalLinks = {
+const LINKS: Links = {
   docs: { /* ... */ },
   social: { /* ... */ },
   governance: { /* ... */ },
   brand: { /* ... */ },
+  notionDataSources: { /* ... */ },
 }
 ```
 
@@ -74,11 +86,11 @@ const EXTERNAL_LINKS: ExternalLinks = {
 
 ## 添加新链接
 
-在 `externalLinks.ts` 中添加新的链接，并按照合适的分类放置：
+在 `links.ts` 中添加新的链接，并按照合适的分类放置：
 
 ```typescript
 // 1. 首先更新接口定义
-interface ExternalLinks {
+interface Links {
   docs: {
     about: string;
     buidl: string;
@@ -90,7 +102,7 @@ interface ExternalLinks {
 }
 
 // 2. 然后添加实际链接
-const EXTERNAL_LINKS: ExternalLinks = {
+const LINKS: Links = {
   docs: {
     // ...
     newDoc: 'https://example.com/new-doc',
@@ -99,13 +111,15 @@ const EXTERNAL_LINKS: ExternalLinks = {
 };
 ```
 
-## 已更新的组件
+## 已更新的组件和工具
 
-以下组件已更新为使用此配置：
+以下文件已更新为使用此配置：
 
 - `components/Header.jsx`
 - `components/Footer.jsx`
 - `components/CommunityLinkGroup.jsx`
+- `sections/NewSectionConnections.tsx`
+- `utils/notion.ts` (Notion 数据源 IDs)
 
-如果在其他组件中使用外部链接，建议也更新为使用此配置。
+如果在其他组件中使用外部链接或 Notion 数据源 ID，建议也更新为使用此配置。
 

@@ -1,22 +1,28 @@
 import { Box, Link, Typography } from '@mui/material';
-import { BsGithub, BsTelegram, BsTwitter, BsWechat } from 'react-icons/bs';
+import {
+  RiGithubFill,
+  RiTelegram2Fill,
+  RiTwitterXLine,
+  RiWechat2Fill,
+} from 'react-icons/ri';
+
+import LINKS from '@/config/links';
 import { MdForum } from 'react-icons/md';
-import EXTERNAL_LINKS from '@/config/externalLinks';
 import StyledToolTip from './StyledToolTip';
 
 const CommunityLinkGroup = ({ marginBottom = 10 }) => (
   <Box display="flex" gap={4} marginBottom={marginBottom}>
-    <Link href={EXTERNAL_LINKS.social.twitter} target="_blank">
-      <BsTwitter size={24} />
+    <Link href={LINKS.social.twitter} target="_blank">
+      <RiTwitterXLine size={24} />
     </Link>
-    <Link href={EXTERNAL_LINKS.social.telegram} target="_blank">
-      <BsTelegram size={24} />
+    <Link href={LINKS.social.telegram} target="_blank">
+      <RiTelegram2Fill size={24} />
     </Link>
-    <Link href={EXTERNAL_LINKS.social.forum} target="_blank">
+    <Link href={LINKS.social.forum} target="_blank">
       <MdForum size={24} />
     </Link>
-    <Link href={EXTERNAL_LINKS.social.github} target="_blank">
-      <BsGithub size={24} />
+    <Link href={LINKS.social.github} target="_blank">
+      <RiGithubFill size={24} />
     </Link>
 
     <StyledToolTip
@@ -36,7 +42,7 @@ const CommunityLinkGroup = ({ marginBottom = 10 }) => (
       placement="top"
     >
       <Link href="#">
-        <BsWechat size={24} />
+        <RiWechat2Fill size={24} />
       </Link>
     </StyledToolTip>
   </Box>
