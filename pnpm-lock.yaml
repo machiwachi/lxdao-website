@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  '@vanilla-extract/sprinkles': ^1.6.2
+
 importers:
 
   .:
