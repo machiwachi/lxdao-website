@@ -1,6 +1,6 @@
 # syntax=docker.io/docker/dockerfile:1
 
-FROM node:18-alpine AS base
+FROM node:18-slim AS base
 
 # --- BUILDER STAGE ---
 # Combines dependency installation and building in one stage for reliability
