@@ -22,6 +22,7 @@ import ProjectsBox from '@/components/buidlers/Box/ProjectsBox';
 import SkillsBox from '@/components/buidlers/Box/SkillsBox';
 import StableCoinsRewardBox from '@/components/buidlers/Box/StableCoinsRewardBox';
 import WorkingGroupsBox from '@/components/buidlers/Box/WorkingGroupsBox';
+import GovernanceRightClaimBtn from '@/components/buidlers/GovernanceRightClaimBtn';
 import ProfileEditDialog from '@/components/buidlers/ProfileEditDialog';
 import OnBoardingLayout from '@/components/onboarding/OnBoardingLayout';
 import showMessage from '@/components/showMessage';
@@ -34,8 +35,6 @@ import { BuilderRole } from '@/models/builder';
 import { formatAddress } from '@/utils/utility';
 
 import EditBuilderRole from '../../components/buidlers/EditBuilderRole';
-
-import _ from 'lodash';
 
 function BuidlerDetails({ record, refresh }) {
   const { address } = useAccount();
@@ -83,7 +82,7 @@ function BuidlerDetails({ record, refresh }) {
     if (
       record?.status === 'PENDING' &&
       firstMemberBadgeAmount === 0 &&
-      address == record.address
+      address === record.address
     ) {
       setOnboarding(true);
     }
@@ -306,16 +305,7 @@ function BuidlerDetails({ record, refresh }) {
                   gap={1}
                 >
                   <ProfileEditDialog record={record} />
-                  {address !== record.address && (
-                    <Divider
-                      sx={{
-                        width: '100%',
-                        marginTop: 2,
-                        marginBottom: 3,
-                        borderColor: '#E5E5E5',
-                      }}
-                    />
-                  )}
+                  <GovernanceRightClaimBtn record={record} />
                 </Box>
               </Box>
             </Box>

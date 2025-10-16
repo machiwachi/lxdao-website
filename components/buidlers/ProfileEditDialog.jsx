@@ -82,17 +82,7 @@ export default function ProfileEditDialog({ record }) {
         <DialogContent>
           <ProfileForm
             updating={updating}
-            values={_.cloneDeep(
-              _.pick(record, [
-                'avatar',
-                'name',
-                'description',
-                'skills',
-                'interests',
-                'contacts',
-                'privateContacts',
-              ])
-            )}
+            values={record}
             saveProfileHandler={saveProfileHandler}
           />
         </DialogContent>
