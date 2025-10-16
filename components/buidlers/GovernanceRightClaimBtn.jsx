@@ -25,6 +25,10 @@ export default function GovernanceRightClaimBtn({ record }) {
     functionName: 'currentSeason',
     args: [],
   });
+
+  // Per discussion w/ 0xhardman, to avoid user who has claimed that has to be claimed again. -wachi 2025/10/18
+  const season = new Date().getFullYear();
+
   const { data: balanceOf } = useReadContract({
     ...voteContract,
     functionName: 'balanceOf',
@@ -67,7 +71,7 @@ export default function GovernanceRightClaimBtn({ record }) {
 
   return (
     <Button
-      variant={'gradient'}
+      variant="gradient"
       style={{
         textAlign: 'center',
       }}
@@ -77,8 +81,8 @@ export default function GovernanceRightClaimBtn({ record }) {
       {loading
         ? 'Please Wait...'
         : claimed
-          ? `Governance Right Claimed In S${currentSeason?.toString()}`
-          : `Claim Governance Right In S${currentSeason?.toString()}`}
+          ? `Governance Right Claimed In ${season}`
+          : `Claim Governance Right In ${season}`}
     </Button>
   );
 }
